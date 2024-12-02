@@ -7,7 +7,9 @@ namespace Swift_Blade
     public enum PlayerStateEnum
     {
         Idle,
-        Attack
+        Attack,
+        Dash,
+        Parry
     }
     public class Player : Entity
     {
@@ -20,6 +22,7 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO anim_attack1;
         [SerializeField] private AnimationParameterSO anim_attack2;
         [SerializeField] private AnimationParameterSO anim_attack3;
+        [SerializeField] private AnimationParameterSO anim_parry;
 
         [Header("General")]
         [SerializeField] private AnimationTriggers animEndTrigger;
@@ -32,12 +35,13 @@ namespace Swift_Blade
         protected override void Awake()
         {
             base.Awake();
-            PlayerInput.OnParryInput += HandleOnParryInput;
             Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator;
-            playerStateMachine.AddState(PlayerStateEnum.Idle, new PlayerIdleState(playerStateMachine, playerAnimator, animEndTrigger, anim_idle));
-            playerStateMachine.AddState(PlayerStateEnum.Attack, new PlayerAttackState(playerStateMachine, playerAnimator, animEndTrigger, anim_attack1));
+            playerStateMachine.AddState(PlayerStateEnum.Idle, new PlayerIdleState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_idle));
+            playerStateMachine.AddState(PlayerStateEnum.Attack, new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_attack1));
+            playerStateMachine.AddState(PlayerStateEnum.Dash, new PlayerDashState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_attack1));
+            playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
             playerStateMachine.SetStartState(PlayerStateEnum.Idle);
-
+            
         }
         private void Update()
         {
@@ -48,32 +52,22 @@ namespace Swift_Blade
 
             void ProcessInput()
             {
+                //if (Input.GetKeyDown(KeyCode.Space))
+                //    playerStateMachine.ChangeState(PlayerStateEnum.Dash);
+
                 Vector3 input = GetPlayerInput.InputDirectionRaw.normalized;
                 GetPlayerMovement.InputDirection = input;
 
-                Transform playerVisualTransform = GetPlayerRenderer.GetPlayerVisualTrasnform;
-                if (input.sqrMagnitude > 0)
-                {
-                    Quaternion visLookDirResult = Quaternion.LookRotation(input, Vector3.up);
-                    float angle = Vector3.Angle(input, playerVisualTransform.forward);
-                    const float angleMultiplier = 20;
-                    float maxDegreesDelta = Time.deltaTime * angle * angleMultiplier;
-                    visLookDirResult = Quaternion.RotateTowards(playerVisualTransform.rotation, visLookDirResult, maxDegreesDelta);
-                    playerVisualTransform.rotation = visLookDirResult;
-                }
                 UpdateDebugUI();
                 void UpdateDebugUI()
                 {
                     if (Input.GetKeyDown(KeyCode.F1))
                         UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
                     UI_DebugPlayer.Instance.GetList[0].text = $"Current State {playerStateMachine.CurrentState}";
+                    UI_DebugPlayer.Instance.GetList[1].text = $"Roll Stamina  {GetPlayerMovement.GetCurrentRollStamina}";
                 }
             }
             ProcessInput();
-        }
-        private void HandleOnParryInput()
-        {
-
         }
 
     }
