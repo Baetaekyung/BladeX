@@ -1,0 +1,15 @@
+using UnityEngine;
+
+namespace Swift_Blade.FSM.States
+{
+    public class PlayerDashState : BasePlayerState
+    {
+        public PlayerDashState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
+        {
+        }
+        public override void Enter()
+        {
+            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.InputDirectionRaw.normalized, 5, () => { GetOwnerFsm.ChangeState(PlayerStateEnum.Idle); });
+        }
+    }
+}
