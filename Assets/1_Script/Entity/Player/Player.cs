@@ -1,5 +1,6 @@
 using Swift_Blade.FSM;
 using Swift_Blade.FSM.States;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -20,12 +21,16 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO anim_idle;
         [SerializeField] private AnimationParameterSO anim_jumpAttack;
         [SerializeField] private AnimationParameterSO anim_attack1;
-        [SerializeField] private AnimationParameterSO anim_attack2;
-        [SerializeField] private AnimationParameterSO anim_attack3;
         [SerializeField] private AnimationParameterSO anim_parry;
 
         [Header("General")]
         [SerializeField] private AnimationTriggers animEndTrigger;
+
+        [Header("Combo")]
+        [SerializeField] private AnimationParameterSO[] comboParamHash;
+        [SerializeField] private Vector3[] comboForceList;
+        public IReadOnlyList<AnimationParameterSO> GetComboHashAtk => comboParamHash;
+        public IReadOnlyList<Vector3> GetComboForceList => comboForceList;
 
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
         public PlayerCamera GetPlayerCamera => GetEntityComponent<PlayerCamera>();
@@ -41,7 +46,6 @@ namespace Swift_Blade
             playerStateMachine.AddState(PlayerStateEnum.Dash, new PlayerDashState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_attack1));
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
             playerStateMachine.SetStartState(PlayerStateEnum.Idle);
-            
         }
         private void Update()
         {
