@@ -12,7 +12,7 @@ public partial class OffGuardAction : Action
     protected override Status OnStart()
     {
         enemyHealth.Value.OffGuarding();
-        return Status.Running;
+        return Status.Success;
     }
 
 }
