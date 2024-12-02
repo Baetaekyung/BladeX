@@ -43,6 +43,10 @@ namespace Swift_Blade.FSM.States
         {
             ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1, 0);
         }
+        protected void PlayAnimation(int hash)
+        {
+            ownerAnimator.Play(hash, -1, 0);
+        }
         public virtual void StopAnimation()
         {
         }
