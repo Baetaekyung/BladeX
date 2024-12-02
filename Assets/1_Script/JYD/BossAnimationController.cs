@@ -3,11 +3,20 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
+public struct ActionData
+{
+    public Vector3 knockbackDir;
+    public float knockbackDuration;
+    public float knockbackPower;
+    public float healthPercent;
+}
+
+
 public class BossAnimationController : MonoBehaviour
 {
     public Animator Animator;
     public NavMeshAgent NavMeshAgent;
-    public Rigidbody Rigidbody;
+    public EnemyHealth EnemyHealth;
     
     public Transform target;
     
@@ -23,7 +32,18 @@ public class BossAnimationController : MonoBehaviour
     public bool isKnockback;
     public float knockbackTime;
     public float knockbackThreshold;
-    
+
+    private void Start()
+    {
+        
+        EnemyHealth.OnHitEvent += SetForce;
+    }
+
+    private void OnDestroy()
+    {
+        EnemyHealth.OnHitEvent -= SetForce;
+    }
+
     private void Update()
     {
         if (isManualRotate)
@@ -41,41 +61,36 @@ public class BossAnimationController : MonoBehaviour
         
     }
     
-    public void GetKnockback()
+    public void SetForce(ActionData actionData)
     {
-        Vector3 test = -transform.forward;
-        StartCoroutine(ApplyKnockback(test * 2.5f));
+        Vector3 dir = actionData.knockbackDir;
+        dir.y = 0;
+        
+        float power = actionData.knockbackPower;
+        float duration = actionData.knockbackDuration;
+        
+        StartCoroutine(AddForce(dir, power, duration));
     }
-
-    private IEnumerator ApplyKnockback(Vector3 force)
+    
+    private void StopImmediately()
     {
-        yield return null;
-
-        isKnockback = true;
+        if (NavMeshAgent.enabled == false) return;
         
-        NavMeshAgent.enabled = false;
-        Rigidbody.isKinematic = false;
-        Rigidbody.useGravity = true;
-
-        Rigidbody.linearVelocity = Vector3.zero;
+        NavMeshAgent.isStopped = true;
+        NavMeshAgent.velocity = Vector3.zero;
+    }
+    
+    private IEnumerator AddForce(Vector3 dir, float power, float duration)
+    {
+        StopImmediately();
+        float currentTime = 0;
         
-        Rigidbody.AddForce(force,ForceMode.Impulse);
-        
-        yield return new WaitForFixedUpdate();
-        yield return new WaitUntil(() => Rigidbody.linearVelocity.magnitude < knockbackThreshold);
-        yield return new WaitForSeconds(0.25f);
-        
-        Rigidbody.linearVelocity = Vector3.zero;
-        Rigidbody.angularVelocity = Vector3.zero;
-        Rigidbody.useGravity = false;
-        Rigidbody.isKinematic = true;
-
-        NavMeshAgent.Warp(transform.position);
-        NavMeshAgent.enabled = true;
-
-        isKnockback = false;
-        
-        yield return null;
+        Vector3 endPos = transform.position + dir * power;
+        while(currentTime < duration){
+            currentTime += Time.deltaTime;
+            transform.position = Vector3.Lerp(transform.position, endPos, Time.deltaTime);
+            yield return null;
+        }
     }
     
     

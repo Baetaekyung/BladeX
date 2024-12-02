@@ -1,11 +1,14 @@
-﻿using Unity.Behavior;
+﻿using System;
+using Unity.Behavior;
 using UnityEngine;
+using Action = System.Action;
 using Random = UnityEngine.Random;
 
 public class EnemyHealth : MonoBehaviour , IDamagable
 {
-    public float enemyHealth;
-        
+    public float maxHealth;
+    public float currentHealth;
+    
     public BehaviorGraphAgent BehaviorGraphAgent;
     public BossAnimationController BossAnimationController;
     [SerializeField] private ChangeState change;
@@ -15,10 +18,12 @@ public class EnemyHealth : MonoBehaviour , IDamagable
     public int maxGuardCount;
     private int guardCount;
 
-
+    public event Action<ActionData> OnHitEvent; 
+    public event Action OnDeadEvent; 
     private void Start()
     {
         guardCount = maxGuardCount;
+        currentHealth = maxHealth;
     }
 
     private void Update()
@@ -28,7 +33,7 @@ public class EnemyHealth : MonoBehaviour , IDamagable
             TakeDamage();
         }
     }
-
+    
     public void TakeDamage()
     {
         if (isGuarding)
@@ -38,7 +43,6 @@ public class EnemyHealth : MonoBehaviour , IDamagable
             {
                 Animator.SetTrigger("GuardHit");
                 Animator.SetInteger("GuardHitType",Random.Range(0,2));
-                BossAnimationController.GetKnockback();
             }
             else
             {
@@ -53,30 +57,37 @@ public class EnemyHealth : MonoBehaviour , IDamagable
             {
                 BehaviorGraphAgent.SetVariableValue<BossState>("BossState", BossState.Hurt);
                 change.SendEventMessage(BossState.Hurt);
-                enemyHealth -= 10;
+                currentHealth -= 10;
             }
             else
             {
                 isGuarding = true;
                 BehaviorGraphAgent.SetVariableValue<BossState>("BossState", BossState.Guard);
                 change.SendEventMessage(BossState.Guard);
-                enemyHealth -= 5;
+                currentHealth -= 5;
             }
+            OnHitEvent.Invoke(HealthPercent());
         }
 
-        if (enemyHealth <= 0)
+        if (currentHealth <= 0)
         {
-            BehaviorGraphAgent.SetVariableValue<BossState>("BossState", BossState.Dead);
-            change.SendEventMessage(BossState.Dead);
+            OnDeadEvent?.Invoke();
         }
         
-        BossAnimationController.GetKnockback();
     }
 
     public void OffGuarding()
     {
         guardCount = maxGuardCount;
         isGuarding = false;
+    }
+
+    private ActionData HealthPercent()
+    {
+        ActionData actionData = new ActionData();
+        actionData.healthPercent = currentHealth / maxHealth;
+        
+        return actionData;
     }
     
     public void TakeHeal()
@@ -86,6 +97,7 @@ public class EnemyHealth : MonoBehaviour , IDamagable
 
     public void Dead()
     {
-        
+        BehaviorGraphAgent.SetVariableValue<BossState>("BossState", BossState.Dead);
+        change.SendEventMessage(BossState.Dead);
     }
 }
