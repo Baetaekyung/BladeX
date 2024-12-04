@@ -6,7 +6,9 @@ namespace Swift_Blade
     public class AnimationParameterSO : ScriptableObject
     {
         [SerializeField] private string paramName;
+        [SerializeField] private float noramlizedTime;
         public int GetAnimationHash { get; private set; }
+        public float GetNormalizedTime => noramlizedTime;
 
         private void OnValidate()
         {

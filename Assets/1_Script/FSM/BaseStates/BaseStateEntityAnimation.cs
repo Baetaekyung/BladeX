@@ -18,34 +18,52 @@ namespace Swift_Blade.FSM.States
             this.entity = entity;
         }
 
-        public virtual void OnAnimationEndTrigger()
+        protected virtual void OnAnimationEndTrigger()
         {
             Debug.Log("onAnimationEnd");
         }
-        public virtual void OnAnimationEndableTrigger()
+        protected virtual void OnAnimationEndTriggerListen()
+        {
+            Debug.Log("OnAnimationListen");
+        }
+        protected virtual void OnAnimationEndableTrigger()
         {
             Debug.Log("onanimatoinEndable");
+        }
+        protected virtual void OnForceEventTrigger(float force)
+        {
+            Debug.Log("onfroce");
         }
         public override void Enter()
         {
             base.Enter();
             animationTriggers.OnAnimationEnd += OnAnimationEndTrigger;
+            animationTriggers.OnAnimationEndableListen += OnAnimationEndTriggerListen;
             animationTriggers.OnAnimationEndable += OnAnimationEndableTrigger;
-            PlayAnimation();
+            animationTriggers.OnForceEvent += OnForceEventTrigger;
+            PlayAnimationOnEnter();
         }
         public override void Exit()
         {
             animationTriggers.OnAnimationEnd -= OnAnimationEndTrigger;
+            animationTriggers.OnAnimationEndableListen -= OnAnimationEndTriggerListen;
             animationTriggers.OnAnimationEndable -= OnAnimationEndableTrigger;
+            animationTriggers.OnForceEvent -= OnForceEventTrigger;
             base.Exit();
         }
-        public virtual void PlayAnimation()
+        public virtual void PlayAnimationOnEnter()
         {
-            ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1, 0);
+            if(baseAnimParam != null)
+                ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1, baseAnimParam.GetNormalizedTime);
         }
-        protected void PlayAnimation(int hash)
+        protected void PlayAnimation(AnimationParameterSO param)
         {
-            ownerAnimator.Play(hash, -1, 0);
+            ownerAnimator.Play(param.GetAnimationHash, -1, param.GetNormalizedTime);
+        }
+
+        protected void PlayAnimation(int hash, float normalizedTime = 0)
+        {
+            ownerAnimator.Play(hash, -1, normalizedTime);
         }
         public virtual void StopAnimation()
         {
