@@ -34,6 +34,10 @@ namespace Swift_Blade.FSM.States
         {
             Debug.Log("onfroce");
         }
+        protected virtual void OnMovementSet(float set)
+        {
+            Debug.Log("onmovementset");
+        }
         public override void Enter()
         {
             base.Enter();
@@ -41,6 +45,7 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnAnimationEndableListen += OnAnimationEndTriggerListen;
             animationTriggers.OnAnimationEndable += OnAnimationEndableTrigger;
             animationTriggers.OnForceEvent += OnForceEventTrigger;
+            animationTriggers.OnMovementSetEvent += OnMovementSet;
             PlayAnimationOnEnter();
         }
         public override void Exit()
@@ -49,6 +54,7 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnAnimationEndableListen -= OnAnimationEndTriggerListen;
             animationTriggers.OnAnimationEndable -= OnAnimationEndableTrigger;
             animationTriggers.OnForceEvent -= OnForceEventTrigger;
+            animationTriggers.OnMovementSetEvent -= OnMovementSet;
             base.Exit();
         }
         public virtual void PlayAnimationOnEnter()

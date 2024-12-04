@@ -8,6 +8,7 @@ namespace Swift_Blade
         public event Action OnAnimationEnd;
         public event Action OnAnimationEndable;
         public event Action OnAnimationEndableListen;
+        public event Action<float> OnMovementSetEvent;
         public event Action<float> OnForceEvent;
 
         private void OnAnimationEndTrigger()
@@ -25,6 +26,10 @@ namespace Swift_Blade
         private void OnForceEventTrigger(float force)
         {
             OnForceEvent?.Invoke(force);
+        }
+        private void OnMovementSet(float set)
+        {
+            OnMovementSetEvent?.Invoke(set);
         }
     }
 }

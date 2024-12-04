@@ -7,18 +7,25 @@ namespace Swift_Blade
 {
     public class PlayerMovement : PlayerComponentBase, IEntityComponentRequireInit
     {
+        [Header("Movement Settings")]
+        [SerializeField] private float onGroundYVal;
+        [SerializeField] private float gravitiy = -9.81f;
+        [SerializeField] private float gravitiyMultiplier = 1;
+        private Vector3 velocity;
+
         [Header("Roll Settings")]
         [SerializeField] private AnimationCurve rollCurve; // curve length should be 1.
         [SerializeField] private float debug_stmod;
         private const float rollcost = 1f;
         private const float initialRollStamina = 3f;
         private float rollStamina;
+        public float SpeedMultiplier { get; set; } = 1;
         public float GetCurrentRollStamina => rollStamina;
         public float GetMaxStamina => initialRollStamina + debug_stmod;
 
         public Vector3 InputDirection { get; set; }
         public Vector3 RollForce { get; private set; }
-        public Vector3 AdditionalForce { get; set; }
+        public bool IsGround => controller.isGrounded;
         public bool AllowInputMoving { get; set; } = true;
         private CharacterController controller;
 
@@ -34,10 +41,20 @@ namespace Swift_Blade
         {
             rollStamina += Time.deltaTime;
             rollStamina = Mathf.Min(GetMaxStamina, rollStamina);
-            AdditionalForce = Vector3.MoveTowards(AdditionalForce, Vector3.zero, Time.deltaTime * 15);
+
+
         }
         private void FixedUpdate()
         {
+            ref float y = ref velocity.y;
+            if (IsGround && y < 0) y = onGroundYVal;
+            else y += Time.fixedDeltaTime * gravitiy * gravitiyMultiplier;
+
+            Vector3 zero = Vector3.zero;
+            zero.y = y;
+
+            velocity = Vector3.MoveTowards(velocity, zero, Time.fixedDeltaTime * 10);
+
             ApplyMovement();
         }
         private void ApplyMovement()
@@ -55,32 +72,37 @@ namespace Swift_Blade
             }
         physics:
             Vector3 inp = !AllowInputMoving ? Vector3.zero : InputDirection;
-            float speed = 5 * Time.deltaTime;
-            Vector3 addition = AdditionalForce + RollForce;
+            float speed = 10 * Time.deltaTime * SpeedMultiplier;
+            Vector3 addition = velocity + RollForce;
             Vector3 result = inp * speed + addition;
             controller.Move(result);
         }
         public void SetForceLocaly(Vector3 force, float amount = 0)
         {
-
+            Debug.DrawRay(Vector3.zero, force, Color.red, 5);
+            Transform visulTrnasform = playerRenderer.GetPlayerVisualTrasnform;
+            Vector3 result = visulTrnasform.TransformVector(force);
+            Debug.DrawRay(Vector3.zero, result, Color.yellow, 6);
+            velocity += result;
         }
         public void Dash(Vector3 dashDirection, int force, Action callback = null)
         {
             StopAllCoroutines();
-            StartCoroutine(CO_DoABarrelRoll());
+            print(StartCoroutine(CO_DoABarrelRoll()));
             IEnumerator CO_DoABarrelRoll()
             {
                 rollStamina -= rollcost;
                 AllowInputMoving = false;
                 RollForce = dashDirection * force;
-
+                
                 Vector3 startVelocitiy = RollForce;
                 float resultDistance = GetDistance();
                 float originalDistance = force;
                 const float dashMultiplier = 0.3f; /* (resultDis / origianlDis) is approximately 1
                                                     * so.. = 1 * dashMultiplier; */
-                float endTime = resultDistance / originalDistance * dashMultiplier;
                 float timer = 0;
+                float endTime = resultDistance / originalDistance * dashMultiplier;
+                print(endTime);
                 Vector3 targetVector = Vector3.zero;
 
                 float GetDistance()

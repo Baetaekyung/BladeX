@@ -18,6 +18,10 @@ namespace Swift_Blade.FSM.States
         private int currentIdx;
         private readonly int maxIdx;
         private bool IsIndexValid => currentIdx < maxIdx;
+        /// <summary>
+        /// bad name
+        /// </summary>
+        private bool IsDeadPeriodOver => deadPeriod > Time.time;
         public PlayerAttackState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null)
             : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
@@ -26,34 +30,42 @@ namespace Swift_Blade.FSM.States
             perioids = entity.GetPeriods;
             playerMovement = entity.GetPlayerMovement;
             maxIdx = comboParamHash.Count - 1;
+            Player.Updt += () =>
+            {
+                //UI_DebugPlayer.Instance.GetList[2].text = $"  {IsDeadPeriodOver}";
+                //UI_DebugPlayer.Instance.GetList[3].text = $"dp{deadPeriod}, {Time.time}";
+
+                UI_DebugPlayer.Instance.GetList[2].text = $"inp     {inputBuffer}";
+                UI_DebugPlayer.Instance.GetList[3].text = $"allowLis{allowListening}, {allowNextAttack}";
+            };
         }
 
         public override void Enter()
         {
             base.Enter();
-            if (IsIndexValid && deadPeriod > Time.time)
-                currentIdx++;
-            else currentIdx = 0;
-
             Attack();
         }
         public override void Update()
         {
             UI_DebugPlayer.Instance.GetList[1].text = $"indx {currentIdx}";
-            UI_DebugPlayer.Instance.GetList[2].text = $"{deadPeriod > Time.time}";
-            //UI_DebugPlayer.Instance.GetList[3].text = $"indx {allowListening}";
-            UI_DebugPlayer.Instance.GetList[3].text = $"dp   {deadPeriod}, {Time.time}";
-            //if (Input.GetKeyDown(KeyCode.K) && allowListening)
-            //    inputBuffer = true;
-            //if (allowNextAttack && inputBuffer && IsIndexValid)
-            //{
-            //    Attack();
-            //    currentIdx++;
-            //}
+            if (Input.GetKeyDown(KeyCode.K) && allowListening)
+                inputBuffer = true;
+            if (inputBuffer && allowNextAttack && IsIndexValid)
+            {
+                Attack();
+                Debug.Log("dwadawda");
+            }
         }
         private void Attack()
         {
+            if (IsIndexValid && IsDeadPeriodOver)
+                currentIdx++;
+            else
+                currentIdx = 0;
+
             inputBuffer = false;
+            allowListening = false;
+            allowNextAttack = false;
             deadPeriod = perioids[currentIdx] + Time.time;
             AnimationParameterSO param = comboParamHash[currentIdx];
             PlayAnimation(param);
@@ -70,12 +82,20 @@ namespace Swift_Blade.FSM.States
         {
             allowNextAttack = true;
         }
+        protected override void OnMovementSet(float set)
+        {
+            playerMovement.SpeedMultiplier = set;
+        }
+        public override void Exit()
+        {
+            Debug.Log("exit");
+            playerMovement.SpeedMultiplier = 1;
+        }
         protected override void OnForceEventTrigger(float force)
         {
             Vector3 result = comboForceList[currentIdx] * force;
-            Debug.Log("idx" + currentIdx);
-            Debug.Log(result);
-            playerMovement.AdditionalForce = result;
+            Debug.Log(result);  
+            playerMovement.SetForceLocaly(result);
         }
     }
 }
