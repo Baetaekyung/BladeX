@@ -18,6 +18,7 @@ namespace Swift_Blade
 
         public Vector3 InputDirection { get; set; }
         public Vector3 RollForce { get; private set; }
+        public Vector3 AdditionalForce { get; set; }
         public bool AllowInputMoving { get; set; } = true;
         private CharacterController controller;
 
@@ -33,6 +34,7 @@ namespace Swift_Blade
         {
             rollStamina += Time.deltaTime;
             rollStamina = Mathf.Min(GetMaxStamina, rollStamina);
+            AdditionalForce = Vector3.MoveTowards(AdditionalForce, Vector3.zero, Time.deltaTime * 15);
         }
         private void FixedUpdate()
         {
@@ -40,8 +42,7 @@ namespace Swift_Blade
         }
         private void ApplyMovement()
         {
-            if (!AllowInputMoving) return;
-
+            if (!AllowInputMoving) goto physics;
             Transform playerVisualTransform = playerRenderer.GetPlayerVisualTrasnform;
             if (InputDirection.sqrMagnitude > 0)
             {
@@ -52,9 +53,16 @@ namespace Swift_Blade
                 visLookDirResult = Quaternion.RotateTowards(playerVisualTransform.rotation, visLookDirResult, maxDegreesDelta);
                 playerVisualTransform.rotation = visLookDirResult;
             }
+        physics:
+            Vector3 inp = !AllowInputMoving ? Vector3.zero : InputDirection;
             float speed = 5 * Time.deltaTime;
-            Vector3 result = InputDirection * speed + RollForce;
+            Vector3 addition = AdditionalForce + RollForce;
+            Vector3 result = inp * speed + addition;
             controller.Move(result);
+        }
+        public void SetForceLocaly(Vector3 force, float amount = 0)
+        {
+
         }
         public void Dash(Vector3 dashDirection, int force, Action callback = null)
         {
@@ -108,5 +116,6 @@ namespace Swift_Blade
                 OnEnd();
             }
         }
+
     }
 }
