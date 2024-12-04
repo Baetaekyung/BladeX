@@ -6,11 +6,11 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     /// <summary>
     /// unfinished
     /// </summary>
-    private static class SingletonPresetManager 
-    {
-        private static T preset = null;
-        public static T GetPreset => preset;
-    }
+    //private static class SingletonPresetManager 
+    //{
+    //    private static T preset = null;
+    //    public static T GetPreset => preset;
+    //}
 
     private static MonoSingletonFlags singletonFlag;
     private static bool IsShuttingDown { get; set; }
@@ -38,6 +38,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         singletonFlag = singletonAttribute != null ? singletonAttribute.Flag : MonoSingletonFlags.None;
         if (singletonFlag.HasFlag(MonoSingletonFlags.DontDestroyOnLoad)) DontDestroyOnLoad(gameObject);
 
+        //error
         if (_instance is not null)
         {
             Debug.LogError("[Unity]twoSingletons_" + typeof(T).Name);
@@ -45,6 +46,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
             return;
         }
 
+        //init
         print("-AwakeInit-" + typeof(T).Name);
         if (singletonFlag.HasFlag(MonoSingletonFlags.SingletonPreset)) _instance = this as T;//GetPresetSingleton();
         else _instance = this as T;
@@ -61,7 +63,6 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     {
         return null;
     }
-
     private static T RuntimeInitialize()
     {
         //CreateInstance
