@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Swift_Blade;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -27,6 +28,10 @@ public class BossAnimationController : MonoBehaviour
     private Vector3 nextPathPoint;
     private Vector3 attackDestination;
     [SerializeField] private float attackMoveSpeed;
+
+    [SerializeField] private CameraShakeType cameraShakeType;
+    [SerializeField] private DamageCaster DamageCaster;
+    
     
     [Header("Knockback info")]
     public bool isKnockback;
@@ -35,7 +40,6 @@ public class BossAnimationController : MonoBehaviour
 
     private void Start()
     {
-        
         EnemyHealth.OnHitEvent += SetForce;
     }
 
@@ -53,12 +57,24 @@ public class BossAnimationController : MonoBehaviour
         
         if (isManualMove)
         {
-            attackDestination = target.position;
+            Vector3 directionToTarget = (target.position - transform.position).normalized;
+            
+            attackDestination = target.position - directionToTarget * 1f;
             
             transform.position = Vector3.MoveTowards(transform.position , attackDestination , 
                 attackMoveSpeed * Time.deltaTime);
         }
         
+    }
+
+    private void Cast()
+    {
+        DamageCaster.CastDamage();
+    }
+    
+    public void ShakeCam()
+    {
+        CameraShakeManager.Instance.GenerateImpulse(cameraShakeType);
     }
     
     public void SetForce(ActionData actionData)
