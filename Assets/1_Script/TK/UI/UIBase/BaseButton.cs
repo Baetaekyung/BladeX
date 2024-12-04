@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace Swift_Blade
+namespace Swift_Blade.UI
 {
     public abstract class BaseButton : MonoBehaviour
     {
         private Button _button;
         [SerializeField] private bool _isAnimationUI = false;
-        [SerializeField] private float _animationSpeed = 0.25f;
+        [SerializeField] private float _animationSpeed = 4f;
         [SerializeField] private float _clickedButtonScale = 1f;
         
         protected virtual void Awake()
@@ -29,7 +29,7 @@ namespace Swift_Blade
             if (_isAnimationUI is false) return;
             
             transform.DOScale(Vector3.one * _clickedButtonScale, 1 / _animationSpeed)
-                .SetEase(Ease.InCirc);
+                .SetEase(Ease.OutCirc);
         }
 
         protected abstract void ClickEvent();

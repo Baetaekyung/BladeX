@@ -4,22 +4,30 @@ using UnityEngine;
 using Action = System.Action;
 using Random = UnityEngine.Random;
 
-public class EnemyHealth : MonoBehaviour , IDamagable
+public class EnemyHealth : MonoBehaviour , IDamageble
 {
     public float maxHealth;
     public float currentHealth;
     
+    [Header("Groggy info")]
+    public float maxGrogging = 10;
+    public float curGrogging = 0;
+    
     public BehaviorGraphAgent BehaviorGraphAgent;
+    
+    [Header("Animation info")]
     public BossAnimationController BossAnimationController;
-    [SerializeField] private ChangeState change;
-
     public Animator Animator;
+    [SerializeField] private ChangeState change;
+    
+    [Header("Guard info")]
     public bool isGuarding;
     public int maxGuardCount;
     private int guardCount;
-
+    
     public event Action<ActionData> OnHitEvent; 
     public event Action OnDeadEvent; 
+    
     private void Start()
     {
         guardCount = maxGuardCount;
@@ -36,6 +44,8 @@ public class EnemyHealth : MonoBehaviour , IDamagable
     
     public void TakeDamage()
     {
+        ++curGrogging;
+        
         if (isGuarding)
         {
             guardCount--;
@@ -67,12 +77,22 @@ public class EnemyHealth : MonoBehaviour , IDamagable
                 currentHealth -= 5;
             }
             OnHitEvent.Invoke(HealthPercent());
+                       
         }
-
+        
         if (currentHealth <= 0)
         {
             OnDeadEvent?.Invoke();
         }
+
+        if (curGrogging >= maxGrogging)
+        {
+            curGrogging = 0;
+            
+            BehaviorGraphAgent.SetVariableValue<BossState>("BossState", BossState.Groggy);
+            change.SendEventMessage(BossState.Groggy);
+        }
+        
         
     }
 
