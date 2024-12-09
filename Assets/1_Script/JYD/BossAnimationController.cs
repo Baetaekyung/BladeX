@@ -3,6 +3,7 @@ using System.Collections;
 using Swift_Blade;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 public struct ActionData
 {
@@ -30,7 +31,7 @@ public class BossAnimationController : MonoBehaviour
     [SerializeField] private float attackMoveSpeed;
 
     [SerializeField] private CameraShakeType cameraShakeType;
-    [SerializeField] private DamageCaster DamageCaster;
+    [FormerlySerializedAs("DamageCaster")] [SerializeField] private LayerCaster layerCaster;
     
     
     [Header("Knockback info")]
@@ -64,14 +65,11 @@ public class BossAnimationController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position , attackDestination , 
                 attackMoveSpeed * Time.deltaTime);
         }
-        
     }
-
     private void Cast()
     {
-        DamageCaster.CastDamage();
+        layerCaster.CastDamage();
     }
-    
     public void ShakeCam()
     {
         CameraShakeManager.Instance.GenerateImpulse(cameraShakeType);
@@ -108,8 +106,6 @@ public class BossAnimationController : MonoBehaviour
             yield return null;
         }
     }
-    
-    
     
     public Vector3 GetNextPathPoint()
     {
@@ -169,11 +165,15 @@ public class BossAnimationController : MonoBehaviour
     public void StartManualMove()
     {
         isManualMove = true;
+        NavMeshAgent.enabled = false;
     }
     
     public void StopManualMove()
     {
         isManualMove = false;
+        NavMeshAgent.Warp(transform.position);
+        NavMeshAgent.enabled = true;
+
     }
     
     #endregion
