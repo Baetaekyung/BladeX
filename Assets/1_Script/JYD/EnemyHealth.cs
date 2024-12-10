@@ -108,6 +108,8 @@ public class EnemyHealth : MonoBehaviour , IDamageble
     {
         ActionData actionData = new ActionData();
         actionData.healthPercent = currentHealth / maxHealth;
+        actionData.knockbackDir = -transform.forward;
+        actionData.knockbackPower = 20f;
         
         return actionData;
     }
