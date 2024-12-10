@@ -32,7 +32,6 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO[] comboParamHash;
         [SerializeField] private Vector3[] comboForceList;
         [SerializeField] private float[] periods;
-
         public IReadOnlyList<AnimationParameterSO> GetComboHashAtk => comboParamHash;
         public IReadOnlyList<Vector3> GetComboForceList => comboForceList;
         public IReadOnlyList<float> GetPeriods => periods;
