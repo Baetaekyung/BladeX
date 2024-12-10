@@ -94,8 +94,7 @@ namespace Swift_Blade.FSM.States
         protected override void OnForceEventTrigger(float force)
         {
             Vector3 result = comboForceList[currentIdx] * force;
-            Debug.Log(result);  
-            playerMovement.SetForceLocaly(result);
+            playerMovement.AddForceLocaly(result);
         }
     }
 }
