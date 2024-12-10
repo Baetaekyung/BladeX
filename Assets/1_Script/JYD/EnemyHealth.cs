@@ -9,10 +9,6 @@ public class EnemyHealth : MonoBehaviour , IDamageble
     public float maxHealth;
     public float currentHealth;
     
-    [Header("Groggy info")]
-    public float maxGrogging = 10;
-    public float curGrogging = 0;
-    
     public BehaviorGraphAgent BehaviorGraphAgent;
     
     [Header("Animation info")]
@@ -44,56 +40,62 @@ public class EnemyHealth : MonoBehaviour , IDamageble
     
     public void TakeDamage()
     {
-        ++curGrogging;
+        if (currentHealth <= 0)
+        {
+            TriggerState(BossState.Dead , 0);
+            OnDeadEvent?.Invoke();
+            return;
+        }
         
         if (isGuarding)
         {
-            guardCount--;
-            if (guardCount > 0)
-            {
-                Animator.SetTrigger("GuardHit");
-                Animator.SetInteger("GuardHitType",Random.Range(0,2));
-            }
-            else
-            {
-                Animator.SetTrigger("GuardBreak");
-            }
+            HandleGuard();
         }
         else
         {
-            float random = Random.value;
-            
-            if (random >= 0.3f)
-            {
-                BehaviorGraphAgent.SetVariableValue<BossState>("BossState", BossState.Hurt);
-                change.SendEventMessage(BossState.Hurt);
-                currentHealth -= 10;
-            }
-            else
-            {
-                isGuarding = true;
-                BehaviorGraphAgent.SetVariableValue<BossState>("BossState", BossState.Guard);
-                change.SendEventMessage(BossState.Guard);
-                currentHealth -= 5;
-            }
-            OnHitEvent.Invoke(GetHealthPercent());
-                       
+            HandleNonGuard();
         }
-        
-        if (currentHealth <= 0)
+    }
+
+    private void HandleGuard()
+    {
+        guardCount--;
+        if (guardCount > 0)
         {
-            OnDeadEvent?.Invoke();
+            Animator.SetTrigger("GuardHit");
+            Animator.SetInteger("GuardHitType", Random.Range(0, 2));
+        }
+        else
+        {
+            Animator.SetTrigger("GuardBreak");
+        }
+    }
+
+    private void HandleNonGuard()
+    {
+        if (Random.value >= 0)
+        {
+            TriggerState(BossState.Hurt, 10);
+        }
+        else
+        {
+            isGuarding = true;
+            TriggerState(BossState.Guard, 5);
         }
 
-        if (curGrogging >= maxGrogging)
-        {
-            curGrogging = 0;
-            
-            BehaviorGraphAgent.SetVariableValue<BossState>("BossState", BossState.Groggy);
-            change.SendEventMessage(BossState.Groggy);
-        }
-        
-        
+        OnHitEvent.Invoke(GetHealthPercent());
+    }
+
+    private void TriggerState(BossState state, int damage)
+    {
+        BehaviorGraphAgent.SetVariableValue("BossState", state);
+        change.SendEventMessage(state);
+        currentHealth -= damage;
+    }
+
+    private void TriggerGroggyState()
+    {
+        TriggerState(BossState.Groggy, 0);
     }
 
     public void OffGuarding()

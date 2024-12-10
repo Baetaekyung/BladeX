@@ -42,11 +42,21 @@ public class BossAnimationController : MonoBehaviour
     private void Start()
     {
         EnemyHealth.OnHitEvent += SetForce;
+        
+        EnemyHealth.OnDeadEvent += StopManualMove;
+        EnemyHealth.OnDeadEvent += StopManualRotate;
+        EnemyHealth.OnDeadEvent += StopApplyRootMotion;
+        EnemyHealth.OnDeadEvent += StopImmediately;
     }
 
     private void OnDestroy()
     {
         EnemyHealth.OnHitEvent -= SetForce;
+        
+        EnemyHealth.OnDeadEvent -= StopManualMove;
+        EnemyHealth.OnDeadEvent -= StopManualRotate;
+        EnemyHealth.OnDeadEvent -= StopApplyRootMotion;
+        EnemyHealth.OnDeadEvent -= StopImmediately;
     }
 
     private void Update()
@@ -141,26 +151,14 @@ public class BossAnimationController : MonoBehaviour
 
     #region AnimationEvents
 
-    public void SetAnimationEnd()
-    {
-        animationEnd = true;
-    }
-    
-    public void StopAnimationEnd()
-    {
-        animationEnd = false;
-    }
+    public void SetAnimationEnd() => animationEnd = true;
+    public void StopAnimationEnd()=>animationEnd = false;
+    public void StartManualRotate() =>isManualRotate = true;
 
-    public void StartManualRotate()
-    {
-        isManualRotate = true;
-    }
-
-    public void StopManualRotate()
-    {
-        isManualRotate = false;
-    }
+    public void StopManualRotate() =>isManualRotate = false;
     
+    public void StartApplyRootMotion() => Animator.applyRootMotion = true;
+    public void StopApplyRootMotion() => Animator.applyRootMotion = false;
     
     public void StartManualMove()
     {
@@ -173,7 +171,6 @@ public class BossAnimationController : MonoBehaviour
         isManualMove = false;
         NavMeshAgent.Warp(transform.position);
         NavMeshAgent.enabled = true;
-
     }
     
     #endregion
