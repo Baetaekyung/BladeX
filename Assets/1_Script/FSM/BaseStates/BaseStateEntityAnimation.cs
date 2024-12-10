@@ -5,6 +5,7 @@ namespace Swift_Blade.FSM.States
 {
     public abstract class BaseStateEntityAnimation<StateEnum, Entity> : State<StateEnum>
         where StateEnum : Enum
+        where Entity : global::Entity
     {
         private readonly AnimationParameterSO baseAnimParam;
         private readonly Animator ownerAnimator;
