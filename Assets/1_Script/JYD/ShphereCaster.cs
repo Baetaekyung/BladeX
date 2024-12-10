@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
 
-public class ShpereCaster : DamageCaster
+public class ShpereCaster : LayerCaster
 {
-    [SerializeField][Range(0.5f, 3f)]
-    private float _casterRadius = 1f;
-    [SerializeField][Range(0f, 1f)]
-    private float _casterInterpolation = 0.5f;
-    [SerializeField][Range(0f, 3f)]
-    private float _castingRange = 1f;
+    [SerializeField][Range(0.5f, 3f)] private float _casterRadius = 1f;
+    [SerializeField][Range(0f, 1f)] private float _casterInterpolation = 0.5f;
+    [SerializeField][Range(0f, 3f)] private float _castingRange = 1f;
     
     public override bool CastDamage()
     {
@@ -22,7 +19,7 @@ public class ShpereCaster : DamageCaster
 
         if(isHit)
         {
-            Debug.Log($"맞았습니다. {hit.collider.name}");
+            //Debug.Log($"맞았습니다. {hit.collider.name}");
             OnCastDamageEvent?.Invoke();
             if(hit.collider.TryGetComponent<IDamageble>(out IDamageble health))
             {
@@ -49,6 +46,4 @@ public class ShpereCaster : DamageCaster
         Gizmos.color = Color.white;
         
     }
-
-   
 }

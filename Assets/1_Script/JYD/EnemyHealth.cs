@@ -76,7 +76,7 @@ public class EnemyHealth : MonoBehaviour , IDamageble
                 change.SendEventMessage(BossState.Guard);
                 currentHealth -= 5;
             }
-            OnHitEvent.Invoke(HealthPercent());
+            OnHitEvent.Invoke(GetHealthPercent());
                        
         }
         
@@ -102,7 +102,7 @@ public class EnemyHealth : MonoBehaviour , IDamageble
         isGuarding = false;
     }
 
-    private ActionData HealthPercent()
+    private ActionData GetHealthPercent()
     {
         ActionData actionData = new ActionData();
         actionData.healthPercent = currentHealth / maxHealth;
