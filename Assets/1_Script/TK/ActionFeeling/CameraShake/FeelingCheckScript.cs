@@ -1,26 +1,38 @@
+using System;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
-namespace Swift_Blade
+namespace Swift_Blade.Feeling
 {
     public class FeelingCheckScript : MonoBehaviour
     {
-        [SerializeField] private HitStopSO _hitStopData;
-        
+        [SerializeField] private CameraFocusSO _cameraFocusData;
+        [SerializeField] private CinemachineCamera _targetCamera;
+        [SerializeField] private StatComponent statComponent;
+        [SerializeField] private StatSO _testStat;
+
+        private void Start()
+        {
+            CameraFocusManager.Instance.SetTargetCamera(_targetCamera);
+        }
+
         void Update()
         {
-            if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            if (Keyboard.current.pKey.wasPressedThisFrame)
             {
-                CameraShakeManager.Instance.GenerateImpulse(shakeType: CameraShakeType.UpDown);
-            }
-            else if (Keyboard.current.backspaceKey.wasPressedThisFrame)
-            {
-                CameraShakeManager.Instance.GenerateImpulse(shakeType: CameraShakeType.LeftRight);
+                CameraFocusManager.Instance.DoFocus(_cameraFocusData);
             }
 
-            if (Keyboard.current.aKey.wasPressedThisFrame)
+            if (Keyboard.current.qKey.wasPressedThisFrame)
             {
-                HitStopManager.Instance.HitStop(_hitStopData);
+                Debug.Log(statComponent.GetStat(_testStat).Value);
+            }
+
+            if (Keyboard.current.mKey.wasPressedThisFrame)
+            {
+                statComponent.AddModifier(_testStat, "test", 30);
             }
         }
     }

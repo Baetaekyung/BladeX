@@ -2,36 +2,26 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Swift_Blade
+namespace Swift_Blade.Feeling
 {
-    public class HitStopManager : MonoBehaviour
-    {
-        private static HitStopManager _instance;
-        
-        public static HitStopManager Instance { get { return _instance; } }
-        
-        private Coroutine _hitStopCoroutine;
+    public class HitStopManager : MonoSingleton<HitStopManager>
+    {        
+        [Header("타임 스케일 관련 변수 및 우선순위")]
         public float CurrentTimeScale { get; private set; }
-        private readonly float _defualtTimeScale = 1;
-        private HitStopPriority _currentPriority = HitStopPriority.LAST;
+        private const float DEFAULT_TIMESCALE = 1; //기본 타임 스케일
+        //일단 무조건 실행되도록 가장 중요하지 않은 우선순위
+        private HitStopPriority _currentPriority = HitStopPriority.LAST; 
         
-        private WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
+        [Header("코루틴 관련 변수들")]
+        private Coroutine _hitStopCoroutine;
+        private WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame(); //코루틴 최적화
         
-        private void Awake()
+        protected override void Awake()
         {
-            if (_instance is null)
-            {
-                _instance = this;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-
-            Time.timeScale = _defualtTimeScale;
+            Time.timeScale = DEFAULT_TIMESCALE;
         }
 
-        public void HitStop(HitStopSO hitStopData)
+        public void DoHitStop(HitStopSO hitStopData)
         {
             if (_hitStopCoroutine is not null)
             {
@@ -49,23 +39,25 @@ namespace Swift_Blade
                 _currentPriority = hitStopData.hitStopPriority;
             }
         }
-
-        public void StopHitStop()
+        
+        //타임 스케일 원래대로 돌리는 함수
+        public void StopHitStop() 
         {
             if (_hitStopCoroutine is not null)
             {
                 StopCoroutine(_hitStopCoroutine);
             }
-
-            Time.timeScale = _defualtTimeScale;
+            
+            Time.timeScale = DEFAULT_TIMESCALE;
         }
         
         private IEnumerator HitStopCoroutine(HitStopSO hitStopData)
         {
-            if (hitStopData.hitStopType == HitStopType.SMOOTH) //Smooth change timeScale
+            if (hitStopData.hitStopType == HitStopType.SMOOTH) //타임스케일 부드럽게 변환
             {
                 float smoothValue = 0;
-                for (int i = 0; i < 10; i++) //10 is smooth step
+                
+                for (int i = 0; i < 10; i++) //10프레임동안 변환 (내마음대로정함)
                 {
                     smoothValue += 0.1f;
                     float tempTimeScale = Mathf.Lerp(CurrentTimeScale, hitStopData.timeScale, smoothValue);
@@ -74,24 +66,25 @@ namespace Swift_Blade
                 }
 
                 smoothValue = 0;
-                yield return new WaitForSecondsRealtime(hitStopData.duration);
+                //타임 스케일과 무관하게 리얼타임으로
+                yield return new WaitForSecondsRealtime(hitStopData.duration); 
                 
-                for (int i = 0; i < 10; i++) //10 is smooth step
+                for (int i = 0; i < 10; i++)
                 {
                     smoothValue += 0.1f;
-                    float tempTimeScale = Mathf.Lerp(CurrentTimeScale, _defualtTimeScale, smoothValue);
+                    float tempTimeScale = Mathf.Lerp(CurrentTimeScale, DEFAULT_TIMESCALE, smoothValue);
                     Time.timeScale = tempTimeScale;
                     yield return _waitForEndOfFrame;
                 }
                 
-                Time.timeScale = _defualtTimeScale;
+                Time.timeScale = DEFAULT_TIMESCALE;
             }
             else if (hitStopData.hitStopType == HitStopType.IMMEDIATE)
             {
                 Time.timeScale = hitStopData.timeScale;
 
                 yield return new WaitForSecondsRealtime(hitStopData.duration);
-                Time.timeScale = _defualtTimeScale;
+                Time.timeScale = DEFAULT_TIMESCALE;
             }
         }
     }
