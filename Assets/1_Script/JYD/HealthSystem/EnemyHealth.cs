@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Linq;
 using Unity.Behavior;
 using UnityEngine;
 using Action = System.Action;
@@ -21,24 +23,46 @@ public class EnemyHealth : MonoBehaviour , IDamageble
     public int maxGuardCount;
     private int guardCount;
     
-    public event Action<ActionData> OnHitEvent; 
-    public event Action OnDeadEvent; 
+    public event Action<float> OnHitEvent;
+    public event Action OnDeadEvent;
+
+    [SerializeField] private Material _flashMat;
+    [SerializeField] private SkinnedMeshRenderer[] _meshRenderers;
+    private Material[] _originMats;
     
     private void Start()
     {
         guardCount = maxGuardCount;
         currentHealth = maxHealth;
+        
+        _meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+        _originMats = new Material[_meshRenderers.Length];
+        for (int i = 0; i < _meshRenderers.Length; i++)
+        {
+            _originMats[i] = _meshRenderers[i].material;
+        }
+
+
+        OnHitEvent += FlashMat;
+    }
+
+    private void OnDestroy()
+    {
+        OnHitEvent -= FlashMat;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            TakeDamage();
+            ActionData actionData = new ActionData();
+            actionData.damageAmount = 10;
+            
+            TakeDamage(actionData);
         }
     }
     
-    public void TakeDamage()
+    public void TakeDamage(ActionData actionData)
     {
         if (currentHealth <= 0)
         {
@@ -53,7 +77,7 @@ public class EnemyHealth : MonoBehaviour , IDamageble
         }
         else
         {
-            HandleNonGuard();
+            HandleNonGuard(actionData.damageAmount);
         }
     }
 
@@ -71,22 +95,22 @@ public class EnemyHealth : MonoBehaviour , IDamageble
         }
     }
 
-    private void HandleNonGuard()
+    private void HandleNonGuard(float damage)
     {
         if (Random.value >= 0)
         {
-            TriggerState(BossState.Hurt, 10);
+            TriggerState(BossState.Hurt, damage);
         }
         else
         {
             isGuarding = true;
-            TriggerState(BossState.Guard, 5);
+            TriggerState(BossState.Guard, damage / 2);
         }
-
+        
         OnHitEvent.Invoke(GetHealthPercent());
     }
 
-    private void TriggerState(BossState state, int damage)
+    private void TriggerState(BossState state, float damage)
     {
         BehaviorGraphAgent.SetVariableValue("BossState", state);
         change.SendEventMessage(state);
@@ -104,14 +128,9 @@ public class EnemyHealth : MonoBehaviour , IDamageble
         isGuarding = false;
     }
 
-    private ActionData GetHealthPercent()
+    private float GetHealthPercent()
     {
-        ActionData actionData = new ActionData();
-        actionData.healthPercent = currentHealth / maxHealth;
-        actionData.knockbackDir = -transform.forward;
-        actionData.knockbackPower = 20f;
-        
-        return actionData;
+        return currentHealth / maxHealth;
     }
     
     public void TakeHeal()
@@ -123,5 +142,27 @@ public class EnemyHealth : MonoBehaviour , IDamageble
     {
         BehaviorGraphAgent.SetVariableValue<BossState>("BossState", BossState.Dead);
         change.SendEventMessage(BossState.Dead);
+    }
+
+    private void FlashMat(float _trash)
+    {
+        StartCoroutine(FlashRoutine());
+    }
+    
+    private IEnumerator FlashRoutine()
+    {
+        foreach (var t in _meshRenderers)
+        {
+            t.material = _flashMat;
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        for (int i = 0; i < _meshRenderers.Length; i++)
+        {
+            _meshRenderers[i].material = _originMats[i];
+        }
+        
+        
     }
 }
