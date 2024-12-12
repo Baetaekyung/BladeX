@@ -22,8 +22,16 @@ namespace Swift_Blade
 
         public StatSO GetStat(StatSO stat)
         {
-            StatSO findStat = _stats.FirstOrDefault(x => x.statType == stat.statType);
+            StatSO findStat = _stats.FirstOrDefault(x => x.statName == stat.statName);
             Debug.Assert(findStat != null, $"Stat type {stat} not found");
+
+            return findStat;
+        }
+
+        public StatSO GetStatByType(StatType statType)
+        {
+            StatSO findStat = _stats.FirstOrDefault(x => x.statType == statType);
+            Debug.Assert(findStat != null, $"Stat type {statType} not found");
 
             return findStat;
         }

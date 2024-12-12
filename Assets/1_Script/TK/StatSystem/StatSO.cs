@@ -13,6 +13,7 @@ namespace Swift_Blade
         ATTACKSPEED,
         CRITICALPERCENT,
         CRITICALDAMAGE,
+        PARRYDURATION,
     }
     
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]
@@ -23,6 +24,7 @@ namespace Swift_Blade
         public ValueChangeHandler OnValueChange;
 
         public StatType statType;
+        public string statName;
         [TextArea(4, 5)] public string description;
         public Sprite icon;
         public string displayName;
