@@ -23,10 +23,10 @@ namespace Swift_Blade.UI
             EnemyHealth.OnHitEvent -= SetFillAmount;
         }
 
-        private void SetFillAmount(ActionData actionData)
+        private void SetFillAmount(float damageAmount)
         {
             StopAllCoroutines();
-            StartCoroutine(AnimateHealthFill(actionData.healthPercent));
+            StartCoroutine(AnimateHealthFill(damageAmount));
         }
 
         private IEnumerator AnimateHealthFill(float targetFillAmount)

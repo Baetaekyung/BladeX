@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ShpereCaster : LayerCaster
+public class SphereCaster : LayerCaster
 {
     [SerializeField][Range(0.5f, 3f)] private float _casterRadius = 1f;
     [SerializeField][Range(0f, 1f)] private float _casterInterpolation = 0.5f;
@@ -21,12 +21,21 @@ public class ShpereCaster : LayerCaster
         {
             //Debug.Log($"맞았습니다. {hit.collider.name}");
             OnCastDamageEvent?.Invoke();
-            if(hit.collider.TryGetComponent<IDamageble>(out IDamageble health))
+            if(hit.collider.TryGetComponent(out IDamageble health))
             {
                 float knockbackPower = 3f;
-                health.TakeDamage();
                 
-                Debug.Log(OnCastDamageEvent.GetPersistentEventCount());
+                ActionData actionData = new ActionData
+                {
+                    damageAmount = 10,
+                    knockbackDir = transform.forward,
+                    knockbackDuration = 0.2f,
+                    knockbackPower = 5,
+                    dealer = transform
+                };
+
+                health.TakeDamage(actionData);
+                        
             }
         }
         return isHit;
