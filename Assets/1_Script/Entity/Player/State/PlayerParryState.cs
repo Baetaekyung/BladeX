@@ -7,7 +7,7 @@ namespace Swift_Blade.FSM.States
     public class PlayerParryState : BasePlayerState
     {
         private Player _player;
-        private ShpereCaster _damageCaster;
+        private SphereCaster _damageCaster;
         private StatComponent _statCompo;
         private float _currentDuration = 0f;
         private float _parryDuration; //나중에 스텟으로 받으면 좋을 것 같다.
@@ -15,7 +15,7 @@ namespace Swift_Blade.FSM.States
         public PlayerParryState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
             _player = entity;
-            _damageCaster = _player.GetComponent<ShpereCaster>();
+            _damageCaster = _player.GetComponent<SphereCaster>();
             _statCompo = _player.GetComponent<StatComponent>();
         }
 
