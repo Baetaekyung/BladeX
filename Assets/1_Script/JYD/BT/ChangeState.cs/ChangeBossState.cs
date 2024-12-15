@@ -8,7 +8,7 @@ using Unity.Properties;
 #endif
 [Serializable, GeneratePropertyBag]
 [EventChannelDescription(name: "Change State", message: "Change [State]", category: "Events", id: "fee846781191182208499d566fa96462")]
-public partial class ChangeState : EventChannelBase
+public partial class ChangeBossState : EventChannelBase
 {
     public delegate void ChangeStateEventHandler(BossState State);
     public event ChangeStateEventHandler Event; 

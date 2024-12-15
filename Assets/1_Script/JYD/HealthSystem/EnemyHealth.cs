@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using Unity.Behavior;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Action = System.Action;
 using Random = UnityEngine.Random;
 
@@ -16,7 +17,7 @@ public class EnemyHealth : MonoBehaviour , IDamageble
     [Header("Animation info")]
     public BossAnimationController BossAnimationController;
     public Animator Animator;
-    [SerializeField] private ChangeState change;
+    [SerializeField] private  ChangeBossState changeBoss;
     
     [Header("Guard info")]
     public bool isGuarding;
@@ -113,7 +114,7 @@ public class EnemyHealth : MonoBehaviour , IDamageble
     private void TriggerState(BossState state, float damage)
     {
         BehaviorGraphAgent.SetVariableValue("BossState", state);
-        change.SendEventMessage(state);
+        changeBoss.SendEventMessage(state);
         currentHealth -= damage;
     }
 
@@ -141,7 +142,7 @@ public class EnemyHealth : MonoBehaviour , IDamageble
     public void Dead()
     {
         BehaviorGraphAgent.SetVariableValue<BossState>("BossState", BossState.Dead);
-        change.SendEventMessage(BossState.Dead);
+        changeBoss.SendEventMessage(BossState.Dead);
     }
 
     private void FlashMat(float _trash)

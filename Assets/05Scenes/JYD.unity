@@ -16411,7 +16411,7 @@ GameObject:
   - component: {fileID: 468932584}
   - component: {fileID: 468932583}
   - component: {fileID: 468932587}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36527,6 +36527,10 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1837649486078189789, guid: 9403d279fc148744ab23e03132f8cb87, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2402274012034444291, guid: 9403d279fc148744ab23e03132f8cb87, type: 3}
       propertyPath: playOnAwake
       value: 0
@@ -48961,7 +48965,7 @@ MonoBehaviour:
   BehaviorGraphAgent: {fileID: 1344819219}
   BossAnimationController: {fileID: 1344819218}
   Animator: {fileID: 1344819223}
-  change: {fileID: 11400000, guid: 2110577e82e4e3d469b4818ba40b9372, type: 2}
+  changeBoss: {fileID: 11400000, guid: 2110577e82e4e3d469b4818ba40b9372, type: 2}
   isGuarding: 0
   maxGuardCount: 3
   _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
@@ -49009,33 +49013,17 @@ MonoBehaviour:
   - rid: 2285474097556357491
   - rid: 2285474104548786646
   - rid: 2285474104742773450
-  - rid: 2285474147281404349
-  - rid: 1607272730646282561
-  - rid: 1607272730646282562
-  - rid: 1607272731474395291
-  - rid: 1607272794334953976
-  - rid: 1607272905567633998
-  - rid: 1607272905567633999
+  - rid: 1607272975862334081
+  - rid: 1607272976084369858
+  - rid: 1607272976084369859
+  - rid: 1607272976084369860
+  - rid: 1607272976084369861
+  - rid: 1607272976084369862
+  - rid: 1607272976084369863
   references:
     version: 2
     RefIds:
-    - rid: 1607272730646282561
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 2719280555863102587
-          m_Value1: 11113147436959896098
-        Name: MinGuardTime
-        m_Value: 7
-    - rid: 1607272730646282562
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 8232301299430555643
-          m_Value1: 16121887277674448591
-        Name: MaxGuardTime
-        m_Value: 10
-    - rid: 1607272731474395291
+    - rid: 1607272975862334081
       type: {class: 'BlackboardVariable`1[[EnemyHealth, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -49043,30 +49031,54 @@ MonoBehaviour:
           m_Value1: 267758589275268733
         Name: BossHealth
         m_Value: {fileID: 1344819217}
-    - rid: 1607272794334953976
+    - rid: 1607272976084369858
+      type: {class: 'BlackboardVariable`1[[ChangeBossState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 2321086812285088402
+          m_Value1: 6177294290180302086
+        Name: ChangeState
+        m_Value: {fileID: 11400000, guid: 2110577e82e4e3d469b4818ba40b9372, type: 2}
+    - rid: 1607272976084369859
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 18233310665744505934
           m_Value1: 12282865375636958955
         Name: MoveSpeed
-        m_Value: 12
-    - rid: 1607272905567633998
+        m_Value: 7.82
+    - rid: 1607272976084369860
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 8232301299430555643
+          m_Value1: 16121887277674448591
+        Name: MaxGuardTime
+        m_Value: 2.97
+    - rid: 1607272976084369861
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 2719280555863102587
+          m_Value1: 11113147436959896098
+        Name: MinGuardTime
+        m_Value: 2.34
+    - rid: 1607272976084369862
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 945031479756700960
           m_Value1: 6823679373482584023
         Name: AttackRadius
-        m_Value: 12
-    - rid: 1607272905567633999
+        m_Value: 11.3
+    - rid: 1607272976084369863
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 18439558057183730368
           m_Value1: 2504836416634522877
         Name: MeleeRadius
-        m_Value: 7
+        m_Value: 5.71
     - rid: 2285474097556357490
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -49099,14 +49111,6 @@ MonoBehaviour:
           m_Value1: 13792445824528939330
         Name: AnimatorController
         m_Value: {fileID: 1344819218}
-    - rid: 2285474147281404349
-      type: {class: 'BlackboardVariable`1[[ChangeState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 5915375526614584463
-          m_Value1: 4741488745640608128
-        Name: ChangeState
-        m_Value: {fileID: 11400000, guid: 2110577e82e4e3d469b4818ba40b9372, type: 2}
 --- !u!136 &1344819221
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -49207,10 +49211,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystems:
   - {fileID: 1648962917}
-  - {fileID: 5836013346493737664, guid: 2cb1bc0623f272d49b3f2e48b8e3a728, type: 3}
   - {fileID: 948693024}
+  - {fileID: 5836013346493737664, guid: 2cb1bc0623f272d49b3f2e48b8e3a728, type: 3}
   - {fileID: 2058373431}
+  - {fileID: 7068057665299881667, guid: 205ca579a6e84364881c4d4b2fc6cf72, type: 3}
   createTrm: {fileID: 738084437}
+  target: {fileID: 305192454}
 --- !u!1 &1345803917
 GameObject:
   m_ObjectHideFlags: 0
@@ -59530,6 +59536,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCategory
       objectReference: {fileID: 0}
+    - target: {fileID: 5346482904669399683, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 479
+      objectReference: {fileID: 0}
     - target: {fileID: 5572484209019780262, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.25
@@ -60475,8 +60485,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1648962915}
   - {fileID: 738084437}
+  - {fileID: 1648962915}
   - {fileID: 948693023}
   - {fileID: 2058373429}
   m_Father: {fileID: 1344819224}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Swift_Blade;
+using Swift_Blade.Feeling;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
@@ -72,7 +73,7 @@ public class BossAnimationController : MonoBehaviour
     }
     public void ShakeCam()
     {
-        CameraShakeManager.Instance.GenerateImpulse(cameraShakeType);
+        CameraShakeManager.Instance.DoShake(cameraShakeType);
     }
     
     public void SetForce(ActionData actionData)

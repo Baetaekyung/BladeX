@@ -13,13 +13,11 @@ namespace Swift_Blade
         private void Start()
         {
             currentHealth = maxHealth;
-
-            OnDeadEvent += Dead;
         }
 
         private void OnDestroy()
         {
-            OnDeadEvent -= Dead;
+            
         }
 
         public void TakeDamage(ActionData actionData)
