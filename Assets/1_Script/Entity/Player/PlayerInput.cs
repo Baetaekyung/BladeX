@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class PlayerInput : PlayerComponentBase, IEntityComponent
+    public class PlayerInput : PlayerComponentBase
     {
         public Vector3 InputDirectionRaw { get; private set; }
         public Vector3 InputDirection { get; private set; }

@@ -8,9 +8,13 @@ namespace Swift_Blade
     public class PlayerMovement : PlayerComponentBase, IEntityComponentRequireInit
     {
         [Header("Movement Settings")]
+        [SerializeField] private float defaultSpeed = 1;
         [SerializeField] private float onGroundYVal;
         [SerializeField] private float gravitiy = -9.81f;
         [SerializeField] private float gravitiyMultiplier = 1;
+
+        [Header("Angle Multiplier")]
+        [SerializeField] private float angleMultiplier = 20f;
         private Vector3 velocity;
 
         [Header("Roll Settings")]
@@ -20,16 +24,16 @@ namespace Swift_Blade
         private const float rollcost = 1f;
         private const float initialRollStamina = 3f;
         private float rollStamina;
+
+        private Rigidbody controller;
+        private PlayerRenderer playerRenderer;
+
         public float SpeedMultiplier { get; set; } = 1;
-        public float GetCurrentRollStamina => rollStamina;
         public float GetMaxStamina => initialRollStamina + debug_stmod;
 
         public Vector3 InputDirection { get; set; }
         public Vector3 RollForce { get; private set; }
         public bool AllowInputMoving { get; set; } = true;
-        private Rigidbody controller;
-        public float GetCurrentStamina => rollStamina;
-        private PlayerRenderer playerRenderer;
         public void EntityComponentAwake(Entity entity)
         {
             playerRenderer = entity.GetEntityComponent<PlayerRenderer>();
@@ -48,7 +52,7 @@ namespace Swift_Blade
         }
         private void FixedUpdate()
         {
-            velocity = Vector3.MoveTowards(velocity, Vector3.zero, Time.fixedDeltaTime * 21);
+            velocity = Vector3.MoveTowards(velocity, Vector3.zero, Time.fixedDeltaTime * 10);
             ApplyMovement();
         }
         private void ApplyMovement()
@@ -59,14 +63,13 @@ namespace Swift_Blade
             {
                 Quaternion visLookDirResult = Quaternion.LookRotation(InputDirection, Vector3.up);
                 float angle = Vector3.Angle(InputDirection, playerVisualTransform.forward);
-                const float angleMultiplier = 20;
                 float maxDegreesDelta = Time.deltaTime * angle * angleMultiplier;
                 visLookDirResult = Quaternion.RotateTowards(playerVisualTransform.rotation, visLookDirResult, maxDegreesDelta);
                 playerVisualTransform.rotation = visLookDirResult;
             }
         physics:
             Vector3 inp = !AllowInputMoving ? Vector3.zero : InputDirection;
-            float speed = 10 * SpeedMultiplier;
+            float speed = defaultSpeed * SpeedMultiplier;
             Vector3 addition = RollForce + velocity;
             Vector3 result = inp * speed + addition;
             result.y = controller.linearVelocity.y;

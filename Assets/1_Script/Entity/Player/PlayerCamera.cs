@@ -5,11 +5,13 @@ namespace Swift_Blade
 {
     public class PlayerCamera : PlayerComponentBase, IEntityComponentRequireInit
     {
-        public float CameraDistance { get; private set; }
         public float CameraTargetDistance { get; set; }
         [SerializeField] private float multiplier;
-
+        [SerializeField] private Transform viewTransform;
+        [SerializeField] private Transform resultTransform;
         private CinemachinePositionComposer cinemachinePositionComposer;
+        public float CameraDistance { get; private set; }
+        public Quaternion GetResultQuaternion => resultTransform.rotation;
         public void EntityComponentAwake(Entity entity)
         {
             cinemachinePositionComposer = GetComponentInChildren<CinemachinePositionComposer>();
@@ -29,6 +31,10 @@ const float minValue = 3;
             CameraDistance = Mathf.MoveTowards(CameraDistance, CameraTargetDistance, Time.deltaTime * multiplierByDistance * multiplier);
             cinemachinePositionComposer.CameraDistance = CameraDistance;
         }
+        public void SetViewTransformRotation(Quaternion quaternion) => viewTransform.rotation = quaternion;
+        public void SetViewTransformRotation(Vector3 vector3) => viewTransform.rotation = Quaternion.Euler(vector3);
+        public void SetTransformRotation(Quaternion quaternion) => resultTransform.rotation = quaternion;
+        public void SetTransformRotation(Vector3 vector3) => resultTransform.rotation = Quaternion.Euler(vector3);
 
     }
 }
