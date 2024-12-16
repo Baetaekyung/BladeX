@@ -49004,23 +49004,75 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Graph: {fileID: 5313101040376132287, guid: 6390cbcc584ba7148b437ba37c2be95c, type: 2}
+  m_Graph: {fileID: -8100337668574242599, guid: 5c6f99ebe9ff2054d9c18706dc9fd828, type: 2}
   m_BlackboardVariableOverridesList:
   - rid: 2285474097556357490
-  - rid: 2285474097556357491
-  - rid: 2285474104548786646
-  - rid: 1607273048628789460
+  - rid: 1607273058493268000
+  - rid: 1607273058493268001
+  - rid: 1607273058493268002
+  - rid: 1607273058493268003
+  - rid: 1607273058493268004
+  - rid: 1607273058493268005
+  - rid: 1607273058658943850
   references:
     version: 2
     RefIds:
-    - rid: 1607273048628789460
+    - rid: 1607273058493268000
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1823908589997029196
+          m_Value1: 16617269392962309977
+        Name: Target
+        m_Value: {fileID: 305192454}
+    - rid: 1607273058493268001
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 7796165595195596332
+          m_Value1: 5863248344310799568
+        Name: MoveSpeed
+        m_Value: 15.84
+    - rid: 1607273058493268002
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16842789263302442139
+          m_Value1: 15124673902740489662
+        Name: AttackDistance
+        m_Value: 3.13
+    - rid: 1607273058493268003
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 8799685740808257774
+          m_Value1: 11337077293980532446
+        Name: MeleeDistance
+        m_Value: 2.73
+    - rid: 1607273058493268004
       type: {class: 'BlackboardVariable`1[[BossAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
-          m_Value0: 6736751892371017062
-          m_Value1: 17444035507508461822
-        Name: BossAnimator
+          m_Value0: 6490236754669307487
+          m_Value1: 5913078194985163027
+        Name: BossAnimatorController
         m_Value: {fileID: 1344819218}
+    - rid: 1607273058493268005
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 6734034036057306792
+          m_Value1: 8025144667599098049
+        Name: Animator
+        m_Value: {fileID: 1344819223}
+    - rid: 1607273058658943850
+      type: {class: 'BlackboardVariable`1[[ChangeBossState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 11937102824706042065
+          m_Value1: 10486772480902912100
+        Name: ChangeBossState
+        m_Value: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
     - rid: 2285474097556357490
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -49029,22 +49081,6 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 1344819216}
-    - rid: 2285474097556357491
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 470222077301554815
-          m_Value1: 15622122428674777660
-        Name: Target
-        m_Value: {fileID: 305192454}
-    - rid: 2285474104548786646
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 5821248299127757123
-          m_Value1: 6937137262265148284
-        Name: Animaator
-        m_Value: {fileID: 1344819223}
 --- !u!136 &1344819221
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -49121,7 +49157,7 @@ Transform:
   m_GameObject: {fileID: 1344819216}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -6.74, y: 0, z: -0.58}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children:
