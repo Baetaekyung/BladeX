@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using Unity.Behavior;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Action = System.Action;
-using Random = UnityEngine.Random;
 
 public class EnemyHealth : MonoBehaviour , IDamageble
 {
@@ -24,6 +21,8 @@ public class EnemyHealth : MonoBehaviour , IDamageble
     [SerializeField] private Material _flashMat;
     [SerializeField] private SkinnedMeshRenderer[] _meshRenderers;
     private Material[] _originMats;
+
+    [SerializeField] private ChangeBossState changeBossState;
     
     private void Start()
     {
@@ -78,7 +77,7 @@ public class EnemyHealth : MonoBehaviour , IDamageble
     private void TriggerState(BossState state, float damage)
     {
         BehaviorGraphAgent.SetVariableValue("BossState", state);
-        //changeBoss.SendEventMessage(state);
+        changeBossState.SendEventMessage(state);
         currentHealth -= damage;
     }
 
@@ -102,7 +101,7 @@ public class EnemyHealth : MonoBehaviour , IDamageble
     public void Dead()
     {
         BehaviorGraphAgent.SetVariableValue<BossState>("BossState", BossState.Dead);
-        //changeBoss.SendEventMessage(BossState.Dead);
+        changeBossState.SendEventMessage(BossState.Dead);
     }
 
     private void FlashMat(float _trash)
