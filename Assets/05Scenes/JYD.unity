@@ -48965,9 +48965,6 @@ MonoBehaviour:
   BehaviorGraphAgent: {fileID: 1344819219}
   BossAnimationController: {fileID: 1344819218}
   Animator: {fileID: 1344819223}
-  changeBoss: {fileID: 11400000, guid: 2110577e82e4e3d469b4818ba40b9372, type: 2}
-  isGuarding: 0
-  maxGuardCount: 3
   _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
   _meshRenderers: []
 --- !u!114 &1344819218
@@ -49012,73 +49009,18 @@ MonoBehaviour:
   - rid: 2285474097556357490
   - rid: 2285474097556357491
   - rid: 2285474104548786646
-  - rid: 2285474104742773450
-  - rid: 1607272975862334081
-  - rid: 1607272976084369858
-  - rid: 1607272976084369859
-  - rid: 1607272976084369860
-  - rid: 1607272976084369861
-  - rid: 1607272976084369862
-  - rid: 1607272976084369863
+  - rid: 1607273048628789460
   references:
     version: 2
     RefIds:
-    - rid: 1607272975862334081
-      type: {class: 'BlackboardVariable`1[[EnemyHealth, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+    - rid: 1607273048628789460
+      type: {class: 'BlackboardVariable`1[[BossAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
-          m_Value0: 4371457184033088159
-          m_Value1: 267758589275268733
-        Name: BossHealth
-        m_Value: {fileID: 1344819217}
-    - rid: 1607272976084369858
-      type: {class: 'BlackboardVariable`1[[ChangeBossState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 2321086812285088402
-          m_Value1: 6177294290180302086
-        Name: ChangeState
-        m_Value: {fileID: 11400000, guid: 2110577e82e4e3d469b4818ba40b9372, type: 2}
-    - rid: 1607272976084369859
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 18233310665744505934
-          m_Value1: 12282865375636958955
-        Name: MoveSpeed
-        m_Value: 7.82
-    - rid: 1607272976084369860
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 8232301299430555643
-          m_Value1: 16121887277674448591
-        Name: MaxGuardTime
-        m_Value: 2.97
-    - rid: 1607272976084369861
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 2719280555863102587
-          m_Value1: 11113147436959896098
-        Name: MinGuardTime
-        m_Value: 2.34
-    - rid: 1607272976084369862
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 945031479756700960
-          m_Value1: 6823679373482584023
-        Name: AttackRadius
-        m_Value: 11.3
-    - rid: 1607272976084369863
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 18439558057183730368
-          m_Value1: 2504836416634522877
-        Name: MeleeRadius
-        m_Value: 5.71
+          m_Value0: 6736751892371017062
+          m_Value1: 17444035507508461822
+        Name: BossAnimator
+        m_Value: {fileID: 1344819218}
     - rid: 2285474097556357490
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -49103,14 +49045,6 @@ MonoBehaviour:
           m_Value1: 6937137262265148284
         Name: Animaator
         m_Value: {fileID: 1344819223}
-    - rid: 2285474104742773450
-      type: {class: 'BlackboardVariable`1[[BossAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 7002182010129862164
-          m_Value1: 13792445824528939330
-        Name: AnimatorController
-        m_Value: {fileID: 1344819218}
 --- !u!136 &1344819221
 CapsuleCollider:
   m_ObjectHideFlags: 0
