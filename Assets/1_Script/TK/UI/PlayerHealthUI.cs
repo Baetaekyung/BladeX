@@ -8,7 +8,7 @@ namespace Swift_Blade.UI
     {
         [SerializeField] private Image _healthFillAmount;
         
-        /// <param name="normalizedHealth"> input currentHealth / maxHealth</param>
+        /// <param name="normalizedHealth">현재 체력 / 최대 체력 넣기</param>
         public void SetHealthFillAmount(int normalizedHealth)
         {
             _healthFillAmount.fillAmount = normalizedHealth;

@@ -9,7 +9,7 @@ namespace Swift_Blade
         ,IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private float _hoverTargetSize;
-        [SerializeField, Tooltip("1 / animationSpeed")] private float _hoverAnimationSpeed;
+        [SerializeField, Tooltip("1 / 애니메이션 속도")] private float _hoverAnimationSpeed;
         private Tween _currentTween;
         private RectTransform _rectTrm;
         private bool _isHovering;

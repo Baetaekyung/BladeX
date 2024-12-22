@@ -1,21 +1,21 @@
 using System;
 using UnityEngine;
 
-namespace Swift_Blade
+namespace Swift_Blade.projectile
 {
     public class Projectile : MonoBehaviour
     {
-        [SerializeField] private float moveSpeed;
-        [SerializeField] private LayerMask whatIsTarget;
+        [SerializeField] protected float moveSpeed;
+        [SerializeField] protected LayerMask whatIsTarget;
         
-        private Rigidbody Rigidbody;
-        private float timer = 0;
+        protected Rigidbody Rigidbody;
+        protected float timer = 0;
         private void Start()
         {
             Rigidbody = GetComponent<Rigidbody>();
         }
 
-        void Update()
+        public virtual void Update()
         {
             timer += Time.deltaTime;
             if (timer >= 5)
