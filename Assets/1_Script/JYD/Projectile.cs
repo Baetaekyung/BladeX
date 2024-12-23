@@ -10,7 +10,8 @@ namespace Swift_Blade.projectile
         
         protected Rigidbody Rigidbody;
         protected float timer = 0;
-        private void Start()
+        
+         private void Start()
         {
             Rigidbody = GetComponent<Rigidbody>();
         }
@@ -26,7 +27,7 @@ namespace Swift_Blade.projectile
             Rigidbody.linearVelocity = transform.forward * moveSpeed;
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
             if((whatIsTarget & (1 << other.gameObject.layer)) != 0)
                 Destroy(gameObject);

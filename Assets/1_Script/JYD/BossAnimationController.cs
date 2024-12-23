@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Swift_Blade;
 using Swift_Blade.Feeling;
 using UnityEngine;
 using UnityEngine.AI;

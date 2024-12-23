@@ -1,5 +1,6 @@
 using Swift_Blade.projectile;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade
 {
@@ -50,31 +51,11 @@ namespace Swift_Blade
             }
         }
         
-        
-        public void CreateGravityProjectile(int idx)
+        private void OnDrawGizmos()
         {
-            int numProjectiles = 5; 
-            float radius = 4f;       
-        
-            for (int i = 0; i < numProjectiles; i++)
-            {
-                Vector3 startPosition = transform.position + new Vector3(0, 1, 0);
-                
-                ParticleSystem gravityProjectile = Instantiate(
-                    particleSystems[idx],
-                    startPosition,
-                    Quaternion.identity
-                );
-
-                Vector2 randomCircle = Random.insideUnitCircle * radius;
-                Vector3 targetPosition = target.position + new Vector3(randomCircle.x, 0, randomCircle.y);
-                
-                gravityProjectile.GetComponent<GravityProjectile>().SetDirection(targetPosition);
-                
-                gravityProjectile.Simulate(0);
-                gravityProjectile.Play();
-            }
+            Gizmos.DrawWireSphere(target.position , 5f);
         }
-
+           
+        
     }
 }

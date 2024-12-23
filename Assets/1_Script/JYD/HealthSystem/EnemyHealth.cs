@@ -24,6 +24,8 @@ public class EnemyHealth : MonoBehaviour , IDamageble
 
     [SerializeField] private ChangeBossState changeBossState;
     
+    
+    
     private void Start()
     {
         currentHealth = maxHealth;
