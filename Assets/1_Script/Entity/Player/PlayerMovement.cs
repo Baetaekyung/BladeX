@@ -22,7 +22,8 @@ namespace Swift_Blade
 
         [Header("DashSetting")]
         [SerializeField] private CinemachinePositionComposer cine;
-        [SerializeField] private TrailRenderer dashPar;
+        [SerializeField] private LayerMask whatIsObstacle;
+        //[SerializeField] private TrailRenderer dashPar;
 
         private const float rollcost = 1f;
         private const float initialRollStamina = 3f;
@@ -142,6 +143,7 @@ namespace Swift_Blade
             controller.AddForce(result, forceMode);
         }
 
+        private Vector3 des;
         public void Dash(Vector3 dir, float force)
         {
             //Vector3 normalizedDir = dir.normalized;
@@ -157,6 +159,15 @@ namespace Swift_Blade
 
             //dashPar.gameObject.SetActive(true);
 
+            if(Physics.Raycast(transform.position, destination, out RaycastHit hit, force, whatIsObstacle))
+            {
+                Debug.Log("����");
+                Debug.Log(hit.distance);
+
+                destination = hit.point - dir.normalized * 0.1f;
+            }
+
+            des = destination;
             transform.DOMove(destination, 0.1f).SetEase(Ease.Flash).OnComplete(DashEnd);
 
             //controller.AddForce(dir * force, ForceMode.Impulse);
