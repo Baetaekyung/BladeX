@@ -1,35 +1,47 @@
 using System;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace Swift_Blade
 {
     public class AnimationTriggers : MonoBehaviour
     {
-        public event Action OnAnimationEnd;
-        public event Action OnAnimationEndable;
-        public event Action OnAnimationEndableListen;
-        public event Action<float> OnMovementSetEvent;
+        public event Action OnAnimationEndEvent;
+        public event Action OnAnimationnEndableEvent;
+        public event Action OnAnimationEndableListenEvent;
+        public event Action<float> OnSpeedMultiplierEvent;
         public event Action<float> OnForceEvent;
+        public event Action<Vector3> OnMovementSetEvent;
 
+        [Preserve]
         private void OnAnimationEndTrigger()
         {
-            OnAnimationEnd?.Invoke();
+            OnAnimationEndEvent?.Invoke();
         }
+        [Preserve]
         private void OnAnimationEndableTrigger()
         {
-            OnAnimationEndable?.Invoke();
+            OnAnimationnEndableEvent?.Invoke();
         }
+        [Preserve]
         private void OnAnimationEndableListenTrigger()
         {
-            OnAnimationEndableListen?.Invoke();
+            OnAnimationEndableListenEvent?.Invoke();
         }
+        [Preserve]
         private void OnForceEventTrigger(float force)
         {
             OnForceEvent?.Invoke(force);
         }
-        private void OnMovementSet(float set)
+        [Preserve]
+        private void OnMovementMultiplierSet(float set)
         {
-            OnMovementSetEvent?.Invoke(set);
+            OnSpeedMultiplierEvent?.Invoke(set);
+        }
+        [Preserve]
+        private void OnSetMovementSet(float a)
+        {
+            OnMovementSetEvent?.Invoke(new Vector3(a, 0, a));
         }
     }
 }

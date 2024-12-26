@@ -3,8 +3,10 @@ using UnityEngine;
 
 namespace Swift_Blade.FSM.States
 {
-    public class PlayerAttackState : BasePlayerState
+    public class PlayerAttackState : BasePlayerMovementState
     {
+        protected override bool BaseAllowStateChangeToAttack { get; } = false;
+
         private readonly IReadOnlyList<AnimationParameterSO> comboParamHash;
         private readonly IReadOnlyList<Vector3> comboForceList;
         private readonly IReadOnlyList<float> perioids;
@@ -30,7 +32,7 @@ namespace Swift_Blade.FSM.States
             perioids = entity.GetPeriods;
             playerMovement = entity.GetPlayerMovement;
             maxIdx = comboParamHash.Count - 1;
-            Player.Updt += () =>
+            Player.Debug_Updt += () =>
             {
                 //UI_DebugPlayer.Instance.GetList[2].text = $"  {IsDeadPeriodOver}";
                 //UI_DebugPlayer.Instance.GetList[3].text = $"dp{deadPeriod}, {Time.time}";
@@ -47,6 +49,7 @@ namespace Swift_Blade.FSM.States
         }
         public override void Update()
         {
+            base.Update();
             UI_DebugPlayer.Instance.GetList[1].text = $"indx {currentIdx}";
             if (Input.GetKeyDown(KeyCode.K) && allowListening)
                 inputBuffer = true;
@@ -70,26 +73,16 @@ namespace Swift_Blade.FSM.States
             AnimationParameterSO param = comboParamHash[currentIdx];
             PlayAnimation(param);
         }
-        protected override void OnAnimationEndTrigger()
-        {
-            GetOwnerFsm.ChangeState(PlayerStateEnum.Idle);
-        }
-        protected override void OnAnimationEndTriggerListen()
-        {
-            allowListening = true;
-        }
-        protected override void OnAnimationEndableTrigger()
-        {
-            allowNextAttack = true;
-        }
-        protected override void OnMovementSet(float set)
-        {
-            playerMovement.SpeedMultiplier = set;
-        }
+        protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
+        protected override void OnAnimationEndTriggerListen() => allowListening = true;
+        protected override void OnAnimationEndableTrigger() => allowNextAttack = true;
+        protected override void OnSpeedMultiplierTrigger(float set) => playerMovement.SpeedMultiplier = set;
+        protected override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetVelocitiy(Vector3.zero);
         public override void Exit()
         {
             Debug.Log("exit");
             playerMovement.SpeedMultiplier = 1;
+            base.Exit();
         }
         protected override void OnForceEventTrigger(float force)
         {
