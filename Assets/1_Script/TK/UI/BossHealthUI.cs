@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Swift_Blade.UI
@@ -8,17 +9,17 @@ namespace Swift_Blade.UI
     public class BossHealthUI : MonoBehaviour
     {
         [SerializeField] private Image _bossHealthFillAmount;
-        [SerializeField] private EnemyHealth EnemyHealth;
+        [SerializeField] private BossHealth bossHealth;
 
         /// <param name="normalizedHealth"> 현재 체력 / 최대 체력 넣기</param>
         private void Start()
         {
-            EnemyHealth.OnHitEvent += SetFillAmount;
+            bossHealth.OnChangeHealthEvent += SetFillAmount;
         }
 
         private void OnDestroy()
         {
-            EnemyHealth.OnHitEvent -= SetFillAmount;
+            bossHealth.OnChangeHealthEvent -= SetFillAmount;
         }
 
         private void SetFillAmount(float damageAmount)
