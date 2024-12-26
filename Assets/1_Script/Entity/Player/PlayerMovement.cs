@@ -21,7 +21,8 @@ namespace Swift_Blade
 
         [Header("DashSetting")]
         [SerializeField] private CinemachinePositionComposer cine;
-        [SerializeField] private TrailRenderer dashPar;
+        [SerializeField] private LayerMask whatIsObstacle;
+        //[SerializeField] private TrailRenderer dashPar;
 
         private const float rollcost = 1f;
         private const float initialRollStamina = 3f;
@@ -36,6 +37,7 @@ namespace Swift_Blade
         private Rigidbody controller;
         public float GetCurrentStamina => rollStamina;
         private PlayerRenderer playerRenderer;
+
         public void EntityComponentAwake(Entity entity)
         {
             playerRenderer = entity.GetEntityComponent<PlayerRenderer>();
@@ -89,6 +91,7 @@ namespace Swift_Blade
             velocity += result;
         }
 
+        private Vector3 des;
         public void Dash(Vector3 dir, float force)
         {
             //Vector3 normalizedDir = dir.normalized;
@@ -102,8 +105,17 @@ namespace Swift_Blade
 
             cine.Damping = new Vector3(0.1f, 0.1f, 0.1f);
 
-            dashPar.gameObject.SetActive(true);
+            //dashPar.gameObject.SetActive(true);
 
+            if(Physics.Raycast(transform.position, destination, out RaycastHit hit, force, whatIsObstacle))
+            {
+                Debug.Log("ИэСп");
+                Debug.Log(hit.distance);
+
+                destination = hit.point - dir.normalized * 0.1f;
+            }
+
+            des = destination;
             transform.DOMove(destination, 0.1f).SetEase(Ease.Flash).OnComplete(DashEnd);
 
             //controller.AddForce(dir * force, ForceMode.Impulse);
@@ -116,10 +128,16 @@ namespace Swift_Blade
         {
             cine.Damping = new Vector3(1, 1, 1);
 
-            dashPar.SetPosition(0, transform.position);
-            dashPar.SetPosition(1, transform.position);
+            //dashPar.SetPosition(0, transform.position);
+            //dashPar.SetPosition(1, transform.position);
 
-            dashPar.gameObject.SetActive(false);
+            //dashPar.gameObject.SetActive(false);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawRay(transform.position, des);
         }
         //public void Dash(Vector3 dashDirection, int force, Action callback = null)
         //{
