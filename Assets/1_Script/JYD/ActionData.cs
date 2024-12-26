@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
 
+public enum AttackType
+{
+    VICINITY,
+    RANGE
+}
+
 public struct ActionData
 {
     public Vector3 knockbackDir;
@@ -8,4 +14,6 @@ public struct ActionData
 
     public float damageAmount;
     public Transform dealer;
+
+    public AttackType attackType;
 }
