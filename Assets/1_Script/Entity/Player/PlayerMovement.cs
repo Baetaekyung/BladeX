@@ -1,6 +1,8 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -16,6 +18,10 @@ namespace Swift_Blade
         [Header("Roll Settings")]
         [SerializeField] private AnimationCurve rollCurve; // curve length should be 1.
         [SerializeField] private float debug_stmod;
+
+        [Header("DashSetting")]
+        [SerializeField] private CinemachinePositionComposer cine;
+        [SerializeField] private TrailRenderer dashPar;
 
         private const float rollcost = 1f;
         private const float initialRollStamina = 3f;
@@ -82,12 +88,38 @@ namespace Swift_Blade
             velocity = Vector3.zero;
             velocity += result;
         }
+
         public void Dash(Vector3 dir, float force)
         {
+            //Vector3 normalizedDir = dir.normalized;
+
+            controller.linearVelocity = Vector3.zero;
+
+            float velPower = controller.linearVelocity.magnitude;
+            Vector3 movement = dir * (force);
+
+            Vector3 destination = transform.position + movement;
+
+            cine.Damping = new Vector3(0.1f, 0.1f, 0.1f);
+
+            dashPar.gameObject.SetActive(true);
+
+            transform.DOMove(destination, 0.1f).SetEase(Ease.Flash).OnComplete(DashEnd);
+
+            //controller.AddForce(dir * force, ForceMode.Impulse);
             //Vector3 startPos = ;
             //Debug.DrawRay(startPos, dir * force, Color.red, 5);
             //Vector3 result = ;
-            controller.linearVelocity = Vector3.zero;
+        }
+
+        private void DashEnd()
+        {
+            cine.Damping = new Vector3(1, 1, 1);
+
+            dashPar.SetPosition(0, transform.position);
+            dashPar.SetPosition(1, transform.position);
+
+            dashPar.gameObject.SetActive(false);
         }
         //public void Dash(Vector3 dashDirection, int force, Action callback = null)
         //{
