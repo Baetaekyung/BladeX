@@ -39,9 +39,9 @@ namespace Swift_Blade
             OnSpeedMultiplierEvent?.Invoke(set);
         }
         [Preserve]
-        private void OnSetMovementSet(float a)
+        private void OnSetMovementSet(float set)
         {
-            OnMovementSetEvent?.Invoke(new Vector3(a, 0, a));
+            OnMovementSetEvent?.Invoke(new Vector3(set, 0, set));
         }
     }
 }

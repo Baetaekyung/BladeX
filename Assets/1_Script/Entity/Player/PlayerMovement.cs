@@ -23,14 +23,12 @@ namespace Swift_Blade
         [Header("DashSetting")]
         [SerializeField] private CinemachinePositionComposer cine;
         [SerializeField] private TrailRenderer dashPar;
-
         private const float rollcost = 1f;
         private const float initialRollStamina = 3f;
-        private float rollStamina;
+        private float currentRollStamina;
 
         [Header("Angle Multiplier")]
         [SerializeField] private float angleMultiplier = 20f;
-        private Vector3 velocity;
 
         [Header("Debug")]
         [SerializeField] private float db_speedMulti;
@@ -44,9 +42,11 @@ namespace Swift_Blade
         private readonly List<ContactPoint> contactPointList = new();
 
         public float GetMaxStamina => initialRollStamina + debug_stmod;
-        public float SpeedMultiplier { get; set; } = 1;
+        public float SpeedMultiplierDefault { get; set; } = 1;
+        public float SpeedMultiplierForward { get; set; } = 1;
         public Vector3 InputDirection { get; set; }
         public Vector3 AdditionalVector { get; set; }
+        private Vector3 velocity;
         //public Vector3 RollForce { get; private set; }
         public bool AllowInputMoving { get; set; } = true;
         public bool LockOnEnemy { get; set; } = false;
@@ -55,12 +55,12 @@ namespace Swift_Blade
         {
             playerRenderer = entity.GetEntityComponent<PlayerRenderer>();
             controller = GetComponent<Rigidbody>();
-            rollStamina = initialRollStamina;
+            currentRollStamina = initialRollStamina;
         }
         private void Update()
         {
-            rollStamina += Time.deltaTime;
-            rollStamina = Mathf.Min(GetMaxStamina, rollStamina);
+            currentRollStamina += Time.deltaTime;
+            currentRollStamina = Mathf.Min(GetMaxStamina, currentRollStamina);
             if (Input.GetKeyDown(KeyCode.V))
             {
                 //controller.linearVelocity = Vector3.zero;
@@ -79,15 +79,13 @@ namespace Swift_Blade
         private void ApplyMovement()
         {
             Vector3 input = Vector3.zero;
-
             //stop force
-            Vector3 oppositeVelocitiy = -controller.linearVelocity * 0.2f;
-            oppositeVelocitiy.y = 0;
-            if (true || input.sqrMagnitude < 0.05f)//always true 
-            {
-                controller.AddForce(oppositeVelocitiy, ForceMode.VelocityChange);
-            }
-
+            //Vector3 oppositeVelocitiy = -controller.linearVelocity * 0.2f;
+            //oppositeVelocitiy.y = 0;
+            //if (true || input.sqrMagnitude < 0.05f)//always true 
+            //{
+            //    //controller.AddForce(oppositeVelocitiy, ForceMode.VelocityChange);
+            //}
             if (AllowInputMoving)
             {
                 input = InputDirection;
@@ -97,31 +95,31 @@ namespace Swift_Blade
                     Vector3 targetVector = GetClosestEnemy();
                     playerRenderer.LookTarget(targetVector);
                 }
-                else
-                    playerRenderer.LookTargetSmooth(InputDirection, angleMultiplier);
+                else playerRenderer.LookTargetSmooth(InputDirection, angleMultiplier);
 
                 if (lowerstContactPoint != null)
                 {
                     controller.useGravity = false;
-                    input = Vector3.ProjectOnPlane(InputDirection, lowerstContactPoint.Value.normal);
+//input = Vector3.ProjectOnPlane(InputDirection, lowerstContactPoint.Value.normal);// this is causing physics error on 90 deg angle normal
                 }
-                else
-                {
-                    controller.useGravity = true;
-                }
-                //Debug.DrawRay(transform.position, input, Color.red, 0.1f);
-                //UI_DebugPlayer.Instance.GetList[4].text += input.magnitude;
+                else controller.useGravity = true;
             }
-            float wishSpeed = defaultSpeed * SpeedMultiplier;
-            UI_DebugPlayer.Instance.GetList[5].text = SpeedMultiplier.ToString();
-            float currentSpeed = Vector3.Magnitude(controller.linearVelocity);
+            float multiplier = SpeedMultiplierForward * SpeedMultiplierDefault;
+            float wishSpeed = defaultSpeed * multiplier;
+            UI_DebugPlayer.Instance.DebugText(0, wishSpeed, "wishSpeed", UI_DB_KEYS.Keys_PlayerMovement);
+            float currentSpeed = Vector3.Magnitude(controller.linearVelocity);//
             float speed = wishSpeed - currentSpeed;
-            if (speed < 0) goto end;
+            UI_DebugPlayer.Instance.DebugText(1, speed, "speed", UI_DB_KEYS.Keys_PlayerMovement);
+            if (speed < 0)
+            {
+                print("fuck");
+                goto end;
+            }
             Vector3 addition = velocity + AdditionalVector;
             Vector3 result = input * speed + addition;
 
-            controller.AddForce(result, ForceMode.VelocityChange);
-            UI_DebugPlayer.Instance.GetList[4].text = controller.linearVelocity.ToString();
+            //controller.AddForce(result, ForceMode.VelocityChange);
+            //UI_DebugPlayer.Instance.GetList[4].text = controller.linearVelocity.ToString();
         end:
             lowerstContactPoint = null;
         }
@@ -174,48 +172,6 @@ namespace Swift_Blade
             //
             //dashPar.gameObject.SetActive(false);
         }
-        //public void Dash(Vector3 dashDirection, int force, Action callback = null)
-        //{
-        //    StopAllCoroutines();
-        //    StartCoroutine(DashCor());
-        //    IEnumerator DashCor()
-        //    {
-        //        rollStamina -= rollcost;
-        //        AllowInputMoving = false;
-        //        RollForce = dashDirection * force;
-        //
-        //        Vector3 startVelocitiy = RollForce;
-        //
-        //        float stepOffset = 0.2f;// controller.stepOffset;
-        //        Vector3 startPos = transform.position + new Vector3(0, stepOffset);
-        //        bool result = Physics.Raycast(startPos, dashDirection, out RaycastHit hit, force);
-        //        Debug.DrawRay(startPos, dashDirection * force, Color.red, 5);
-        //        Debug.DrawRay(startPos, Vector3.up * 5, Color.red, 5);
-        //        if (result)
-        //            Debug.DrawRay(hit.point, Vector3.up, Color.blue, 5);
-        //        float resultDistance = result ? hit.distance : force;
-        //
-        //        float originalDistance = force;
-        //        const float dashMultiplier = 0.3f; /* (resultDis / origianlDis) is approximately 1
-        //                                            * so.. = 1 * dashMultiplier; */
-        //        float timer = 0;
-        //        float endTime = resultDistance / originalDistance * dashMultiplier;
-        //        print(endTime);
-        //        Vector3 targetVector = Vector3.zero;
-        //
-        //        while (timer < endTime)
-        //        {
-        //            float curveValue = timer / endTime;
-        //            float val = rollCurve.Evaluate(curveValue);
-        //            RollForce = Vector3.Lerp(startVelocitiy, targetVector, val);
-        //            timer += Time.deltaTime;
-        //            yield return null;
-        //        }
-        //        RollForce = Vector3.zero;
-        //        AllowInputMoving = true;
-        //        callback?.Invoke();
-        //    }
-        //}
         private void SetGravitiy(bool value) => controller.useGravity = value;
         public void SetVelocitiy(Vector3 velocitiy) => controller.linearVelocity = velocitiy;
 

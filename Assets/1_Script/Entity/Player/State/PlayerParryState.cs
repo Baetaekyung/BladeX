@@ -44,7 +44,7 @@ namespace Swift_Blade.FSM.States
             }
             //패링 지속시간 종료
             else
-                GetOwnerFsm.ChangeState(PlayerStateEnum.Idle);
+                GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
         }
 
         public override void Exit()

@@ -63,12 +63,11 @@ namespace Swift_Blade
             Debug_Updt?.Invoke();
             //if (Input.GetKeyDown(KeyCode.P))
             //    GetPlayerCamera.CameraTargetDistance = debug_cameraDistance;
-
             void UpdateDebugUI()
             {
                 if (Input.GetKeyDown(KeyCode.F1))
                     UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
-                UI_DebugPlayer.Instance.GetList[0].text = $"Current State {playerStateMachine.CurrentState}";
+                //UI_DebugPlayer.Instance.DebugText($"Current State {playerStateMachine.CurrentState}", 0);
             }
             UpdateDebugUI();
             void ProcessInput()

@@ -35,7 +35,7 @@ namespace Swift_Blade.FSM.States
         {
             Debug.Log("onfroce");
         }
-        protected virtual void OnSpeedMultiplierTrigger(float set)
+        protected virtual void OnSpeedMultiplierDefaultTrigger(float set)
         {
             Debug.Log("onspeedmultiplier");
         }
@@ -50,7 +50,7 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnAnimationEndableListenEvent += OnAnimationEndTriggerListen;
             animationTriggers.OnAnimationnEndableEvent += OnAnimationEndableTrigger;
             animationTriggers.OnForceEvent += OnForceEventTrigger;
-            animationTriggers.OnSpeedMultiplierEvent += OnSpeedMultiplierTrigger;
+            animationTriggers.OnSpeedMultiplierEvent += OnSpeedMultiplierDefaultTrigger;
             animationTriggers.OnMovementSetEvent += OnMovementSetTrigger;
             PlayAnimationOnEnter();
         }
@@ -62,7 +62,7 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnAnimationEndableListenEvent -= OnAnimationEndTriggerListen;
             animationTriggers.OnAnimationnEndableEvent -= OnAnimationEndableTrigger;
             animationTriggers.OnForceEvent -= OnForceEventTrigger;
-            animationTriggers.OnSpeedMultiplierEvent -= OnSpeedMultiplierTrigger;
+            animationTriggers.OnSpeedMultiplierEvent -= OnSpeedMultiplierDefaultTrigger;
             animationTriggers.OnMovementSetEvent -= OnMovementSetTrigger;
             base.Exit();
         }

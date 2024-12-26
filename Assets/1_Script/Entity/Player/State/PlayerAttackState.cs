@@ -34,11 +34,8 @@ namespace Swift_Blade.FSM.States
             maxIdx = comboParamHash.Count - 1;
             Player.Debug_Updt += () =>
             {
-                //UI_DebugPlayer.Instance.GetList[2].text = $"  {IsDeadPeriodOver}";
-                //UI_DebugPlayer.Instance.GetList[3].text = $"dp{deadPeriod}, {Time.time}";
-
-                UI_DebugPlayer.Instance.GetList[2].text = $"inp     {inputBuffer}";
-                UI_DebugPlayer.Instance.GetList[3].text = $"allowLis{allowListening}, {allowNextAttack}";
+                //UI_DebugPlayer.Instance.GetList[2].text = $"inp     {inputBuffer}";
+                //UI_DebugPlayer.Instance.GetList[3].text = $"allowLis{allowListening}, {allowNextAttack}";
             };
         }
 
@@ -50,7 +47,7 @@ namespace Swift_Blade.FSM.States
         public override void Update()
         {
             base.Update();
-            UI_DebugPlayer.Instance.GetList[1].text = $"indx {currentIdx}";
+            //UI_DebugPlayer.Instance.GetList[1].text = $"indx {currentIdx}";
             if (Input.GetKeyDown(KeyCode.K) && allowListening)
                 inputBuffer = true;
             if (inputBuffer && allowNextAttack && IsIndexValid)
@@ -76,12 +73,12 @@ namespace Swift_Blade.FSM.States
         protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
         protected override void OnAnimationEndTriggerListen() => allowListening = true;
         protected override void OnAnimationEndableTrigger() => allowNextAttack = true;
-        protected override void OnSpeedMultiplierTrigger(float set) => playerMovement.SpeedMultiplier = set;
+        protected override void OnSpeedMultiplierDefaultTrigger(float set) => playerMovement.SpeedMultiplierDefault = set;
         protected override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetVelocitiy(Vector3.zero);
         public override void Exit()
         {
             Debug.Log("exit");
-            playerMovement.SpeedMultiplier = 1;
+            playerMovement.SpeedMultiplierDefault = 1;
             base.Exit();
         }
         protected override void OnForceEventTrigger(float force)
