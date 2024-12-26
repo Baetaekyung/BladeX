@@ -7,7 +7,7 @@ namespace Swift_Blade.UI
     {
         [SerializeField] private Image _bossGroggyFillAmount;
 
-        /// <param name="normalizedGroggy"> input currentGroggy / maxGroggy</param>
+        /// <param name="normalizedGroggy">현재 체력 / 최대 체력 넣기</param>
         public void SetFillAmount(float normalizedGroggy)
         {
             _bossGroggyFillAmount.fillAmount = normalizedGroggy;

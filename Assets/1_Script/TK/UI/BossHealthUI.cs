@@ -10,9 +10,7 @@ namespace Swift_Blade.UI
         [SerializeField] private Image _bossHealthFillAmount;
         [SerializeField] private EnemyHealth EnemyHealth;
 
-        /// <param name="normalizedHealth"> input currentHealth / maxHealth</param>
-        ///
-        ///
+        /// <param name="normalizedHealth"> 현재 체력 / 최대 체력 넣기</param>
         private void Start()
         {
             EnemyHealth.OnHitEvent += SetFillAmount;
@@ -23,10 +21,10 @@ namespace Swift_Blade.UI
             EnemyHealth.OnHitEvent -= SetFillAmount;
         }
 
-        private void SetFillAmount(ActionData actionData)
+        private void SetFillAmount(float damageAmount)
         {
             StopAllCoroutines();
-            StartCoroutine(AnimateHealthFill(actionData.healthPercent));
+            StartCoroutine(AnimateHealthFill(damageAmount));
         }
 
         private IEnumerator AnimateHealthFill(float targetFillAmount)

@@ -1,7 +1,7 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-namespace Swift_Blade
+namespace Swift_Blade.Feeling
 {
     public enum CameraShakeType
     {

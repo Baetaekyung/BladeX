@@ -1,17 +1,9 @@
 using System;
 using System.Collections;
-using Swift_Blade;
+using Swift_Blade.Feeling;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
-
-public struct ActionData
-{
-    public Vector3 knockbackDir;
-    public float knockbackDuration;
-    public float knockbackPower;
-    public float healthPercent;
-}
 
 
 public class BossAnimationController : MonoBehaviour
@@ -41,8 +33,7 @@ public class BossAnimationController : MonoBehaviour
 
     private void Start()
     {
-        EnemyHealth.OnHitEvent += SetForce;
-        
+                
         EnemyHealth.OnDeadEvent += StopManualMove;
         EnemyHealth.OnDeadEvent += StopManualRotate;
         EnemyHealth.OnDeadEvent += StopApplyRootMotion;
@@ -51,8 +42,7 @@ public class BossAnimationController : MonoBehaviour
 
     private void OnDestroy()
     {
-        EnemyHealth.OnHitEvent -= SetForce;
-        
+                
         EnemyHealth.OnDeadEvent -= StopManualMove;
         EnemyHealth.OnDeadEvent -= StopManualRotate;
         EnemyHealth.OnDeadEvent -= StopApplyRootMotion;
@@ -82,7 +72,7 @@ public class BossAnimationController : MonoBehaviour
     }
     public void ShakeCam()
     {
-        CameraShakeManager.Instance.GenerateImpulse(cameraShakeType);
+        CameraShakeManager.Instance.DoShake(cameraShakeType);
     }
     
     public void SetForce(ActionData actionData)
@@ -92,7 +82,7 @@ public class BossAnimationController : MonoBehaviour
         
         float power = actionData.knockbackPower;
         float duration = actionData.knockbackDuration;
-        
+                
         StartCoroutine(AddForce(dir, power, duration));
     }
     
