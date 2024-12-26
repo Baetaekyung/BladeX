@@ -4,27 +4,30 @@ using Unity.Behavior;
 using UnityEngine;
 using Action = System.Action;
 
-public class EnemyHealth : MonoBehaviour , IDamageble
+public class BossHealth : MonoBehaviour , IDamageble
 {
+    public event Action<ActionData> OnHitEvent;
+    public event Action<ActionData> OnParryHitEvent;
+    public event Action OnDeadEvent;
+    public event Action<float> OnChangeHealthEvent; 
+    
     public float maxHealth;
     public float currentHealth;
-    
-    public BehaviorGraphAgent BehaviorGraphAgent;
+        
     
     [Header("Animation info")]
-    public BossAnimationController BossAnimationController;
-    public Animator Animator;
-    
-    public event Action<float> OnHitEvent;
-    public event Action OnDeadEvent;
-
+    [SerializeField] private BossAnimationController BossAnimationController;
+    [SerializeField] private Animator Animator;
+     
+    [Space]
+    [SerializeField] private BehaviorGraphAgent BehaviorGraphAgent; 
+    [SerializeField] private ChangeBossState changeBossState;
+        
+    [Header("Flash info")]
     [SerializeField] private Material _flashMat;
     [SerializeField] private SkinnedMeshRenderer[] _meshRenderers;
     private Material[] _originMats;
 
-    [SerializeField] private ChangeBossState changeBossState;
-    
-    
     
     private void Start()
     {
@@ -36,8 +39,7 @@ public class EnemyHealth : MonoBehaviour , IDamageble
         {
             _originMats[i] = _meshRenderers[i].material;
         }
-
-
+        
         OnHitEvent += FlashMat;
     }
 
@@ -50,45 +52,38 @@ public class EnemyHealth : MonoBehaviour , IDamageble
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            ActionData actionData = new ActionData();
-            actionData.damageAmount = 10;
-            
-            TakeDamage(actionData);
+            ActionData action = new ActionData(Vector3.zero, 0.5f, 10f, 20f, transform, AttackType.Parry);
+            TakeDamage(action);
         }
     }
     
     public void TakeDamage(ActionData actionData)
     {
+        currentHealth -= actionData.damageAmount;
+        OnChangeHealthEvent?.Invoke(GetHealthPercent());
+        
         if (currentHealth <= 0)
         {
-            TriggerState(BossState.Dead , 0);
-            OnDeadEvent?.Invoke();
+            TriggerState(BossState.Dead);
+            Dead();
             return;
         }
+
+        if (actionData.attackType == AttackType.Parry)
+        {
+            TriggerState(BossState.Hurt);
+            OnParryHitEvent?.Invoke(actionData);
+        }
         
-        HandleNonGuard(actionData.damageAmount);
+        OnHitEvent?.Invoke(actionData);
        
     }
-
-    private void HandleNonGuard(float damage)
-    {
-        TriggerState(BossState.Hurt, damage);
-        OnHitEvent.Invoke(GetHealthPercent());
-    }
-
-    private void TriggerState(BossState state, float damage)
+    
+    private void TriggerState(BossState state)
     {
         BehaviorGraphAgent.SetVariableValue("BossState", state);
         changeBossState.SendEventMessage(state);
-        currentHealth -= damage;
     }
-
-    private void TriggerGroggyState()
-    {
-        TriggerState(BossState.Groggy, 0);
-    }
-
-    
 
     private float GetHealthPercent()
     {
@@ -102,11 +97,10 @@ public class EnemyHealth : MonoBehaviour , IDamageble
 
     public void Dead()
     {
-        BehaviorGraphAgent.SetVariableValue<BossState>("BossState", BossState.Dead);
-        changeBossState.SendEventMessage(BossState.Dead);
+        OnDeadEvent?.Invoke();
     }
 
-    private void FlashMat(float _trash)
+    private void FlashMat(ActionData actionData)
     {
         StartCoroutine(FlashRoutine());
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Swift_Blade.Feeling;
 using UnityEngine;
@@ -10,7 +9,7 @@ public class BossAnimationController : MonoBehaviour
 {
     public Animator Animator;
     public NavMeshAgent NavMeshAgent;
-    public EnemyHealth EnemyHealth;
+    [FormerlySerializedAs("EnemyHealth")] public BossHealth bossHealth;
     
     public Transform target;
     
@@ -27,26 +26,23 @@ public class BossAnimationController : MonoBehaviour
     [SerializeField] private CameraShakeType cameraShakeType;
     [SerializeField] private LayerCaster layerCaster;
     
-    [Header("Knockback info")]
+    /*[Header("Knockback info")]
     public bool isKnockback;
     public float knockbackTime;
-    public float knockbackThreshold;
+    public float knockbackThreshold;*/
 
     private void Start()
     {
-        EnemyHealth.OnDeadEvent += StopManualMove;
-        EnemyHealth.OnDeadEvent += StopManualRotate;
-        EnemyHealth.OnDeadEvent += StopApplyRootMotion;
-        EnemyHealth.OnDeadEvent += StopImmediately;
+        bossHealth.OnDeadEvent += SetDead;
+        
+        bossHealth.OnParryHitEvent += SetForce;
     }
 
     private void OnDestroy()
     {
-                
-        EnemyHealth.OnDeadEvent -= StopManualMove;
-        EnemyHealth.OnDeadEvent -= StopManualRotate;
-        EnemyHealth.OnDeadEvent -= StopApplyRootMotion;
-        EnemyHealth.OnDeadEvent -= StopImmediately;
+        bossHealth.OnDeadEvent -= SetDead;;
+        
+        bossHealth.OnParryHitEvent -= SetForce;
     }
 
     private void Update()
@@ -66,6 +62,15 @@ public class BossAnimationController : MonoBehaviour
                 attackMoveSpeed * Time.deltaTime);
         }
     }
+
+    private void SetDead()
+    {
+        StopManualMove();
+        StopManualRotate();
+        StopApplyRootMotion();
+        StopImmediately();
+    }
+    
     private void Cast()
     {
         layerCaster.CastDamage();
@@ -76,16 +81,37 @@ public class BossAnimationController : MonoBehaviour
         CameraShakeManager.Instance.DoShake(cameraShakeType);
     }
     
-    public void SetForce(ActionData actionData)
+    private void SetForce(ActionData actionData)
     {
-        Vector3 dir = actionData.knockbackDir;
-        dir.y = 0;
-        
+        Vector3 dir = actionData.knockbackDir.normalized; // 방향 정규화
+        dir.y = 0; // y축은 고정
+
         float power = actionData.knockbackPower;
         float duration = actionData.knockbackDuration;
-                
+
         StartCoroutine(AddForce(dir, power, duration));
     }
+
+    private IEnumerator AddForce(Vector3 dir, float power, float duration)
+    {
+        StopImmediately(); // 움직임 초기화
+        float currentTime = 0f;
+
+        Vector3 initialPos = transform.position; // 시작 위치
+        Vector3 targetPos = initialPos + dir * power; // 목표 위치
+
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            float t = currentTime / duration; // 0에서 1로 진행
+            transform.position = Vector3.Lerp(initialPos, targetPos, t); // 보간
+            yield return null;
+        }
+
+        // 목표 위치에 도달한 후 위치를 보정
+        transform.position = targetPos;
+    }
+
     
     private void StopImmediately()
     {
@@ -93,19 +119,6 @@ public class BossAnimationController : MonoBehaviour
         
         NavMeshAgent.isStopped = true;
         NavMeshAgent.velocity = Vector3.zero;
-    }
-    
-    private IEnumerator AddForce(Vector3 dir, float power, float duration)
-    {
-        StopImmediately();
-        float currentTime = 0;
-        
-        Vector3 endPos = transform.position + dir * power;
-        while(currentTime < duration){
-            currentTime += Time.deltaTime;
-            transform.position = Vector3.Lerp(transform.position, endPos, Time.deltaTime);
-            yield return null;
-        }
     }
     
     public Vector3 GetNextPathPoint()
@@ -139,7 +152,7 @@ public class BossAnimationController : MonoBehaviour
         float yRotation = Mathf.LerpAngle(currentEulerAngle.y, targetRot.eulerAngles.y, 5 * Time.deltaTime);
         transform.rotation = Quaternion.Euler(currentEulerAngle.x, yRotation, currentEulerAngle.z);
     }
-
+    
     #region AnimationEvents
 
     public void SetAnimationEnd() => animationEnd = true;

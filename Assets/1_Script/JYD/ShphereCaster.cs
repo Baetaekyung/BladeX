@@ -2,9 +2,9 @@
 
 public class SphereCaster : LayerCaster
 {
-    [SerializeField][Range(0.5f, 3f)] private float _casterRadius = 1f;
-    [SerializeField][Range(0f, 1f)] private float _casterInterpolation = 0.5f;
-    [SerializeField][Range(0f, 3f)] private float _castingRange = 1f;
+    [SerializeField][Range(0.5f, 10f)] private float _casterRadius = 1f;
+    [SerializeField][Range(0f, 10f)] private float _casterInterpolation = 0.5f;
+    [SerializeField][Range(0f, 10f)] private float _castingRange = 1f;
     
     public override bool CastDamage()
     {
