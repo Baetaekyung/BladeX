@@ -20,11 +20,12 @@ public class BossAnimationController : MonoBehaviour
 
     private Vector3 nextPathPoint;
     private Vector3 attackDestination;
-    [SerializeField] private float attackMoveSpeed;
-
-    [SerializeField] private CameraShakeType cameraShakeType;
-    [FormerlySerializedAs("DamageCaster")] [SerializeField] private LayerCaster layerCaster;
+    [SerializeField] private float defaultAttackMoveSpeed;
+    private float attackMoveSpeed;
     
+    
+    [SerializeField] private CameraShakeType cameraShakeType;
+    [SerializeField] private LayerCaster layerCaster;
     
     [Header("Knockback info")]
     public bool isKnockback;
@@ -33,7 +34,6 @@ public class BossAnimationController : MonoBehaviour
 
     private void Start()
     {
-                
         EnemyHealth.OnDeadEvent += StopManualMove;
         EnemyHealth.OnDeadEvent += StopManualRotate;
         EnemyHealth.OnDeadEvent += StopApplyRootMotion;
@@ -70,6 +70,7 @@ public class BossAnimationController : MonoBehaviour
     {
         layerCaster.CastDamage();
     }
+    
     public void ShakeCam()
     {
         CameraShakeManager.Instance.DoShake(cameraShakeType);
@@ -144,22 +145,27 @@ public class BossAnimationController : MonoBehaviour
     public void SetAnimationEnd() => animationEnd = true;
     public void StopAnimationEnd()=>animationEnd = false;
     public void StartManualRotate() =>isManualRotate = true;
-
     public void StopManualRotate() =>isManualRotate = false;
     
     public void StartApplyRootMotion() => Animator.applyRootMotion = true;
     public void StopApplyRootMotion() => Animator.applyRootMotion = false;
     
-    public void StartManualMove()
+    public void StartManualMove(float _moveSpeed = 0)
     {
+        attackMoveSpeed = _moveSpeed == 0 ? defaultAttackMoveSpeed : _moveSpeed;
+                
         isManualMove = true;
+        
         NavMeshAgent.enabled = false;
     }
     
     public void StopManualMove()
     {
-        isManualMove = false;
+        attackMoveSpeed = defaultAttackMoveSpeed;
+        
         NavMeshAgent.Warp(transform.position);
+        isManualMove = false;
+        
         NavMeshAgent.enabled = true;
     }
     
