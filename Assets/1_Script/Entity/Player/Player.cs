@@ -55,7 +55,7 @@ namespace Swift_Blade
             playerStateMachine.AddState(PlayerStateEnum.Attack, new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null));
             playerStateMachine.AddState(PlayerStateEnum.Dash, new PlayerDashState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_idle));
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
-            playerStateMachine.SetStartState(PlayerStateEnum.Idle);
+            playerStateMachine.SetStartState(PlayerStateEnum.Movement);
         }
         private void Update()
         {
@@ -75,6 +75,8 @@ namespace Swift_Blade
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                     playerStateMachine.ChangeState(PlayerStateEnum.Dash);
+                if (Input.GetKeyDown(KeyCode.L))
+                    GetPlayerMovement.LockOnEnemy = !GetPlayerMovement.LockOnEnemy;
 
             }
             ProcessInput();

@@ -35,29 +35,38 @@ namespace Swift_Blade.FSM.States
         {
             Debug.Log("onfroce");
         }
-        protected virtual void OnMovementSet(float set)
+        protected virtual void OnSpeedMultiplierTrigger(float set)
+        {
+            Debug.Log("onspeedmultiplier");
+        }
+        protected virtual void OnMovementSetTrigger(Vector3 value)
         {
             Debug.Log("onmovementset");
         }
         public override void Enter()
         {
             base.Enter();
-            animationTriggers.OnAnimationEnd += OnAnimationEndTrigger;
-            animationTriggers.OnAnimationEndableListen += OnAnimationEndTriggerListen;
-            animationTriggers.OnAnimationEndable += OnAnimationEndableTrigger;
+            animationTriggers.OnAnimationEndEvent += OnAnimationEndTrigger;
+            animationTriggers.OnAnimationEndableListenEvent += OnAnimationEndTriggerListen;
+            animationTriggers.OnAnimationnEndableEvent += OnAnimationEndableTrigger;
             animationTriggers.OnForceEvent += OnForceEventTrigger;
-            animationTriggers.OnMovementSetEvent += OnMovementSet;
+            animationTriggers.OnSpeedMultiplierEvent += OnSpeedMultiplierTrigger;
+            animationTriggers.OnMovementSetEvent += OnMovementSetTrigger;
             PlayAnimationOnEnter();
         }
+
+
         public override void Exit()
         {
-            animationTriggers.OnAnimationEnd -= OnAnimationEndTrigger;
-            animationTriggers.OnAnimationEndableListen -= OnAnimationEndTriggerListen;
-            animationTriggers.OnAnimationEndable -= OnAnimationEndableTrigger;
+            animationTriggers.OnAnimationEndEvent -= OnAnimationEndTrigger;
+            animationTriggers.OnAnimationEndableListenEvent -= OnAnimationEndTriggerListen;
+            animationTriggers.OnAnimationnEndableEvent -= OnAnimationEndableTrigger;
             animationTriggers.OnForceEvent -= OnForceEventTrigger;
-            animationTriggers.OnMovementSetEvent -= OnMovementSet;
+            animationTriggers.OnSpeedMultiplierEvent -= OnSpeedMultiplierTrigger;
+            animationTriggers.OnMovementSetEvent -= OnMovementSetTrigger;
             base.Exit();
         }
+        
         public virtual void PlayAnimationOnEnter()
         {
             if(baseAnimParam != null)
