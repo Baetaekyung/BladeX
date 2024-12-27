@@ -6,6 +6,7 @@ namespace Swift_Blade
 {
     public class BossVFX : MonoBehaviour
     {
+        /*
         [SerializeField] private ParticleSystem[] particleSystems;
         [SerializeField] private Transform createTrm;
         
@@ -55,6 +56,7 @@ namespace Swift_Blade
         {
             Gizmos.DrawWireSphere(target.position , 5f);
         }
+        */
            
         
     }

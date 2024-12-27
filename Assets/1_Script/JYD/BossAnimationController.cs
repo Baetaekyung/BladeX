@@ -2,14 +2,13 @@ using System.Collections;
 using Swift_Blade.Feeling;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 
 
 public class BossAnimationController : MonoBehaviour
 {
     public Animator Animator;
     public NavMeshAgent NavMeshAgent;
-    [FormerlySerializedAs("EnemyHealth")] public BossHealth bossHealth;
+    public BossHealth bossHealth;
     
     public Transform target;
     
@@ -144,12 +143,12 @@ public class BossAnimationController : MonoBehaviour
         return nextPathPoint;
     }
         
-    private void FactToTarget(Vector3 target)
+    public void FactToTarget(Vector3 target)
     {
         Quaternion targetRot = Quaternion.LookRotation(target - transform.position);
         Vector3 currentEulerAngle = transform.rotation.eulerAngles;
 
-        float yRotation = Mathf.LerpAngle(currentEulerAngle.y, targetRot.eulerAngles.y, 5 * Time.deltaTime);
+        float yRotation = Mathf.LerpAngle(currentEulerAngle.y, targetRot.eulerAngles.y, 20 * Time.deltaTime);
         transform.rotation = Quaternion.Euler(currentEulerAngle.x, yRotation, currentEulerAngle.z);
     }
     

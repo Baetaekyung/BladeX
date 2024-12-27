@@ -9,6 +9,8 @@ using UnityEngine.AI;
 [NodeDescription(name: "MoveToTarget", story: "Move To [Target]", category: "Action", id: "fe3d7f0e9abad8283274f183328a793d")]
 public partial class MoveToTargetAction : Action
 {
+    [SerializeReference] public BlackboardVariable<BossAnimationController> Boss;
+    
     [SerializeReference] public BlackboardVariable<Transform> Target;
     [SerializeReference] public BlackboardVariable<NavMeshAgent> Agent;
     [SerializeReference] public BlackboardVariable<float> stopDistance;
@@ -24,8 +26,11 @@ public partial class MoveToTargetAction : Action
 
     protected override Status OnUpdate()
     {
-        distance = Vector3.Distance(Target.Value.transform.position , Agent.Value.transform.position);
-        Agent.Value.SetDestination(Target.Value.transform.position);
+        Vector3 targetPos = Target.Value.transform.position;
+        
+        Agent.Value.SetDestination(targetPos);
+        Boss.Value.FactToTarget(targetPos);
+        distance = Vector3.Distance(targetPos , Agent.Value.transform.position);
         if (distance> stopDistance)
         {
             Agent.Value.speed = moveSpeed.Value;
