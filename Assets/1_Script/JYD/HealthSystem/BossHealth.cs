@@ -3,6 +3,7 @@ using System.Collections;
 using Unity.Behavior;
 using UnityEngine;
 using Action = System.Action;
+using Random = UnityEngine.Random;
 
 public class BossHealth : MonoBehaviour , IDamageble
 {
@@ -27,7 +28,7 @@ public class BossHealth : MonoBehaviour , IDamageble
     [SerializeField] private Material _flashMat;
     [SerializeField] private SkinnedMeshRenderer[] _meshRenderers;
     private Material[] _originMats;
-
+    
     
     private void Start()
     {
@@ -59,6 +60,13 @@ public class BossHealth : MonoBehaviour , IDamageble
     
     public void TakeDamage(ActionData actionData)
     {
+        if (true)
+        {
+            
+            TriggerState(BossState.Step);
+            return;
+        }
+        
         currentHealth -= actionData.damageAmount;
         OnChangeHealthEvent?.Invoke(GetHealthPercent());
         
