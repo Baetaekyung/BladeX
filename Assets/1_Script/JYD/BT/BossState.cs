@@ -5,9 +5,11 @@ using Unity.Behavior;
 public enum BossState
 {
     Idle,
+    Recovery,
 	Move,
 	Attack,
 	Hurt,
+	Step,
 	Groggy,
 	Dead
 }

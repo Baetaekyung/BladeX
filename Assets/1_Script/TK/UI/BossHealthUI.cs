@@ -9,17 +9,17 @@ namespace Swift_Blade.UI
     public class BossHealthUI : MonoBehaviour
     {
         [SerializeField] private Image _bossHealthFillAmount;
-        [SerializeField] private BossHealth bossHealth;
+        [FormerlySerializedAs("bossHealth")] [SerializeField] private SwordBossHealth swordBossHealth;
 
         /// <param name="normalizedHealth"> 현재 체력 / 최대 체력 넣기</param>
         private void Start()
         {
-            bossHealth.OnChangeHealthEvent += SetFillAmount;
+            swordBossHealth.OnChangeHealthEvent += SetFillAmount;
         }
 
         private void OnDestroy()
         {
-            bossHealth.OnChangeHealthEvent -= SetFillAmount;
+            swordBossHealth.OnChangeHealthEvent -= SetFillAmount;
         }
 
         private void SetFillAmount(float damageAmount)

@@ -9,8 +9,8 @@ using UnityEngine.AI;
 [NodeDescription(name: "SetStop", story: "Set Stop [Param]", category: "Action", id: "0849a9f76965200186596f3ab10c7260")]
 public partial class SetStopAction : Action
 {
-    [SerializeReference] public BlackboardVariable<bool> Param;
     [SerializeReference] public BlackboardVariable<NavMeshAgent> self;
+    [SerializeReference] public BlackboardVariable<bool> Param;
     
     protected override Status OnStart()
     {
