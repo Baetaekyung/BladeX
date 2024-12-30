@@ -169,7 +169,7 @@ namespace Swift_Blade
             float velPower = controller.linearVelocity.magnitude;
             Vector3 movement = dir * (force);
 
-            Vector3 destination = (transform.position + capCol.center) + movement;
+            Vector3 destination = (transform.position) + movement;
 
             cine.Damping = new Vector3(0.1f, 0.1f, 0.1f);
 
