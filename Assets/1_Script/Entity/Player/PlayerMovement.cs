@@ -19,7 +19,7 @@ namespace Swift_Blade
         [SerializeField] private float gravitiyMultiplier = 1;
 
         [Header("Collisin Settings")]
-        [SerializeField] private float bottomYOffset; //const
+        [SerializeField] private float bottomYOffset = 0.4f; //const 0.4f
         private ContactPoint? lowerstContactPoint;
         private ContactPoint? lowestContactPointBottom;
 
@@ -285,13 +285,12 @@ namespace Swift_Blade
 
             float lowestPointY = lowerstContactPoint.Value.point.y;
             float newPointY = newContactPoint.Value.point.y;
-            //It doesn't make sense but i will just leave for now (>=)
+            //It doesn't make sense but i will just leave it for now (>=)
             if (lowestPointY >= newPointY)
             {
                 lowerstContactPoint = newContactPoint;
 
                 float bottomY = transform.position.y + bottomYOffset;
-                //Debug.DrawRay(transform.position + new Vector3(0, bottomY), Vector3.right, Color.red, 2);
                 if (newPointY < bottomY) lowestContactPointBottom = newContactPoint;
             }
         }
