@@ -30,6 +30,7 @@ namespace Swift_Blade.FSM.States
             base.Enter();
             
             Debug.Log("Parry Enter");
+            _player.IsParryState = true;
             _movementCompo.AllowInputMoving = false;
 
             _parryDuration = 0.4f;
@@ -45,8 +46,8 @@ namespace Swift_Blade.FSM.States
 
             if (_currentDuration >= _parryDuration)
             {
-                StyleMeter.Instance.DowngradeMeterRank(); //패링 실패시 랭크가 내려가도록
-                GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
+                _playerHealthCompo.OnHitEvent.RemoveListener(ParryOnHitByVicinityHandler);
+                _player.IsParryState = false;
             }
         }
 
@@ -56,6 +57,7 @@ namespace Swift_Blade.FSM.States
             
             _currentDuration = 0f;
             
+            _player.IsParryState = false;
             _movementCompo.AllowInputMoving = true;
             
             Debug.Log("Parry Exit");
@@ -76,26 +78,24 @@ namespace Swift_Blade.FSM.States
         private void ParryOnHitByVicinityHandler(ActionData actionData)
         {
             DoActionFeeling();
-            StyleMeter.Instance.RaiseMeterPercent(100f); //100퍼센트 증가
+            //StyleMeter.Instance.RaiseMeterPercent(100f); //100퍼센트 증가 (보류)
             
             LookAtTarget(actionData);
 
-            Debug.Log("근접 공격에 맞아서 패링 공격 발동");
             GetOwnerFsm.ChangeState(PlayerStateEnum.Attack);
         }
         
-        private void ParryOnHitByRangeHandler(ActionData actionData)
-        {
-            DoActionFeeling();
-
-            StyleMeter.Instance.RaiseMeterPercent(50f); //50퍼센트 증가
-            LookAtTarget(actionData);
-
-            Debug.Log("원거리 공격에 맞아서 패링 공격 발동");
-            //Todo:발사체 만들어서 direction으로 날리기. (플레이어에 원거리 공격체 게임오브젝트 있어야함)
-            
-            GetOwnerFsm.ChangeState(PlayerStateEnum.Attack);
-        }
+        // private void ParryOnHitByRangeHandler(ActionData actionData) 보류
+        // {
+        //     DoActionFeeling();
+        //
+        //     StyleMeter.Instance.RaiseMeterPercent(50f); //50퍼센트 증가
+        //     LookAtTarget(actionData);
+        //
+        //     //Todo:발사체 만들어서 direction으로 날리기. (플레이어에 원거리 공격체 게임오브젝트 있어야함)
+        //     
+        //     GetOwnerFsm.ChangeState(PlayerStateEnum.Attack);
+        // }
         
         private void LookAtTarget(ActionData actionData)
         {
@@ -107,5 +107,7 @@ namespace Swift_Blade.FSM.States
             
             _visual.rotation = lookRotation;
         }
+
+        protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
     }
 }

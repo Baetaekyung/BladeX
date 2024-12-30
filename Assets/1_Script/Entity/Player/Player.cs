@@ -32,6 +32,10 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO[] comboParamHash;
         [SerializeField] private Vector3[] comboForceList;
         [SerializeField] private float[] periods;
+        
+        [Header("Parring")]
+        public bool IsParryState { get; set; }
+        
         public IReadOnlyList<AnimationParameterSO> GetComboHashAtk => comboParamHash;
         public IReadOnlyList<Vector3> GetComboForceList => comboForceList;
         public IReadOnlyList<float> GetPeriods => periods;
@@ -42,6 +46,7 @@ namespace Swift_Blade
         public PlayerInput GetPlayerInput => GetEntityComponent<PlayerInput>();
         public PlayerRenderer GetPlayerRenderer => GetEntityComponent<PlayerRenderer>();
         public PlayerAnimator GetPlayerAnimator => GetEntityComponent<PlayerAnimator>();
+        public PlayerDamageCaster GetPlayerDamageCaster => GetEntityComponent<PlayerDamageCaster>();
         #endregion
 
         public static event Action Debug_Updt;
