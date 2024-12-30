@@ -14,7 +14,11 @@ namespace Swift_Blade
         [SerializeField] private float defaultSpeed = 1;
         [SerializeField] private float onGroundYVal = -0.5f;
         [SerializeField] private float gravitiy = -9.81f;
+        /// <summary>
+        /// should I increase this when higher
+        /// </summary>
         [SerializeField] private float gravitiyMultiplier = 1;
+        [SerializeField] private AnimationCurve curveSlope;
         private float yVal;
 
         [Header("Collisin Settings")]
@@ -74,11 +78,10 @@ namespace Swift_Blade
             currentRollStamina = Mathf.Min(GetMaxStamina, currentRollStamina);
             if (Input.GetKeyDown(KeyCode.V))
             {
+                AddForceLocaly(Vector3.forward);
                 //controller.linearVelocity = Vector3.zero;
                 //AddForceLocaly(Vector3.forward, db_speedMulti);
             }
-            UI_DebugPlayer.Instance.DebugText(3, lowerstContactPoint.HasValue ? lowerstContactPoint.Value.point : lowerstContactPoint.HasValue, "lowestContactPoint", DBG_UI_KEYS.Keys_PlayerMovement);
-            UI_DebugPlayer.Instance.DebugText(4, lowestContactPointBottom.HasValue ? lowestContactPointBottom.Value.point : lowestContactPointBottom.HasValue, "bottomPoint", DBG_UI_KEYS.Keys_PlayerMovement);
             //Debug.DrawRay(transform.position, Vector3.up * 10, Color.yellow);
             //if (lowerstContactPoint.HasValue)
             //    Debug.DrawRay(lowerstContactPoint.Value.point, Vector3.right, Color.yellow);
@@ -87,10 +90,10 @@ namespace Swift_Blade
         {
             AdditionalVector = Vector3.MoveTowards(AdditionalVector, Vector3.zero, Time.fixedDeltaTime * 10);
             ApplyMovement();
-            UI_DebugPlayer.Instance.DebugText(8, lowestContactPointBottom.HasValue, "onground", DBG_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.Instance.DebugText(5, lowestContactPointBottom.HasValue, "ONGROUND", DBG_UI_KEYS.Keys_PlayerMovement);
             if (lowestContactPointBottom.HasValue) yVal = onGroundYVal;
             else yVal += Time.fixedDeltaTime * gravitiy * gravitiyMultiplier;
-            UI_DebugPlayer.Instance.DebugText(5, yVal, "yVal", DBG_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.Instance.DebugText(0, yVal, "yVal", DBG_UI_KEYS.Keys_PlayerMovement);
             lowerstContactPoint = null;
             lowestContactPointBottom = null;
         }
@@ -100,7 +103,6 @@ namespace Swift_Blade
             if (AllowInputMoving)
             {
                 input = InputDirection;
-                UI_DebugPlayer.Instance.DebugText(7, input, "rawinput", DBG_UI_KEYS.Keys_PlayerMovement);
                 if (LockOnEnemy)
                 {
                     Vector3 targetVector = GetClosestEnemy();
@@ -119,19 +121,21 @@ namespace Swift_Blade
 
             float multiplier = SpeedMultiplierForward * SpeedMultiplierDefault;
             float wishSpeed = defaultSpeed * multiplier;
-            UI_DebugPlayer.Instance.DebugText(0, wishSpeed, "wishSpeed", DBG_UI_KEYS.Keys_PlayerMovement);
-            UI_DebugPlayer.Instance.DebugText(2, multiplier, "multiplier", DBG_UI_KEYS.Keys_PlayerMovement);
 
-            float currentSpeed = Vector3.Magnitude(controller.linearVelocity);// change this to dot
-            float speed = wishSpeed - currentSpeed;
+            Vector3 movementVector = controller.linearVelocity;
+            movementVector.y = 0;
+            //float currentSpeed = Vector3.Magnitude(movementVector);// change this to dot
+            //float speed = wishSpeed - currentSpeed;
+            float speed = wishSpeed;
             UI_DebugPlayer.Instance.DebugText(1, speed, "speed", DBG_UI_KEYS.Keys_PlayerMovement);
-            if (speed < 0) return;
+            UI_DebugPlayer.Instance.DebugText(2, wishSpeed, "wishSpeed", DBG_UI_KEYS.Keys_PlayerMovement);
+            //UI_DebugPlayer.Instance.DebugText(3, currentSpeed, "curSpeed", DBG_UI_KEYS.Keys_PlayerMovement);
+            //if (speed < 0) return;
 
             Vector3 addition = AdditionalVector;
             Vector3 result = input * speed + addition;
             result.y += yVal;
             controller.linearVelocity = result;
-            UI_DebugPlayer.Instance.DebugText(6, input, "input", DBG_UI_KEYS.Keys_PlayerMovement);
             Debug.DrawRay(transform.position + Vector3.up * 0.5f, input, Color.cyan, 1);
         }
 
@@ -148,7 +152,7 @@ namespace Swift_Blade
             Debug.DrawRay(Vector3.zero, force, Color.red, 5);
             Debug.DrawRay(Vector3.zero, result, Color.yellow, 6);
             controller.linearVelocity = Vector3.zero;
-            controller.AddForce(result, forceMode);
+            AdditionalVector += result;
         }
 
         public void Dash(Vector3 dir, float force)
@@ -275,7 +279,7 @@ namespace Swift_Blade
                     }
                 }
                 if (result.HasValue)
-                    Debug.DrawRay(result.Value.point, new Vector3(0f, 0.25f, 1f), Color.yellow);
+                    Debug.DrawRay(result.Value.point, result.Value.normal, Color.yellow, 1f);
                 return result;
             }
             ContactPoint? newContactPoint = GetLowestPoint();

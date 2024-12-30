@@ -41,6 +41,7 @@ namespace Swift_Blade
         [Preserve]
         private void OnSetMovementSet(float set)
         {
+            //we should set this after few second
             OnMovementSetEvent?.Invoke(new Vector3(set, 0, set));
         }
     }
