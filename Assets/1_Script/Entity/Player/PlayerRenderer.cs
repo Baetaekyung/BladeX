@@ -29,5 +29,10 @@ namespace Swift_Blade
 
         }
         public void SetVisualRotation(Quaternion quaternion) => playerVisualTransform.rotation = quaternion;
+
+        public void EntityComponentAwake(Entity entity)
+        {
+
+        }
     }
 }

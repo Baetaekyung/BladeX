@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace Swift_Blade
 {
     [SelectionBase]
-    public class PlayerMovement : MonoBehaviour, IEntityComponentRequireInit
+    public class PlayerMovement : MonoBehaviour, IEntityComponent
     {
         [Header("Movement Settings")]
         [SerializeField] private float defaultSpeed = 1;
@@ -113,6 +113,7 @@ namespace Swift_Blade
                 {
                     controller.useGravity = false;
                     input = Vector3.ProjectOnPlane(InputDirection, lowerstContactPoint.Value.normal);// this is causing physics error on 90 deg angle normal
+                    input.Normalize();
                 }
                 else controller.useGravity = true;
             }

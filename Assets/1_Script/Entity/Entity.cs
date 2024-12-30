@@ -16,8 +16,7 @@ public abstract class Entity : MonoBehaviour
     private IEntityComponent InitializeEntityComponent(IEntityComponent component)
     {
         componentDictionary.Add(component.GetType(), component);
-        if(component is IEntityComponentRequireInit instance)
-            instance.EntityComponentAwake(this);
+        component.EntityComponentAwake(this);
         return component;
     }
     public T GetEntityComponent<T>() where T : Component, IEntityComponent

@@ -7,5 +7,9 @@ namespace Swift_Blade
         [SerializeField] private Animator animator;
         public Animator GetAnimator => animator;
 
+        public void EntityComponentAwake(Entity entity)
+        {
+
+        }
     }
 }
