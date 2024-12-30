@@ -27374,54 +27374,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.21663323, y: -0.058826193, z: -0.017012313}
     m_Extent: {x: 0.31521997, y: 0.20561112, z: 0.27229708}
   m_DirtyAABB: 0
---- !u!1 &759573365
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 759573366}
-  - component: {fileID: 759573367}
-  m_Layer: 0
-  m_Name: Feedback
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &759573366
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759573365}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1704071307}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &759573367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759573365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02036a99bd8ba114c8f8b11d6a8b11ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  root: {fileID: 1704071308}
-  flashDuration: 0.2
-  _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
-  _meshRenderers: []
 --- !u!1 &760786387
 GameObject:
   m_ObjectHideFlags: 0
@@ -48744,7 +48696,7 @@ GameObject:
   - component: {fileID: 1344819218}
   - component: {fileID: 1344819217}
   - component: {fileID: 1344819225}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59137,61 +59089,27 @@ PrefabInstance:
     - {fileID: 4067208350938137124, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 5704459122665910530, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1547652066911575172, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 759573366}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7389977111463853842, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1704071306}
+      addedObject: {fileID: 1846773000}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
---- !u!1 &1704071305 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7389977111463853842, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-  m_PrefabInstance: {fileID: 1704071304}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1704071306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704071305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79020367695748a4b9812884ba6ef3f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _statCompo: {fileID: 0}
-  _healthStat: {fileID: 0}
-  OnDeadEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnHitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 759573367}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!4 &1704071307 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5704459122665910530, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-  m_PrefabInstance: {fileID: 1704071304}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1704071308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4103815729079207692, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
   m_PrefabInstance: {fileID: 1704071304}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1704071313 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+  m_PrefabInstance: {fileID: 1704071304}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3562a74d782067468a6ee5613368b9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1704410147
 GameObject:
   m_ObjectHideFlags: 0
@@ -63590,6 +63508,61 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.27489108, y: 0.014411405, z: 0.0052914247}
     m_Extent: {x: 0.24585699, y: 0.22974989, z: 0.09139216}
   m_DirtyAABB: 0
+--- !u!1 &1846772999
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1846773000}
+  - component: {fileID: 1846773001}
+  m_Layer: 0
+  m_Name: DamageCaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1846773000
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846772999}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.63, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 305192454}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1846773001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846772999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1011d742f573585428f9f82be39fed6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  OnCastDamageEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _casterRadius: 1.82
+  _casterInterpolation: 0.71
+  _castingRange: 3.89
+  _visualTrm: {fileID: 1704071308}
+  _playerMovement: {fileID: 1704071313}
 --- !u!1 &1847028618
 GameObject:
   m_ObjectHideFlags: 0
