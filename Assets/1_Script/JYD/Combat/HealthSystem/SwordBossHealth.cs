@@ -1,52 +1,32 @@
 ﻿using System;
-using System.Collections;
 using Unity.Behavior;
 using UnityEngine;
-using Action = System.Action;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-public class BossHealth : MonoBehaviour , IDamageble
+public class SwordBossHealth : MonoBehaviour , IDamageble
 {
-    public event Action<ActionData> OnHitEvent;
-    public event Action<ActionData> OnParryHitEvent;
-    public event Action OnDeadEvent;
+    public UnityEvent<ActionData> OnHitEvent;
+    public UnityEvent<ActionData> OnParryHitEvent;
+    public UnityEvent OnDeadEvent;
+    
     public event Action<float> OnChangeHealthEvent; 
     
     public float maxHealth;
     public float currentHealth;
         
-    
-    [Header("Animation info")]
-    [SerializeField] private BossAnimationController BossAnimationController;
-    [SerializeField] private Animator Animator;
-     
     [Space]
     [SerializeField] private BehaviorGraphAgent BehaviorGraphAgent; 
     [SerializeField] private ChangeBossState changeBossState;
-        
-    [Header("Flash info")]
-    [SerializeField] private Material _flashMat;
-    [SerializeField] private SkinnedMeshRenderer[] _meshRenderers;
-    private Material[] _originMats;
-    
     
     private void Start()
     {
         currentHealth = maxHealth;
-        
-        _meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
-        _originMats = new Material[_meshRenderers.Length];
-        for (int i = 0; i < _meshRenderers.Length; i++)
-        {
-            _originMats[i] = _meshRenderers[i].material;
-        }
-        
-        OnHitEvent += FlashMat;
+                
     }
 
     private void OnDestroy()
     {
-        OnHitEvent -= FlashMat;
     }
 
     private void Update()
@@ -60,13 +40,12 @@ public class BossHealth : MonoBehaviour , IDamageble
     
     public void TakeDamage(ActionData actionData)
     {
-        if (true)
+        if (Random.value <= 0.1f)
         {
-            
             TriggerState(BossState.Step);
             return;
         }
-        
+                
         currentHealth -= actionData.damageAmount;
         OnChangeHealthEvent?.Invoke(GetHealthPercent());
         
@@ -97,36 +76,17 @@ public class BossHealth : MonoBehaviour , IDamageble
     {
         return currentHealth / maxHealth;
     }
-    
-    public void TakeHeal()
+
+    public void TakeHeal(float amount)
     {
-        
+        currentHealth += amount;
+        currentHealth = Mathf.Min(currentHealth , maxHealth);
     }
 
     public void Dead()
     {
         OnDeadEvent?.Invoke();
     }
-
-    private void FlashMat(ActionData actionData)
-    {
-        StartCoroutine(FlashRoutine());
-    }
     
-    private IEnumerator FlashRoutine()
-    {
-        foreach (var t in _meshRenderers)
-        {
-            t.material = _flashMat;
-        }
-
-        yield return new WaitForSeconds(0.1f);
-
-        for (int i = 0; i < _meshRenderers.Length; i++)
-        {
-            _meshRenderers[i].material = _originMats[i];
-        }
-        
-        
-    }
+   
 }

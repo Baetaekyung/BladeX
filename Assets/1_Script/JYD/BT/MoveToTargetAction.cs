@@ -4,18 +4,18 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using UnityEngine.AI;
+using Swift_Blade.Boss;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "MoveToTarget", story: "Move To [Target]", category: "Action", id: "fe3d7f0e9abad8283274f183328a793d")]
 public partial class MoveToTargetAction : Action
 {
-    [SerializeReference] public BlackboardVariable<BossAnimationController> Boss;
-    
+    [SerializeReference] public BlackboardVariable<BossBase> Boss;
+            
     [SerializeReference] public BlackboardVariable<Transform> Target;
     [SerializeReference] public BlackboardVariable<NavMeshAgent> Agent;
     [SerializeReference] public BlackboardVariable<float> stopDistance;
-    [SerializeReference] public BlackboardVariable<float> moveSpeed;
-    
+        
     private float distance;
     
     protected override Status OnStart()
@@ -33,15 +33,10 @@ public partial class MoveToTargetAction : Action
         distance = Vector3.Distance(targetPos , Agent.Value.transform.position);
         if (distance> stopDistance)
         {
-            Agent.Value.speed = moveSpeed.Value;
             return Status.Running;
         }
                 
         return Status.Success;
-    }
-
-    protected override void OnEnd()
-    {
     }
 }
 

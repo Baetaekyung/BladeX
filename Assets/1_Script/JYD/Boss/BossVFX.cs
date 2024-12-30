@@ -1,16 +1,56 @@
-using Swift_Blade.projectile;
+using System;
+using System.Collections;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Swift_Blade
 {
     public class BossVFX : MonoBehaviour
     {
+        
+        [Header("Flash info")]
+        [SerializeField] private Material _flashMat;
+        [SerializeField] private SkinnedMeshRenderer[] _meshRenderers;
+        private Material[] _originMats;
+
+
+        private void Start()
+        {
+            _meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+            _originMats = new Material[_meshRenderers.Length];
+            for (int i = 0; i < _meshRenderers.Length; i++)
+            {
+                _originMats[i] = _meshRenderers[i].material;
+            }
+        }
+    
+        public void FlashMat(ActionData actionData)
+        {
+            StartCoroutine(FlashRoutine());
+        }
+    
+        private IEnumerator FlashRoutine()
+        {
+            foreach (var t in _meshRenderers)
+            {
+                t.material = _flashMat;
+            }
+
+            yield return new WaitForSeconds(0.1f);
+
+            for (int i = 0; i < _meshRenderers.Length; i++)
+            {
+                _meshRenderers[i].material = _originMats[i];
+            }
+        }
+                
+
         /*
         [SerializeField] private ParticleSystem[] particleSystems;
         [SerializeField] private Transform createTrm;
         
         [SerializeField] private Transform target;
+        
+        
         
         public void PlayParticle(int idx)
         {

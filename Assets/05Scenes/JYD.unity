@@ -8062,31 +8062,7 @@ MonoBehaviour:
     m_Bits: 64
   OnCastDamageEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2113276897}
-        m_TargetAssemblyTypeName: Swift_Blade.Feeling.HitStopManager, Assembly-CSharp
-        m_MethodName: DoHitStop
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: d22b3247f6e575745a70dfa517dd70c0, type: 2}
-          m_ObjectArgumentAssemblyTypeName: Swift_Blade.Feeling.HitStopSO, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1344819218}
-        m_TargetAssemblyTypeName: BossAnimationController, Assembly-CSharp
-        m_MethodName: ShakeCam
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   _casterRadius: 3.12
   _casterInterpolation: 1.46
   _castingRange: 3.73
@@ -17776,6 +17752,10 @@ PrefabInstance:
       objectReference: {fileID: 1344819217}
     - target: {fileID: 9146832383488059734, guid: 11588f96b119b0e45811f2f55363b0ae, type: 3}
       propertyPath: EnemyHealth
+      value: 
+      objectReference: {fileID: 1344819217}
+    - target: {fileID: 9146832383488059734, guid: 11588f96b119b0e45811f2f55363b0ae, type: 3}
+      propertyPath: swordBossHealth
       value: 
       objectReference: {fileID: 1344819217}
     m_RemovedComponents: []
@@ -48712,6 +48692,7 @@ GameObject:
   - component: {fileID: 1344819222}
   - component: {fileID: 1344819221}
   - component: {fileID: 1344819219}
+  - component: {fileID: 1344819226}
   - component: {fileID: 1344819218}
   - component: {fileID: 1344819217}
   - component: {fileID: 1344819225}
@@ -48734,14 +48715,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47de7c16339d4affbf35303bcc0780a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnHitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1344819225}
+        m_TargetAssemblyTypeName: Swift_Blade.BossVFX, Assembly-CSharp
+        m_MethodName: FlashMat
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnParryHitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls: []
   maxHealth: 100
   currentHealth: 0
-  BossAnimationController: {fileID: 1344819218}
-  Animator: {fileID: 1344819223}
   BehaviorGraphAgent: {fileID: 1344819219}
   changeBossState: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
-  _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
-  _meshRenderers: []
 --- !u!114 &1344819218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48754,16 +48752,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c119b932384cc3749ba253393b204855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animator: {fileID: 1344819223}
-  NavMeshAgent: {fileID: 1344819222}
-  bossHealth: {fileID: 1344819217}
-  target: {fileID: 305192454}
+  defaultAttackMoveSpeed: 20.6
   animationEnd: 0
   isManualRotate: 0
   isManualMove: 0
-  defaultAttackMoveSpeed: 10
-  cameraShakeType: 1
-  layerCaster: {fileID: 220372913}
 --- !u!114 &1344819219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48780,12 +48772,11 @@ MonoBehaviour:
   m_BlackboardVariableOverridesList:
   - rid: 2285474097556357490
   - rid: 1607273058493268000
-  - rid: 1607273058493268001
+  - rid: 1607273377352123009
   - rid: 1607273058493268002
   - rid: 1607273058493268003
-  - rid: 1607273058493268004
-  - rid: 1607273058493268005
-  - rid: 1607273058658943850
+  - rid: 1607273377352123010
+  - rid: 1607273377352123011
   references:
     version: 2
     RefIds:
@@ -48797,14 +48788,6 @@ MonoBehaviour:
           m_Value1: 16617269392962309977
         Name: Target
         m_Value: {fileID: 305192454}
-    - rid: 1607273058493268001
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 7796165595195596332
-          m_Value1: 5863248344310799568
-        Name: MoveSpeed
-        m_Value: 7
     - rid: 1607273058493268002
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -48812,7 +48795,7 @@ MonoBehaviour:
           m_Value0: 16842789263302442139
           m_Value1: 15124673902740489662
         Name: AttackDistance
-        m_Value: 10
+        m_Value: 15
     - rid: 1607273058493268003
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -48820,24 +48803,8 @@ MonoBehaviour:
           m_Value0: 8799685740808257774
           m_Value1: 11337077293980532446
         Name: MeleeDistance
-        m_Value: 5
-    - rid: 1607273058493268004
-      type: {class: 'BlackboardVariable`1[[BossAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 6490236754669307487
-          m_Value1: 5913078194985163027
-        Name: BossAnimatorController
-        m_Value: {fileID: 1344819218}
-    - rid: 1607273058493268005
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 6734034036057306792
-          m_Value1: 8025144667599098049
-        Name: Animator
-        m_Value: {fileID: 1344819223}
-    - rid: 1607273058658943850
+        m_Value: 6
+    - rid: 1607273377352123009
       type: {class: 'BlackboardVariable`1[[ChangeBossState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -48845,6 +48812,22 @@ MonoBehaviour:
           m_Value1: 10486772480902912100
         Name: ChangeBossState
         m_Value: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
+    - rid: 1607273377352123010
+      type: {class: 'BlackboardVariable`1[[Swift_Blade.Boss.BossAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15547141081581643986
+          m_Value1: 14044624205978326227
+        Name: BossAnimator
+        m_Value: {fileID: 1344819218}
+    - rid: 1607273377352123011
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 6734034036057306792
+          m_Value1: 8025144667599098049
+        Name: Animator
+        m_Value: {fileID: 1344819223}
     - rid: 2285474097556357490
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -48945,11 +48928,27 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1344819216}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f799d164b4993f4f8b3f7dd0a3b272e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
+  _meshRenderers: []
+--- !u!114 &1344819226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344819216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58651a8d9c291a24ebe392862daf6ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 305192454}
+  cameraShakeType: 0
 --- !u!1 &1345803917
 GameObject:
   m_ObjectHideFlags: 0
