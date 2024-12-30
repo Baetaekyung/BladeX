@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
-using TMPro;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.RenderGraphModule;
 
 namespace Swift_Blade
 {
@@ -15,52 +15,42 @@ namespace Swift_Blade
         private float _currentHealth;
 
         public event Action OnDeadEvent;
-        public event Action<ActionData> OnHitByVicinityEvent; //근접 공격으로 맞았을 때
-        public event Action<ActionData> OnHitByRangeEvent; //원거리 공격으로 맞았을 때
+        public event Action OnHitEvent;
 
-        private bool _afterInitialize = false;
+
+        [Header("Flash info")]
+        [SerializeField] private float flashDuration;
+        [SerializeField] private Material _flashMat;
+        [SerializeField] private SkinnedMeshRenderer[] _meshRenderers;
+        private Material[] _originMats;
         
-        public void EntityComponentAwake(Entity entity)
+        private void Start()
         {
-            _player = entity as Player;
+            currentHealth = maxHealth;
             
-            OnDeadEvent += Dead;
-        }
+            _meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+            _originMats = new Material[_meshRenderers.Length];
+            for (int i = 0; i < _meshRenderers.Length; i++)
+            {
+                _originMats[i] = _meshRenderers[i].material;
+            }
 
+            OnHitEvent += FlashMat;
+        }
+        
         private void OnDestroy()
         {
-            OnDeadEvent -= Dead;
+            OnHitEvent -= FlashMat;
         }
 
         public void TakeDamage(ActionData actionData)
         {
-            if (!_afterInitialize)
-            {
-                _maxHealth = _statCompo.GetStat(_healthStat).Value;
-                _currentHealth = _maxHealth;
-            
-                Debug.Log($"Health Init to : {_currentHealth}");
-
-                _afterInitialize = true;
-            }
-            
             float damageAmount = actionData.damageAmount;
-            _currentHealth -= damageAmount;
-
-            switch (actionData.attackType)
-            {
-                case AttackType.VICINITY:
-                    OnHitByVicinityEvent?.Invoke(actionData);
-                    break;
-                case AttackType.RANGE:
-                    OnHitByRangeEvent?.Invoke(actionData);
-                    break;
-                default:
-                    OnHitByVicinityEvent?.Invoke(actionData);
-                    break;
-            }
-
-            if (_currentHealth <= 0)
+            currentHealth -= damageAmount;
+            
+            OnHitEvent?.Invoke();
+            
+            if (currentHealth <= 0)
                 Dead();
         }
 
@@ -76,8 +66,28 @@ namespace Swift_Blade
 
         public void Dead()
         {
-            //OnDeadEvent?.Invoke();
-            Debug.Log("플레이어 죽었슴");
+            OnDeadEvent?.Invoke();
+            //Debug.Log("플레이어 죽었슴");
+        }
+        
+        private void FlashMat()
+        {
+            StartCoroutine(FlashRoutine());
+        }
+    
+        private IEnumerator FlashRoutine()
+        {
+            foreach (var t in _meshRenderers)
+            {
+                t.material = _flashMat;
+            }
+        
+            yield return new WaitForSeconds(flashDuration);
+
+            for (int i = 0; i < _meshRenderers.Length; i++)
+            {
+                _meshRenderers[i].material = _originMats[i];
+            }
         }
 
         /// <param name="value">추가할 체력 값</param>

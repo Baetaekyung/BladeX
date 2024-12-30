@@ -7,7 +7,6 @@ public enum BossState
     Idle,
 	Move,
 	Attack,
-	Guard,
 	Hurt,
 	Groggy,
 	Dead

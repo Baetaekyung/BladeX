@@ -9,6 +9,7 @@ namespace Swift_Blade
     public enum PlayerStateEnum
     {
         Idle,
+        Movement,
         Attack,
         Dash,
         Parry
@@ -17,15 +18,14 @@ namespace Swift_Blade
     {
         [Header("Debug Fields")]
         [SerializeField] private float debug_cameraDistance;
+        [SerializeField] private AnimationTriggers animEndTrigger;
 
-        [Header("Params")]
+        [Header("Debug_Params")]
         [SerializeField] private AnimationParameterSO anim_idle;
+        [SerializeField] private AnimationParameterSO anim_move;
         [SerializeField] private AnimationParameterSO anim_jumpAttack;
         [SerializeField] private AnimationParameterSO anim_attack1;
         [SerializeField] private AnimationParameterSO anim_parry;
-
-        [Header("General")]
-        [SerializeField] private AnimationTriggers animEndTrigger;
 
         [Header("Combo")]
         //should be serializeable struct later
@@ -36,45 +36,48 @@ namespace Swift_Blade
         public IReadOnlyList<Vector3> GetComboForceList => comboForceList;
         public IReadOnlyList<float> GetPeriods => periods;
 
-        private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
+        #region PlayerComponentGetter
         public PlayerCamera GetPlayerCamera => GetEntityComponent<PlayerCamera>();
         public PlayerMovement GetPlayerMovement => GetEntityComponent<PlayerMovement>();
         public PlayerInput GetPlayerInput => GetEntityComponent<PlayerInput>();
         public PlayerRenderer GetPlayerRenderer => GetEntityComponent<PlayerRenderer>();
-        public static event Action Updt;
+        public PlayerAnimator GetPlayerAnimator => GetEntityComponent<PlayerAnimator>();
+        #endregion
+
+        public static event Action Debug_Updt;
+        private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
         protected override void Awake()
         {
             base.Awake();
-            Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator;
-            playerStateMachine.AddState(PlayerStateEnum.Idle, new PlayerIdleState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_idle));
+            Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator.GetAnimator;
+            //playerStateMachine.AddState(PlayerStateEnum.Idle, new PlayerIdleState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_idle));
+            playerStateMachine.AddState(PlayerStateEnum.Movement, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
             playerStateMachine.AddState(PlayerStateEnum.Attack, new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null));
             playerStateMachine.AddState(PlayerStateEnum.Dash, new PlayerDashState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_idle));
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
-            playerStateMachine.SetStartState(PlayerStateEnum.Idle);
+            playerStateMachine.SetStartState(PlayerStateEnum.Movement);
         }
         private void Update()
         {
             playerStateMachine.UpdateState();
-            Updt?.Invoke();
-            //debug input
-            //if(Input.GetKeyDown(KeyCode.P))
+            Debug_Updt?.Invoke();
+            //if (Input.GetKeyDown(KeyCode.P))
             //    GetPlayerCamera.CameraTargetDistance = debug_cameraDistance;
 
+            void UpdateDebugUI()
+            {
+                if (Input.GetKeyDown(KeyCode.F1))
+                    UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
+                UI_DebugPlayer.Instance.GetList[0].text = $"Current State {playerStateMachine.CurrentState}";
+            }
+            UpdateDebugUI();
             void ProcessInput()
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                     playerStateMachine.ChangeState(PlayerStateEnum.Dash);
+                if (Input.GetKeyDown(KeyCode.L))
+                    GetPlayerMovement.LockOnEnemy = !GetPlayerMovement.LockOnEnemy;
 
-                Vector3 input = GetPlayerInput.InputDirectionRaw.normalized;
-                GetPlayerMovement.InputDirection = input;
-
-                UpdateDebugUI();
-                void UpdateDebugUI()
-                {
-                    if (Input.GetKeyDown(KeyCode.F1))
-                        UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
-                    UI_DebugPlayer.Instance.GetList[0].text = $"Current State {playerStateMachine.CurrentState}";
-                }
             }
             ProcessInput();
         }

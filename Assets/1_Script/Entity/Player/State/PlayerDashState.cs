@@ -10,8 +10,12 @@ namespace Swift_Blade.FSM.States
         public override void Enter()
         {
             base.Enter();
-            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.InputDirection.normalized, 1);
-            GetOwnerFsm.ChangeState(PlayerStateEnum.Idle);
+
+            //ming
+            Debug.Log("대쉬스테이트엔터");
+
+            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.InputDirection.normalized, 7);
+            GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
         }
     }
 }
