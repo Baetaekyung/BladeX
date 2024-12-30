@@ -176,7 +176,7 @@ namespace Swift_Blade
                 //Debug.Log(hit.distance);
 
                 destination = hit.point + dir.normalized * 0.1f;
-                destination += new Vector3((capCol.bounds.size.x * -(dir.x)) / 2, 0, (capCol.bounds.size.z * -(dir.z)) / 2);
+                destination += new Vector3((capCol.bounds.size.x * -(dir.x + 0.1f)) / 2, 0, (capCol.bounds.size.z * -(dir.z + 0.1f)) / 2);
                 destination -= capCol.center;
                 //Instantiate(cubePrefab, destination, Quaternion.identity);
             }
