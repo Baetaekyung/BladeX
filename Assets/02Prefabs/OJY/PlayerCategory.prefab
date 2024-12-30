@@ -10519,6 +10519,54 @@ SkinnedMeshRenderer:
     m_Center: {x: -18.105679, y: -2.949236, z: 0}
     m_Extent: {x: 20.412949, y: 18.984055, z: 13.115364}
   m_DirtyAABB: 0
+--- !u!1 &2343251148360861845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6527036985110427866}
+  - component: {fileID: 7124881664474386742}
+  m_Layer: 0
+  m_Name: Feedback
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6527036985110427866
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2343251148360861845}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5704459122665910530}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7124881664474386742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2343251148360861845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02036a99bd8ba114c8f8b11d6a8b11ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  root: {fileID: 4103815729079207692}
+  flashDuration: 0.2
+  _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
+  _meshRenderers: []
 --- !u!1 &2361952496182941253
 GameObject:
   m_ObjectHideFlags: 0
@@ -12884,6 +12932,7 @@ Transform:
   - {fileID: 320425046425690778}
   - {fileID: 1615701477517584540}
   - {fileID: 3051029101963753073}
+  - {fileID: 6527036985110427866}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5558562310119497924
@@ -36895,6 +36944,7 @@ GameObject:
   - component: {fileID: 8928013613842272787}
   - component: {fileID: 2072265066507459340}
   - component: {fileID: 4863692531285898503}
+  - component: {fileID: 7121495666581138984}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -36965,7 +37015,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   capCol: {fileID: 2072265066507459340}
-  cubePrefab: {fileID: 0}
   angleMultiplier: 8.5
   db_speedMulti: 0
   db_closestEnemyTransform: {fileID: 0}
@@ -37040,6 +37089,38 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4699414916049857407}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7121495666581138984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7389977111463853842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79020367695748a4b9812884ba6ef3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _statCompo: {fileID: 0}
+  _healthStat: {fileID: 0}
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7124881664474386742}
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
         m_MethodName: PlayFeedback
         m_Mode: 1
