@@ -171,8 +171,11 @@ namespace Swift_Blade
 
             //dashPar.gameObject.SetActive(true);
 
+            float hitDist = 1;
             if (Physics.Raycast(transform.position + capCol.center, dir, out RaycastHit hit, force, whatIsObstacle))
             {
+                Debug.Log(hit.distance);
+                hitDist = hit.distance;
                 //Debug.Log(hit.distance);
 
                 destination = hit.point + dir.normalized * 0.1f;
@@ -180,7 +183,11 @@ namespace Swift_Blade
                 destination -= capCol.center;
                 //Instantiate(cubePrefab, destination, Quaternion.identity);
             }
-
+            if (hitDist < 0.5f)
+            {
+                AllowInputMoving = true;
+                return;
+            }
             Debug.Log(dir);
             //Vector3 boxSize = ReCalculate(CalculateHalfExtents(capCol), dir, force);
             //Collider[] col = Physics.OverlapBox(transform.position, boxSize, Quaternion.identity, whatIsObstacle);
