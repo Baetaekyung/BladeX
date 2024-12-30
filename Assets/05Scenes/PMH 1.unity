@@ -49257,7 +49257,7 @@ MonoBehaviour:
   animationEnd: 0
   isManualRotate: 0
   isManualMove: 0
-  attackMoveSpeed: 6
+  defaultAttackMoveSpeed: 0
   cameraShakeType: 1
   layerCaster: {fileID: 220372913}
   isKnockback: 0
@@ -73889,6 +73889,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   multiplier: 0
+  viewTransform: {fileID: 0}
+  resultTransform: {fileID: 0}
 --- !u!114 &2683109936492797489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74416,11 +74418,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug_cameraDistance: 0
+  animEndTrigger: {fileID: 7527498262950640342}
   anim_idle: {fileID: 11400000, guid: 6b2486cbf10ee7b4d9f45bc59bc797ae, type: 2}
+  anim_move: {fileID: 0}
   anim_jumpAttack: {fileID: 11400000, guid: 12ca58780c8cfb5429a16ae1dbed9091, type: 2}
   anim_attack1: {fileID: 11400000, guid: c045f3c181f2b2f4fa5a90ac7217bcba, type: 2}
   anim_parry: {fileID: 11400000, guid: dd89e4ca5c9df484788e6460559b8740, type: 2}
-  animEndTrigger: {fileID: 7527498262950640342}
   comboParamHash:
   - {fileID: 11400000, guid: c045f3c181f2b2f4fa5a90ac7217bcba, type: 2}
   - {fileID: 11400000, guid: f336812af2c8d45408536a41715f4605, type: 2}
@@ -75074,6 +75077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3562a74d782067468a6ee5613368b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultSpeed: 1
   onGroundYVal: -0.5
   gravitiy: -9.81
   gravitiyMultiplier: 1
@@ -75106,6 +75110,9 @@ MonoBehaviour:
   whatIsObstacle:
     serializedVersion: 2
     m_Bits: 257
+  angleMultiplier: 20
+  db_speedMulti: 0
+  db_closestEnemyTransform: {fileID: 0}
 --- !u!20 &8203804412045536153
 Camera:
   m_ObjectHideFlags: 0
