@@ -30,11 +30,7 @@ namespace Swift_Blade
         [Header("DashSetting")]
         [SerializeField] private CinemachinePositionComposer cine;
         [SerializeField] private LayerMask whatIsObstacle;
-
-        private Vector3 des;
         [SerializeField] private CapsuleCollider capCol;
-        [SerializeField] private Transform cubePrefab;
-        //[SerializeField] private TrailRenderer dashPar;
 
         private const float rollcost = 1f;
         private const float initialRollStamina = 3f;
@@ -158,53 +154,35 @@ namespace Swift_Blade
 
             AllowInputMoving = false;
 
-            //Vector3 normalizedDir = dir.normalized;
-
             controller.linearVelocity = Vector3.zero;
 
             float velPower = controller.linearVelocity.magnitude;
+
             Vector3 movement = dir * (force);
 
             Vector3 destination = (transform.position) + movement;
 
             cine.Damping = new Vector3(0.1f, 0.1f, 0.1f);
 
-            //dashPar.gameObject.SetActive(true);
-
             float hitDist = 1;
             if (Physics.Raycast(transform.position + capCol.center, dir, out RaycastHit hit, force, whatIsObstacle))
             {
                 Debug.Log(hit.distance);
                 hitDist = hit.distance;
-                //Debug.Log(hit.distance);
 
                 destination = hit.point + dir.normalized * 0.1f;
                 destination += new Vector3((capCol.bounds.size.x * -(dir.x + 0.1f)) / 2, 0, (capCol.bounds.size.z * -(dir.z + 0.1f)) / 2);
                 destination -= capCol.center;
-                //Instantiate(cubePrefab, destination, Quaternion.identity);
             }
             if (hitDist < 1f)
             {
                 AllowInputMoving = true;
                 return;
             }
+
             Debug.Log(dir);
-            //Vector3 boxSize = ReCalculate(CalculateHalfExtents(capCol), dir, force);
-            //Collider[] col = Physics.OverlapBox(transform.position, boxSize, Quaternion.identity, whatIsObstacle);
-            //
-            //if (col.Length > 0)
-            //{
-            //    destination = col[0].bounds.center;
-            //    Debug.Log(destination);
-            //}
 
-            //destination;
             transform.DOMove(destination, 0.1f).SetEase(Ease.Flash).OnComplete(DashEnd);
-
-            //controller.AddForce(dir * force, ForceMode.Impulse);
-            //Vector3 startPos = ;
-            //Debug.DrawRay(startPos, dir * force, Color.red, 5);
-            //Vector3 result = ;
         }
 
         private void DashEnd()
@@ -215,43 +193,6 @@ namespace Swift_Blade
             //dashPar.SetPosition(1, transform.position);
             //
             //dashPar.gameObject.SetActive(false);
-        }
-
-        private Vector3 CalculateHalfExtents(CapsuleCollider capsule)
-        {
-            // 기본 반지름과 높이 계산
-            float radius = capsule.radius;
-            float height = capsule.height / 2f; // 반 높이 (캡슐 중심에서 양쪽으로 확장)
-
-            // 캡슐 방향에 따라 크기 결정
-            switch (capsule.direction)
-            {
-                case 0: // X축 방향
-                    return new Vector3(height, radius, radius);
-                case 1: // Y축 방향
-                    return new Vector3(radius, height, radius);
-                case 2: // Z축 방향
-                    return new Vector3(radius, radius, height);
-                default:
-                    return Vector3.zero;
-            }
-        }
-
-        private Vector3 ReCalculate(Vector3 boxSize, Vector3 dir, float force)
-        {
-            Vector3 halfExtents = boxSize / 2 + new Vector3(
-            Mathf.Abs(dir.x) * (force / 2),
-            Mathf.Abs(dir.y) * (force / 2),
-                Mathf.Abs(dir.z) * (force / 2)
-            );
-
-            return halfExtents;
-        }
-
-        void DebugDrawBox(Vector3 center, Vector3 size, Color color)
-        {
-            Gizmos.color = color;
-            Gizmos.DrawWireCube(center, size);
         }
 
 
