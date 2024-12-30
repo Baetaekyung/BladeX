@@ -2,8 +2,10 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AppUI.Core;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 
 namespace Swift_Blade
 {
@@ -154,6 +156,8 @@ namespace Swift_Blade
         }
 
         private Vector3 des;
+        [SerializeField] private CapsuleCollider capCol;
+
         public void Dash(Vector3 dir, float force)
         {
             //Vector3 normalizedDir = dir.normalized;
@@ -171,13 +175,22 @@ namespace Swift_Blade
 
             if(Physics.Raycast(transform.position, destination, out RaycastHit hit, force, whatIsObstacle))
             {
-                Debug.Log("����");
                 Debug.Log(hit.distance);
-
+            
                 destination = hit.point - dir.normalized * 0.1f;
             }
 
-            des = destination;
+            //Debug.Log(dir);
+            //Vector3 boxSize = ReCalculate(CalculateHalfExtents(capCol), dir, force);
+            //Collider[] col = Physics.OverlapBox(transform.position, boxSize, Quaternion.identity, whatIsObstacle);
+            //
+            //if (col.Length > 0)
+            //{
+            //    destination = col[0].bounds.center;
+            //    Debug.Log(destination);
+            //}
+
+            //destination;
             transform.DOMove(destination, 0.1f).SetEase(Ease.Flash).OnComplete(DashEnd);
 
             //controller.AddForce(dir * force, ForceMode.Impulse);
@@ -195,6 +208,45 @@ namespace Swift_Blade
             //
             //dashPar.gameObject.SetActive(false);
         }
+
+        private Vector3 CalculateHalfExtents(CapsuleCollider capsule)
+        {
+            // 기본 반지름과 높이 계산
+            float radius = capsule.radius;
+            float height = capsule.height / 2f; // 반 높이 (캡슐 중심에서 양쪽으로 확장)
+
+            // 캡슐 방향에 따라 크기 결정
+            switch (capsule.direction)
+            {
+                case 0: // X축 방향
+                    return new Vector3(height, radius, radius);
+                case 1: // Y축 방향
+                    return new Vector3(radius, height, radius);
+                case 2: // Z축 방향
+                    return new Vector3(radius, radius, height);
+                default:
+                    return Vector3.zero;
+            }
+        }
+
+        private Vector3 ReCalculate(Vector3 boxSize, Vector3 dir, float force)
+        {
+            Vector3 halfExtents = boxSize / 2 + new Vector3(
+            Mathf.Abs(dir.x) * (force / 2),
+            Mathf.Abs(dir.y) * (force / 2),
+                Mathf.Abs(dir.z) * (force / 2)
+            );
+
+            return halfExtents;
+        }
+
+        void DebugDrawBox(Vector3 center, Vector3 size, Color color)
+        {
+            Gizmos.color = color;
+            Gizmos.DrawWireCube(center, size);
+        }
+
+
         private void SetGravitiy(bool value) => controller.useGravity = value;
         public void SetVelocitiy(Vector3 velocitiy) => controller.linearVelocity = velocitiy;
 
