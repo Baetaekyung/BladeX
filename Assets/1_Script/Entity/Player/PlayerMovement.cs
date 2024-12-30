@@ -155,9 +155,11 @@ namespace Swift_Blade
 
         private Vector3 des;
         [SerializeField] private CapsuleCollider capCol;
+        [SerializeField] private Transform cubePrefab;
 
         public void Dash(Vector3 dir, float force)
         {
+            if (dir == Vector3.zero) return;
             //Vector3 normalizedDir = dir.normalized;
 
             controller.linearVelocity = Vector3.zero;
@@ -165,20 +167,22 @@ namespace Swift_Blade
             float velPower = controller.linearVelocity.magnitude;
             Vector3 movement = dir * (force);
 
-            Vector3 destination = transform.position + movement;
+            Vector3 destination = (transform.position + capCol.center) + movement;
 
             cine.Damping = new Vector3(0.1f, 0.1f, 0.1f);
 
             //dashPar.gameObject.SetActive(true);
 
-            if(Physics.Raycast(transform.position, destination, out RaycastHit hit, force, whatIsObstacle))
+            if(Physics.Raycast(transform.position + capCol.center, dir, out RaycastHit hit, force, whatIsObstacle))
             {
-                Debug.Log(hit.distance);
-            
-                destination = hit.point - dir.normalized * 0.1f;
-            }
+                //Debug.Log(hit.distance);
 
-            //Debug.Log(dir);
+                destination = hit.point + dir.normalized * 0.1f;
+                destination -= capCol.center;
+                //Instantiate(cubePrefab, destination, Quaternion.identity);
+            }
+            
+            Debug.Log(dir);
             //Vector3 boxSize = ReCalculate(CalculateHalfExtents(capCol), dir, force);
             //Collider[] col = Physics.OverlapBox(transform.position, boxSize, Quaternion.identity, whatIsObstacle);
             //
