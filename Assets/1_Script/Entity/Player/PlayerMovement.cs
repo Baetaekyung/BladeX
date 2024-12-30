@@ -200,7 +200,7 @@ namespace Swift_Blade
 
 
         private void SetGravitiy(bool value) => controller.useGravity = value;
-        public void SetVelocitiy(Vector3 velocitiy) => controller.linearVelocity = velocitiy;
+        public void SetAdditionalVelocity(Vector3 velocitiy) => AdditionalVector = velocitiy;
 
         private void OnCollisionStay(Collision collision)
         {

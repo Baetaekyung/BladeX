@@ -10,7 +10,6 @@ namespace Swift_Blade.FSM.States
         private readonly IReadOnlyList<AnimationParameterSO> comboParamHash;
         private readonly IReadOnlyList<Vector3> comboForceList;
         private readonly IReadOnlyList<float> perioids;
-        private readonly PlayerMovement playerMovement;
 
         private bool allowListening;
         private bool allowNextAttack;
@@ -30,7 +29,6 @@ namespace Swift_Blade.FSM.States
             comboParamHash = entity.GetComboHashAtk;
             comboForceList = entity.GetComboForceList;
             perioids = entity.GetPeriods;
-            playerMovement = entity.GetPlayerMovement;
             maxIdx = comboParamHash.Count - 1;
             Player.Debug_Updt += () =>
             {
@@ -73,8 +71,7 @@ namespace Swift_Blade.FSM.States
         protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
         protected override void OnAnimationEndTriggerListen() => allowListening = true;
         protected override void OnAnimationEndableTrigger() => allowNextAttack = true;
-        protected override void OnSpeedMultiplierDefaultTrigger(float set) => playerMovement.SpeedMultiplierDefault = set;
-        protected override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetVelocitiy(Vector3.zero);
+
         public override void Exit()
         {
             Debug.Log("exit");

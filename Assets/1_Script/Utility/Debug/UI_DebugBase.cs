@@ -16,7 +16,7 @@ public static class DBG_UI_KEYS
 
 public abstract class UI_DebugBase<T> : MonoSingleton<T> where T : UI_DebugBase<T>
 {
-    public static int Key { get; set; } = DBG_UI_KEYS.Keys_PlayerMovement;
+    public static int Key { get; set; } = DBG_UI_KEYS.Keys_PlayerAction;
     public bool ShowDebugUI
     {
         get => active;

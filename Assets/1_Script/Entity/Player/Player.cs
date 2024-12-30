@@ -67,7 +67,7 @@ namespace Swift_Blade
             {
                 if (Input.GetKeyDown(KeyCode.F1))
                     UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
-                //UI_DebugPlayer.Instance.DebugText($"Current State {playerStateMachine.CurrentState}", 0);
+                UI_DebugPlayer.Instance.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
             }
             UpdateDebugUI();
             void ProcessInput()

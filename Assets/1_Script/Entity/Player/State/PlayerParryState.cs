@@ -62,6 +62,7 @@ namespace Swift_Blade.FSM.States
 
             base.Exit();
         }
+        protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
 
         private void DoActionFeeling() //패링 성공시 비주얼 효과들
         {

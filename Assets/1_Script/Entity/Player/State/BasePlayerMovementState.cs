@@ -5,11 +5,13 @@ namespace Swift_Blade.FSM.States
     public class BasePlayerMovementState : BasePlayerState
     {
         protected virtual bool BaseAllowStateChangeToAttack { get; } = true;
-        private readonly Player player;
+        protected readonly Player player;
+        protected readonly PlayerMovement playerMovement;
         private static float additionalZValue;
         public BasePlayerMovementState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
             player = entity;
+            playerMovement = entity.GetPlayerMovement;
         }
         public override void Update()
         {
@@ -42,5 +44,7 @@ namespace Swift_Blade.FSM.States
             //Debug.DrawRay(transform.position, input, Color.red);
             //Debug.DrawRay(transform.position, inputLocal, Color.blue)
         }
+        protected sealed override void OnSpeedMultiplierDefaultTrigger(float set) => playerMovement.SpeedMultiplierDefault = set;
+        protected sealed override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetAdditionalVelocity(Vector3.zero);
     }
 }
