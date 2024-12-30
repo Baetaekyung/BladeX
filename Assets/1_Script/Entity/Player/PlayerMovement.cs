@@ -182,7 +182,7 @@ namespace Swift_Blade
                 destination -= capCol.center;
                 //Instantiate(cubePrefab, destination, Quaternion.identity);
             }
-            if (hitDist < 0.5f)
+            if (hitDist < 1f)
             {
                 AllowInputMoving = true;
                 return;
