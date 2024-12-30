@@ -31,11 +31,11 @@ public class SwordBossHealth : MonoBehaviour , IDamageble
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        /*if (Input.GetKeyDown(KeyCode.P))
         {
             ActionData action = new ActionData(Vector3.zero, 0.5f, 10f, 20f, transform, AttackType.Parry);
             TakeDamage(action);
-        }
+        }*/
     }
     
     public void TakeDamage(ActionData actionData)
