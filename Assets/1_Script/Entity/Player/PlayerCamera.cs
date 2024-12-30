@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class PlayerCamera : PlayerComponentBase, IEntityComponentRequireInit
+    public class PlayerCamera : MonoBehaviour, IEntityComponentRequireInit
     {
         public float CameraTargetDistance { get; set; }
         [SerializeField] private float multiplier;

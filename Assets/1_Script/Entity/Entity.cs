@@ -23,11 +23,16 @@ public abstract class Entity : MonoBehaviour
     public T GetEntityComponent<T>() where T : Component, IEntityComponent
     {
         if (componentDictionary.TryGetValue(typeof(T), out IEntityComponent value))
-        {
             return value as T;
-        }
-        Debug.LogError("[ERROR]can't find Entity_Component, reInitializing...");
+
+        Debug.LogError("[ERROR]can't find Entity_Component, ReInitializing...");
         T missingInstance = GetComponentInChildren<T>(true);
+        if (missingInstance == null)
+        {
+            Debug.LogError("Can't find Component");
+            return null;
+        }
+        
         return InitializeEntityComponent(missingInstance) as T;
     }
 }

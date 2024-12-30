@@ -4,11 +4,21 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class PlayerInput : PlayerComponentBase
+    public class PlayerInput : MonoBehaviour, IEntityComponentRequireInit
     {
         public Vector3 InputDirectionRaw { get; private set; }
         public Vector3 InputDirection { get; private set; }
+        public Vector3 InputDirectionRawRotated => CameraRotation * InputDirectionRaw;
+        public Vector3 InputDirectionRotated => CameraRotation * InputDirection;
+        private Quaternion CameraRotation => playerCamera.GetResultQuaternion;
+
+        private PlayerCamera playerCamera;
         public static event Action OnParryInput;
+        public void EntityComponentAwake(Entity entity)
+        {
+            var player = entity as Player;
+            playerCamera = player.GetPlayerCamera;
+        }
         private void Update()
         {
             void LegacyInput()
@@ -20,5 +30,6 @@ namespace Swift_Blade
             }
             LegacyInput();
         }
+
     }
 }

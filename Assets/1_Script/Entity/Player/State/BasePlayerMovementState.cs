@@ -34,7 +34,8 @@ namespace Swift_Blade.FSM.States
             player.GetPlayerAnimator.GetAnimator.SetFloat("X", inputLocal.x);
             if (inputLocal.z >= 0.3f)
                 additionalZValue = Mathf.MoveTowards(additionalZValue, 1, Time.deltaTime * 1.5f);
-            else additionalZValue = 0;
+            else
+                additionalZValue = 0;
             player.GetPlayerAnimator.GetAnimator.SetFloat("Z", inputLocal.z + additionalZValue);
             player.GetPlayerMovement.SpeedMultiplierForward = Mathf.Max(additionalZValue + 0.5f, 1);
             //UI_DebugPlayer.Instance.GetList[6].text = additionalZValue.ToString();

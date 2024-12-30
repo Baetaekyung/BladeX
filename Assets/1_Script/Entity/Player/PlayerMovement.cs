@@ -7,7 +7,8 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class PlayerMovement : PlayerComponentBase, IEntityComponentRequireInit
+    [SelectionBase]
+    public class PlayerMovement : MonoBehaviour, IEntityComponentRequireInit
     {
         [Header("Movement Settings")]
         [SerializeField] private float defaultSpeed = 1;
@@ -86,7 +87,7 @@ namespace Swift_Blade
             //oppositeVelocitiy.y = 0;
             //if (true || input.sqrMagnitude < 0.05f)//always true 
             //{
-            //    //controller.AddForce(oppositeVelocitiy, ForceMode.VelocityChange);
+            //    controller.AddForce(oppositeVelocitiy, ForceMode.VelocityChange);
             //}
             if (AllowInputMoving)
             {
@@ -109,6 +110,7 @@ namespace Swift_Blade
             float multiplier = SpeedMultiplierForward * SpeedMultiplierDefault;
             float wishSpeed = defaultSpeed * multiplier;
             UI_DebugPlayer.Instance.DebugText(0, wishSpeed, "wishSpeed", UI_DB_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.Instance.DebugText(2, multiplier, "multiplier", UI_DB_KEYS.Keys_PlayerMovement);
             float currentSpeed = Vector3.Magnitude(controller.linearVelocity);//
             float speed = wishSpeed - currentSpeed;
             UI_DebugPlayer.Instance.DebugText(1, speed, "speed", UI_DB_KEYS.Keys_PlayerMovement);
