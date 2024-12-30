@@ -14,14 +14,16 @@ namespace Swift_Blade.Feeling
         
         [Header("코루틴 관련 변수들")]
         private Coroutine _hitStopCoroutine;
-        private WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame(); //코루틴 최적화
+        private readonly WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame(); //코루틴 최적화
+
+        private Action _onCompleteEvent = null;
         
         protected override void Awake()
         {
             Time.timeScale = DEFAULT_TIMESCALE;
         }
 
-        public void DoHitStop(HitStopSO hitStopData)
+        public HitStopManager DoHitStop(HitStopSO hitStopData)
         {
             if (_hitStopCoroutine is not null)
             {
@@ -38,19 +40,25 @@ namespace Swift_Blade.Feeling
                 _hitStopCoroutine = StartCoroutine(HitStopCoroutine(hitStopData));
                 _currentPriority = hitStopData.hitStopPriority;
             }
+
+            return this;
         }
         
         //타임 스케일 원래대로 돌리는 함수
-        public void StopHitStop() 
+        public HitStopManager StopHitStop() 
         {
             if (_hitStopCoroutine is not null)
             {
                 StopCoroutine(_hitStopCoroutine);
             }
-            
+
+            InvokeCompleteEvent();
+
             Time.timeScale = DEFAULT_TIMESCALE;
+
+            return this;
         }
-        
+
         private IEnumerator HitStopCoroutine(HitStopSO hitStopData)
         {
             if (hitStopData.hitStopType == HitStopType.SMOOTH) //타임스케일 부드럽게 변환
@@ -86,6 +94,21 @@ namespace Swift_Blade.Feeling
                 yield return new WaitForSecondsRealtime(hitStopData.duration);
                 Time.timeScale = DEFAULT_TIMESCALE;
             }
+
+            InvokeCompleteEvent();
+        }
+
+        private void InvokeCompleteEvent()
+        {
+            _onCompleteEvent?.Invoke();
+            _onCompleteEvent = null;
+        }
+        
+        public void OnComplete(Action onComplete)
+        {
+            _onCompleteEvent = null;
+            
+            _onCompleteEvent = onComplete;
         }
     }
 }

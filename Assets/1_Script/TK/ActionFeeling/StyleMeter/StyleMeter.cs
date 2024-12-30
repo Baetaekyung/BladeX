@@ -23,16 +23,18 @@ namespace Swift_Blade
         private readonly int _changeMeterUPAnimHash = Animator.StringToHash("ChangeMeterUP");
         private readonly int _changeMeterDOWNAnimHash = Animator.StringToHash("ChangeMeterDOWN");
 
+        public Action<StyleMeterScore> OnStyleMeterUpEvent;
+        public Action<StyleMeterScore> OnStyleMeterDownEvent;
+        
         [Header("About visual")]
         private Animator _animator;
         [SerializeField] private Image _swiftIcon;
         
         [Header("StyleMeter Score")]
-        private StyleMeterScore _currentMeterPercent = StyleMeterScore.NONE;
-        public StyleMeterScore CurrentMeterPercent => _currentMeterPercent; //스타일미터 프로퍼티
+        private StyleMeterScore _currentMeterScore = StyleMeterScore.NONE;
 
         [Header("Timer")]
-        [SerializeField] private float _downMeterScoreTime = 6f;
+        [SerializeField] private float _downMeterScoreTime = 6f; //스타일 미터 유지 시간
         private float _currentTime = 0f;
         private float _meterUpPercent = 0f;
         private int _currentMeterRank = 0; //미터 스코어 정수화
@@ -40,9 +42,9 @@ namespace Swift_Blade
         private void Start()
         {
             _animator = GetComponentInChildren<Animator>();
-            float normalizedValue = (float)_currentMeterPercent / 6;
+            
+            float normalizedValue = (float)_currentMeterScore / 6;
             _swiftIcon.fillAmount = normalizedValue;
-
         }
 
         private void Update()
@@ -63,15 +65,17 @@ namespace Swift_Blade
         
         public void UpgradeMeterRank()
         {
-            if (_currentMeterPercent == StyleMeterScore.Swift) return;
+            if (_currentMeterScore == StyleMeterScore.Swift) return;
 
             _meterUpPercent = 0f;
             _currentTime = 0f; //다운그레이드 초기화
             
             _currentMeterRank++;
-            _currentMeterPercent = (StyleMeterScore)_currentMeterRank;
+            _currentMeterScore = (StyleMeterScore)_currentMeterRank;
+            
+            OnStyleMeterUpEvent?.Invoke(_currentMeterScore);
 
-            float normalizedValue = (float)_currentMeterPercent / 6;
+            float normalizedValue = (float)_currentMeterScore / 6;
             _swiftIcon.fillAmount = normalizedValue;
             
             _animator.SetTrigger(_changeMeterUPAnimHash);
@@ -80,13 +84,16 @@ namespace Swift_Blade
         public void DowngradeMeterRank()
         {
             _currentTime = 0f;
-            if (_currentMeterPercent == StyleMeterScore.NONE) return;
+            if (_currentMeterScore == StyleMeterScore.NONE) return;
 
             _currentMeterRank--;
-            _currentMeterPercent = (StyleMeterScore)_currentMeterRank;
+            _currentMeterScore = (StyleMeterScore)_currentMeterRank;
+            
+            OnStyleMeterDownEvent?.Invoke(_currentMeterScore);
+            
             _animator.SetTrigger(_changeMeterDOWNAnimHash);
             
-            float normalizedValue = (float)_currentMeterPercent / 6;
+            float normalizedValue = (float)_currentMeterScore / 6;
             _swiftIcon.fillAmount = normalizedValue;
         }
     }

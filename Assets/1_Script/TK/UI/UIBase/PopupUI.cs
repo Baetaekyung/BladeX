@@ -24,11 +24,26 @@ namespace Swift_Blade.UI
             _delayRoutine = StartCoroutine(DelayRoutine(delay));
         }
 
+        public virtual void DelayPopup(float delay, Action callback)
+        {
+            if (_delayRoutine is not null)
+            {
+                StopCoroutine(_delayRoutine);
+            }
+            _delayRoutine = StartCoroutine(DelayRoutine(delay, callback));
+        }
+
         private IEnumerator DelayRoutine(float delay)
         {
             Popup();
             yield return new WaitForSeconds(delay);
-            PopDown();
+        }
+        
+        private IEnumerator DelayRoutine(float delay, Action callback)
+        {
+            Popup();
+            yield return new WaitForSeconds(delay);
+            callback?.Invoke();
         }
 
         #endregion
