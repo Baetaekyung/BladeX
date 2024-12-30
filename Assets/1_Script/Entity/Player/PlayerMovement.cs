@@ -30,6 +30,10 @@ namespace Swift_Blade
         [Header("DashSetting")]
         [SerializeField] private CinemachinePositionComposer cine;
         [SerializeField] private LayerMask whatIsObstacle;
+
+        private Vector3 des;
+        [SerializeField] private CapsuleCollider capCol;
+        [SerializeField] private Transform cubePrefab;
         //[SerializeField] private TrailRenderer dashPar;
 
         private const float rollcost = 1f;
@@ -154,10 +158,6 @@ namespace Swift_Blade
             controller.AddForce(result, forceMode);
         }
 
-        private Vector3 des;
-        [SerializeField] private CapsuleCollider capCol;
-        [SerializeField] private Transform cubePrefab;
-
         public void Dash(Vector3 dir, float force)
         {
             if (dir == Vector3.zero) return;
@@ -179,6 +179,7 @@ namespace Swift_Blade
                 //Debug.Log(hit.distance);
 
                 destination = hit.point + dir.normalized * 0.1f;
+                destination += new Vector3(capCol.bounds.size.x * -(dir.x), 0, capCol.bounds.size.z * -(dir.z));
                 destination -= capCol.center;
                 //Instantiate(cubePrefab, destination, Quaternion.identity);
             }
