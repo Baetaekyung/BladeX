@@ -36,8 +36,6 @@ namespace Swift_Blade
                 
                 if(hit.collider.TryGetComponent(out IDamageble health))
                 {
-                    Debug.Log($"맞았습니다. {hit.collider.name}");
-                    
                     float knockbackPower = 3f;
 
                     var actionData = new ActionData
@@ -47,10 +45,11 @@ namespace Swift_Blade
                         knockbackDuration = 0f,
                         knockbackPower = 0f,
                         dealer = _player.transform,
-                        attackType = _player.IsParryState ? AttackType.Parry : AttackType.Melee
+                        //attackType = _player.IsParryState ? AttackType.Parry : AttackType.Melee
+                        attackType =  AttackType.Parry
                     };
-
-                    health.TakeDamage(actionData);
+                    print(actionData.attackType == AttackType.Parry);
+                  
                 }
             }
             return isHit;
