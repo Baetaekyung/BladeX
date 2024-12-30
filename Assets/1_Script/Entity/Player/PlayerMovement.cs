@@ -15,7 +15,11 @@ namespace Swift_Blade
         [SerializeField] private float onGroundYVal;
         [SerializeField] private float gravitiy = -9.81f;
         [SerializeField] private float gravitiyMultiplier = 1;
+
+        [Header("Collisin Settings")]
+        [SerializeField] private float bottomYOffset;
         private ContactPoint? lowerstContactPoint;
+        private ContactPoint? lowestContactPointBottom;
 
         [Header("Roll Settings")]
         [SerializeField] private AnimationCurve rollCurve; // curve length should be 1.
@@ -69,6 +73,9 @@ namespace Swift_Blade
                 //controller.linearVelocity = Vector3.zero;
                 AddForceLocaly(Vector3.forward, db_speedMulti);
             }
+            UI_DebugPlayer.Instance.DebugText(3, lowerstContactPoint.HasValue ? lowerstContactPoint.Value.point : lowerstContactPoint.HasValue, "lowestContactPoint", DB_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.Instance.DebugText(4, lowestContactPointBottom.HasValue ? lowestContactPointBottom.Value.point : lowestContactPointBottom.HasValue, "bottomPoint", DB_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.Instance.DebugText(5, controller.useGravity, "gravity", DB_UI_KEYS.Keys_PlayerMovement);
             //Debug.DrawRay(transform.position, Vector3.up * 10, Color.yellow);
             //if (lowerstContactPoint.HasValue)
             //    Debug.DrawRay(lowerstContactPoint.Value.point, Vector3.right, Color.yellow);
@@ -100,32 +107,34 @@ namespace Swift_Blade
                 }
                 else playerRenderer.LookTargetSmooth(InputDirection, angleMultiplier);
 
-                if (lowerstContactPoint != null)
+                if (lowestContactPointBottom != null)
                 {
                     controller.useGravity = false;
-//input = Vector3.ProjectOnPlane(InputDirection, lowerstContactPoint.Value.normal);// this is causing physics error on 90 deg angle normal
+                    input = Vector3.ProjectOnPlane(InputDirection, lowerstContactPoint.Value.normal);// this is causing physics error on 90 deg angle normal
                 }
                 else controller.useGravity = true;
             }
+
+            //if i don't use it below i can unassign it here
+            lowerstContactPoint = null;
+            lowestContactPointBottom = null;
+
             float multiplier = SpeedMultiplierForward * SpeedMultiplierDefault;
             float wishSpeed = defaultSpeed * multiplier;
-            UI_DebugPlayer.Instance.DebugText(0, wishSpeed, "wishSpeed", UI_DB_KEYS.Keys_PlayerMovement);
-            UI_DebugPlayer.Instance.DebugText(2, multiplier, "multiplier", UI_DB_KEYS.Keys_PlayerMovement);
-            float currentSpeed = Vector3.Magnitude(controller.linearVelocity);//
+            UI_DebugPlayer.Instance.DebugText(0, wishSpeed, "wishSpeed", DB_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.Instance.DebugText(2, multiplier, "multiplier", DB_UI_KEYS.Keys_PlayerMovement);
+
+            float currentSpeed = Vector3.Magnitude(controller.linearVelocity);// change this to dot
             float speed = wishSpeed - currentSpeed;
-            UI_DebugPlayer.Instance.DebugText(1, speed, "speed", UI_DB_KEYS.Keys_PlayerMovement);
-            if (speed < 0)
-            {
-                print("fuck");
-                goto end;
-            }
+            UI_DebugPlayer.Instance.DebugText(1, speed, "speed", DB_UI_KEYS.Keys_PlayerMovement);
+            if (speed < 0) return;
+
             Vector3 addition = velocity + AdditionalVector;
             Vector3 result = input * speed + addition;
-
+            controller.linearVelocity = input * 5;
+            Debug.DrawRay(transform.position, input, Color.cyan, 1);
             //controller.AddForce(result, ForceMode.VelocityChange);
             //UI_DebugPlayer.Instance.GetList[4].text = controller.linearVelocity.ToString();
-        end:
-            lowerstContactPoint = null;
         }
 
         private Vector3 GetClosestEnemy()
@@ -211,12 +220,25 @@ namespace Swift_Blade
                 return result;
             }
             ContactPoint? newContactPoint = GetLowestPoint();
-            if (newContactPoint.HasValue)
+
+            if (!newContactPoint.HasValue) return;
+
+            if (!lowerstContactPoint.HasValue)
+                lowerstContactPoint = newContactPoint;
+
+            float lowestPointY = lowerstContactPoint.Value.point.y;
+            float newPointY = newContactPoint.Value.point.y;
+            //It doesn't make sense but i will just leave for now (>=)
+            if (lowestPointY >= newPointY)
             {
-                if (!lowerstContactPoint.HasValue) lowerstContactPoint = newContactPoint;
-                else if (lowerstContactPoint.Value.point.y >= newContactPoint.Value.point.y)
-                    lowerstContactPoint = newContactPoint;
+                lowerstContactPoint = newContactPoint;
+
+                float bottomY = transform.position.y + bottomYOffset;
+                //Debug.DrawRay(transform.position + new Vector3(0, bottomY), Vector3.right, Color.red, 2);
+                if (newPointY < bottomY) lowestContactPointBottom = newContactPoint;
             }
+
+
         }
     }
 }

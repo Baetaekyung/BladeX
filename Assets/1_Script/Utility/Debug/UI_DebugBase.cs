@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
-public static class UI_DB_KEYS
+public static class DB_UI_KEYS
 {
     #region Keys
     //starts with 1 because default(int) is 0 and DebugText's key parameter is zero
@@ -16,7 +16,7 @@ public static class UI_DB_KEYS
 
 public abstract class UI_DebugBase<T> : MonoSingleton<T> where T : UI_DebugBase<T>
 {
-    public static int Key { get; set; } = UI_DB_KEYS.Keys_PlayerMovement;
+    public static int Key { get; set; } = DB_UI_KEYS.Keys_PlayerMovement;
     public bool ShowDebugUI
     {
         get => active;
