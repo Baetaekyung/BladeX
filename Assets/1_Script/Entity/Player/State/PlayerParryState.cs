@@ -10,10 +10,8 @@ namespace Swift_Blade.FSM.States
         private Transform _visual;
         
         private readonly Player _player;
-        private readonly PlayerParryData _data;
         private readonly PlayerHealth _playerHealthCompo;
         private readonly PlayerMovement _movementCompo;
-        private readonly StatComponent _statCompo;
         
         private float _currentDuration = 0f;
         private float _parryDuration;
@@ -24,18 +22,17 @@ namespace Swift_Blade.FSM.States
             _visual = GameObject.Find("Vis").transform;
             _movementCompo = _player.GetPlayerMovement;
             
-            _data = _player.GetComponentInChildren<PlayerParryData>();
             _playerHealthCompo = _player.GetComponentInChildren<PlayerHealth>();
-            _statCompo = _player.GetComponentInChildren<StatComponent>();
         }
 
         public override void Enter()
         {
             base.Enter();
             
+            Debug.Log("Parry Enter");
             _movementCompo.AllowInputMoving = false;
-            
-            _parryDuration = _statCompo.GetStatByType(StatType.PARRYDURATION).Value;
+
+            _parryDuration = 0.4f;
 
             _playerHealthCompo.OnHitEvent.AddListener(ParryOnHitByVicinityHandler);
         }
@@ -49,7 +46,7 @@ namespace Swift_Blade.FSM.States
             if (_currentDuration >= _parryDuration)
             {
                 StyleMeter.Instance.DowngradeMeterRank(); //패링 실패시 랭크가 내려가도록
-                GetOwnerFsm.ChangeState(PlayerStateEnum.Idle);
+                GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
             }
         }
 
@@ -61,17 +58,18 @@ namespace Swift_Blade.FSM.States
             
             _movementCompo.AllowInputMoving = true;
             
-            
+            Debug.Log("Parry Exit");
+
             base.Exit();
         }
 
         private void DoActionFeeling() //패링 성공시 비주얼 효과들
         {
-            HitStopManager.Instance.DoHitStop(_data.hitStopData);
-            CameraShakeManager.Instance.DoShake(CameraShakeType.ParryShake);
-            CameraFocusManager.Instance.DoFocus(_data.cameraFocusData);
-            PostProcessManager.Instance.DoPostProcessing(_data.parryPostProcessing, 0.4f);
-            _data.parryLight.SetActive(true);
+            // HitStopManager.Instance.DoHitStop(_data.hitStopData);
+            // CameraShakeManager.Instance.DoShake(CameraShakeType.ParryShake);
+            // CameraFocusManager.Instance.DoFocus(_data.cameraFocusData);
+            // PostProcessManager.Instance.DoPostProcessing(_data.parryPostProcessing, 0.4f);
+            // _data.parryLight.SetActive(true);
         }
         
         private void ParryOnHitByVicinityHandler(ActionData actionData)
