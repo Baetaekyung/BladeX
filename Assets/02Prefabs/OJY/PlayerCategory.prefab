@@ -11456,54 +11456,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -26.301073, y: -3.4286137, z: 0.0000047683716}
     m_Extent: {x: 22.985903, y: 20.297916, z: 13.981091}
   m_DirtyAABB: 0
---- !u!1 &2513812192571997901
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3341917658815524807}
-  - component: {fileID: 4489491218304113576}
-  m_Layer: 0
-  m_Name: Feedback
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3341917658815524807
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2513812192571997901}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5704459122665910530}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4489491218304113576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2513812192571997901}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02036a99bd8ba114c8f8b11d6a8b11ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  root: {fileID: 4103815729079207692}
-  flashDuration: 0.2
-  _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
-  _meshRenderers: []
 --- !u!1 &2530492931265489939
 GameObject:
   m_ObjectHideFlags: 0
@@ -12932,7 +12884,6 @@ Transform:
   - {fileID: 320425046425690778}
   - {fileID: 1615701477517584540}
   - {fileID: 3051029101963753073}
-  - {fileID: 3341917658815524807}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5558562310119497924
@@ -36670,6 +36621,7 @@ GameObject:
   - component: {fileID: 8928013613842272787}
   - component: {fileID: 2072265066507459340}
   - component: {fileID: 2935920646377234470}
+  - component: {fileID: 4863692531285898503}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -36795,6 +36747,38 @@ CapsuleCollider:
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &2935920646377234470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7389977111463853842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79020367695748a4b9812884ba6ef3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _statCompo: {fileID: 0}
+  _healthStat: {fileID: 0}
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &4863692531285898503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
