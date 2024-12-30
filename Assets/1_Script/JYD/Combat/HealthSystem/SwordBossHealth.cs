@@ -22,7 +22,6 @@ public class SwordBossHealth : MonoBehaviour , IDamageble
     private void Start()
     {
         currentHealth = maxHealth;
-                
     }
 
     private void OnDestroy()
@@ -40,6 +39,14 @@ public class SwordBossHealth : MonoBehaviour , IDamageble
     
     public void TakeDamage(ActionData actionData)
     {
+        if (actionData.attackType == AttackType.Parry)
+        {
+            TriggerState(BossState.Hurt);
+            
+            OnParryHitEvent?.Invoke(actionData);
+            return;
+        }
+        
         if (Random.value <= 0.1f)
         {
             TriggerState(BossState.Step);
@@ -55,13 +62,7 @@ public class SwordBossHealth : MonoBehaviour , IDamageble
             Dead();
             return;
         }
-
-        if (actionData.attackType == AttackType.Parry)
-        {
-            TriggerState(BossState.Hurt);
-            OnParryHitEvent?.Invoke(actionData);
-        }
-        
+                
         OnHitEvent?.Invoke(actionData);
        
     }

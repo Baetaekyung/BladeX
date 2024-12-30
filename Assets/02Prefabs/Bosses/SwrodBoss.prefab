@@ -52804,7 +52804,6 @@ GameObject:
   - component: {fileID: 7450418079246112077}
   - component: {fileID: 4912597996633521281}
   - component: {fileID: 6851952379670468208}
-  - component: {fileID: 8415269924083709828}
   m_Layer: 7
   m_Name: SwrodBoss
   m_TagString: Untagged
@@ -52828,6 +52827,7 @@ Transform:
   - {fileID: 5016407985003951835}
   - {fileID: 4809515544269638053}
   - {fileID: 4493185041362481701}
+  - {fileID: 8794551411436623106}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3230283911505001705
@@ -53022,10 +53022,10 @@ MonoBehaviour:
   OnHitEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8415269924083709828}
-        m_TargetAssemblyTypeName: Swift_Blade.BossVFX, Assembly-CSharp
-        m_MethodName: FlashMat
-        m_Mode: 0
+      - m_Target: {fileID: 1699874816648629860}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -53056,18 +53056,6 @@ MonoBehaviour:
   currentHealth: 0
   BehaviorGraphAgent: {fileID: 4238987823983969262}
   changeBossState: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
---- !u!114 &8415269924083709828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6652257015900168520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f799d164b4993f4f8b3f7dd0a3b272e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6653191170525056191
 GameObject:
   m_ObjectHideFlags: 0
@@ -68003,6 +67991,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3785743867782127156}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8661914016768943755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8794551411436623106}
+  - component: {fileID: 1699874816648629860}
+  m_Layer: 7
+  m_Name: Feedback
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8794551411436623106
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8661914016768943755}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1888946996347210882}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1699874816648629860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8661914016768943755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02036a99bd8ba114c8f8b11d6a8b11ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  root: {fileID: 1888946996347210882}
+  flashDuration: 0.2
+  _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
+  _meshRenderers: []
 --- !u!1 &8662369836703823331
 GameObject:
   m_ObjectHideFlags: 0
