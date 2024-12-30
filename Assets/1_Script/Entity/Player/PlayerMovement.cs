@@ -2,10 +2,8 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.AppUI.Core;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem.Utilities;
 
 namespace Swift_Blade
 {
@@ -14,9 +12,10 @@ namespace Swift_Blade
     {
         [Header("Movement Settings")]
         [SerializeField] private float defaultSpeed = 1;
-        [SerializeField] private float onGroundYVal;
+        [SerializeField] private float onGroundYVal = -0.5f;
         [SerializeField] private float gravitiy = -9.81f;
         [SerializeField] private float gravitiyMultiplier = 1;
+        private float yVal;
 
         [Header("Collisin Settings")]
         [SerializeField] private float bottomYOffset = 0.4f; //const 0.4f
@@ -59,7 +58,6 @@ namespace Swift_Blade
         public float SpeedMultiplierForward { get; set; } = 1;
         public Vector3 InputDirection { get; set; }
         public Vector3 AdditionalVector { get; set; }
-        private Vector3 velocity;
         //public Vector3 RollForce { get; private set; }
         public bool AllowInputMoving { get; set; } = true;
         public bool LockOnEnemy { get; set; } = false;
@@ -76,22 +74,25 @@ namespace Swift_Blade
             currentRollStamina = Mathf.Min(GetMaxStamina, currentRollStamina);
             if (Input.GetKeyDown(KeyCode.V))
             {
-                controller.AddForce(Vector3.forward, ForceMode.Impulse);
                 //controller.linearVelocity = Vector3.zero;
                 //AddForceLocaly(Vector3.forward, db_speedMulti);
             }
             UI_DebugPlayer.Instance.DebugText(3, lowerstContactPoint.HasValue ? lowerstContactPoint.Value.point : lowerstContactPoint.HasValue, "lowestContactPoint", DBG_UI_KEYS.Keys_PlayerMovement);
             UI_DebugPlayer.Instance.DebugText(4, lowestContactPointBottom.HasValue ? lowestContactPointBottom.Value.point : lowestContactPointBottom.HasValue, "bottomPoint", DBG_UI_KEYS.Keys_PlayerMovement);
-            UI_DebugPlayer.Instance.DebugText(5, controller.useGravity, "gravity", DBG_UI_KEYS.Keys_PlayerMovement);
             //Debug.DrawRay(transform.position, Vector3.up * 10, Color.yellow);
             //if (lowerstContactPoint.HasValue)
             //    Debug.DrawRay(lowerstContactPoint.Value.point, Vector3.right, Color.yellow);
         }
         private void FixedUpdate()
         {
-            velocity = Vector3.MoveTowards(velocity, Vector3.zero, Time.fixedDeltaTime * 10);
             AdditionalVector = Vector3.MoveTowards(AdditionalVector, Vector3.zero, Time.fixedDeltaTime * 10);
             ApplyMovement();
+            UI_DebugPlayer.Instance.DebugText(8, lowestContactPointBottom.HasValue, "onground", DBG_UI_KEYS.Keys_PlayerMovement);
+            if (lowestContactPointBottom.HasValue) yVal = onGroundYVal;
+            else yVal += Time.fixedDeltaTime * gravitiy * gravitiyMultiplier;
+            UI_DebugPlayer.Instance.DebugText(5, yVal, "yVal", DBG_UI_KEYS.Keys_PlayerMovement);
+            lowerstContactPoint = null;
+            lowestContactPointBottom = null;
         }
         private void ApplyMovement()
         {
@@ -99,6 +100,7 @@ namespace Swift_Blade
             if (AllowInputMoving)
             {
                 input = InputDirection;
+                UI_DebugPlayer.Instance.DebugText(7, input, "rawinput", DBG_UI_KEYS.Keys_PlayerMovement);
                 if (LockOnEnemy)
                 {
                     Vector3 targetVector = GetClosestEnemy();
@@ -106,18 +108,14 @@ namespace Swift_Blade
                 }
                 else playerRenderer.LookTargetSmooth(InputDirection, angleMultiplier);
 
-                if (lowestContactPointBottom != null)
+                if (lowestContactPointBottom.HasValue)
                 {
-                    controller.useGravity = false;
+                    //controller.useGravity = false;
                     input = Vector3.ProjectOnPlane(InputDirection, lowerstContactPoint.Value.normal);// this is causing physics error on 90 deg angle normal
                     input.Normalize();
                 }
-                else controller.useGravity = true;
+                //else controller.useGravity = true;
             }
-
-            //if I don't use it below i can unassign it here
-            lowerstContactPoint = null;
-            lowestContactPointBottom = null;
 
             float multiplier = SpeedMultiplierForward * SpeedMultiplierDefault;
             float wishSpeed = defaultSpeed * multiplier;
@@ -129,9 +127,10 @@ namespace Swift_Blade
             UI_DebugPlayer.Instance.DebugText(1, speed, "speed", DBG_UI_KEYS.Keys_PlayerMovement);
             if (speed < 0) return;
 
-            Vector3 addition = velocity + AdditionalVector;
+            Vector3 addition = AdditionalVector;
             Vector3 result = input * speed + addition;
-            controller.linearVelocity = input * 5;
+            result.y += yVal;
+            controller.linearVelocity = result;
             UI_DebugPlayer.Instance.DebugText(6, input, "input", DBG_UI_KEYS.Keys_PlayerMovement);
             Debug.DrawRay(transform.position + Vector3.up * 0.5f, input, Color.cyan, 1);
         }

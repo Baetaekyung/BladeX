@@ -8,8 +8,8 @@ namespace Swift_Blade
     {
         public Vector3 InputDirectionRaw { get; private set; }
         public Vector3 InputDirection { get; private set; }
-        public Vector3 InputDirectionRawRotated => CameraRotation * InputDirectionRaw;
-        public Vector3 InputDirectionRotated => CameraRotation * InputDirection;
+        public Vector3 InputDirectionRawRotated => CameraRotation * InputDirectionRaw.normalized;
+        public Vector3 InputDirectionRotated => CameraRotation * (InputDirection.sqrMagnitude < 1 ? InputDirection: InputDirection.normalized);
         private Quaternion CameraRotation => playerCamera.GetResultQuaternion;
 
         private PlayerCamera playerCamera;
