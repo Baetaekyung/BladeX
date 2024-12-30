@@ -76,7 +76,8 @@ namespace Swift_Blade
                     playerStateMachine.ChangeState(PlayerStateEnum.Dash);
                 if (Input.GetKeyDown(KeyCode.L))
                     GetPlayerMovement.LockOnEnemy = !GetPlayerMovement.LockOnEnemy;
-
+                if(Input.GetKeyDown(KeyCode.C))
+                    playerStateMachine.ChangeState(PlayerStateEnum.Parry);
             }
             ProcessInput();
         }

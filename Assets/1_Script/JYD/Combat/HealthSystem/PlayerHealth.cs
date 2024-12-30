@@ -13,7 +13,7 @@ namespace Swift_Blade
         private float _currentHealth;
 
         public UnityEvent OnDeadEvent;
-        public UnityEvent OnHitEvent;
+        public UnityEvent<ActionData> OnHitEvent;
 
         private void Update()
         {
@@ -29,7 +29,7 @@ namespace Swift_Blade
             float damageAmount = actionData.damageAmount;
             _currentHealth -= damageAmount;
             
-            OnHitEvent?.Invoke();
+            OnHitEvent?.Invoke(actionData);
 
             if (_currentHealth <= 0)
             {
