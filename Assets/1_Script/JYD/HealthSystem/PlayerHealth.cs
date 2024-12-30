@@ -7,12 +7,14 @@ namespace Swift_Blade
 {
     public class PlayerHealth : MonoBehaviour,IDamageble
     {
-        public float maxHealth;
-        public float currentHealth;
+        [SerializeField] private StatComponent _statCompo;
+        [SerializeField] private StatSO _healthStat;
+
+        private float _maxHealth;
+        private float _currentHealth;
 
         public event Action OnDeadEvent;
         public event Action OnHitEvent;
-
 
         [Header("Flash info")]
         [SerializeField] private float flashDuration;
@@ -22,8 +24,6 @@ namespace Swift_Blade
         
         private void Start()
         {
-            currentHealth = maxHealth;
-            
             _meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
             _originMats = new Material[_meshRenderers.Length];
             for (int i = 0; i < _meshRenderers.Length; i++)
@@ -42,17 +42,24 @@ namespace Swift_Blade
         public void TakeDamage(ActionData actionData)
         {
             float damageAmount = actionData.damageAmount;
-            currentHealth -= damageAmount;
+            _currentHealth -= damageAmount;
             
             OnHitEvent?.Invoke();
-            
-            if (currentHealth <= 0)
+
+            if (_currentHealth <= 0)
+            {
                 Dead();
+            }
         }
 
         public void TakeHeal()
         {
-            
+            //이거 매개변수 없으면 안되는거 아닌가?
+        }
+
+        public void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
+        {
+            _currentHealth = Mathf.Clamp(_currentHealth + healAmount, 0, _maxHealth);
         }
 
         public void Dead()
@@ -79,6 +86,14 @@ namespace Swift_Blade
             {
                 _meshRenderers[i].material = _originMats[i];
             }
+        }
+
+        /// <param name="value">추가할 체력 값</param>
+        public void AddBaseHealth(float value) //기본 값 변경이라 키 값이 필요 없음.
+        {
+            _statCompo.SetBaseValue(_healthStat, _maxHealth + value);
+            _maxHealth = _healthStat.Value;
+            _currentHealth = Mathf.Clamp(_currentHealth + value, 0, _healthStat.Value);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Swift_Blade.Feeling
     {
         UpDown,
         LeftRight,
+        ParryShake,
     }
     
     /// <summary>

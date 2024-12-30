@@ -18,6 +18,8 @@ namespace Swift_Blade.Feeling
         [SerializeField] private SerializableDictionary<CameraShakeType, CameraShakeSO> impulseDictionary;
         private Coroutine _cameraShakeCoroutine;
         private CameraShakePriority _currentPriority = CameraShakePriority.LAST;
+
+        private Action _onCompleteEvent = null;
         
         private void Awake()
         {
@@ -31,7 +33,7 @@ namespace Swift_Blade.Feeling
             }
         }
 
-        public void DoShake(CameraShakeType shakeType, CameraShakePriority priority = CameraShakePriority.NONE)
+        public CameraShakeManager DoShake(CameraShakeType shakeType, CameraShakePriority priority = CameraShakePriority.NONE)
         {
             if (_cameraShakeCoroutine is not null)
             {
@@ -45,6 +47,8 @@ namespace Swift_Blade.Feeling
             }
             else
                 _cameraShakeCoroutine = StartCoroutine(GenerateImpulseRoutine(shakeType, priority));
+
+            return this;
         }
         
         /// <param name="shakeType">카메라 셰이크 타입</param>
@@ -59,9 +63,24 @@ namespace Swift_Blade.Feeling
                 .ImpulseDefinition.ImpulseDuration;
             _currentPriority = priority;
             
-            //Initialize priority
             yield return new WaitForSeconds(duration);
+            
+            InvokeCompleteEvent();
+
             _currentPriority = CameraShakePriority.LAST;
+        }
+
+        private void InvokeCompleteEvent()
+        {
+            _onCompleteEvent?.Invoke();
+            _onCompleteEvent = null;
+        }
+
+        public void OnComplete(Action onComplete)
+        {
+            _onCompleteEvent = null;
+
+            _onCompleteEvent = onComplete;
         }
     }
 }

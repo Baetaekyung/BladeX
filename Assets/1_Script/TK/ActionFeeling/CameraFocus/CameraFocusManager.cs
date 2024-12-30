@@ -16,8 +16,10 @@ namespace Swift_Blade.Feeling
         
         [Header("코루틴 변수들")]
         private Coroutine _focusRoutine;
-        private WaitForEndOfFrame _waitFrame = new WaitForEndOfFrame(); //코루틴 최적화 변수
+        private readonly WaitForEndOfFrame _waitFrame = new WaitForEndOfFrame(); //코루틴 최적화 변수
 
+        private Action _onCompleteEvent;
+        
         private void Start()
         {
             _targetCamera = _camera;
@@ -30,7 +32,7 @@ namespace Swift_Blade.Feeling
         }
 
         //포커스 실행
-        public void DoFocus(CameraFocusSO focusData)
+        public CameraFocusManager DoFocus(CameraFocusSO focusData)
         {
             if (_focusRoutine is not null) //코루틴이 현재 실행중이면
             {
@@ -39,6 +41,8 @@ namespace Swift_Blade.Feeling
             }
             
             _focusRoutine = StartCoroutine(FocusRoutine(focusData)); //포커스 진행
+
+            return this;
         }
         
         private IEnumerator FocusRoutine(CameraFocusSO focusData)
@@ -86,6 +90,21 @@ namespace Swift_Blade.Feeling
                 //혹시 모르니까 마지막에 원래 사이즈로 변경하기
                 _targetCamera.Lens.FieldOfView = DEFAULT_CAMERA_FOV;
             }
+
+            InvokeCompleteEvent();
+        }
+
+        private void InvokeCompleteEvent()
+        {
+            _onCompleteEvent?.Invoke();
+            _onCompleteEvent = null;
+        }
+
+        public void OnComplete(Action onComplete)
+        {
+            _onCompleteEvent = null;
+            
+            _onCompleteEvent = onComplete;
         }
         
 //인스펙터 변수 확인

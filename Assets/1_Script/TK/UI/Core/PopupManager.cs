@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 
 namespace Swift_Blade
 {
-    [MonoSingletonUsage(MonoSingletonFlags.DontDestroyOnLoad)]
     public class PopupManager : MonoSingleton<PopupManager>
     {
         public SerializableDictionary<PopupType, PopupUI> popups
@@ -14,7 +13,7 @@ namespace Swift_Blade
         private Stack<PopupUI> _popupStack = new Stack<PopupUI>();
         
         private float _delayTime = 3f; //이거 리터럴 임시변수고 SetDelay로 설정해주기
-
+        
         private void Start()
         {
             InitPopups();
@@ -30,18 +29,20 @@ namespace Swift_Blade
 
         private void Update()
         {
-            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            if (Keyboard.current.escapeKey.wasPressedThisFrame 
+                && !DialogManager.Instance.IsDialogOpen)
             {
                 PopDown();
             }
 
-            if (Keyboard.current.tKey.wasPressedThisFrame)
+            if (Keyboard.current.tKey.wasPressedThisFrame
+                && !DialogManager.Instance.IsDialogOpen)
             {
                 if (GetPopupUI(PopupType.Text) is TextPopup textPopup)
                 {
                     textPopup.SetText("Game over...");
+                    DelayPopup(PopupType.Text, 2f, () => textPopup.PopDown());
                 }
-                DelayPopup(PopupType.Text, 2f);
             }
         }
 
@@ -59,6 +60,13 @@ namespace Swift_Blade
             
             popups[popupType].DelayPopup(delay);
         }
+
+        public void DelayPopup(PopupType popupType, float delay, Action callback)
+        {
+            if (_popupStack.Contains(popups[popupType])) return;
+            
+            popups[popupType].DelayPopup(delay, callback);
+        }
         
         public void PopDown()
         {
@@ -71,6 +79,11 @@ namespace Swift_Blade
             {
                 PopUp(PopupType.Option);
             }
+        }
+
+        public void PopDown(PopupType popupType)
+        {
+            
         }
 
         public PopupUI GetPopupUI(PopupType type)

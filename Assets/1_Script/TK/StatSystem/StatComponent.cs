@@ -4,18 +4,13 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class StatComponent : MonoBehaviour
+    public abstract class StatComponent : MonoBehaviour
     {
         [SerializeField] private StatOverride[] _statOverrides;
 
-        private StatSO[] _stats;
-
-        private void Awake()
-        {
-            Initalize();
-        }
-
-        private void Initalize()
+        protected StatSO[] _stats;
+        
+        protected virtual void Initalize()
         {
             _stats = _statOverrides.Select(x => x.CreateStat()).ToArray();
         }
@@ -23,7 +18,6 @@ namespace Swift_Blade
         public StatSO GetStat(StatSO stat)
         {
             StatSO findStat = _stats.FirstOrDefault(x => x.statName == stat.statName);
-            Debug.Assert(findStat != null, $"Stat type {stat} not found");
 
             return findStat;
         }
@@ -31,7 +25,6 @@ namespace Swift_Blade
         public StatSO GetStatByType(StatType statType)
         {
             StatSO findStat = _stats.FirstOrDefault(x => x.statType == statType);
-            Debug.Assert(findStat != null, $"Stat type {statType} not found");
 
             return findStat;
         }

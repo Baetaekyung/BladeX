@@ -6,6 +6,7 @@ namespace Swift_Blade.UI
     {
         Option,
         Help,
-        Text
+        Text,
+        Dialog
     }
 }
