@@ -75,9 +75,9 @@ namespace Swift_Blade
                 //controller.linearVelocity = Vector3.zero;
                 AddForceLocaly(Vector3.forward, db_speedMulti);
             }
-            UI_DebugPlayer.Instance.DebugText(3, lowerstContactPoint.HasValue ? lowerstContactPoint.Value.point : lowerstContactPoint.HasValue, "lowestContactPoint", DB_UI_KEYS.Keys_PlayerMovement);
-            UI_DebugPlayer.Instance.DebugText(4, lowestContactPointBottom.HasValue ? lowestContactPointBottom.Value.point : lowestContactPointBottom.HasValue, "bottomPoint", DB_UI_KEYS.Keys_PlayerMovement);
-            UI_DebugPlayer.Instance.DebugText(5, controller.useGravity, "gravity", DB_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.Instance.DebugText(3, lowerstContactPoint.HasValue ? lowerstContactPoint.Value.point : lowerstContactPoint.HasValue, "lowestContactPoint", DBG_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.Instance.DebugText(4, lowestContactPointBottom.HasValue ? lowestContactPointBottom.Value.point : lowestContactPointBottom.HasValue, "bottomPoint", DBG_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.Instance.DebugText(5, controller.useGravity, "gravity", DBG_UI_KEYS.Keys_PlayerMovement);
             //Debug.DrawRay(transform.position, Vector3.up * 10, Color.yellow);
             //if (lowerstContactPoint.HasValue)
             //    Debug.DrawRay(lowerstContactPoint.Value.point, Vector3.right, Color.yellow);
@@ -123,17 +123,18 @@ namespace Swift_Blade
 
             float multiplier = SpeedMultiplierForward * SpeedMultiplierDefault;
             float wishSpeed = defaultSpeed * multiplier;
-            UI_DebugPlayer.Instance.DebugText(0, wishSpeed, "wishSpeed", DB_UI_KEYS.Keys_PlayerMovement);
-            UI_DebugPlayer.Instance.DebugText(2, multiplier, "multiplier", DB_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.Instance.DebugText(0, wishSpeed, "wishSpeed", DBG_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.Instance.DebugText(2, multiplier, "multiplier", DBG_UI_KEYS.Keys_PlayerMovement);
 
             float currentSpeed = Vector3.Magnitude(controller.linearVelocity);// change this to dot
             float speed = wishSpeed - currentSpeed;
-            UI_DebugPlayer.Instance.DebugText(1, speed, "speed", DB_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.Instance.DebugText(1, speed, "speed", DBG_UI_KEYS.Keys_PlayerMovement);
             if (speed < 0) return;
 
             Vector3 addition = velocity + AdditionalVector;
             Vector3 result = input * speed + addition;
-            //controller.linearVelocity = input * 5;
+            controller.linearVelocity = input * 5;
+            UI_DebugPlayer.Instance.DebugText(6, input, "input", DBG_UI_KEYS.Keys_PlayerMovement);
             Debug.DrawRay(transform.position + Vector3.up * 0.5f, input, Color.cyan, 1);
         }
 
