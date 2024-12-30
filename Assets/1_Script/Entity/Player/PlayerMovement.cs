@@ -162,6 +162,9 @@ namespace Swift_Blade
         public void Dash(Vector3 dir, float force)
         {
             if (dir == Vector3.zero) return;
+
+            AllowInputMoving = false;
+
             //Vector3 normalizedDir = dir.normalized;
 
             controller.linearVelocity = Vector3.zero;
@@ -180,7 +183,7 @@ namespace Swift_Blade
                 //Debug.Log(hit.distance);
 
                 destination = hit.point + dir.normalized * 0.1f;
-                destination += new Vector3(capCol.bounds.size.x * -(dir.x), 0, capCol.bounds.size.z * -(dir.z));
+                destination += new Vector3((capCol.bounds.size.x * -(dir.x)) / 2, 0, (capCol.bounds.size.z * -(dir.z)) / 2);
                 destination -= capCol.center;
                 //Instantiate(cubePrefab, destination, Quaternion.identity);
             }
@@ -207,7 +210,7 @@ namespace Swift_Blade
         private void DashEnd()
         {
             cine.Damping = new Vector3(1, 1, 1);
-
+            AllowInputMoving = true;
             //dashPar.SetPosition(0, transform.position);
             //dashPar.SetPosition(1, transform.position);
             //
