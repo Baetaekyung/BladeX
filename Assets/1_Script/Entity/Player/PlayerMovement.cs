@@ -17,7 +17,7 @@ namespace Swift_Blade
         [SerializeField] private float gravitiyMultiplier = 1;
 
         [Header("Collisin Settings")]
-        [SerializeField] private float bottomYOffset;
+        [SerializeField] private float bottomYOffset; //const
         private ContactPoint? lowerstContactPoint;
         private ContactPoint? lowestContactPointBottom;
 
@@ -115,7 +115,7 @@ namespace Swift_Blade
                 else controller.useGravity = true;
             }
 
-            //if i don't use it below i can unassign it here
+            //if I don't use it below i can unassign it here
             lowerstContactPoint = null;
             lowestContactPointBottom = null;
 
@@ -131,10 +131,8 @@ namespace Swift_Blade
 
             Vector3 addition = velocity + AdditionalVector;
             Vector3 result = input * speed + addition;
-            controller.linearVelocity = input * 5;
-            Debug.DrawRay(transform.position, input, Color.cyan, 1);
-            //controller.AddForce(result, ForceMode.VelocityChange);
-            //UI_DebugPlayer.Instance.GetList[4].text = controller.linearVelocity.ToString();
+            //controller.linearVelocity = input * 5;
+            Debug.DrawRay(transform.position + Vector3.up * 0.5f, input, Color.cyan, 1);
         }
 
         private Vector3 GetClosestEnemy()
@@ -237,8 +235,6 @@ namespace Swift_Blade
                 //Debug.DrawRay(transform.position + new Vector3(0, bottomY), Vector3.right, Color.red, 2);
                 if (newPointY < bottomY) lowestContactPointBottom = newContactPoint;
             }
-
-
         }
     }
 }
