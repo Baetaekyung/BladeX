@@ -1,15 +1,8 @@
 ﻿using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 
 public enum AttackType
 {
     Melee,Parry
-}
-
-public enum AttackType
-{
-    VICINITY,
-    RANGE
 }
 
 public struct ActionData

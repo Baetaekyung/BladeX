@@ -36,8 +36,6 @@ namespace Swift_Blade.FSM.States
             _movementCompo.AllowInputMoving = false;
             
             _parryDuration = _statCompo.GetStatByType(StatType.PARRYDURATION).Value;
-            _playerHealthCompo.OnHitByVicinityEvent += ParryOnHitByVicinityHandler;
-            _playerHealthCompo.OnHitByRangeEvent += ParryOnHitByRangeHandler;
         }
 
         public override void Update()
@@ -58,8 +56,6 @@ namespace Swift_Blade.FSM.States
             _currentDuration = 0f;
             
             _movementCompo.AllowInputMoving = true;
-            _playerHealthCompo.OnHitByVicinityEvent -= ParryOnHitByVicinityHandler;
-            _playerHealthCompo.OnHitByRangeEvent -= ParryOnHitByRangeHandler;
             
             base.Exit();
         }

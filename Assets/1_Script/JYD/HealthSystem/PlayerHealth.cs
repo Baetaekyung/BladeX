@@ -5,9 +5,8 @@ using UnityEngine.Rendering.RenderGraphModule;
 
 namespace Swift_Blade
 {
-    public class PlayerHealth : MonoBehaviour,IDamageble, IEntityComponentRequireInit
+    public class PlayerHealth : MonoBehaviour,IDamageble
     {
-        private Player _player;
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
 
@@ -17,7 +16,6 @@ namespace Swift_Blade
         public event Action OnDeadEvent;
         public event Action OnHitEvent;
 
-
         [Header("Flash info")]
         [SerializeField] private float flashDuration;
         [SerializeField] private Material _flashMat;
@@ -26,8 +24,6 @@ namespace Swift_Blade
         
         private void Start()
         {
-            currentHealth = maxHealth;
-            
             _meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
             _originMats = new Material[_meshRenderers.Length];
             for (int i = 0; i < _meshRenderers.Length; i++)
@@ -46,12 +42,14 @@ namespace Swift_Blade
         public void TakeDamage(ActionData actionData)
         {
             float damageAmount = actionData.damageAmount;
-            currentHealth -= damageAmount;
+            _currentHealth -= damageAmount;
             
             OnHitEvent?.Invoke();
-            
-            if (currentHealth <= 0)
+
+            if (_currentHealth <= 0)
+            {
                 Dead();
+            }
         }
 
         public void TakeHeal()
