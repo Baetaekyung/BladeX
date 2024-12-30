@@ -76,8 +76,9 @@ namespace Swift_Blade
             currentRollStamina = Mathf.Min(GetMaxStamina, currentRollStamina);
             if (Input.GetKeyDown(KeyCode.V))
             {
+                controller.AddForce(Vector3.forward, ForceMode.Impulse);
                 //controller.linearVelocity = Vector3.zero;
-                AddForceLocaly(Vector3.forward, db_speedMulti);
+                //AddForceLocaly(Vector3.forward, db_speedMulti);
             }
             UI_DebugPlayer.Instance.DebugText(3, lowerstContactPoint.HasValue ? lowerstContactPoint.Value.point : lowerstContactPoint.HasValue, "lowestContactPoint", DBG_UI_KEYS.Keys_PlayerMovement);
             UI_DebugPlayer.Instance.DebugText(4, lowestContactPointBottom.HasValue ? lowestContactPointBottom.Value.point : lowestContactPointBottom.HasValue, "bottomPoint", DBG_UI_KEYS.Keys_PlayerMovement);
@@ -95,18 +96,10 @@ namespace Swift_Blade
         private void ApplyMovement()
         {
             Vector3 input = Vector3.zero;
-            //stop force
-            //Vector3 oppositeVelocitiy = -controller.linearVelocity * 0.2f;
-            //oppositeVelocitiy.y = 0;
-            //if (true || input.sqrMagnitude < 0.05f)//always true 
-            //{
-            //    controller.AddForce(oppositeVelocitiy, ForceMode.VelocityChange);
-            //}
             if (AllowInputMoving)
             {
                 input = InputDirection;
-                bool lockTarget = LockOnEnemy;
-                if (lockTarget)
+                if (LockOnEnemy)
                 {
                     Vector3 targetVector = GetClosestEnemy();
                     playerRenderer.LookTarget(targetVector);
@@ -175,7 +168,7 @@ namespace Swift_Blade
 
             //dashPar.gameObject.SetActive(true);
 
-            if(Physics.Raycast(transform.position + capCol.center, dir, out RaycastHit hit, force, whatIsObstacle))
+            if (Physics.Raycast(transform.position + capCol.center, dir, out RaycastHit hit, force, whatIsObstacle))
             {
                 //Debug.Log(hit.distance);
 
@@ -184,7 +177,7 @@ namespace Swift_Blade
                 destination -= capCol.center;
                 //Instantiate(cubePrefab, destination, Quaternion.identity);
             }
-            
+
             Debug.Log(dir);
             //Vector3 boxSize = ReCalculate(CalculateHalfExtents(capCol), dir, force);
             //Collider[] col = Physics.OverlapBox(transform.position, boxSize, Quaternion.identity, whatIsObstacle);
