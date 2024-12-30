@@ -123,6 +123,15 @@ namespace Swift_Blade
             //이벤트들 실행
             foreach (DialogEventSO @event in dialogData.dialogEvent)
             {
+                if (@event is DE_ContinueDialog continueEvent)
+                {
+                    if (continueEvent.nextDialog is null)
+                    {
+                        Debug.Log("다이얼로그 이벤트에 다음 다이얼로그가 설정되어있지 않음.");
+                        continue;
+                    }
+                }
+                
                 @event?.DoEvent();
             }
         }

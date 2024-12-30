@@ -89,7 +89,7 @@ namespace Swift_Blade.Boss
         }
         
         
-        private void SetDead()
+        public void SetDead()
         {
             bossAnimationController.StopAllAnimationEvents();
             StopImmediately();
