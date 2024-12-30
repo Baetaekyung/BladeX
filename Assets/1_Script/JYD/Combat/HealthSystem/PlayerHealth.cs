@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,7 +14,16 @@ namespace Swift_Blade
 
         public UnityEvent OnDeadEvent;
         public UnityEvent OnHitEvent;
-                
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                ActionData action = new ActionData(Vector3.zero, 0.5f, 10f, 20f, transform, AttackType.Melee);
+                TakeDamage(action);
+            }
+        }
+
         public void TakeDamage(ActionData actionData)
         {
             float damageAmount = actionData.damageAmount;
@@ -28,12 +36,7 @@ namespace Swift_Blade
                 Dead();
             }
         }
-
-        public void TakeHeal()
-        {
-            //이거 매개변수 없으면 안되는거 아닌가?
-        }
-
+        
         public void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
         {
             _currentHealth = Mathf.Clamp(_currentHealth + healAmount, 0, _maxHealth);
