@@ -2,9 +2,11 @@ using UnityEngine;
 
 namespace Swift_Blade.FSM.States
 {
-    public class BasePlayerMovementState : BasePlayerState
+    public abstract class BasePlayerMovementState : BasePlayerState
     {
         protected virtual bool BaseAllowStateChangeToAttack { get; } = true;
+        protected virtual bool BaseAllowStateChangeToParry { get; } = true;
+        protected virtual bool BaseAllowStateChangeToDash { get; } = true;
         protected readonly Player player;
         protected readonly PlayerMovement playerMovement;
         private static float additionalZValue;
@@ -19,27 +21,33 @@ namespace Swift_Blade.FSM.States
                 GetOwnerFsm.ChangeState(PlayerStateEnum.Attack);
             if (Input.GetKeyDown(KeyCode.Space))
                 GetOwnerFsm.ChangeState(PlayerStateEnum.Dash);
+            if (Input.GetKeyDown(KeyCode.C) && BaseAllowStateChangeToParry)
+                GetOwnerFsm.ChangeState(PlayerStateEnum.Parry);
+            if (Input.GetKeyDown(KeyCode.Space) && BaseAllowStateChangeToDash)
+                GetOwnerFsm.ChangeState(PlayerStateEnum.Dash);
 
-            Transform playerTransform = player.GetPlayerRenderer.GetPlayerVisualTrasnform;
-            Vector3 input = player.GetPlayerInput.InputDirectionRaw;
-            Vector3 inputNormalized = input.normalized;
+            PlayerInput playerInput = player.GetPlayerInput;
 
             //movement
-            Quaternion playerCameraRotation = player.GetPlayerCamera.GetResultQuaternion;
-            Vector3 resultInput = playerCameraRotation * inputNormalized;
-            Vector3 resultInputAnimator = playerCameraRotation * input;
-            Debug.DrawRay(player.transform.position, resultInput);
+            Vector3 resultInput = playerInput.InputDirectionRawRotated.normalized;
+            Vector3 resultAnimatorInput = playerInput.InputDirectionRotated;
             player.GetPlayerMovement.InputDirection = resultInput;
 
             //animator
-            Vector3 inputLocal = playerTransform.InverseTransformDirection(resultInputAnimator);
+            Transform playerTransform = player.GetPlayerRenderer.GetPlayerVisualTrasnform;
+            Vector3 inputLocal = playerTransform.InverseTransformDirection(resultAnimatorInput);
+            Debug.DrawRay(Vector3.zero, inputLocal, Color.red, 0.1f);
+            UI_DebugPlayer.DebugText(1, inputLocal, "inputLocal", DBG_UI_KEYS.Keys_PlayerAction);
+            UI_DebugPlayer.DebugText(2, inputLocal.magnitude, "inputLocalMag", DBG_UI_KEYS.Keys_PlayerAction);
             player.GetPlayerAnimator.GetAnimator.SetFloat("X", inputLocal.x);
             if (inputLocal.z >= 0.3f)
                 additionalZValue = Mathf.MoveTowards(additionalZValue, 1, Time.deltaTime * 1.5f);
             else
                 additionalZValue = 0;
+
             player.GetPlayerAnimator.GetAnimator.SetFloat("Z", inputLocal.z + additionalZValue);
             player.GetPlayerMovement.SpeedMultiplierForward = Mathf.Max(additionalZValue + 0.5f, 1);
+
             //UI_DebugPlayer.Instance.GetList[6].text = additionalZValue.ToString();
             //Debug.DrawRay(transform.position, input, Color.red);
             //Debug.DrawRay(transform.position, inputLocal, Color.blue)

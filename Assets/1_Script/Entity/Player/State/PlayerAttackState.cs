@@ -10,7 +10,6 @@ namespace Swift_Blade.FSM.States
         private readonly IReadOnlyList<AnimationParameterSO> comboParamHash;
         private readonly IReadOnlyList<Vector3> comboForceList;
         private readonly IReadOnlyList<float> perioids;
-        private readonly PlayerMovement playerMovement;
         private readonly PlayerDamageCaster playerDamageCaster;
 
         private bool allowListening;
@@ -31,7 +30,6 @@ namespace Swift_Blade.FSM.States
             comboParamHash = entity.GetComboHashAtk;
             comboForceList = entity.GetComboForceList;
             perioids = entity.GetPeriods;
-            playerMovement = entity.GetPlayerMovement;
             playerDamageCaster = entity.GetPlayerDamageCaster;
             maxIdx = comboParamHash.Count - 1;
             Player.Debug_Updt += () =>

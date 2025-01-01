@@ -66,23 +66,17 @@ namespace Swift_Blade
         {
             playerStateMachine.UpdateState();
             Debug_Updt?.Invoke();
-            //if (Input.GetKeyDown(KeyCode.P))
-            //    GetPlayerCamera.CameraTargetDistance = debug_cameraDistance;
             void UpdateDebugUI()
             {
                 if (Input.GetKeyDown(KeyCode.F1))
                     UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
-                UI_DebugPlayer.Instance.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
+                UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
             }
             UpdateDebugUI();
             void ProcessInput()
             {
-                if (Input.GetKeyDown(KeyCode.Space))
-                    playerStateMachine.ChangeState(PlayerStateEnum.Dash);
                 if (Input.GetKeyDown(KeyCode.L))
                     GetPlayerMovement.LockOnEnemy = !GetPlayerMovement.LockOnEnemy;
-                if(Input.GetKeyDown(KeyCode.C))
-                    playerStateMachine.ChangeState(PlayerStateEnum.Parry);
             }
             ProcessInput();
         }

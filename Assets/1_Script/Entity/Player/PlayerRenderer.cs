@@ -8,10 +8,17 @@ namespace Swift_Blade
         [SerializeField] private Transform playerVisualTransform;
         public PlayerAnimator GetPlayerAnimator => playerAnimator;
         public Transform GetPlayerVisualTrasnform => playerVisualTransform;
-        public void LookTarget(Vector3 worldPos)
+        public void LookTargetWorld(Vector3 worldPos)
         {
             Vector3 targetVector = worldPos - playerVisualTransform.position;
-            targetVector.y = 0;//or player y value;
+            targetVector.y = 0;
+            Quaternion result = Quaternion.LookRotation(targetVector, Vector3.up);
+            SetVisualRotation(result);
+        }
+        public void LookTargetDirection(Vector3 direction)
+        {
+            Vector3 targetVector = direction;
+            targetVector.y = 0;
             Quaternion result = Quaternion.LookRotation(targetVector, Vector3.up);
             SetVisualRotation(result);
         }

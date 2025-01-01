@@ -5,11 +5,12 @@ namespace Swift_Blade
 {
     public class PlayerCamera : MonoBehaviour, IEntityComponent
     {
-        public float CameraTargetDistance { get; set; }
         [SerializeField] private float multiplier;
         [SerializeField] private Transform viewTransform;
         [SerializeField] private Transform resultTransform;
         private CinemachinePositionComposer cinemachinePositionComposer;
+
+        public float CameraTargetDistance { get; set; }
         public float CameraDistance { get; private set; }
         public Quaternion GetResultQuaternion => resultTransform.rotation;
         public void EntityComponentAwake(Entity entity)

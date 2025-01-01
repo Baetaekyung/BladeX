@@ -5,33 +5,31 @@ using UnityEngine.Events;
 
 namespace Swift_Blade.FSM.States
 {
-    public class PlayerParryState : BasePlayerState
+    public class PlayerParryState : BasePlayerMovementState
     {
-        private Transform _visual;
-        
-        private readonly Player _player;
+        protected override bool BaseAllowStateChangeToParry => false;
         private readonly PlayerHealth _playerHealthCompo;
-        private readonly PlayerMovement _movementCompo;
-        
+        private readonly PlayerRenderer playerRenderer;
+
         private float _currentDuration = 0f;
         private float _parryDuration;
         
         public PlayerParryState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
-            _player = entity;
-            _visual = GameObject.Find("Vis").transform;
-            _movementCompo = _player.GetPlayerMovement;
+            playerRenderer = player.GetPlayerRenderer;
             
-            _playerHealthCompo = _player.GetComponentInChildren<PlayerHealth>();
+            _playerHealthCompo = player.GetComponentInChildren<PlayerHealth>();
         }
 
         public override void Enter()
         {
             base.Enter();
-            
+            Vector3 input = player.GetPlayerInput.InputDirectionRawRotated;
+            playerRenderer.LookTargetDirection(input);
+
             Debug.Log("Parry Enter");
-            _player.IsParryState = true;
-            _movementCompo.AllowInputMoving = false;
+            player.IsParryState = true;
+            playerMovement.AllowInputMoving = false;
 
             _parryDuration = 0.4f;
 
@@ -47,7 +45,6 @@ namespace Swift_Blade.FSM.States
             if (_currentDuration >= _parryDuration)
             {
                 _playerHealthCompo.OnHitEvent.RemoveListener(ParryOnHitByVicinityHandler);
-                _player.IsParryState = false;
             }
         }
 
@@ -56,9 +53,9 @@ namespace Swift_Blade.FSM.States
             _playerHealthCompo.OnHitEvent.RemoveListener(ParryOnHitByVicinityHandler);
             
             _currentDuration = 0f;
-            
-            _player.IsParryState = false;
-            _movementCompo.AllowInputMoving = true;
+
+            player.IsParryState = false;
+            playerMovement.AllowInputMoving = true;
             
             Debug.Log("Parry Exit");
 
@@ -99,15 +96,12 @@ namespace Swift_Blade.FSM.States
         
         private void LookAtTarget(ActionData actionData)
         {
-            Vector3 dir = actionData.dealer.transform.position - _visual.position;
-            
-            Quaternion lookRotation = Quaternion.LookRotation(dir.normalized);
-            lookRotation.x = 0; //y축만 회전하도록
-            lookRotation.z = 0; //y축만 회전하도록
-            
-            _visual.rotation = lookRotation;
+            Vector3 dir = actionData.dealer.transform.position - playerRenderer.GetPlayerVisualTrasnform.position;
+            playerRenderer.LookTargetDirection(dir);
+            //Quaternion lookRotation = Quaternion.LookRotation(dir.normalized);
+            //lookRotation.x = 0; //y축만 회전하도록
+            //lookRotation.z = 0; //y축만 회전하도록
         }
 
-        protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
     }
 }

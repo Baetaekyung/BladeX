@@ -24,7 +24,7 @@ public abstract class Entity : MonoBehaviour
         if (componentDictionary.TryGetValue(typeof(T), out IEntityComponent value))
             return value as T;
 
-        Debug.LogError("[ERROR]can't find Entity_Component, ReInitializing...");
+        Debug.LogError($"[ERROR]can't find {typeof(T)}, ReInitializing...");
         T missingInstance = GetComponentInChildren<T>(true);
         if (missingInstance == null)
         {
