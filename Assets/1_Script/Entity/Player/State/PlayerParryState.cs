@@ -107,7 +107,7 @@ namespace Swift_Blade.FSM.States
             
             _visual.rotation = lookRotation;
         }
-
-        protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
+    
+        //protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
     }
 }
