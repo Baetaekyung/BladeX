@@ -6,15 +6,26 @@ namespace Swift_Blade
     public class PlayerCamera : MonoBehaviour, IEntityComponent
     {
         [SerializeField] private float multiplier;
-        [SerializeField] private Transform viewTransform;
         [SerializeField] private Transform resultTransform;
         [SerializeField] private Camera playerCamera;
+        [SerializeField] private Camera staticCamera;
         private CinemachinePositionComposer cinemachinePositionComposer;
 
         public float CameraTargetDistance { get; set; }
         public float CameraDistance { get; private set; }
         public Quaternion GetResultQuaternion => resultTransform.rotation;
+        public Quaternion GetResultQuaternionOnlyY
+        {
+            get
+            {
+                Vector3 resultVector = resultTransform.eulerAngles;
+                resultVector.x = 0;
+                resultVector.z = 0;
+                return Quaternion.Euler(resultVector);
+            }
+        }
         public Camera GetPlayerCamera => playerCamera;
+        public Camera GetStaticCamera => staticCamera;
         public void EntityComponentAwake(Entity entity)
         {
             cinemachinePositionComposer = GetComponentInChildren<CinemachinePositionComposer>();
@@ -34,10 +45,7 @@ const float minValue = 3;
             CameraDistance = Mathf.MoveTowards(CameraDistance, CameraTargetDistance, Time.deltaTime * multiplierByDistance * multiplier);
             cinemachinePositionComposer.CameraDistance = CameraDistance;
         }
-        public void SetViewTransformRotation(Quaternion quaternion) => viewTransform.rotation = quaternion;
-        public void SetViewTransformRotation(Vector3 vector3) => viewTransform.rotation = Quaternion.Euler(vector3);
-        public void SetTransformRotation(Quaternion quaternion) => resultTransform.rotation = quaternion;
-        public void SetTransformRotation(Vector3 vector3) => resultTransform.rotation = Quaternion.Euler(vector3);
+
 
     }
 }

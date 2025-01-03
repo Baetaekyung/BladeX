@@ -50,9 +50,9 @@ namespace Swift_Blade
 
         public float GetMaxStamina => initialRollStamina + debug_stmod;
         public float SpeedMultiplierDefault { get; set; } = 1;
-        public float SpeedMultiplierForward { get; set; } = 1;
+        //public float SpeedMultiplierForward { get; set; } = 1;
         public Vector3 InputDirection { get; set; }
-        public Vector3 AdditionalVector { get; set; }
+        public Vector3 AdditionalVelocity { get; set; }
         public bool AllowInputMoving { get; set; } = true;
         public bool UseMouseLock { get; set; } = true;
 
@@ -72,12 +72,12 @@ namespace Swift_Blade
             currentRollStamina = Mathf.Min(GetMaxStamina, currentRollStamina);
             if (Input.GetKeyDown(KeyCode.V))
             {
-                AddForceLocaly(Vector3.forward);
+                AddForceFacingDirection(Vector3.forward, 10);
             }
         }
         private void FixedUpdate()
         {
-            AdditionalVector = Vector3.MoveTowards(AdditionalVector, Vector3.zero, Time.fixedDeltaTime * 10);
+            AdditionalVelocity = Vector3.MoveTowards(AdditionalVelocity, Vector3.zero, Time.fixedDeltaTime * 10);
             ApplyMovement();
 
             if (lowestContactPointBottom.HasValue) yVal = onGroundYVal;
@@ -111,7 +111,7 @@ namespace Swift_Blade
                 //else controller.useGravity = true;
             }
 
-            float multiplier = SpeedMultiplierForward * SpeedMultiplierDefault;
+            float multiplier = SpeedMultiplierDefault;
             float wishSpeed = defaultSpeed * multiplier;
 
             Vector3 movementVector = controller.linearVelocity;
@@ -124,20 +124,17 @@ namespace Swift_Blade
             //UI_DebugPlayer.Instance.DebugText(3, currentSpeed, "curSpeed", DBG_UI_KEYS.Keys_PlayerMovement);
             //if (speed < 0) return;
 
-            Vector3 addition = AdditionalVector;
+            Vector3 addition = AdditionalVelocity;
             Vector3 result = input * speed + addition;
             result.y += yVal;
             controller.linearVelocity = result;
             //Debug.DrawRay(transform.position + Vector3.up * 0.5f, input, Color.cyan, 1);
         }
-        public void AddForceLocaly(Vector3 force, float multiplier = 1, ForceMode forceMode = ForceMode.VelocityChange)
+        public void AddForceFacingDirection(Vector3 force, float multiplier = 1)
         {
             Transform visulTrnasform = playerRenderer.GetPlayerVisualTrasnform;
             Vector3 result = visulTrnasform.TransformVector(force) * multiplier;
-            //Debug.DrawRay(Vector3.zero, force, Color.red, 5);
-            //Debug.DrawRay(Vector3.zero, result, Color.yellow, 6);
-            controller.linearVelocity = Vector3.zero;
-            AdditionalVector += result;
+            AdditionalVelocity += result;
         }
 
         public void Dash(Vector3 dir, float force)
@@ -147,7 +144,7 @@ namespace Swift_Blade
 
 
         private void SetGravitiy(bool value) => controller.useGravity = value;
-        public void SetAdditionalVelocity(Vector3 velocitiy) => AdditionalVector = velocitiy;
+        public void SetAdditionalVelocity(Vector3 velocitiy) => AdditionalVelocity = velocitiy;
 
         private void OnCollisionStay(Collision collision)
         {

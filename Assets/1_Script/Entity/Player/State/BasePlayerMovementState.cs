@@ -55,13 +55,15 @@ namespace Swift_Blade.FSM.States
             additionalZValue = 0;
 
             player.GetPlayerAnimator.GetAnimator.SetFloat("Z", inputLocal.z + additionalZValue);
-            player.GetPlayerMovement.SpeedMultiplierForward = 1;// Mathf.Max(additionalZValue + 0.5f, 1);
+            //player.GetPlayerMovement.SpeedMultiplierForward = 1;// Mathf.Max(additionalZValue + 0.5f, 1);
 
             //UI_DebugPlayer.Instance.GetList[6].text = additionalZValue.ToString();
             //Debug.DrawRay(transform.position, input, Color.red);
             //Debug.DrawRay(transform.position, inputLocal, Color.blue)
         }
+        protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
         protected sealed override void OnSpeedMultiplierDefaultTrigger(float set) => playerMovement.SpeedMultiplierDefault = set;
-        protected sealed override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetAdditionalVelocity(Vector3.zero);
+        protected sealed override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetAdditionalVelocity(value);
+        
     }
 }

@@ -49,9 +49,10 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnAnimationEndEvent += OnAnimationEndTrigger;
             animationTriggers.OnAnimationEndableListenEvent += OnAnimationEndTriggerListen;
             animationTriggers.OnAnimationnEndableEvent += OnAnimationEndableTrigger;
+
             animationTriggers.OnForceEvent += OnForceEventTrigger;
-            animationTriggers.OnSpeedMultiplierEvent += OnSpeedMultiplierDefaultTrigger;
-            animationTriggers.OnMovementSetEvent += OnMovementSetTrigger;
+            animationTriggers.OnSpeedMultiplierDefaultEvent += OnSpeedMultiplierDefaultTrigger;
+            //animationTriggers.OnMovementSetEvent += OnMovementSetTrigger;
             PlayAnimationOnEnter();
         }
 
@@ -62,8 +63,8 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnAnimationEndableListenEvent -= OnAnimationEndTriggerListen;
             animationTriggers.OnAnimationnEndableEvent -= OnAnimationEndableTrigger;
             animationTriggers.OnForceEvent -= OnForceEventTrigger;
-            animationTriggers.OnSpeedMultiplierEvent -= OnSpeedMultiplierDefaultTrigger;
-            animationTriggers.OnMovementSetEvent -= OnMovementSetTrigger;
+            animationTriggers.OnSpeedMultiplierDefaultEvent -= OnSpeedMultiplierDefaultTrigger;
+            //animationTriggers.OnMovementSetEvent -= OnMovementSetTrigger;
             base.Exit();
         }
         
@@ -80,9 +81,6 @@ namespace Swift_Blade.FSM.States
         protected void PlayAnimation(int hash, float normalizedTime = 0)
         {
             ownerAnimator.Play(hash, -1, normalizedTime);
-        }
-        public virtual void StopAnimation()
-        {
         }
     }
 }

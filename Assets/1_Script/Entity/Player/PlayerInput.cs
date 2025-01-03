@@ -8,8 +8,8 @@ namespace Swift_Blade
     {
         public Vector3 GetInputDirectionRaw { get; private set; }
         public Vector3 GetInputDirection { get; private set; }
-        public Vector3 GetInputDirectionRawRotated => CameraRotation * GetInputDirectionRaw;
-        public Vector3 GetInputDirectionRotated => CameraRotation * GetInputDirection;
+        public Vector3 GetInputDirectionRawRotated => CameraRotationOnlyY * GetInputDirectionRaw;
+        public Vector3 GetInputDirectionRotated => CameraRotationOnlyY * GetInputDirection;
         public Vector3 GetMousePositionWorld { get; private set; }
         public Vector3 GetMouseDirection { get; private set; }
         /// <summary>
@@ -17,6 +17,7 @@ namespace Swift_Blade
         /// </summary>
         //public Vector3 InputDirectionRotatedNormalized => CameraRotation * (InputDirection.sqrMagnitude < 1 ? InputDirection: InputDirection.normalized);
         private Quaternion CameraRotation => playerCamera.GetResultQuaternion;
+        private Quaternion CameraRotationOnlyY => playerCamera.GetResultQuaternionOnlyY;
 
         private PlayerCamera playerCamera;
         private PlayerMovement playerMovement;
@@ -42,7 +43,7 @@ namespace Swift_Blade
                 GetInputDirectionRaw = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
                 GetInputDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
                 Vector3 mousePos = Input.mousePosition;
-                Ray mouseRay = playerCamera.GetPlayerCamera.ScreenPointToRay(mousePos);
+                Ray mouseRay = playerCamera.GetStaticCamera.ScreenPointToRay(mousePos);
                 if (plane.Raycast(mouseRay, out float distance))
                 {
                     Vector3 hitPoint = mouseRay.GetPoint(distance);

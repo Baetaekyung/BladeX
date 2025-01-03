@@ -7,6 +7,7 @@ namespace Swift_Blade.FSM.States
     {
         protected override bool BaseAllowStateChangeToAttack { get; } = false;
 
+        //todo : change this to non-readonly variables and init when weapon is changed
         private readonly IReadOnlyList<AnimationParameterSO> comboParamHash;
         private readonly IReadOnlyList<Vector3> comboForceList;
         private readonly IReadOnlyList<float> perioids;
@@ -48,14 +49,10 @@ namespace Swift_Blade.FSM.States
         public override void Update()
         {
             base.Update();
-            //UI_DebugPlayer.Instance.GetList[1].text = $"indx {currentIdx}";
             if (Input.GetKeyDown(KeyCode.Mouse0) && allowListening)
                 inputBuffer = true;
             if (inputBuffer && allowNextAttack && IsIndexValid)
-            {
                 Attack();
-                Debug.Log("dwadawda");
-            }
         }
         private void Attack()
         {
@@ -74,20 +71,18 @@ namespace Swift_Blade.FSM.States
             AnimationParameterSO param = comboParamHash[currentIdx];
             PlayAnimation(param);
         }
-        protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
         protected override void OnAnimationEndTriggerListen() => allowListening = true;
         protected override void OnAnimationEndableTrigger() => allowNextAttack = true;
-
+        protected override void OnForceEventTrigger(float force)
+        {
+            Vector3 result = comboForceList[currentIdx] * force;
+            playerMovement.AddForceFacingDirection(result);
+        }
         public override void Exit()
         {
             Debug.Log("exit");
             playerMovement.SpeedMultiplierDefault = 1;
             base.Exit();
-        }
-        protected override void OnForceEventTrigger(float force)
-        {
-            Vector3 result = comboForceList[currentIdx] * force;
-            playerMovement.AddForceLocaly(result);
         }
     }
 }
