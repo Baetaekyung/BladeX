@@ -13,6 +13,11 @@ public abstract class Entity : MonoBehaviour
             ToList();
         componentList.ForEach(x => InitializeEntityComponent(x));
     }
+    protected virtual void Start()
+    {
+        var componentList = componentDictionary.Values.OfType<IEntityComponentStart>().ToList();
+        componentList.ForEach(x => x.EntityComponentStart(this));
+    }
     private IEntityComponent InitializeEntityComponent(IEntityComponent component)
     {
         componentDictionary.Add(component.GetType(), component);

@@ -34,8 +34,9 @@ namespace Swift_Blade.FSM.States
             maxIdx = comboParamHash.Count - 1;
             Player.Debug_Updt += () =>
             {
-                //UI_DebugPlayer.Instance.GetList[2].text = $"inp     {inputBuffer}";
-                //UI_DebugPlayer.Instance.GetList[3].text = $"allowLis{allowListening}, {allowNextAttack}";
+                UI_DebugPlayer.DebugText(3, inputBuffer, "inputBuffer", DBG_UI_KEYS.Keys_PlayerAction);
+                UI_DebugPlayer.DebugText(4, allowListening, "allowListen", DBG_UI_KEYS.Keys_PlayerAction);
+                UI_DebugPlayer.DebugText(5, allowNextAttack, "allowNext", DBG_UI_KEYS.Keys_PlayerAction);
             };
         }
 
@@ -48,7 +49,7 @@ namespace Swift_Blade.FSM.States
         {
             base.Update();
             //UI_DebugPlayer.Instance.GetList[1].text = $"indx {currentIdx}";
-            if (Input.GetKeyDown(KeyCode.K) && allowListening)
+            if (Input.GetKeyDown(KeyCode.Mouse0) && allowListening)
                 inputBuffer = true;
             if (inputBuffer && allowNextAttack && IsIndexValid)
             {

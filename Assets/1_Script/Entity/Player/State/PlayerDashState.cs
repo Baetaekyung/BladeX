@@ -11,7 +11,7 @@ namespace Swift_Blade.FSM.States
         {
             base.Enter();
 
-            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.InputDirection.normalized, 7);
+            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirection.normalized, 7);
             GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
         }
     }

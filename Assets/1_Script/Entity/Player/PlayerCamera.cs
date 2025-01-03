@@ -8,11 +8,13 @@ namespace Swift_Blade
         [SerializeField] private float multiplier;
         [SerializeField] private Transform viewTransform;
         [SerializeField] private Transform resultTransform;
+        [SerializeField] private Camera playerCamera;
         private CinemachinePositionComposer cinemachinePositionComposer;
 
         public float CameraTargetDistance { get; set; }
         public float CameraDistance { get; private set; }
         public Quaternion GetResultQuaternion => resultTransform.rotation;
+        public Camera GetPlayerCamera => playerCamera;
         public void EntityComponentAwake(Entity entity)
         {
             cinemachinePositionComposer = GetComponentInChildren<CinemachinePositionComposer>();

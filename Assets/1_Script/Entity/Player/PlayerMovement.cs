@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Swift_Blade
 {
     [SelectionBase]
-    public class PlayerMovement : MonoBehaviour, IEntityComponent
+    public class PlayerMovement : MonoBehaviour, IEntityComponent, IEntityComponentStart
     {
         [Header("Movement Settings")]
         [SerializeField] private float defaultSpeed = 1;
@@ -38,11 +38,12 @@ namespace Swift_Blade
 
         [Header("Debug")]
         [SerializeField] private float db_speedMulti;
-        [SerializeField] private Transform db_closestEnemyTransform;
+        [SerializeField] private Transform db_mousePosition;
 
         [Header("Reference")]
         private Rigidbody controller;
         private PlayerRenderer playerRenderer;
+        private PlayerInput playerInput;
 
         [Header("Cache")]
         private readonly List<ContactPoint> contactPointList = new();
@@ -53,13 +54,17 @@ namespace Swift_Blade
         public Vector3 InputDirection { get; set; }
         public Vector3 AdditionalVector { get; set; }
         public bool AllowInputMoving { get; set; } = true;
-        public bool LockOnEnemy { get; set; } = false;
+        public bool UseMouseLock { get; set; } = true;
 
         public void EntityComponentAwake(Entity entity)
         {
-            playerRenderer = entity.GetEntityComponent<PlayerRenderer>();
             controller = GetComponent<Rigidbody>();
             currentRollStamina = initialRollStamina;
+        }
+        public void EntityComponentStart(Entity entity)
+        {
+            playerRenderer = entity.GetEntityComponent<PlayerRenderer>();
+            playerInput = entity.GetEntityComponent<PlayerInput>();
         }
         private void Update()
         {
@@ -90,12 +95,12 @@ namespace Swift_Blade
             if (AllowInputMoving)
             {
                 input = InputDirection;
-                if (LockOnEnemy)
+                if (UseMouseLock)
                 {
-                    Vector3 targetVector = GetClosestEnemy();
-                    playerRenderer.LookTargetWorld(targetVector);
+                    Vector3 direction = playerInput.GetMouseDirection;
+                    playerRenderer.LookAtDirectionSmooth(direction, angleMultiplier);
                 }
-                else playerRenderer.LookTargetSmooth(InputDirection, angleMultiplier);
+                else playerRenderer.LookAtDirectionSmooth(InputDirection, angleMultiplier);
 
                 if (lowestContactPointBottom.HasValue)
                 {
@@ -125,19 +130,12 @@ namespace Swift_Blade
             controller.linearVelocity = result;
             //Debug.DrawRay(transform.position + Vector3.up * 0.5f, input, Color.cyan, 1);
         }
-
-        private Vector3 GetClosestEnemy()
-        {
-            Vector3 result = db_closestEnemyTransform == null ? Vector3.zero : db_closestEnemyTransform.position;
-            return result;
-        }
-
         public void AddForceLocaly(Vector3 force, float multiplier = 1, ForceMode forceMode = ForceMode.VelocityChange)
         {
             Transform visulTrnasform = playerRenderer.GetPlayerVisualTrasnform;
             Vector3 result = visulTrnasform.TransformVector(force) * multiplier;
-            Debug.DrawRay(Vector3.zero, force, Color.red, 5);
-            Debug.DrawRay(Vector3.zero, result, Color.yellow, 6);
+            //Debug.DrawRay(Vector3.zero, force, Color.red, 5);
+            //Debug.DrawRay(Vector3.zero, result, Color.yellow, 6);
             controller.linearVelocity = Vector3.zero;
             AdditionalVector += result;
         }
@@ -190,5 +188,7 @@ namespace Swift_Blade
                 if (newPointY < bottomY) lowestContactPointBottom = newContactPoint;
             }
         }
+
+        
     }
 }

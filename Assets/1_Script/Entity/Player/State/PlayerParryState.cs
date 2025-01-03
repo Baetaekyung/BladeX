@@ -24,8 +24,8 @@ namespace Swift_Blade.FSM.States
         public override void Enter()
         {
             base.Enter();
-            Vector3 input = player.GetPlayerInput.InputDirectionRawRotated;
-            playerRenderer.LookTargetDirection(input);
+            //Vector3 mouseWorld = player.GetPlayerInput.GetMousePositionWorld;
+            //playerRenderer.LookAtDirection(mouseWorld);
 
             Debug.Log("Parry Enter");
             player.IsParryState = true;
@@ -77,7 +77,7 @@ namespace Swift_Blade.FSM.States
             DoActionFeeling();
             //StyleMeter.Instance.RaiseMeterPercent(100f); //100퍼센트 증가 (보류)
             
-            LookAtTarget(actionData);
+            //LookAtTarget(actionData);
 
             GetOwnerFsm.ChangeState(PlayerStateEnum.Attack);
         }
@@ -97,7 +97,7 @@ namespace Swift_Blade.FSM.States
         private void LookAtTarget(ActionData actionData)
         {
             Vector3 dir = actionData.dealer.transform.position - playerRenderer.GetPlayerVisualTrasnform.position;
-            playerRenderer.LookTargetDirection(dir);
+            playerRenderer.LookAtDirection(dir);
             //Quaternion lookRotation = Quaternion.LookRotation(dir.normalized);
             //lookRotation.x = 0; //y축만 회전하도록
             //lookRotation.z = 0; //y축만 회전하도록
