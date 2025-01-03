@@ -67,15 +67,17 @@ namespace Swift_Blade.FSM.States
             //animationTriggers.OnMovementSetEvent -= OnMovementSetTrigger;
             base.Exit();
         }
-        
+
         public virtual void PlayAnimationOnEnter()
         {
-            if(baseAnimParam != null)
-                ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1, baseAnimParam.GetNormalizedTime);
+            if (baseAnimParam != null)
+                ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1);
+                //ownerAnimator.CrossFade(baseAnimParam.GetAnimationHash, 0.2f, -1, 0, 0.2f);
         }
         protected void PlayAnimation(AnimationParameterSO param)
         {
-            ownerAnimator.Play(param.GetAnimationHash, -1, param.GetNormalizedTime);
+            Debug.Assert(param != null, "parameterSO is null");
+            ownerAnimator.Play(param.GetAnimationHash, -1);
         }
 
         protected void PlayAnimation(int hash, float normalizedTime = 0)
