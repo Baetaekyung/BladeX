@@ -9,7 +9,7 @@ namespace Swift_Blade
         public event Action OnAnimationEndEvent;
         public event Action OnAnimationnEndableEvent;
         public event Action OnAnimationEndableListenEvent;
-        public event Action<float> OnSpeedMultiplierEvent;
+        public event Action<float> OnSpeedMultiplierDefaultEvent;
         public event Action<float> OnForceEvent;
         public event Action<Vector3> OnMovementSetEvent;
 
@@ -17,6 +17,7 @@ namespace Swift_Blade
         private void OnAnimationEndTrigger()
         {
             OnAnimationEndEvent?.Invoke();
+            OnSpeedMultiplierDefaultEvent?.Invoke(1);
         }
         [Preserve]
         private void OnAnimationEndableTrigger()
@@ -34,15 +35,14 @@ namespace Swift_Blade
             OnForceEvent?.Invoke(force);
         }
         [Preserve]
-        private void OnMovementMultiplierSet(float set)
+        private void OnSpeedMultiplierDefaultTrigger(float set)
         {
-            OnSpeedMultiplierEvent?.Invoke(set);
+            OnSpeedMultiplierDefaultEvent?.Invoke(set);
         }
-        [Preserve]
-        private void OnSetMovementSet(float set)
-        {
-            //we should set this after few second
-            OnMovementSetEvent?.Invoke(new Vector3(set, 0, set));
-        }
+        //[Preserve]
+        //private void OnMovementSet(float set)
+        //{
+        //    OnMovementSetEvent?.Invoke(new Vector3(set, 0, set));
+        //}
     }
 }

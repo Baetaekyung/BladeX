@@ -23,17 +23,17 @@ namespace Swift_Blade
         [Header("Debug_Params")]
         [SerializeField] private AnimationParameterSO anim_idle;
         [SerializeField] private AnimationParameterSO anim_move;
-        [SerializeField] private AnimationParameterSO anim_jumpAttack;
-        [SerializeField] private AnimationParameterSO anim_attack1;
         [SerializeField] private AnimationParameterSO anim_parry;
+        [SerializeField] private AnimationParameterSO anim_dodge;
+        //[SerializeField] private AnimationParameterSO anim_jumpAttack;
+        //[SerializeField] private AnimationParameterSO anim_attack1;
 
         [Header("Combo")]
         //should be serializeable struct later
         [SerializeField] private AnimationParameterSO[] comboParamHash;
         [SerializeField] private Vector3[] comboForceList;
         [SerializeField] private float[] periods;
-        
-        [Header("Parring")]
+
         public bool IsParryState { get; set; }
         
         public IReadOnlyList<AnimationParameterSO> GetComboHashAtk => comboParamHash;
@@ -58,7 +58,7 @@ namespace Swift_Blade
             //playerStateMachine.AddState(PlayerStateEnum.Idle, new PlayerIdleState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_idle));
             playerStateMachine.AddState(PlayerStateEnum.Movement, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
             playerStateMachine.AddState(PlayerStateEnum.Attack, new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null));
-            playerStateMachine.AddState(PlayerStateEnum.Dash, new PlayerDashState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_idle));
+            playerStateMachine.AddState(PlayerStateEnum.Dash, new PlayerDashState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_dodge));
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
             playerStateMachine.SetStartState(PlayerStateEnum.Movement);
         }
@@ -66,23 +66,18 @@ namespace Swift_Blade
         {
             playerStateMachine.UpdateState();
             Debug_Updt?.Invoke();
-            //if (Input.GetKeyDown(KeyCode.P))
-            //    GetPlayerCamera.CameraTargetDistance = debug_cameraDistance;
             void UpdateDebugUI()
             {
                 if (Input.GetKeyDown(KeyCode.F1))
                     UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
-                UI_DebugPlayer.Instance.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
+                //if (Input.GetKeyDown(KeyCode.F2))
+                UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
             }
             UpdateDebugUI();
             void ProcessInput()
             {
-                if (Input.GetKeyDown(KeyCode.Space))
-                    playerStateMachine.ChangeState(PlayerStateEnum.Dash);
                 if (Input.GetKeyDown(KeyCode.L))
-                    GetPlayerMovement.LockOnEnemy = !GetPlayerMovement.LockOnEnemy;
-                if(Input.GetKeyDown(KeyCode.C))
-                    playerStateMachine.ChangeState(PlayerStateEnum.Parry);
+                    GetPlayerMovement.UseMouseLock = !GetPlayerMovement.UseMouseLock;
             }
             ProcessInput();
         }

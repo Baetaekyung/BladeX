@@ -16,7 +16,7 @@ public static class DBG_UI_KEYS
 
 public abstract class UI_DebugBase<T> : MonoSingleton<T> where T : UI_DebugBase<T>
 {
-    public static int Key { get; set; } = DBG_UI_KEYS.Keys_PlayerAction;
+    public abstract int Key { get; set; }
     public bool ShowDebugUI
     {
         get => active;
@@ -37,23 +37,25 @@ public abstract class UI_DebugBase<T> : MonoSingleton<T> where T : UI_DebugBase<
     {
         gameObject.SetActive(ShowDebugUI);
     }
-    public void DebugText(int index, string stringValue, string prefix = "", int key = 0)
+    public static void DebugText(int index, string stringValue, string prefix = "", int key = 0)
     {
-        if (key != Key) return;
-        stringBuilder.Clear();
-        stringBuilder.Append(prefix);
-        stringBuilder.Append(" : ");
-        stringBuilder.Append(stringValue);
-        list[index].text = stringBuilder.ToString();
+        T instance = Instance;
+        if (key != instance.Key || instance == null) return;
+        instance.stringBuilder.Clear();
+        instance.stringBuilder.Append(prefix);
+        instance.stringBuilder.Append(" : ");
+        instance.stringBuilder.Append(stringValue);
+        instance.list[index].text = instance.stringBuilder.ToString();
     }
-    public void DebugText(int index, ValueType valueType, string prefix = "", int key = 0)
+    public static void DebugText(int index, ValueType valueType, string prefix = "", int key = 0)
     {
-        if (key != Key) return;
-        stringBuilder.Clear();
-        stringBuilder.Append(prefix);
-        stringBuilder.Append(" : ");
-        stringBuilder.Append(valueType.ToString());
-        list[index].text = stringBuilder.ToString();
+        T instance = Instance;
+        if (key != instance.Key || instance == null) return;
+        instance.stringBuilder.Clear();
+        instance.stringBuilder.Append(prefix);
+        instance.stringBuilder.Append(" : ");
+        instance.stringBuilder.Append(valueType.ToString());
+        instance.list[index].text = instance.stringBuilder.ToString();
     }
 
 }
