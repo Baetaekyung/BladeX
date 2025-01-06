@@ -11,32 +11,46 @@ using Swift_Blade.Boss;
 public partial class MoveToTargetAction : Action
 {
     [SerializeReference] public BlackboardVariable<BossBase> Boss;
-            
     [SerializeReference] public BlackboardVariable<Transform> Target;
+    [SerializeReference] public BlackboardVariable<float> MoveSpeed;
+    
     [SerializeReference] public BlackboardVariable<NavMeshAgent> Agent;
-    [SerializeReference] public BlackboardVariable<float> stopDistance;
         
+    [SerializeReference] public BlackboardVariable<float> meleeAttackDistance;
+    [SerializeReference] public BlackboardVariable<float> attackDistance;
+    
+    
     private float distance;
     
     protected override Status OnStart()
     {
-        distance = Vector3.Distance(Target.Value.transform.position , Agent.Value.transform.position);
-        return distance <= stopDistance.Value ? Status.Success : Status.Running;
+        Agent.Value.speed = MoveSpeed.Value;
+        
+        distance = Vector3.Distance(Target.Value.transform.position, Agent.Value.transform.position);
+        
+        if (distance <= attackDistance.Value || distance <= meleeAttackDistance.Value)
+        {
+            return Status.Success;
+        }
+        
+        return Status.Running;
     }
 
     protected override Status OnUpdate()
     {
         Vector3 targetPos = Target.Value.transform.position;
         
-        Agent.Value.SetDestination(targetPos);
         Boss.Value.FactToTarget(targetPos);
-        distance = Vector3.Distance(targetPos , Agent.Value.transform.position);
-        if (distance> stopDistance)
+        Agent.Value.SetDestination(targetPos);
+
+        distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
+        distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
+        if (distance <= attackDistance.Value || distance <= meleeAttackDistance.Value)
         {
-            return Status.Running;
+            return Status.Success;
         }
                 
-        return Status.Success;
+        return Status.Running;
     }
 }
 

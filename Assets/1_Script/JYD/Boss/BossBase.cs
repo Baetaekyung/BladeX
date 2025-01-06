@@ -7,29 +7,29 @@ namespace Swift_Blade.Boss
 {
     public class BossBase : MonoBehaviour
     {
-        private BossAnimationController bossAnimationController;
+        protected BossAnimationController bossAnimationController;
         
-        private NavMeshAgent NavmeshAgent;
+        protected NavMeshAgent NavmeshAgent;
         
-        private Vector3 nextPathPoint;
-        private Vector3 attackDestination;
+        protected Vector3 nextPathPoint;
+        protected Vector3 attackDestination;
         
         public Transform target;
                
-        [SerializeField] private CameraShakeType cameraShakeType;
+        [SerializeField] protected CameraShakeType cameraShakeType;
         
         /*[Header("Knockback info")]
         public bool isKnockback;
         public float knockbackTime;
         public float knockbackThreshold;*/
 
-        private void Start()
+        protected virtual void Start()
         {
             bossAnimationController = GetComponent<BossAnimationController>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (bossAnimationController.isManualRotate)
             {
@@ -44,6 +44,8 @@ namespace Swift_Blade.Boss
 
                 transform.position = Vector3.MoveTowards(transform.position, attackDestination,
                     bossAnimationController.AttackMoveSpeed * Time.deltaTime);
+
+                //NavmeshAgent.Warp(transform.position);
             }
         }
         
