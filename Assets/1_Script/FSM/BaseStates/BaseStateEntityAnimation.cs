@@ -31,6 +31,10 @@ namespace Swift_Blade.FSM.States
         {
             Debug.Log("onanimatoinEndable");
         }
+        protected virtual void OnAttackTrigger()
+        {
+            Debug.Log("OnAttackTrigger");
+        }
         protected virtual void OnForceEventTrigger(float force)
         {
             Debug.Log("onfroce");
@@ -50,6 +54,8 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnAnimationEndableListenEvent += OnAnimationEndTriggerListen;
             animationTriggers.OnAnimationnEndableEvent += OnAnimationEndableTrigger;
 
+            animationTriggers.OnAttackTriggerEvent += OnAttackTrigger;
+
             animationTriggers.OnForceEvent += OnForceEventTrigger;
             animationTriggers.OnSpeedMultiplierDefaultEvent += OnSpeedMultiplierDefaultTrigger;
             //animationTriggers.OnMovementSetEvent += OnMovementSetTrigger;
@@ -62,6 +68,9 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnAnimationEndEvent -= OnAnimationEndTrigger;
             animationTriggers.OnAnimationEndableListenEvent -= OnAnimationEndTriggerListen;
             animationTriggers.OnAnimationnEndableEvent -= OnAnimationEndableTrigger;
+
+            animationTriggers.OnAttackTriggerEvent -= OnAttackTrigger;
+
             animationTriggers.OnForceEvent -= OnForceEventTrigger;
             animationTriggers.OnSpeedMultiplierDefaultEvent -= OnSpeedMultiplierDefaultTrigger;
             //animationTriggers.OnMovementSetEvent -= OnMovementSetTrigger;
@@ -71,8 +80,10 @@ namespace Swift_Blade.FSM.States
         public virtual void PlayAnimationOnEnter()
         {
             if (baseAnimParam != null)
+            {
+                Debug.Log(baseAnimParam);
                 ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1);
-                //ownerAnimator.CrossFade(baseAnimParam.GetAnimationHash, 0.2f, -1, 0, 0.2f);
+            }
         }
         protected void PlayAnimation(AnimationParameterSO param)
         {
