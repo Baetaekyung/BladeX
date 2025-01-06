@@ -62,8 +62,6 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         }
 
         //init
-        //if (singletonFlag.HasFlag(MonoSingletonFlags.SingletonPreset)) _instance = this as T;//GetPresetSingleton();
-        //else _instance = this as T;
         print($"[Singleton_Awake] [type : {typeof(T).Name}] [name : {gameObject.name}]");
         _instance = this as T;
 

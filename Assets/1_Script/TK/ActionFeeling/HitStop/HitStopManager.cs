@@ -20,6 +20,7 @@ namespace Swift_Blade.Feeling
         
         protected override void Awake()
         {
+            base.Awake();
             Time.timeScale = DEFAULT_TIMESCALE;
         }
 
