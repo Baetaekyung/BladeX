@@ -12,6 +12,7 @@ namespace Swift_Blade.FSM.States
         private readonly IReadOnlyList<Vector3> comboForceList;
         private readonly IReadOnlyList<float> perioids;
         private readonly PlayerDamageCaster playerDamageCaster;
+        private readonly PlayerRenderer playerRenderer;
 
         private bool allowListening;
         private bool allowNextAttack;
@@ -32,6 +33,7 @@ namespace Swift_Blade.FSM.States
             comboForceList = entity.GetComboForceList;
             perioids = entity.GetPeriods;
             playerDamageCaster = entity.GetPlayerDamageCaster;
+            playerRenderer = entity.GetPlayerRenderer;
             maxIdx = comboParamHash.Count - 1;
             Player.Debug_Updt += () =>
             {
@@ -44,6 +46,12 @@ namespace Swift_Blade.FSM.States
         public override void Enter()
         {
             base.Enter();
+            bool mouseMove = true;
+            Vector3 direction = mouseMove == true ?
+                player.GetPlayerInput.GetMousePositionWorld - playerMovement.transform.position :
+                player.GetPlayerInput.GetInputDirectionRawRotated;
+            playerRenderer.LookAtDirection(direction);
+            playerMovement.UseMouseLock = true;
             Attack();
         }
         public override void Update()
@@ -82,6 +90,7 @@ namespace Swift_Blade.FSM.States
         {
             Debug.Log("exit");
             playerMovement.SpeedMultiplierDefault = 1;
+            playerMovement.UseMouseLock = false;
             base.Exit();
         }
     }

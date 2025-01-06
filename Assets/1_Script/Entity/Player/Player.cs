@@ -74,12 +74,6 @@ namespace Swift_Blade
                 UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
             }
             UpdateDebugUI();
-            void ProcessInput()
-            {
-                if (Input.GetKeyDown(KeyCode.L))
-                    GetPlayerMovement.UseMouseLock = !GetPlayerMovement.UseMouseLock;
-            }
-            ProcessInput();
         }
 
     }

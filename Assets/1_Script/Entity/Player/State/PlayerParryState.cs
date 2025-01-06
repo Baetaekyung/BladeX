@@ -24,8 +24,11 @@ namespace Swift_Blade.FSM.States
         public override void Enter()
         {
             base.Enter();
-            //Vector3 mouseWorld = player.GetPlayerInput.GetMousePositionWorld;
-            //playerRenderer.LookAtDirection(mouseWorld);
+            bool mouseMove = true;
+            Vector3 direction = mouseMove == true ?
+                player.GetPlayerInput.GetMousePositionWorld - playerMovement.transform.position :
+                player.GetPlayerInput.GetInputDirectionRawRotated;
+            playerRenderer.LookAtDirection(direction);
 
             Debug.Log("Parry Enter");
             player.IsParryState = true;

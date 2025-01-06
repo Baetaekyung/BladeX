@@ -58,7 +58,7 @@ namespace Swift_Blade
         public bool AllowInputMove { get; set; } = true;
         public bool AllowRotate { get; set; } = true;
         public bool CanRoll => currentRollStamina >= 1;
-        public bool UseMouseLock { get; set; } = true;
+        public bool UseMouseLock { get; set; }
 
         public void EntityComponentAwake(Entity entity)
         {

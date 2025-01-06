@@ -20,6 +20,7 @@ namespace Swift_Blade.FSM.States
         {
             base.Enter();
             additionalZValue = 0;
+            playerMovement.UseMouseLock = false;
         }
         public override void Update()
         {
