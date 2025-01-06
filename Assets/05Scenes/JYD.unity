@@ -1202,6 +1202,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d24a670aea6b8439513fc98b994d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &891924420 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2830836079372413566, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+  m_PrefabInstance: {fileID: 1704071304}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &891924422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891924420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ApplyAfter: 2
+  ChannelMask: 1
+  Gain: 1
+  Use2DDistance: 0
+  UseCameraSpace: 1
+  ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1156300914
 GameObject:
   m_ObjectHideFlags: 0
@@ -1250,6 +1278,35 @@ MonoBehaviour:
   flashDuration: 0.1
   _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
   _meshRenderers: []
+--- !u!1 &1174540063 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 430990643541604582, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+  m_PrefabInstance: {fileID: 1704071304}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1174540066 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4326774967714138155, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+  m_PrefabInstance: {fileID: 1704071304}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174540063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 381b60ed06d463a43ac10235f2e1c823, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1174540068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174540063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a861d1e6a4fbaef4fafdada55decfbc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeType: 0
 --- !u!1001 &1601054912
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1371,6 +1428,12 @@ MonoBehaviour:
       value: {fileID: 11400000, guid: d52ce7cc099857443a26a4d81312154a, type: 2}
     - key: 0
       value: {fileID: 11400000, guid: 214ce1c74fddd4f4cbe3938cb660d091, type: 2}
+    - key: 3
+      value: {fileID: 11400000, guid: 5245a8f355597034ab4590a16820b4b1, type: 2}
+    - key: 4
+      value: {fileID: 11400000, guid: 99530bf665802df49ac3e1abf046ecc8, type: 2}
+    - key: 5
+      value: {fileID: 11400000, guid: b49cdb053e1782a4eab124ddbb43e26a, type: 2}
 --- !u!1001 &1704071304
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1423,10 +1486,68 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1174540066}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1174540068}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayFeedback
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayFeedback
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Swift_Blade.Combat.Feedbck.HitStopFeedback, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Swift_Blade.Combat.Feedbck.CameraShakeFeedback, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2830836079372413566, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 891924422}
+    - targetCorrespondingSourceObject: {fileID: 430990643541604582, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1174540068}
   m_SourcePrefab: {fileID: 100100000, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
 --- !u!1 &2113276895
 GameObject:
@@ -29086,6 +29207,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   collider: {fileID: 763201424}
+  shakeType: 4
 --- !u!114 &95032059225202455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29207,7 +29329,19 @@ MonoBehaviour:
       m_Calls: []
   OnDeadEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 95032059225202454}
+        m_TargetAssemblyTypeName: Swift_Blade.Boss.BossBase, Assembly-CSharp
+        m_MethodName: SetDead
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   maxHealth: 100
   currentHealth: 0
   isDead: 0
