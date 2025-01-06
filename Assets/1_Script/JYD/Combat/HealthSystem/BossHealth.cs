@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-public class SwordBossHealth : MonoBehaviour , IDamageble
+public class BossHealth : MonoBehaviour , IDamageble
 {
     public UnityEvent<ActionData> OnHitEvent;
     public UnityEvent<ActionData> OnParryHitEvent;
