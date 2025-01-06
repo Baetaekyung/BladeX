@@ -28,7 +28,8 @@ namespace Swift_Blade
 
         [Header("Roll Settings")]
         [SerializeField] private AnimationCurve rollCurve; // curve length should be 1.
-        [SerializeField] private float debug_stmod;
+        private float rollValue;
+
         private const float rollcost = 1f;
         private const float initialRollStamina = 3f;
         private float currentRollStamina;
@@ -48,11 +49,12 @@ namespace Swift_Blade
         [Header("Cache")]
         private readonly List<ContactPoint> contactPointList = new();
 
-        public float GetMaxStamina => initialRollStamina + debug_stmod;
+        public float GetMaxStamina => initialRollStamina;
         public float SpeedMultiplierDefault { get; set; } = 1;
         //public float SpeedMultiplierForward { get; set; } = 1;
         public Vector3 InputDirection { get; set; }
         public Vector3 AdditionalVelocity { get; set; }
+        private Vector3 DashVelocity;
         public bool AllowInputMove { get; set; } = true;
         public bool AllowRotate { get; set; } = true;
         public bool UseMouseLock { get; set; } = true;
@@ -74,8 +76,10 @@ namespace Swift_Blade
         }
         private void FixedUpdate()
         {
-            AdditionalVelocity = Vector3.MoveTowards(AdditionalVelocity, Vector3.zero, Time.fixedDeltaTime * 10);
             ApplyMovement();
+            rollValue = Mathf.MoveTowards(rollValue, 2, Time.fixedDeltaTime * 2.5f);
+            UI_DebugPlayer.DebugText(7, rollValue, "rollValue", DBG_UI_KEYS.Keys_PlayerAction);
+            AdditionalVelocity = Vector3.MoveTowards(AdditionalVelocity, Vector3.zero, Time.fixedDeltaTime * 10);
 
             if (lowestContactPointBottom.HasValue) yVal = onGroundYVal;
             else yVal += Time.fixedDeltaTime * gravitiy * gravitiyMultiplier;
@@ -120,7 +124,7 @@ namespace Swift_Blade
             UI_DebugPlayer.DebugText(1, AllowInputMove, "allowInputMove", DBG_UI_KEYS.Keys_PlayerAction);
             UI_DebugPlayer.DebugText(2, wishSpeed, "wishSpeed", DBG_UI_KEYS.Keys_PlayerMovement);
 
-            Vector3 addition = AdditionalVelocity;
+            Vector3 addition = AdditionalVelocity + DashVelocity * rollCurve.Evaluate(rollValue);
             Vector3 result = input * speed + addition;
             result.y += yVal;
             controller.linearVelocity = result;
@@ -135,7 +139,10 @@ namespace Swift_Blade
 
         public void Dash(Vector3 dir, float force)
         {
-            Vector3 result = dir * force + transform.position;
+            Vector3 result = dir * force;
+            Debug.DrawRay(transform.position, result, Color.black, 1);
+            rollValue = 0;
+            DashVelocity = result;
         }
 
         public void SetAdditionalVelocity(Vector3 velocitiy) => AdditionalVelocity = velocitiy;
