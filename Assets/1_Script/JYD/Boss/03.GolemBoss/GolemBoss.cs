@@ -1,4 +1,4 @@
-using System;
+using Swift_Blade.Feeling;
 using UnityEngine;
 
 namespace Swift_Blade.Boss.Golem
@@ -10,7 +10,7 @@ namespace Swift_Blade.Boss.Golem
 
         [Space]
         [SerializeField] private Collider collider;
-        
+
         protected override void Update()
         {
             if (bossAnimationController.isManualRotate)
@@ -29,9 +29,12 @@ namespace Swift_Blade.Boss.Golem
 
         public void JumpAttackCast()
         {
+            //CameraShakeManager.Instance.DoShake(cameraShakeType);
+            
+            
             Vector3 center = transform.position;
             float radius = jumpAttackRadius;
-
+            
             Collider[] hitColliders = Physics.OverlapSphere(center, radius, whatIsTarget);
             
             foreach (var hitCollider in hitColliders)

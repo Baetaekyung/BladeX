@@ -16,14 +16,14 @@ namespace Swift_Blade.Boss
         
         public Transform target;
                
-        [SerializeField] private CameraShakeType cameraShakeType;
+        [SerializeField] protected CameraShakeType cameraShakeType;
         
         /*[Header("Knockback info")]
         public bool isKnockback;
         public float knockbackTime;
         public float knockbackThreshold;*/
 
-        private void Start()
+        protected virtual void Start()
         {
             bossAnimationController = GetComponent<BossAnimationController>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
