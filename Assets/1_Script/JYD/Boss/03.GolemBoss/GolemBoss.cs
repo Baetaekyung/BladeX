@@ -11,6 +11,8 @@ namespace Swift_Blade.Boss.Golem
         [Space]
         [SerializeField] private Collider collider;
 
+        [SerializeField] private CameraShakeType shakeType;
+        
         protected override void Update()
         {
             if (bossAnimationController.isManualRotate)
@@ -63,6 +65,11 @@ namespace Swift_Blade.Boss.Golem
         public void StopManualCollider()
         {
             collider.enabled = false;
+        }
+
+        public void ShakeCam()
+        {
+            CameraShakeManager.Instance.DoShake(shakeType);
         }
         
         private void OnDrawGizmos()

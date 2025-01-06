@@ -45,11 +45,11 @@ namespace Swift_Blade
                         knockbackDuration = 0f,
                         knockbackPower = 0f,
                         dealer = _player.transform,
-                        //attackType = _player.IsParryState ? AttackType.Parry : AttackType.Melee
-                        attackType =  AttackType.Parry
+                        attackType = _player.IsParryState ? AttackType.Parry : AttackType.Melee
+                        //attackType =  AttackType.Parry
                     };
-                    print(actionData.attackType == AttackType.Parry);
-                  
+                    //print(actionData.attackType == AttackType.Parry);
+                    health.TakeDamage(actionData);
                 }
             }
             return isHit;

@@ -11,7 +11,7 @@ namespace Swift_Blade.Combat.Feedbck
         
         public override void PlayFeedback()
         {
-               
+            
             HitStopManager.Instance.DoHitStop(hitStopData);
         }
 
@@ -19,5 +19,7 @@ namespace Swift_Blade.Combat.Feedbck
         {
             
         }
+                
+        
     }
 }
