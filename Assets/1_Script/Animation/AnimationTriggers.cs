@@ -12,6 +12,7 @@ namespace Swift_Blade
         public event Action<float> OnSpeedMultiplierDefaultEvent;
         public event Action<float> OnForceEvent;
         public event Action<Vector3> OnMovementSetEvent;
+        public event Action OnAttackTriggerEvent;
 
         [Preserve]
         private void OnAnimationEndTrigger()
@@ -38,6 +39,11 @@ namespace Swift_Blade
         private void OnSpeedMultiplierDefaultTrigger(float set)
         {
             OnSpeedMultiplierDefaultEvent?.Invoke(set);
+        }
+        [Preserve]
+        private void OnAttackTrigger()
+        {
+            OnAttackTriggerEvent?.Invoke();
         }
         //[Preserve]
         //private void OnMovementSet(float set)
