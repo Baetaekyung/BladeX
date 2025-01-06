@@ -14,7 +14,7 @@ namespace Swift_Blade.FSM.States
         {
             base.Enter();
             player.GetPlayerMovement.AllowInputMove = false;
-            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirection.normalized, 7);
+            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirection.normalized, 10);
         }
         public override void Exit()
         {
