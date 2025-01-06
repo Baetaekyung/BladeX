@@ -25,8 +25,6 @@ namespace Swift_Blade.FSM.States
         {
             if (Input.GetKeyDown(KeyCode.Mouse0) && BaseAllowStateChangeToAttack)
                 GetOwnerFsm.ChangeState(PlayerStateEnum.Attack);
-            if (Input.GetKeyDown(KeyCode.Space))
-                GetOwnerFsm.ChangeState(PlayerStateEnum.Dash);
             if (Input.GetKeyDown(KeyCode.C) && BaseAllowStateChangeToParry)
                 GetOwnerFsm.ChangeState(PlayerStateEnum.Parry);
             if (Input.GetKeyDown(KeyCode.Space) && BaseAllowStateChangeToDash)
@@ -44,7 +42,6 @@ namespace Swift_Blade.FSM.States
             Transform playerTransform = player.GetPlayerRenderer.GetPlayerVisualTrasnform;
             Vector3 inputLocal = playerTransform.InverseTransformDirection(inputLocalLerp);
             Debug.DrawRay(Vector3.zero, inputLocal, Color.red, 0.1f);
-            UI_DebugPlayer.DebugText(0, inputLocal, "inputLocal", DBG_UI_KEYS.Keys_PlayerAction);
             //UI_DebugPlayer.DebugText(2, inputLocal.magnitude, "inputLocalMag", DBG_UI_KEYS.Keys_PlayerAction);
             player.GetPlayerAnimator.GetAnimator.SetFloat("X", inputLocal.x);
             //if (inputLocal.z >= 0.3f)

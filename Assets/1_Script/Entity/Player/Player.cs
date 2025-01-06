@@ -24,6 +24,7 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO anim_idle;
         [SerializeField] private AnimationParameterSO anim_move;
         [SerializeField] private AnimationParameterSO anim_parry;
+        [SerializeField] private AnimationParameterSO anim_dodge;
         //[SerializeField] private AnimationParameterSO anim_jumpAttack;
         //[SerializeField] private AnimationParameterSO anim_attack1;
 
@@ -57,7 +58,7 @@ namespace Swift_Blade
             //playerStateMachine.AddState(PlayerStateEnum.Idle, new PlayerIdleState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_idle));
             playerStateMachine.AddState(PlayerStateEnum.Movement, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
             playerStateMachine.AddState(PlayerStateEnum.Attack, new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null));
-            playerStateMachine.AddState(PlayerStateEnum.Dash, new PlayerDashState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_idle));
+            playerStateMachine.AddState(PlayerStateEnum.Dash, new PlayerDashState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_dodge));
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
             playerStateMachine.SetStartState(PlayerStateEnum.Movement);
         }
@@ -69,8 +70,7 @@ namespace Swift_Blade
             {
                 if (Input.GetKeyDown(KeyCode.F1))
                     UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
-                if (Input.GetKeyDown(KeyCode.F2))
-
+                //if (Input.GetKeyDown(KeyCode.F2))
                 UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
             }
             UpdateDebugUI();

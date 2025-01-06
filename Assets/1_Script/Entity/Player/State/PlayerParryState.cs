@@ -29,7 +29,7 @@ namespace Swift_Blade.FSM.States
 
             Debug.Log("Parry Enter");
             player.IsParryState = true;
-            playerMovement.AllowInputMoving = false;
+            playerMovement.AllowInputMove = false;
 
             _parryDuration = 0.4f;
 
@@ -55,7 +55,7 @@ namespace Swift_Blade.FSM.States
             _currentDuration = 0f;
 
             player.IsParryState = false;
-            playerMovement.AllowInputMoving = true;
+            playerMovement.AllowInputMove = true;
             
             Debug.Log("Parry Exit");
 

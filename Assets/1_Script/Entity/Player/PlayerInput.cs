@@ -16,7 +16,7 @@ namespace Swift_Blade
         /// im not sure if this is valid
         /// </summary>
         //public Vector3 InputDirectionRotatedNormalized => CameraRotation * (InputDirection.sqrMagnitude < 1 ? InputDirection: InputDirection.normalized);
-        private Quaternion CameraRotation => playerCamera.GetResultQuaternion;
+        //private Quaternion CameraRotation => playerCamera.GetResultQuaternion;
         private Quaternion CameraRotationOnlyY => playerCamera.GetResultQuaternionOnlyY;
 
         private PlayerCamera playerCamera;

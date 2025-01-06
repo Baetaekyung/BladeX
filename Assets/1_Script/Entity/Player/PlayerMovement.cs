@@ -53,7 +53,8 @@ namespace Swift_Blade
         //public float SpeedMultiplierForward { get; set; } = 1;
         public Vector3 InputDirection { get; set; }
         public Vector3 AdditionalVelocity { get; set; }
-        public bool AllowInputMoving { get; set; } = true;
+        public bool AllowInputMove { get; set; } = true;
+        public bool AllowRotate { get; set; } = true;
         public bool UseMouseLock { get; set; } = true;
 
         public void EntityComponentAwake(Entity entity)
@@ -70,10 +71,6 @@ namespace Swift_Blade
         {
             currentRollStamina += Time.deltaTime;
             currentRollStamina = Mathf.Min(GetMaxStamina, currentRollStamina);
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                AddForceFacingDirection(Vector3.forward, 10);
-            }
         }
         private void FixedUpdate()
         {
@@ -92,23 +89,23 @@ namespace Swift_Blade
         private void ApplyMovement()
         {
             Vector3 input = Vector3.zero;
-            if (AllowInputMoving)
+            if (AllowInputMove)
             {
                 input = InputDirection;
-                if (UseMouseLock)
-                {
-                    Vector3 direction = playerInput.GetMouseDirection;
-                    playerRenderer.LookAtDirectionSmooth(direction, angleMultiplier);
-                }
-                else playerRenderer.LookAtDirectionSmooth(InputDirection, angleMultiplier);
-
                 if (lowestContactPointBottom.HasValue)
                 {
-                    //controller.useGravity = false;
-                    input = Vector3.ProjectOnPlane(InputDirection, lowerstContactPoint.Value.normal);// this is causing physics error on 90 deg angle normal
+                    input = Vector3.ProjectOnPlane(InputDirection, lowerstContactPoint.Value.normal);
                     input.Normalize();
                 }
-                //else controller.useGravity = true;
+                if (AllowRotate)
+                {
+                    if (UseMouseLock)
+                    {
+                        Vector3 direction = playerInput.GetMouseDirection;
+                        playerRenderer.LookAtDirectionSmooth(direction, angleMultiplier);
+                    }
+                    else playerRenderer.LookAtDirectionSmooth(InputDirection, angleMultiplier);
+                }
             }
 
             float multiplier = SpeedMultiplierDefault;
@@ -120,9 +117,8 @@ namespace Swift_Blade
             //float speed = wishSpeed - currentSpeed;
             float speed = wishSpeed;
             UI_DebugPlayer.DebugText(1, speed, "speed", DBG_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.DebugText(1, AllowInputMove, "allowInputMove", DBG_UI_KEYS.Keys_PlayerAction);
             UI_DebugPlayer.DebugText(2, wishSpeed, "wishSpeed", DBG_UI_KEYS.Keys_PlayerMovement);
-            //UI_DebugPlayer.Instance.DebugText(3, currentSpeed, "curSpeed", DBG_UI_KEYS.Keys_PlayerMovement);
-            //if (speed < 0) return;
 
             Vector3 addition = AdditionalVelocity;
             Vector3 result = input * speed + addition;
@@ -139,11 +135,9 @@ namespace Swift_Blade
 
         public void Dash(Vector3 dir, float force)
         {
-
+            Vector3 result = dir * force + transform.position;
         }
 
-
-        private void SetGravitiy(bool value) => controller.useGravity = value;
         public void SetAdditionalVelocity(Vector3 velocitiy) => AdditionalVelocity = velocitiy;
 
         private void OnCollisionStay(Collision collision)
@@ -176,7 +170,7 @@ namespace Swift_Blade
 
             float lowestPointY = lowerstContactPoint.Value.point.y;
             float newPointY = newContactPoint.Value.point.y;
-            //It doesn't make sense but i will just leave it for now (>=)
+
             if (lowestPointY >= newPointY)
             {
                 lowerstContactPoint = newContactPoint;
