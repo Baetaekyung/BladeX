@@ -14,7 +14,8 @@ public class SwordBossHealth : MonoBehaviour , IDamageble
     
     public float maxHealth;
     public float currentHealth;
-        
+    public bool isDead = false;
+    
     [Space]
     [SerializeField] private BehaviorGraphAgent BehaviorGraphAgent; 
     [SerializeField] private ChangeBossState changeBossState;
@@ -30,15 +31,17 @@ public class SwordBossHealth : MonoBehaviour , IDamageble
 
     private void Update()
     {
-        /*if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            ActionData action = new ActionData(Vector3.zero, 0.5f, 10f, 20f, transform, AttackType.Parry);
+            ActionData action = new ActionData(Vector3.zero, 0.5f, 10f, 20f, transform, AttackType.Melee);
             TakeDamage(action);
-        }*/
+        }
     }
     
     public void TakeDamage(ActionData actionData)
     {
+        if(isDead)return;
+        
         if (actionData.attackType == AttackType.Parry)
         {
             TriggerState(BossState.Hurt);
@@ -47,7 +50,7 @@ public class SwordBossHealth : MonoBehaviour , IDamageble
             return;
         }
         
-        if (Random.value <= 0.1f)
+        if (Random.value <= 0.3f)
         {
             TriggerState(BossState.Step);
             return;
@@ -86,6 +89,7 @@ public class SwordBossHealth : MonoBehaviour , IDamageble
 
     public void Dead()
     {
+        isDead = true;
         OnDeadEvent?.Invoke();
     }
     

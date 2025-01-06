@@ -10,7 +10,7 @@ namespace Swift_Blade
         [SerializeField] private StatSO _healthStat;
 
         private float _maxHealth;
-        private float _currentHealth;
+        [SerializeField] private float _currentHealth;
 
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
