@@ -23,14 +23,14 @@ namespace Swift_Blade.FSM.States
         }
         public override void Update()
         {
+            PlayerInput playerInput = player.GetPlayerInput;
             if (Input.GetKeyDown(KeyCode.Mouse0) && BaseAllowStateChangeToAttack)
                 GetOwnerFsm.ChangeState(PlayerStateEnum.Attack);
             if (Input.GetKeyDown(KeyCode.C) && BaseAllowStateChangeToParry)
                 GetOwnerFsm.ChangeState(PlayerStateEnum.Parry);
-            if (Input.GetKeyDown(KeyCode.Space) && BaseAllowStateChangeToDash)
+            if (Input.GetKeyDown(KeyCode.Space) && BaseAllowStateChangeToDash && playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f)
                 GetOwnerFsm.ChangeState(PlayerStateEnum.Dash);
-
-            PlayerInput playerInput = player.GetPlayerInput;
+            UI_DebugPlayer.DebugText(2, playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f, "dashPossible", DBG_UI_KEYS.Keys_PlayerAction);
 
             //movement
             Vector3 resultInput = playerInput.GetInputDirectionRawRotated.normalized;
