@@ -8,6 +8,9 @@ namespace Swift_Blade.Feeling
         UpDown,
         LeftRight,
         ParryShake,
+        Weak,
+        Middle,
+        Strong
     }
     
     /// <summary>
