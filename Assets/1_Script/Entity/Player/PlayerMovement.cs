@@ -27,11 +27,11 @@ namespace Swift_Blade
         private ContactPoint? lowestContactPointBottom;
 
         [Header("Roll Settings")]
-        [SerializeField] private AnimationCurve rollCurve; // curve length should be 1.
+        [SerializeField] private AnimationCurve rollCurve;
         private float rollValue;
 
         private const float rollcost = 1f;
-        private const float initialRollStamina = 3f;
+        private const float initialRollStamina = 1f;
         private float currentRollStamina;
 
         [Header("Angle Multiplier")]
@@ -57,6 +57,7 @@ namespace Swift_Blade
         private Vector3 DashVelocity;
         public bool AllowInputMove { get; set; } = true;
         public bool AllowRotate { get; set; } = true;
+        public bool CanRoll => currentRollStamina >= 1;
         public bool UseMouseLock { get; set; } = true;
 
         public void EntityComponentAwake(Entity entity)
@@ -79,6 +80,7 @@ namespace Swift_Blade
             ApplyMovement();
             rollValue = Mathf.MoveTowards(rollValue, 2, Time.fixedDeltaTime * 2.5f);
             UI_DebugPlayer.DebugText(7, rollValue, "rollValue", DBG_UI_KEYS.Keys_PlayerAction);
+            UI_DebugPlayer.DebugText(8, currentRollStamina, "currentRoll", DBG_UI_KEYS.Keys_PlayerAction);
             AdditionalVelocity = Vector3.MoveTowards(AdditionalVelocity, Vector3.zero, Time.fixedDeltaTime * 10);
 
             if (lowestContactPointBottom.HasValue) yVal = onGroundYVal;
@@ -142,6 +144,7 @@ namespace Swift_Blade
             Vector3 result = dir * force;
             Debug.DrawRay(transform.position, result, Color.black, 1);
             rollValue = 0;
+            currentRollStamina = 0;
             DashVelocity = result;
         }
 

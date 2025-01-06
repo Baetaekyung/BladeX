@@ -49526,6 +49526,7 @@ MonoBehaviour:
       m_Calls: []
   maxHealth: 100
   currentHealth: 0
+  isDead: 0
   BehaviorGraphAgent: {fileID: 1344819219}
   changeBossState: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
 --- !u!114 &1344819218
@@ -60151,10 +60152,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCategory
       objectReference: {fileID: 0}
-    - target: {fileID: 5558562310119497924, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: anim_dodge
-      value: 
-      objectReference: {fileID: 11400000, guid: a72b63501f3813e4b9d912e065122a35, type: 2}
     - target: {fileID: 5704459122665910530, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -60194,126 +60191,6 @@ PrefabInstance:
     - target: {fileID: 5704459122665910530, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[1].time
-      value: 0.4748409
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[2].time
-      value: 0.6791575
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[3].time
-      value: 0.8327425
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[4].time
-      value: 1.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[0].value
-      value: 0.99575806
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[1].value
-      value: 1.3771037
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[2].value
-      value: 0.31449333
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[3].value
-      value: 0.5601195
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[0].inSlope
-      value: 3.9613798
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[1].inSlope
-      value: -6.147665
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[2].inSlope
-      value: 0.00019004285
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[3].inSlope
-      value: 3.1111913
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[4].inSlope
-      value: -13.888149
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[0].outSlope
-      value: 3.9613798
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[1].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[1].outSlope
-      value: -6.147665
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[2].inWeight
-      value: 0.3008892
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[2].outSlope
-      value: 0.00019004285
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[3].inWeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[3].outSlope
-      value: 3.1111913
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[4].inWeight
-      value: 0.20673713
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[4].outSlope
-      value: -13.888149
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[0].outWeight
-      value: 0.18186146
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[1].outWeight
-      value: 0.18006541
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[2].outWeight
-      value: 0.5485911
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[3].outWeight
-      value: 0.36482432
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[0].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8177067181426564885, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: rollCurve.m_Curve.Array.data[1].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8928013613842272787, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: m_Drag
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -28,7 +28,7 @@ namespace Swift_Blade.FSM.States
                 GetOwnerFsm.ChangeState(PlayerStateEnum.Attack);
             if (Input.GetKeyDown(KeyCode.C) && BaseAllowStateChangeToParry)
                 GetOwnerFsm.ChangeState(PlayerStateEnum.Parry);
-            if (Input.GetKeyDown(KeyCode.Space) && BaseAllowStateChangeToDash && playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f)
+            if (Input.GetKeyDown(KeyCode.Space) && BaseAllowStateChangeToDash && playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f && playerMovement.CanRoll)
                 GetOwnerFsm.ChangeState(PlayerStateEnum.Dash);
             UI_DebugPlayer.DebugText(2, playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f, "dashPossible", DBG_UI_KEYS.Keys_PlayerAction);
 

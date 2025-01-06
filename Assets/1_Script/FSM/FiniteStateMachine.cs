@@ -15,6 +15,7 @@ namespace Swift_Blade.FSM
         public void SetStartState(StateEnum state) => CurrentState = StateDictionary[state];
         public void ChangeState(StateEnum type)
         {
+            //Debug.Log(type.ToString());
             CurrentState.Exit();
             CurrentState = StateDictionary[type];
             CurrentState.Enter();
