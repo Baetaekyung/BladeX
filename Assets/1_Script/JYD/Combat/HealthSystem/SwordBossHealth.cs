@@ -27,14 +27,14 @@ namespace Swift_Blade.Combat.Health
                 return;
             }
 
-            if (Random.value <= 0.3f)
+            /*if (Random.value <= 0.3f)
             {
                 TriggerState(BossState.Step);
                 return;
-            }
+            }*/
 
             currentHealth -= actionData.damageAmount;
-            OnChangeHealthEvent?.Invoke(GetHealthPercent());
+            OnChangeHealthEvent?.Invoke(currentHealth/ maxHealth);
 
             if (currentHealth <= 0)
             {

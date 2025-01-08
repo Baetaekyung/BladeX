@@ -1854,6 +1854,9 @@ GameObject:
   - component: {fileID: 4699414916049857407}
   - component: {fileID: 4326774967714138155}
   - component: {fileID: 4731344697399719711}
+  - component: {fileID: 9024841371362176748}
+  - component: {fileID: 7186235377008540202}
+  - component: {fileID: 7697671464398138100}
   m_Layer: 0
   m_Name: Feedback
   m_TagString: Untagged
@@ -1917,7 +1920,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a861d1e6a4fbaef4fafdada55decfbc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeType: 1
+  shakeType: 5
+--- !u!114 &9024841371362176748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430990643541604582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a861d1e6a4fbaef4fafdada55decfbc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeType: 0
+--- !u!114 &7186235377008540202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430990643541604582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87cabaab2ab0cae47ba6fb8bc8165205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: {fileID: 0}
+  increaseDuration: 0.104
+  decreaseDuration: 1.153
+  maxValue: 0.312
+--- !u!114 &7697671464398138100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430990643541604582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee4114fa2ed1b3547985f6b85bbf237d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FocusData: {fileID: 11400000, guid: 4ab9eaeeb0098984c9c33d289daeec37, type: 2}
 --- !u!1 &433262212513251703
 GameObject:
   m_ObjectHideFlags: 0
@@ -11007,7 +11052,32 @@ MonoBehaviour:
     m_Bits: 128
   OnCastDamageEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4326774967714138155}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.HitStopFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 9024841371362176748}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.CameraShakeFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _casterRadius: 1.25
   _casterInterpolation: 0.6
   _castingRange: 2.7
@@ -13385,6 +13455,7 @@ GameObject:
   - component: {fileID: 755142993258876006}
   - component: {fileID: 8096457750588971972}
   - component: {fileID: 8162421343820411782}
+  - component: {fileID: 5669401327748987023}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -13495,6 +13566,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: 0.1
+--- !u!114 &5669401327748987023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830836079372413566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ApplyAfter: 2
+  ChannelMask: 1
+  Gain: 1
+  Use2DDistance: 0
+  UseCameraSpace: 1
+  ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &2862567673476618301
 GameObject:
   m_ObjectHideFlags: 0
@@ -37291,6 +37385,19 @@ MonoBehaviour:
   OnHitEvent:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 7186235377008540202}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.BloodScreenFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 4699414916049857407}
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
         m_MethodName: PlayFeedback
@@ -37317,6 +37424,19 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 4731344697399719711}
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.CameraShakeFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7697671464398138100}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.CameraFocusFeedback,
           Assembly-CSharp
         m_MethodName: PlayFeedback
         m_Mode: 1

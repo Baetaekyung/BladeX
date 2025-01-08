@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using Swift_Blade.Combat.Health;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Swift_Blade.UI
