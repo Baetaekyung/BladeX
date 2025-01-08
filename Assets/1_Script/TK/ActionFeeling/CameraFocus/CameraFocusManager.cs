@@ -61,12 +61,12 @@ namespace Swift_Blade.Feeling
             
             //클 수록 멀리 보기 때문에 플레이어 쪽으로 당기면 -, 아니면 +이다.
             var targetFOV = focusData.isFront
-                ? lensFOV - focusData.focusDistance
-                : lensFOV + focusData.focusDistance;
+                ? lensFOV - focusData.focusAmount
+                : lensFOV + focusData.focusAmount;
             
             while (focusProgress < 1)
             {
-                focusProgress += focusData.focusSpeed * Time.deltaTime;
+                focusProgress += focusData.increaseSpeed * Time.deltaTime;
                 currentFOV = Mathf.Lerp(lensFOV, targetFOV, focusProgress);
                 _targetCamera.Lens.FieldOfView = currentFOV;
                 yield return _waitFrame;
@@ -82,7 +82,7 @@ namespace Swift_Blade.Feeling
                 focusProgress = 0; //시간 초기화
                 while (focusProgress < 1)
                 {
-                    focusProgress += focusData.focusSpeed * Time.deltaTime;
+                    focusProgress += focusData.decreaseSpeed * Time.deltaTime;
                     currentFOV = Mathf.Lerp(currentFOV, lensFOV, focusProgress);
                     _targetCamera.Lens.FieldOfView = currentFOV;
                     yield return _waitFrame;
