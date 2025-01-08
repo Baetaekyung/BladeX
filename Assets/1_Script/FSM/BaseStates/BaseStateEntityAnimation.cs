@@ -27,6 +27,11 @@ namespace Swift_Blade.FSM.States
         {
             Debug.Log("OnAnimationListen");
         }
+        protected virtual void OnAnimationEndTriggerStoplisten()
+        {
+            Debug.Log("stoplisten");
+        }
+
         protected virtual void OnAnimationEndableTrigger()
         {
             Debug.Log("onanimatoinEndable");
@@ -47,14 +52,25 @@ namespace Swift_Blade.FSM.States
         {
             Debug.Log("onmovementset");
         }
+        protected virtual void OnAllowRotateAllowTrigger()
+        {
+            Debug.Log("onrtoateSet");
+        }
+        protected virtual void OnAllowRotateDisallowTrigger()
+        {
+            Debug.Log("onrtoateSet");
+        }
         public override void Enter()
         {
             base.Enter();
             animationTriggers.OnAnimationEndEvent += OnAnimationEndTrigger;
             animationTriggers.OnAnimationEndableListenEvent += OnAnimationEndTriggerListen;
+            animationTriggers.OnAnimationEndableStopListenEvent += OnAnimationEndTriggerStoplisten;
             animationTriggers.OnAnimationnEndableEvent += OnAnimationEndableTrigger;
 
             animationTriggers.OnAttackTriggerEvent += OnAttackTrigger;
+            animationTriggers.OnRotateAllowSetEvent += OnAllowRotateAllowTrigger;
+            animationTriggers.OnRotateDisallowSetEvent+= OnAllowRotateDisallowTrigger;
 
             animationTriggers.OnForceEvent += OnForceEventTrigger;
             animationTriggers.OnSpeedMultiplierDefaultEvent += OnSpeedMultiplierDefaultTrigger;
@@ -67,9 +83,13 @@ namespace Swift_Blade.FSM.States
         {
             animationTriggers.OnAnimationEndEvent -= OnAnimationEndTrigger;
             animationTriggers.OnAnimationEndableListenEvent -= OnAnimationEndTriggerListen;
+            animationTriggers.OnAnimationEndableStopListenEvent -= OnAnimationEndTriggerStoplisten;
             animationTriggers.OnAnimationnEndableEvent -= OnAnimationEndableTrigger;
 
             animationTriggers.OnAttackTriggerEvent -= OnAttackTrigger;
+            animationTriggers.OnRotateAllowSetEvent -= OnAllowRotateAllowTrigger;
+            animationTriggers.OnRotateDisallowSetEvent -= OnAllowRotateDisallowTrigger;
+
 
             animationTriggers.OnForceEvent -= OnForceEventTrigger;
             animationTriggers.OnSpeedMultiplierDefaultEvent -= OnSpeedMultiplierDefaultTrigger;
@@ -81,7 +101,6 @@ namespace Swift_Blade.FSM.States
         {
             if (baseAnimParam != null)
             {
-                Debug.Log(baseAnimParam);
                 ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1);
             }
         }
