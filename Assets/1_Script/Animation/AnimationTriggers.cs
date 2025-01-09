@@ -6,19 +6,25 @@ namespace Swift_Blade
 {
     public class AnimationTriggers : MonoBehaviour
     {
+        public event Action OnAttackTriggerEvent;
+
         public event Action OnAnimationEndEvent;
         public event Action OnAnimationnEndableEvent;
         public event Action OnAnimationEndableListenEvent;
+        public event Action OnAnimationEndableStopListenEvent;
+
         public event Action<float> OnSpeedMultiplierDefaultEvent;
         public event Action<float> OnForceEvent;
-        public event Action<Vector3> OnMovementSetEvent;
-        public event Action OnAttackTriggerEvent;
+
+        public event Action OnRotateAllowSetEvent;
+        public event Action OnRotateDisallowSetEvent;
 
         [Preserve]
         private void OnAnimationEndTrigger()
         {
             OnAnimationEndEvent?.Invoke();
             OnSpeedMultiplierDefaultEvent?.Invoke(1);
+            OnRotateAllowSetEvent?.Invoke();
         }
         [Preserve]
         private void OnAnimationEndableTrigger()
@@ -29,6 +35,11 @@ namespace Swift_Blade
         private void OnAnimationEndableListenTrigger()
         {
             OnAnimationEndableListenEvent?.Invoke();
+        }
+        [Preserve]
+        private void OnAnimationEndableStopListenTrigger()
+        {
+            OnAnimationEndableStopListenEvent?.Invoke();
         }
         [Preserve]
         private void OnForceEventTrigger(float force)
@@ -44,6 +55,16 @@ namespace Swift_Blade
         private void OnAttackTrigger()
         {
             OnAttackTriggerEvent?.Invoke();
+        }
+        [Preserve]
+        private void OnRotateAllowTrigger()
+        {
+            OnRotateAllowSetEvent?.Invoke();
+        }
+        [Preserve]
+        private void OnRotateDisallowTrigger()
+        {
+            OnRotateDisallowSetEvent?.Invoke();
         }
         //[Preserve]
         //private void OnMovementSet(float set)

@@ -25,6 +25,7 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO anim_move;
         [SerializeField] private AnimationParameterSO anim_parry;
         [SerializeField] private AnimationParameterSO anim_dodge;
+        [SerializeField] private AnimationParameterSO anim_dashAttack;
         //[SerializeField] private AnimationParameterSO anim_jumpAttack;
         //[SerializeField] private AnimationParameterSO anim_attack1;
 
@@ -51,13 +52,15 @@ namespace Swift_Blade
 
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
+        private PlayerAttackState playerAttackState;
         protected override void Awake()
         {
             base.Awake();
             Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator.GetAnimator;
             //playerStateMachine.AddState(PlayerStateEnum.Idle, new PlayerIdleState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_idle));
             playerStateMachine.AddState(PlayerStateEnum.Movement, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
-            playerStateMachine.AddState(PlayerStateEnum.Attack, new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null));
+            playerAttackState = new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_dashAttack, null);
+            playerStateMachine.AddState(PlayerStateEnum.Attack, playerAttackState);
             playerStateMachine.AddState(PlayerStateEnum.Dash, new PlayerDashState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_dodge));
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
             playerStateMachine.SetStartState(PlayerStateEnum.Movement);
@@ -74,6 +77,11 @@ namespace Swift_Blade
                 UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
             }
             UpdateDebugUI();
+        }
+        public void Attack(EPlayerAttackPreviousState previousState)
+        {
+            playerAttackState.PreviousState = previousState;
+            playerStateMachine.ChangeState(PlayerStateEnum.Attack);
         }
 
     }
