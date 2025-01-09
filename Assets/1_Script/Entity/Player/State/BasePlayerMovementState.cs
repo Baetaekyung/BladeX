@@ -4,16 +4,14 @@ namespace Swift_Blade.FSM.States
 {
     public abstract class BasePlayerMovementState : BasePlayerState
     {
-        protected virtual bool BaseAllowStateChangeToAttack { get; } = true;
-        protected virtual bool BaseAllowStateChangeToParry { get; } = true;
-        protected virtual bool BaseAllowStateChangeToDash { get; } = true;
-        protected readonly Player player;
+        protected virtual bool BaseAllowAttackInput { get; } = true;
+        protected virtual bool BaseAllowParryInput { get; } = true;
+        protected virtual bool BaseAllowDashInput { get; } = true;
         protected readonly PlayerMovement playerMovement;
         private static float additionalZValue;
         private Vector3 inputLocalLerp;
         public BasePlayerMovementState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
-            player = entity;
             playerMovement = entity.GetPlayerMovement;
         }
         public override void Enter()
@@ -25,12 +23,16 @@ namespace Swift_Blade.FSM.States
         public override void Update()
         {
             PlayerInput playerInput = player.GetPlayerInput;
-            if (Input.GetKeyDown(KeyCode.Mouse0) && BaseAllowStateChangeToAttack)
-                GetOwnerFsm.ChangeState(PlayerStateEnum.Attack);
-            if (Input.GetKeyDown(KeyCode.C) && BaseAllowStateChangeToParry)
-                GetOwnerFsm.ChangeState(PlayerStateEnum.Parry);
-            if (Input.GetKeyDown(KeyCode.Space) && BaseAllowStateChangeToDash && playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f && playerMovement.CanRoll)
-                GetOwnerFsm.ChangeState(PlayerStateEnum.Dash);
+            if (Input.GetKeyDown(KeyCode.Mouse0) && BaseAllowAttackInput)
+                OnAttackInput(EPlayerAttackPreviousState.WeakAttack);
+            if (Input.GetKeyDown(KeyCode.Mouse1) && BaseAllowAttackInput)
+                OnAttackInput(EPlayerAttackPreviousState.PowerAttack);
+
+            if (Input.GetKeyDown(KeyCode.C) && BaseAllowParryInput)
+                OnParryInput();
+            if (Input.GetKeyDown(KeyCode.Space) && BaseAllowDashInput && playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f && playerMovement.CanRoll)
+                OnDashInput();
+
             UI_DebugPlayer.DebugText(2, playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f, "dashPossible", DBG_UI_KEYS.Keys_PlayerAction);
 
             //movement
@@ -48,9 +50,11 @@ namespace Swift_Blade.FSM.States
 
             player.GetPlayerAnimator.GetAnimator.SetFloat("Z", inputLocal.z + additionalZValue);
         }
+        protected sealed override void OnAllowRotateAllowTrigger() => playerMovement.AllowRotate = true;
+        protected sealed override void OnAllowRotateDisallowTrigger() => playerMovement.AllowRotate = false;
         protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Movement);
         protected sealed override void OnSpeedMultiplierDefaultTrigger(float set) => playerMovement.SpeedMultiplierDefault = set;
         protected sealed override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetAdditionalVelocity(value);
-        protected override void OnAttackTrigger() => player.GetPlayerDamageCaster.CastDamage();
+        protected sealed override void OnAttackTrigger() => player.GetPlayerDamageCaster.CastDamage();
     }
 }

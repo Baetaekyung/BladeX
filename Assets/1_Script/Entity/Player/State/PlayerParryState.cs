@@ -7,7 +7,7 @@ namespace Swift_Blade.FSM.States
 {
     public class PlayerParryState : BasePlayerMovementState
     {
-        protected override bool BaseAllowStateChangeToParry => false;
+        protected override bool BaseAllowParryInput => false;
         private readonly PlayerHealth _playerHealthCompo;
         private readonly PlayerRenderer playerRenderer;
 
@@ -81,7 +81,7 @@ namespace Swift_Blade.FSM.States
             
             //LookAtTarget(actionData);
 
-            GetOwnerFsm.ChangeState(PlayerStateEnum.Attack);
+            //GetOwnerFsm.ChangeState(PlayerStateEnum.Attack);
         }
         
         // private void ParryOnHitByRangeHandler(ActionData actionData) 보류
