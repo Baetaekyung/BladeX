@@ -1854,6 +1854,9 @@ GameObject:
   - component: {fileID: 4699414916049857407}
   - component: {fileID: 4326774967714138155}
   - component: {fileID: 4731344697399719711}
+  - component: {fileID: 3900106775621241696}
+  - component: {fileID: 1308237488150232717}
+  - component: {fileID: 2517224086306083406}
   m_Layer: 0
   m_Name: Feedback
   m_TagString: Untagged
@@ -1890,6 +1893,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   root: {fileID: 4103815729079207692}
   flashDuration: 0.2
+  flashCount: 1
   _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
   _meshRenderers: []
 --- !u!114 &4326774967714138155
@@ -1917,7 +1921,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a861d1e6a4fbaef4fafdada55decfbc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shakeType: 5
+--- !u!114 &3900106775621241696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430990643541604582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a861d1e6a4fbaef4fafdada55decfbc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   shakeType: 1
+--- !u!114 &1308237488150232717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430990643541604582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87cabaab2ab0cae47ba6fb8bc8165205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: {fileID: 0}
+  increaseDuration: 0.104
+  decreaseDuration: 1.153
+  maxValue: 0.312
+--- !u!114 &2517224086306083406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430990643541604582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee4114fa2ed1b3547985f6b85bbf237d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FocusData: {fileID: 11400000, guid: 4ab9eaeeb0098984c9c33d289daeec37, type: 2}
 --- !u!1 &433262212513251703
 GameObject:
   m_ObjectHideFlags: 0
@@ -11007,7 +11053,32 @@ MonoBehaviour:
     m_Bits: 128
   OnCastDamageEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3900106775621241696}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.CameraShakeFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4326774967714138155}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.HitStopFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _casterRadius: 1.25
   _casterInterpolation: 0.6
   _castingRange: 2.7
@@ -13084,6 +13155,7 @@ MonoBehaviour:
   anim_move: {fileID: 11400000, guid: 4998b00fcd95cc545991cc81a99f8ce2, type: 2}
   anim_parry: {fileID: 11400000, guid: dd89e4ca5c9df484788e6460559b8740, type: 2}
   anim_dodge: {fileID: 11400000, guid: a72b63501f3813e4b9d912e065122a35, type: 2}
+  anim_dashAttack: {fileID: 0}
   comboParamHash:
   - {fileID: 11400000, guid: c045f3c181f2b2f4fa5a90ac7217bcba, type: 2}
   - {fileID: 11400000, guid: f336812af2c8d45408536a41715f4605, type: 2}
@@ -13385,6 +13457,7 @@ GameObject:
   - component: {fileID: 755142993258876006}
   - component: {fileID: 8096457750588971972}
   - component: {fileID: 8162421343820411782}
+  - component: {fileID: 130090762284198635}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -13495,6 +13568,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: 0.1
+--- !u!114 &130090762284198635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830836079372413566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ApplyAfter: 2
+  ChannelMask: 1
+  Gain: 1
+  Use2DDistance: 0
+  UseCameraSpace: 1
+  ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &2862567673476618301
 GameObject:
   m_ObjectHideFlags: 0
