@@ -1857,6 +1857,7 @@ GameObject:
   - component: {fileID: 3900106775621241696}
   - component: {fileID: 1308237488150232717}
   - component: {fileID: 2517224086306083406}
+  - component: {fileID: 3005802587123902185}
   m_Layer: 0
   m_Name: Feedback
   m_TagString: Untagged
@@ -1964,6 +1965,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FocusData: {fileID: 11400000, guid: 4ab9eaeeb0098984c9c33d289daeec37, type: 2}
+--- !u!114 &3005802587123902185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430990643541604582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a861d1e6a4fbaef4fafdada55decfbc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeType: 1
 --- !u!1 &433262212513251703
 GameObject:
   m_ObjectHideFlags: 0
@@ -13155,7 +13169,7 @@ MonoBehaviour:
   anim_move: {fileID: 11400000, guid: 4998b00fcd95cc545991cc81a99f8ce2, type: 2}
   anim_parry: {fileID: 11400000, guid: dd89e4ca5c9df484788e6460559b8740, type: 2}
   anim_dodge: {fileID: 11400000, guid: a72b63501f3813e4b9d912e065122a35, type: 2}
-  anim_dashAttack: {fileID: 0}
+  anim_dashAttack: {fileID: 11400000, guid: ea4303da45d79814ab0e71f9c22c5cbf, type: 2}
   comboParamHash:
   - {fileID: 11400000, guid: c045f3c181f2b2f4fa5a90ac7217bcba, type: 2}
   - {fileID: 11400000, guid: f336812af2c8d45408536a41715f4605, type: 2}
@@ -37219,6 +37233,19 @@ MonoBehaviour:
   OnHitEvent:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1308237488150232717}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.BloodScreenFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 4699414916049857407}
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
         m_MethodName: PlayFeedback
@@ -37245,6 +37272,19 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 4731344697399719711}
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.CameraShakeFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2517224086306083406}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.CameraFocusFeedback,
           Assembly-CSharp
         m_MethodName: PlayFeedback
         m_Mode: 1
