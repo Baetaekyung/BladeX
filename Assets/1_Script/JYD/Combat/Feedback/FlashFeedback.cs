@@ -42,8 +42,6 @@ namespace Swift_Blade.Combat.Feedbck
             
             for (int i = 0; i < flashCount; i++)
             {
-                print("ÇÁ·¡½¬");
-                
                 SetMaterials(_flashMat);
                 yield return new WaitForSeconds(waitTime);
                 ResetFeedback();
