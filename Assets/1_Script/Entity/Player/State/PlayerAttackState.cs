@@ -3,107 +3,107 @@ using UnityEngine;
 
 namespace Swift_Blade.FSM.States
 {
-    public enum EPlayerAttackPreviousState
+    public class PlayerAttackState : BasePlayerState
     {
-        None,
-        Dash,
-        WeakAttack,
-        PowerAttack
-    }
-    public class PlayerAttackState : BasePlayerMovementState
-    {
-        protected override bool BaseAllowAttackInput { get; } = false;
+        protected override bool BaseAllowParryInput => false;
 
-        //todo : change this to non-readonly variables and init when weapon is changed
-        private readonly AnimationParameterSO dashAttack;
-        private readonly IReadOnlyList<AnimationParameterSO> comboParamHash;
-        private readonly IReadOnlyList<Vector3> comboForceList;
-        private readonly IReadOnlyList<float> dealyArr;
-
-        private readonly PlayerDamageCaster playerDamageCaster;
         private readonly PlayerRenderer playerRenderer;
+        private AttackComboSO currentAttackComboSO;
 
         private bool allowListening;
         private bool allowNextAttack;
         private bool inputBuffer;
 
+        private int currentIndex;
         private float deadPeriod;
-        private int currentIdx;
-        private readonly int maxIdx;
-        private bool IsIndexValid => currentIdx < maxIdx;
-        /// <summary>
-        /// bad name
-        /// </summary>
+
         private bool IsDeadPeriodOver => deadPeriod > Time.time;
-        public EPlayerAttackPreviousState PreviousState { get; set; }
-        public PlayerAttackState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO anim_dashAttack, AnimationParameterSO animParamSO = null)
+        //private readonly int maxIdx;
+        //private bool IsIndexValid => currentIdx < maxIdx;
+        /// <summary>
+        /// todo : bad name
+        /// </summary>
+        public EComboState PreviousComboState { get; set; }
+        private readonly List<EComboState> comboStateHistory = new(5);
+        public PlayerAttackState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null)
             : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
-            comboParamHash = entity.GetComboHashAtk;
-            comboForceList = entity.GetComboForceList;
-            dealyArr = entity.GetPeriods;
-            playerDamageCaster = entity.GetPlayerDamageCaster;
-            playerRenderer = entity.GetPlayerRenderer;
-            maxIdx = comboParamHash.Count - 1;
-            dashAttack = anim_dashAttack;
+            playerRenderer = player.GetPlayerRenderer;
+            //comboParamHash = player.GetComboHashAtk;
+            //comboForceList = player.GetComboForceList;
+            //delayArr = player.GetPeriods;
+            //maxIdx = comboParamHash.Count - 1;
+            //dashAttack = anim_dashAttack;
+            Player.Debug_Updt += () =>
+            {
+                UI_DebugPlayer.DebugText(2, IsDeadPeriodOver, "dpover", DBG_UI_KEYS.Keys_PlayerAction);
+                UI_DebugPlayer.DebugText(3, deadPeriod, "deadPeriod", DBG_UI_KEYS.Keys_PlayerAction);
+                UI_DebugPlayer.DebugText(4, Time.time, "time", DBG_UI_KEYS.Keys_PlayerAction);
+            };
         }
 
         public override void Enter()
         {
             base.Enter();
-            if (PreviousState == EPlayerAttackPreviousState.Dash)
+            comboStateHistory.Clear();
+            bool matchFound = false;
+            foreach (var item in player.GetComboList)
             {
-                Attack(dashAttack);
+                if (item.GetComboes.Count > currentIndex)
+                    if (item.IsMatchFirstIndex(PreviousComboState, out AttackComboSO comboData))
+                    {
+                        //currentAttackComboSO = comboData;
+                        matchFound = true;
+                        break;
+                    }
             }
-            else
+            if (matchFound)
             {
-                //bool mouseMove = true;
-                //Vector3 direction = mouseMove == true ?
-                //    player.GetPlayerInput.GetMousePositionWorld - playerMovement.transform.position :
-                //    player.GetPlayerInput.GetInputDirectionRawRotated;
-                //playerRenderer.LookAtDirection(direction);
-                //playerMovement.UseMouseLock = true;
+                comboStateHistory.Add(PreviousComboState);
+                bool mouseMove = true;
+                Vector3 direction = mouseMove ?
+                    player.GetPlayerInput.GetMousePositionWorld - playerMovement.transform.position :
+                    player.GetPlayerInput.GetInputDirectionRawRotated;
+                playerRenderer.LookAtDirection(direction);
+                playerMovement.UseMouseLock = true;
+
                 ComboAttack();
             }
+            else
+                Debug.Log("no match, no combo");
         }
         public override void Update()
         {
             base.Update();
-            if (Input.GetKeyDown(KeyCode.Mouse0) && allowListening)
-                inputBuffer = true;
-            if (inputBuffer && allowNextAttack && IsIndexValid)// && !dashAttackTrigger)
+            if (inputBuffer && allowNextAttack)// && IsIndexValid)// && !dashAttackTrigger)
                 ComboAttack();
         }
-        private void Attack(AnimationParameterSO param)
+        protected override void OnAttackInput(EComboState currentState)
         {
-            currentIdx = 0;
-            inputBuffer = false;
-            allowListening = false;
-            allowNextAttack = false;
-            PlayAnimation(param);
+            if (allowListening)
+                inputBuffer = true;
         }
+
         private void ComboAttack()
         {
-            if (IsIndexValid && IsDeadPeriodOver)
-                currentIdx++;
+            if (IsDeadPeriodOver)
+                currentIndex++;
             else
-                currentIdx = 0;
+                currentIndex = 0;
 
             inputBuffer = false;
             allowListening = false;
             allowNextAttack = false;
-            deadPeriod = dealyArr[currentIdx] + Time.time;
+            //deadPeriod = currentAttackComboSO.GetComboes[currentIndex].GetPeriod + Time.time;
 
-            //playerDamageCaster.CastDamage();
-
-            AnimationParameterSO param = comboParamHash[currentIdx];
+            AnimationParameterSO param = currentAttackComboSO.GetComboes[currentIndex].GetAnimParam;// comboParamHash[currentIdx];
             PlayAnimation(param);
         }
         protected override void OnAnimationEndTriggerListen() => allowListening = true;
         protected override void OnAnimationEndableTrigger() => allowNextAttack = true;
         protected override void OnForceEventTrigger(float force)
         {
-            Vector3 result = comboForceList[currentIdx] * force;
+            Vector3 result = default;// currentAttackComboSO.GetComboes[currentIndex].GetComboForce;// comboForceList[currentIdx] * force;
             playerMovement.AddForceFacingDirection(result);
         }
         public override void Exit()

@@ -21,6 +21,6 @@ namespace Swift_Blade.FSM
             CurrentState = StateDictionary[type];
             CurrentState.Enter();
         }
-        public void UpdateState() => CurrentState.Current?.Invoke();
+        public void UpdateState() => CurrentState.Current.Invoke();
     }
 }

@@ -5,9 +5,11 @@ using UnityEngine.Events;
 
 namespace Swift_Blade.FSM.States
 {
-    public class PlayerParryState : BasePlayerMovementState
+    public class PlayerParryState : BasePlayerState
     {
         protected override bool BaseAllowParryInput => false;
+        protected override bool BaseAllowDashInput => false;
+        protected override bool BaseAllowAttackInput => false;
         private readonly PlayerHealth _playerHealthCompo;
         private readonly PlayerRenderer playerRenderer;
 
@@ -30,7 +32,6 @@ namespace Swift_Blade.FSM.States
                 player.GetPlayerInput.GetInputDirectionRawRotated;
             playerRenderer.LookAtDirection(direction);
 
-            Debug.Log("Parry Enter");
             player.IsParryState = true;
             playerMovement.AllowInputMove = false;
 
@@ -60,8 +61,6 @@ namespace Swift_Blade.FSM.States
             player.IsParryState = false;
             playerMovement.AllowInputMove = true;
             
-            Debug.Log("Parry Exit");
-
             base.Exit();
         }
 

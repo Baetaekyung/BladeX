@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace Swift_Blade.FSM.States
 {
-    public class PlayerDashState : BasePlayerMovementState
+    public class PlayerRollState : BasePlayerState
     {
-        protected override bool BaseAllowDashInput => false;
         protected override bool BaseAllowParryInput => false;
+        protected override bool BaseAllowDashInput => false;
         private readonly PlayerRenderer playerRenderer;
         private bool allowListening;
         private bool inputBuffer;
         private bool allowChangeToAttack;
-        public PlayerDashState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
+        public PlayerRollState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
-            playerRenderer = entity.GetPlayerRenderer;
+            playerRenderer = player.GetPlayerRenderer;
 #if UNITY_EDITOR
             Player.Debug_Updt += () =>
             {
@@ -26,6 +26,7 @@ namespace Swift_Blade.FSM.States
         public override void Enter()
         {
             base.Enter();
+            inputLocalLerp = Vector3.zero;
             allowListening = false;
             inputBuffer = false;
             allowChangeToAttack = false;
@@ -38,14 +39,7 @@ namespace Swift_Blade.FSM.States
             player.GetPlayerMovement.AllowInputMove = false;
             entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirection.normalized, 10);
         }
-        protected override void OnAnimationEndTriggerListen() => allowListening = true;
-        protected override void OnAnimationEndTriggerStoplisten() => allowListening = false;
-        protected override void OnAnimationEndableTrigger()
-        {
-            allowChangeToAttack = true;
-            if (inputBuffer) ChangeToAttack();
-        }
-        protected override void OnAttackInput(EPlayerAttackPreviousState previousState)
+        protected override void OnAttackInput(EComboState previousState)
         {
             if (!allowListening) return;
             inputBuffer = true;
@@ -54,7 +48,14 @@ namespace Swift_Blade.FSM.States
         }
         private void ChangeToAttack()
         {
-            base.OnAttackInput(EPlayerAttackPreviousState.Dash);
+            base.OnAttackInput(EComboState.Dash);
+        }
+        protected override void OnAnimationEndTriggerListen() => allowListening = true;
+        protected override void OnAnimationEndTriggerStoplisten() => allowListening = false;
+        protected override void OnAnimationEndableTrigger()
+        {
+            allowChangeToAttack = true;
+            if (inputBuffer) ChangeToAttack();
         }
 
         public override void Exit()
