@@ -15,6 +15,10 @@ namespace Swift_Blade
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
 
+        private float damageInterval = 0.5f;
+        private float lastDamageTime = 0;
+        
+        
         private void Update()
         {
             /*if (Input.GetKeyDown(KeyCode.P))
@@ -26,11 +30,15 @@ namespace Swift_Blade
 
         public void TakeDamage(ActionData actionData)
         {
+            if(lastDamageTime + damageInterval > Time.time)return;
+            
             float damageAmount = actionData.damageAmount;
             _currentHealth -= damageAmount;
+
+            lastDamageTime = Time.time;
             
             OnHitEvent?.Invoke(actionData);
-
+        
             if (_currentHealth <= 0)
             {
                 Dead();
