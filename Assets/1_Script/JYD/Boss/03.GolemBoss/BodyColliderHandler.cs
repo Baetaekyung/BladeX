@@ -1,10 +1,10 @@
 using UnityEngine;
 
-namespace Swift_Blade
+namespace Swift_Blade.Combat
 {
-    public class BodyCollider : MonoBehaviour
+    public class BodyColliderHandler : MonoBehaviour
     {
-                        
+        
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
