@@ -13,7 +13,9 @@ namespace Swift_Blade
         Attack,
         Roll,
         Parry,
-        Dead
+        Dead,
+        hit,
+        hitStun
     }
     public class Player : Entity
     {
@@ -25,6 +27,7 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO anim_roll;
         [SerializeField] private AnimationParameterSO anim_rollAttack;
         [SerializeField] private AnimationParameterSO anim_death;
+        [SerializeField] private AnimationParameterSO anim_hitStun;
 
         [SerializeField] private AnimationParameterSO anim_dbg;
 
@@ -65,7 +68,15 @@ namespace Swift_Blade
             playerStateMachine.AddState(PlayerStateEnum.Roll, new PlayerRollState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_roll));
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
             playerStateMachine.AddState(PlayerStateEnum.Dead, new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death));
+            playerStateMachine.AddState(PlayerStateEnum.hitStun, new PlayerHitStunState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_hitStun));
             playerStateMachine.SetStartState(PlayerStateEnum.Move);
+            GetEntityComponent<PlayerHealth>().OnHitEvent.AddListener((data) => 
+            {
+                bool isHit = true;
+                if (isHit)
+                    playerStateMachine.ChangeState(PlayerStateEnum.hitStun);
+            }
+            );
             GetEntityComponent<PlayerHealth>().OnDeadEvent.AddListener(() => { playerStateMachine.ChangeState(PlayerStateEnum.Dead); });
         }
         private void Update()
