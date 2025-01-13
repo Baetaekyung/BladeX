@@ -30,7 +30,7 @@ namespace Swift_Blade.FSM.States
         public override void Update()
         {
             if (Input.GetKeyDown(KeyCode.Mouse0) && BaseAllowAttackInput)
-                OnAttackInput(EComboState.WeakAttack);
+                OnAttackInput(EComboState.LightAttack);
             if (Input.GetKeyDown(KeyCode.Mouse1) && BaseAllowAttackInput)
                 OnAttackInput(EComboState.PowerAttack);
 
@@ -38,6 +38,9 @@ namespace Swift_Blade.FSM.States
                 OnParryInput();
             if (Input.GetKeyDown(KeyCode.Space) && BaseAllowDashInput && playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f && playerMovement.CanRoll)
                 OnDashInput();
+
+            //if (Input.GetKeyDown(KeyCode.N))
+            //    GetOwnerFsm.ChangeState(PlayerStateEnum.Dead);
 
             //movement
             Vector3 resultInput = playerInput.GetInputDirectionRawRotated.normalized;

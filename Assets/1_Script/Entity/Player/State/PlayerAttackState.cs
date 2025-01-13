@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Swift_Blade.FSM.States
@@ -8,18 +9,15 @@ namespace Swift_Blade.FSM.States
         protected override bool BaseAllowParryInput => false;
 
         private readonly PlayerRenderer playerRenderer;
-        private AttackComboSO currentAttackComboSO;
+        private ComboData currentComboData;
 
         private bool allowListening;
-        private bool allowNextAttack;
+        private bool isCurrentAnimationEndable;
         private bool inputBuffer;
 
-        private int currentIndex;
-        private float deadPeriod;
+        private float delayContinuousCombo;
 
-        private bool IsDeadPeriodOver => deadPeriod > Time.time;
-        //private readonly int maxIdx;
-        //private bool IsIndexValid => currentIdx < maxIdx;
+        private bool IsContinuousComboAllowed => delayContinuousCombo > Time.time;
         /// <summary>
         /// todo : bad name
         /// </summary>
@@ -29,37 +27,28 @@ namespace Swift_Blade.FSM.States
             : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
             playerRenderer = player.GetPlayerRenderer;
-            //comboParamHash = player.GetComboHashAtk;
-            //comboForceList = player.GetComboForceList;
-            //delayArr = player.GetPeriods;
-            //maxIdx = comboParamHash.Count - 1;
-            //dashAttack = anim_dashAttack;
             Player.Debug_Updt += () =>
             {
-                UI_DebugPlayer.DebugText(2, IsDeadPeriodOver, "dpover", DBG_UI_KEYS.Keys_PlayerAction);
-                UI_DebugPlayer.DebugText(3, deadPeriod, "deadPeriod", DBG_UI_KEYS.Keys_PlayerAction);
+                UI_DebugPlayer.DebugText(2, IsContinuousComboAllowed, "dpover", DBG_UI_KEYS.Keys_PlayerAction);
+                UI_DebugPlayer.DebugText(3, delayContinuousCombo, "deadPeriod", DBG_UI_KEYS.Keys_PlayerAction);
                 UI_DebugPlayer.DebugText(4, Time.time, "time", DBG_UI_KEYS.Keys_PlayerAction);
+                UI_DebugPlayer.DebugText(5, comboStateHistory.Count, "cshCount", DBG_UI_KEYS.Keys_PlayerAction);
+                if (Input.GetKeyDown(KeyCode.X))
+                    comboStateHistory.Clear();
+
             };
         }
 
         public override void Enter()
         {
             base.Enter();
-            comboStateHistory.Clear();
-            bool matchFound = false;
-            foreach (var item in player.GetComboList)
-            {
-                if (item.GetComboes.Count > currentIndex)
-                    if (item.IsMatchFirstIndex(PreviousComboState, out AttackComboSO comboData))
-                    {
-                        //currentAttackComboSO = comboData;
-                        matchFound = true;
-                        break;
-                    }
-            }
+            if(!IsContinuousComboAllowed)
+                comboStateHistory.Clear();
+
+            comboStateHistory.Add(PreviousComboState);
+            bool matchFound = GetMatchingComboSO(out currentComboData);
             if (matchFound)
             {
-                comboStateHistory.Add(PreviousComboState);
                 bool mouseMove = true;
                 Vector3 direction = mouseMove ?
                     player.GetPlayerInput.GetMousePositionWorld - playerMovement.transform.position :
@@ -70,40 +59,82 @@ namespace Swift_Blade.FSM.States
                 ComboAttack();
             }
             else
-                Debug.Log("no match, no combo");
+            {
+                OnComboFail();
+            }
         }
         public override void Update()
         {
             base.Update();
-            if (inputBuffer && allowNextAttack)// && IsIndexValid)// && !dashAttackTrigger)
+            if (inputBuffer && isCurrentAnimationEndable && IsContinuousComboAllowed)
+            {
+                comboStateHistory.Add(PreviousComboState);
+                if (GetMatchingComboSO(out currentComboData))
+                {
+                    ComboAttack();
+                }
+                else
+                {
+                    OnComboFail();
+                }
+            }
+        }
+        /// <summary>
+        /// todo : try remove currentComboData.GetPeriod?
+        /// if fail start over and play no exit shit.
+        /// </summary>
+        private void OnComboFail()
+        {
+            comboStateHistory.Clear();
+            delayContinuousCombo = 0;
+            comboStateHistory.Add(PreviousComboState);
+            if (GetMatchingComboSO(out currentComboData))
                 ComboAttack();
+            else
+            {
+                GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
+                Debug.Log("no match, no combo, no attack");
+            }
+        }
+        private bool GetMatchingComboSO(out ComboData comboData)
+        {
+            comboData = null;
+            foreach (AttackComboSO comboSO in player.GetComboList)
+            {
+                if (comboSO.IsMatch(comboStateHistory, out comboData))
+                    return true;
+            }
+            return false;
+        }
+        private void ComboAttack()
+        {
+            inputBuffer = false;
+            allowListening = false;
+            isCurrentAnimationEndable = false;
+
+            delayContinuousCombo = currentComboData.GetPeriod + Time.time;
+            AnimationParameterSO param = currentComboData.GetAnimParam;
+            PlayAnimationRebind(param);
+            Debug.Log(param.name);
         }
         protected override void OnAttackInput(EComboState currentState)
         {
-            if (allowListening)
+            if (allowListening && inputBuffer != true)
+            {
+                PreviousComboState = currentState;
+                Debug.Log(PreviousComboState);
                 inputBuffer = true;
+            }
         }
-
-        private void ComboAttack()
+        protected override void PlayAnimationOnEnter()
         {
-            if (IsDeadPeriodOver)
-                currentIndex++;
-            else
-                currentIndex = 0;
-
-            inputBuffer = false;
-            allowListening = false;
-            allowNextAttack = false;
-            //deadPeriod = currentAttackComboSO.GetComboes[currentIndex].GetPeriod + Time.time;
-
-            AnimationParameterSO param = currentAttackComboSO.GetComboes[currentIndex].GetAnimParam;// comboParamHash[currentIdx];
-            PlayAnimation(param);
+            PlayAnimationRebind(baseAnimParam);
         }
         protected override void OnAnimationEndTriggerListen() => allowListening = true;
-        protected override void OnAnimationEndableTrigger() => allowNextAttack = true;
+        protected override void OnAnimationEndableTrigger() => isCurrentAnimationEndable = true;
         protected override void OnForceEventTrigger(float force)
         {
-            Vector3 result = default;// currentAttackComboSO.GetComboes[currentIndex].GetComboForce;// comboForceList[currentIdx] * force;
+            Vector3 result = currentComboData.GetComboForce * force;
             playerMovement.AddForceFacingDirection(result);
         }
         public override void Exit()

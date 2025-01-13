@@ -30,20 +30,20 @@ namespace Swift_Blade
         private void Update()
         {
             if (Keyboard.current.escapeKey.wasPressedThisFrame 
-                && !DialogManager.Instance.IsDialogOpen)
+                && !DialogueManager.Instance.IsDialogOpen)
             {
                 PopDown();
             }
-
-            if (Keyboard.current.tKey.wasPressedThisFrame
-                && !DialogManager.Instance.IsDialogOpen)
-            {
-                if (GetPopupUI(PopupType.Text) is TextPopup textPopup)
-                {
-                    textPopup.SetText("Game over...");
-                    DelayPopup(PopupType.Text, 2f, () => textPopup.PopDown());
-                }
-            }
+            
+            // if (Keyboard.current.tKey.wasPressedThisFrame
+            //     && !DialogueManager.Instance.IsDialogOpen)
+            // {
+            //     if (GetPopupUI(PopupType.Text) is TextPopup textPopup)
+            //     {
+            //         textPopup.SetText("Game over...");
+            //         DelayPopup(PopupType.Text, 2f, () => textPopup.PopDown());
+            //     }
+            // }
         }
 
         public void PopUp(PopupType popupType)

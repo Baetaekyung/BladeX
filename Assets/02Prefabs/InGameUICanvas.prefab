@@ -1594,7 +1594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bossHealthFillAmount: {fileID: 4456988656375343265}
-  EnemyHealth: {fileID: 0}
+  swordBossHealth: {fileID: 0}
 --- !u!1 &3937212858611658112
 GameObject:
   m_ObjectHideFlags: 0
@@ -2171,7 +2171,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94c774268d6f3f9418029358037bb83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthFillAmount: {fileID: 4643351219123468143}
+  healthUI: {fileID: 0}
+  fullHealthPrefab: {fileID: 0}
+  burnHealthPrefab: {fileID: 0}
 --- !u!1 &5106361836229354042
 GameObject:
   m_ObjectHideFlags: 0
@@ -3108,7 +3110,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3820024917574014924}
-  - component: {fileID: 3476872734999455285}
+  - component: {fileID: 4542736116576633350}
   m_Layer: 5
   m_Name: StyleMeter
   m_TagString: Untagged
@@ -3136,7 +3138,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3476872734999455285
+--- !u!114 &4542736116576633350
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3145,11 +3147,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6446795332582251988}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fcbed387a68faf49ac81c083b9385ed, type: 3}
+  m_Script: {fileID: 11500000, guid: 17cffb4f5c669214bafa2e8db337d5d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _swiftIcon: {fileID: 5258119067733326052}
-  _downMeterScoreTime: 6
+  styleMeter: {fileID: 11400000, guid: fd2fecfb682b5984f93729859182a0ab, type: 2}
+  statMultiplierText: {fileID: 0}
 --- !u!1 &6592102329468385351
 GameObject:
   m_ObjectHideFlags: 0
