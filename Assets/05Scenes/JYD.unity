@@ -1209,6 +1209,24 @@ Transform:
   - {fileID: 491869019}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &620181380 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7389977111463853842, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+  m_PrefabInstance: {fileID: 1704071304}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &620181386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620181380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26a599977c9f08e4ea24418051ee4665, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parryTime: 0.509
 --- !u!1 &763201421
 GameObject:
   m_ObjectHideFlags: 0
@@ -1703,22 +1721,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCategory
       objectReference: {fileID: 0}
-    - target: {fileID: 5558562310119497924, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: anim_roll
-      value: 
-      objectReference: {fileID: 11400000, guid: a72b63501f3813e4b9d912e065122a35, type: 2}
-    - target: {fileID: 5558562310119497924, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: anim_rollAttack
-      value: 
-      objectReference: {fileID: 11400000, guid: ea4303da45d79814ab0e71f9c22c5cbf, type: 2}
-    - target: {fileID: 5558562310119497924, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: comboList.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5558562310119497924, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: 'comboList.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: cd3fc5fc008742d489791e556bfe7225, type: 2}
     - target: {fileID: 5704459122665910530, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1762,7 +1764,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7389977111463853842, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 620181386}
   m_SourcePrefab: {fileID: 100100000, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
 --- !u!4 &1939465682 stripped
 Transform:

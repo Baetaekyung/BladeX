@@ -1,16 +1,15 @@
 ﻿using Swift_Blade;
-using Swift_Blade.FSM.States;
+using Swift_Blade.Combat;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SphereCaster : LayerCaster
+public class BaseBossCaster : LayerCaster
 {
     [SerializeField][Range(0.5f, 10f)] private float _casterRadius = 1f;
     [SerializeField][Range(0f, 10f)] private float _casterInterpolation = 0.5f;
     [SerializeField][Range(0f, 10f)] private float _castingRange = 1f;
 
     public UnityEvent parryEvents;
-    
     
     public override bool CastDamage()
     {
@@ -25,9 +24,9 @@ public class SphereCaster : LayerCaster
 
         if (isHit && hit.collider.TryGetComponent(out IDamageble health))
         {
-            if (health is PlayerHealth playerHealth)
+            if (hit.collider.TryGetComponent(out PlayerParryController parryController))
             {
-                if (playerHealth.GetCurrentState() == PlayerStateEnum.Parry)
+                if (parryController.CanParry())
                 {
                     parryEvents?.Invoke();
                     print("응어아잇");
