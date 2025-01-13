@@ -9,7 +9,8 @@ namespace Swift_Blade.FSM
         where StateEnum : Enum
     {
         public State<StateEnum> CurrentState { get; protected set; }
-        public Dictionary<StateEnum, State<StateEnum>> StateDictionary { get; } = new();
+        //public IReadOnlyDictionary<StateEnum, State<StateEnum>> GetStateDictionary => StateDictionary;
+        private Dictionary<StateEnum, State<StateEnum>> StateDictionary { get; } = new();
 
         public void AddState(StateEnum type, State<StateEnum> instance) =>  StateDictionary.Add(type, instance);
         public void SetStartState(StateEnum state) => CurrentState = StateDictionary[state];
@@ -20,6 +21,6 @@ namespace Swift_Blade.FSM
             CurrentState = StateDictionary[type];
             CurrentState.Enter();
         }
-        public void UpdateState() => CurrentState.Current?.Invoke();
+        public void UpdateState() => CurrentState.Current.Invoke();
     }
 }

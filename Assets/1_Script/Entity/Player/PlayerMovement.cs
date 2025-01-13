@@ -14,15 +14,13 @@ namespace Swift_Blade
         [SerializeField] private float defaultSpeed = 1;
         [SerializeField] private float onGroundYVal = -0.5f;
         [SerializeField] private float gravitiy = -9.81f;
-        /// <summary>
-        /// should I increase this when player is higher
-        /// </summary>
+
         [SerializeField] private float gravitiyMultiplier = 1;
         [SerializeField] private AnimationCurve curveSlope;
         private float yVal;
 
         [Header("Collisin Settings")]
-        [SerializeField] private float bottomYOffset = 0.4f; //const 0.4f
+        private float bottomYOffset = 0.4f; //const 0.4f
         private ContactPoint? lowerstContactPoint;
         private ContactPoint? lowestContactPointBottom;
 
@@ -79,15 +77,15 @@ namespace Swift_Blade
         {
             ApplyMovement();
             rollValue = Mathf.MoveTowards(rollValue, 2, Time.fixedDeltaTime * 2.5f);
-            UI_DebugPlayer.DebugText(7, rollValue, "rollValue", DBG_UI_KEYS.Keys_PlayerAction);
-            UI_DebugPlayer.DebugText(8, currentRollStamina, "currentRoll", DBG_UI_KEYS.Keys_PlayerAction);
+            //UI_DebugPlayer.DebugText(7, rollValue, "rollValue", DBG_UI_KEYS.Keys_PlayerAction);
+            //UI_DebugPlayer.DebugText(8, currentRollStamina, "currentRoll", DBG_UI_KEYS.Keys_PlayerAction);
             AdditionalVelocity = Vector3.MoveTowards(AdditionalVelocity, Vector3.zero, Time.fixedDeltaTime * 10);
 
             if (lowestContactPointBottom.HasValue) yVal = onGroundYVal;
             else yVal += Time.fixedDeltaTime * gravitiy * gravitiyMultiplier;
 
-            UI_DebugPlayer.DebugText(5, lowestContactPointBottom.HasValue, "ONGROUND", DBG_UI_KEYS.Keys_PlayerMovement);
-            UI_DebugPlayer.DebugText(0, yVal, "yVal", DBG_UI_KEYS.Keys_PlayerMovement);
+            //UI_DebugPlayer.DebugText(5, lowestContactPointBottom.HasValue, "ONGROUND", DBG_UI_KEYS.Keys_PlayerMovement);
+            //UI_DebugPlayer.DebugText(0, yVal, "yVal", DBG_UI_KEYS.Keys_PlayerMovement);
 
             lowerstContactPoint = null;
             lowestContactPointBottom = null;
@@ -100,7 +98,7 @@ namespace Swift_Blade
                 input = InputDirection;
                 if (lowestContactPointBottom.HasValue)
                 {
-                    input = Vector3.ProjectOnPlane(InputDirection, lowerstContactPoint.Value.normal);
+                    input = Vector3.ProjectOnPlane(InputDirection, lowestContactPointBottom.Value.normal);
                     input.Normalize();
                 }
                 if (AllowRotate)

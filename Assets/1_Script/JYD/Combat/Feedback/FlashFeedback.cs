@@ -8,7 +8,10 @@ namespace Swift_Blade.Combat.Feedbck
     {
         [Header("Flash info")] 
         [SerializeField] private Transform root;
-        [SerializeField] private float flashDuration;
+        
+        [Range(0f,1f)][SerializeField] private float flashDuration;
+        [Range(1,10)][SerializeField] private int flashCount;
+        
         [SerializeField] private Material _flashMat;
         [SerializeField] private SkinnedMeshRenderer[] _meshRenderers;
         private Material[] _originMats;
@@ -22,6 +25,7 @@ namespace Swift_Blade.Combat.Feedbck
         public override void PlayFeedback()
         {
             StartCoroutine(FlashRoutine());
+           
         }
 
         public override void ResetFeedback()
@@ -34,9 +38,15 @@ namespace Swift_Blade.Combat.Feedbck
 
         private IEnumerator FlashRoutine()
         {
-            SetMaterials(_flashMat);
-            yield return new WaitForSeconds(flashDuration);
-            ResetFeedback();
+            float waitTime = flashDuration / (flashCount * 2);
+            
+            for (int i = 0; i < flashCount; i++)
+            {
+                SetMaterials(_flashMat);
+                yield return new WaitForSeconds(waitTime);
+                ResetFeedback();
+                yield return new WaitForSeconds(waitTime);
+            }
         }
 
         private void SetMaterials(Material mat)

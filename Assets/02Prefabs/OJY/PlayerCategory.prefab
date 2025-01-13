@@ -1854,6 +1854,10 @@ GameObject:
   - component: {fileID: 4699414916049857407}
   - component: {fileID: 4326774967714138155}
   - component: {fileID: 4731344697399719711}
+  - component: {fileID: 3900106775621241696}
+  - component: {fileID: 1308237488150232717}
+  - component: {fileID: 2517224086306083406}
+  - component: {fileID: 3005802587123902185}
   m_Layer: 0
   m_Name: Feedback
   m_TagString: Untagged
@@ -1890,6 +1894,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   root: {fileID: 4103815729079207692}
   flashDuration: 0.2
+  flashCount: 1
   _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
   _meshRenderers: []
 --- !u!114 &4326774967714138155
@@ -1906,6 +1911,61 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitStopData: {fileID: 11400000, guid: d22b3247f6e575745a70dfa517dd70c0, type: 2}
 --- !u!114 &4731344697399719711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430990643541604582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a861d1e6a4fbaef4fafdada55decfbc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeType: 5
+--- !u!114 &3900106775621241696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430990643541604582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a861d1e6a4fbaef4fafdada55decfbc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeType: 1
+--- !u!114 &1308237488150232717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430990643541604582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87cabaab2ab0cae47ba6fb8bc8165205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: {fileID: 0}
+  increaseDuration: 0.104
+  decreaseDuration: 1.153
+  maxValue: 0.312
+--- !u!114 &2517224086306083406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430990643541604582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee4114fa2ed1b3547985f6b85bbf237d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FocusData: {fileID: 11400000, guid: 4ab9eaeeb0098984c9c33d289daeec37, type: 2}
+--- !u!114 &3005802587123902185
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11007,7 +11067,32 @@ MonoBehaviour:
     m_Bits: 128
   OnCastDamageEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3900106775621241696}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.CameraShakeFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4326774967714138155}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.HitStopFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _casterRadius: 1.25
   _casterInterpolation: 0.6
   _castingRange: 2.7
@@ -13078,24 +13163,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5db81e1a7fbb045a6a1cb419ff74d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug_cameraDistance: 0
   animEndTrigger: {fileID: 150995623001427998}
   anim_idle: {fileID: 11400000, guid: 6b2486cbf10ee7b4d9f45bc59bc797ae, type: 2}
   anim_move: {fileID: 11400000, guid: 4998b00fcd95cc545991cc81a99f8ce2, type: 2}
   anim_parry: {fileID: 11400000, guid: dd89e4ca5c9df484788e6460559b8740, type: 2}
-  anim_dodge: {fileID: 11400000, guid: a72b63501f3813e4b9d912e065122a35, type: 2}
-  comboParamHash:
-  - {fileID: 11400000, guid: c045f3c181f2b2f4fa5a90ac7217bcba, type: 2}
-  - {fileID: 11400000, guid: f336812af2c8d45408536a41715f4605, type: 2}
-  - {fileID: 11400000, guid: ae85f5327bb0e17459de191b488cbcad, type: 2}
-  comboForceList:
-  - {x: 0, y: 0, z: 1}
-  - {x: 0, y: 0, z: 1}
-  - {x: 0, y: 0, z: 1}
-  periods:
-  - 1
-  - 1
-  - 1
+  anim_roll: {fileID: 11400000, guid: a72b63501f3813e4b9d912e065122a35, type: 2}
+  anim_rollAttack: {fileID: 11400000, guid: ea4303da45d79814ab0e71f9c22c5cbf, type: 2}
+  anim_death: {fileID: 11400000, guid: 18a731eea50407344beda337ce2c91a2, type: 2}
+  anim_dbg: {fileID: 11400000, guid: dd31d022e0f119440887fba7f278474b, type: 2}
+  comboList:
+  - {fileID: 11400000, guid: cd3fc5fc008742d489791e556bfe7225, type: 2}
+  - {fileID: 11400000, guid: e93ea3be78152604bba84acaa656ed93, type: 2}
+  - {fileID: 11400000, guid: 17dd804bc9c6ce449bc687517d92b775, type: 2}
+  dbg_comboHistory: 02000000
 --- !u!1 &2777974626546988096
 GameObject:
   m_ObjectHideFlags: 0
@@ -13385,6 +13465,7 @@ GameObject:
   - component: {fileID: 755142993258876006}
   - component: {fileID: 8096457750588971972}
   - component: {fileID: 8162421343820411782}
+  - component: {fileID: 130090762284198635}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -13495,6 +13576,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: 0.1
+--- !u!114 &130090762284198635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830836079372413566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ApplyAfter: 2
+  ChannelMask: 1
+  Gain: 1
+  Use2DDistance: 0
+  UseCameraSpace: 1
+  ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &2862567673476618301
 GameObject:
   m_ObjectHideFlags: 0
@@ -37072,11 +37176,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1547652066911575172}
+  - component: {fileID: 4863692531285898503}
   - component: {fileID: 4253624694102172301}
   - component: {fileID: 8177067181426564885}
   - component: {fileID: 8928013613842272787}
   - component: {fileID: 2072265066507459340}
-  - component: {fileID: 4863692531285898503}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -37102,6 +37206,90 @@ Transform:
   - {fileID: 2146183822903394731}
   m_Father: {fileID: 5704459122665910530}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4863692531285898503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7389977111463853842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79020367695748a4b9812884ba6ef3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _statCompo: {fileID: 0}
+  _healthStat: {fileID: 0}
+  _currentHealth: 0
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1308237488150232717}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.BloodScreenFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4699414916049857407}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4326774967714138155}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.HitStopFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4731344697399719711}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.CameraShakeFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2517224086306083406}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.CameraFocusFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4253624694102172301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37165,7 +37353,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  bottomYOffset: 0.4
   rollCurve:
     serializedVersion: 2
     m_Curve:
@@ -37270,64 +37457,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &4863692531285898503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7389977111463853842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79020367695748a4b9812884ba6ef3f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _statCompo: {fileID: 0}
-  _healthStat: {fileID: 0}
-  _currentHealth: 0
-  OnDeadEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnHitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4699414916049857407}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4326774967714138155}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.HitStopFeedback, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4731344697399719711}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.CameraShakeFeedback,
-          Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &7396908040629326032
 GameObject:
   m_ObjectHideFlags: 0

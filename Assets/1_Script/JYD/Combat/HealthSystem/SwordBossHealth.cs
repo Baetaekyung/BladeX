@@ -8,11 +8,11 @@ namespace Swift_Blade.Combat.Health
         
         private void Update()
         {
-            /*if (Input.GetKeyDown(KeyCode.P))
+            if (Input.GetKeyDown(KeyCode.P))
             {
-                ActionData action = new ActionData(Vector3.zero, 0.5f, 10f, 20f, transform, AttackType.Melee);
+                ActionData action = new ActionData(Vector3.zero, 0.5f, 10f, 20f, transform, AttackType.Parry);
                 TakeDamage(action);
-            }*/
+            }
         }
 
         public override void TakeDamage(ActionData actionData)
@@ -27,14 +27,14 @@ namespace Swift_Blade.Combat.Health
                 return;
             }
 
-            if (Random.value <= 0.3f)
+            /*if (Random.value <= 0.3f)
             {
                 TriggerState(BossState.Step);
                 return;
-            }
+            }*/
 
             currentHealth -= actionData.damageAmount;
-            OnChangeHealthEvent?.Invoke(GetHealthPercent());
+            OnChangeHealthEvent?.Invoke(currentHealth/ maxHealth);
 
             if (currentHealth <= 0)
             {

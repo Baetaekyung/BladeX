@@ -8,37 +8,37 @@ namespace Swift_Blade
 {
     public enum PlayerStateEnum
     {
-        Idle,
-        Movement,
+        Move,
         Attack,
-        Dash,
-        Parry
+        Roll,
+        Parry,
+        Dead
     }
     public class Player : Entity
     {
-        [Header("Debug Fields")]
-        [SerializeField] private float debug_cameraDistance;
-        [SerializeField] private AnimationTriggers animEndTrigger;
-
         [Header("Debug_Params")]
-        [SerializeField] private AnimationParameterSO anim_idle;
+        [SerializeField] private AnimationTriggers animEndTrigger;
+        [SerializeField, Space(10)] private AnimationParameterSO anim_idle;
         [SerializeField] private AnimationParameterSO anim_move;
         [SerializeField] private AnimationParameterSO anim_parry;
-        [SerializeField] private AnimationParameterSO anim_dodge;
-        //[SerializeField] private AnimationParameterSO anim_jumpAttack;
-        //[SerializeField] private AnimationParameterSO anim_attack1;
+        [SerializeField] private AnimationParameterSO anim_roll;
+        [SerializeField] private AnimationParameterSO anim_rollAttack;
+        [SerializeField] private AnimationParameterSO anim_death;
+
+        [SerializeField] private AnimationParameterSO anim_dbg;
 
         [Header("Combo")]
-        //should be serializeable struct later
-        [SerializeField] private AnimationParameterSO[] comboParamHash;
-        [SerializeField] private Vector3[] comboForceList;
-        [SerializeField] private float[] periods;
-
+        [SerializeField] protected AttackComboSO[] comboList;
+        public EComboState[] dbg_comboHistory;
+        public IReadOnlyList<AttackComboSO> GetComboList => comboList;
+        //[SerializeField] private AnimationParameterSO[] comboParamHash;
+        //[SerializeField] private Vector3[] comboForceList;
+        //[SerializeField] private float[] periods;
+        //
+        //public IReadOnlyList<AnimationParameterSO> GetComboHashAtk => comboParamHash;
+        //public IReadOnlyList<Vector3> GetComboForceList => comboForceList;
+        //public IReadOnlyList<float> GetPeriods => periods;
         public bool IsParryState { get; set; }
-        
-        public IReadOnlyList<AnimationParameterSO> GetComboHashAtk => comboParamHash;
-        public IReadOnlyList<Vector3> GetComboForceList => comboForceList;
-        public IReadOnlyList<float> GetPeriods => periods;
 
         #region PlayerComponentGetter
         public PlayerCamera GetPlayerCamera => GetEntityComponent<PlayerCamera>();
@@ -51,29 +51,37 @@ namespace Swift_Blade
 
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
+        private PlayerAttackState playerAttackState;
         protected override void Awake()
         {
             base.Awake();
             Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator.GetAnimator;
-            //playerStateMachine.AddState(PlayerStateEnum.Idle, new PlayerIdleState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_idle));
-            playerStateMachine.AddState(PlayerStateEnum.Movement, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
-            playerStateMachine.AddState(PlayerStateEnum.Attack, new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null));
-            playerStateMachine.AddState(PlayerStateEnum.Dash, new PlayerDashState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_dodge));
-            playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
-            playerStateMachine.SetStartState(PlayerStateEnum.Movement);
+            playerStateMachine.AddState(PlayerStateEnum.Move,   new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
+            playerAttackState =                                 new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null);
+            playerStateMachine.AddState(PlayerStateEnum.Attack, playerAttackState);
+            playerStateMachine.AddState(PlayerStateEnum.Roll,   new PlayerRollState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_roll));
+            playerStateMachine.AddState(PlayerStateEnum.Parry,  new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
+            playerStateMachine.AddState(PlayerStateEnum.Dead,  new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death));
+            playerStateMachine.SetStartState(PlayerStateEnum.Move);
         }
         private void Update()
         {
             playerStateMachine.UpdateState();
+
             Debug_Updt?.Invoke();
-            void UpdateDebugUI()
-            {
-                if (Input.GetKeyDown(KeyCode.F1))
-                    UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
-                //if (Input.GetKeyDown(KeyCode.F2))
-                UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
-            }
-            UpdateDebugUI();
+            if (Input.GetKeyDown(KeyCode.F1))
+                UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
+            UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
+            //if (Input.GetKeyDown(KeyCode.F))
+            //{
+            //    GetPlayerAnimator.GetAnimator.Rebind();
+            //    GetPlayerAnimator.GetAnimator.Play(anim_death.GetAnimationHash, -1);
+            //}
+        }
+        public void Attack(EComboState previousState)
+        {
+            playerAttackState.PreviousComboState = previousState;
+            playerStateMachine.ChangeState(PlayerStateEnum.Attack);
         }
 
     }

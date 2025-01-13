@@ -73,6 +73,7 @@ namespace Swift_Blade.Combat.Health
         
         protected float GetHealthPercent()
         {
+            print("ÀÀ¾î¾ÆÀÕ");
             return currentHealth / maxHealth;
         }
         

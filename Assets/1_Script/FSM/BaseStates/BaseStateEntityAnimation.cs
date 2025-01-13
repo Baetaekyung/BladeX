@@ -7,7 +7,7 @@ namespace Swift_Blade.FSM.States
         where StateEnum : Enum
         where Entity : global::Entity
     {
-        private readonly AnimationParameterSO baseAnimParam;
+        protected readonly AnimationParameterSO baseAnimParam;
         private readonly Animator ownerAnimator;
         private readonly AnimationTriggers animationTriggers;
         protected readonly Entity entity;
@@ -19,57 +19,48 @@ namespace Swift_Blade.FSM.States
             this.entity = entity;
         }
 
-        protected virtual void OnAnimationEndTrigger()
-        {
-            Debug.Log("onAnimationEnd");
-        }
-        protected virtual void OnAnimationEndTriggerListen()
-        {
-            Debug.Log("OnAnimationListen");
-        }
-        protected virtual void OnAnimationEndableTrigger()
-        {
-            Debug.Log("onanimatoinEndable");
-        }
-        protected virtual void OnAttackTrigger()
-        {
-            Debug.Log("OnAttackTrigger");
-        }
-        protected virtual void OnForceEventTrigger(float force)
-        {
-            Debug.Log("onfroce");
-        }
-        protected virtual void OnSpeedMultiplierDefaultTrigger(float set)
-        {
-            Debug.Log("onspeedmultiplier");
-        }
-        protected virtual void OnMovementSetTrigger(Vector3 value)
-        {
-            Debug.Log("onmovementset");
-        }
+        protected virtual void OnAnimationEndTrigger()                      => Debug.Log("OnAnimationEnd");
+        protected virtual void OnAnimationEndableTrigger()                  => Debug.Log("OnanimatoinEndable");
+        protected virtual void OnAnimationEndTriggerListen()                => Debug.Log("OnAnimationListen");
+        protected virtual void OnAnimationEndTriggerStoplisten()            => Debug.Log("Onstoplisten");
+
+        protected virtual void OnAttackTrigger()                            => Debug.Log("OnAttackTrigger");
+        protected virtual void OnAllowRotateAllowTrigger()                  => Debug.Log("OnRotoateSet");
+        protected virtual void OnAllowRotateDisallowTrigger()               => Debug.Log("OnRotoateDisallowSet");
+
+        protected virtual void OnForceEventTrigger(float force)             => Debug.Log("OnFroce");
+        protected virtual void OnSpeedMultiplierDefaultTrigger(float set)   => Debug.Log("OnSpeedmultiplier");
+        //protected virtual void OnMovementSetTrigger(Vector3 value) => Debug.Log("Onmovementset");
         public override void Enter()
         {
             base.Enter();
             animationTriggers.OnAnimationEndEvent += OnAnimationEndTrigger;
-            animationTriggers.OnAnimationEndableListenEvent += OnAnimationEndTriggerListen;
             animationTriggers.OnAnimationnEndableEvent += OnAnimationEndableTrigger;
+            animationTriggers.OnAnimationEndableListenEvent += OnAnimationEndTriggerListen;
+            animationTriggers.OnAnimationEndableStopListenEvent += OnAnimationEndTriggerStoplisten;
 
             animationTriggers.OnAttackTriggerEvent += OnAttackTrigger;
+            animationTriggers.OnRotateAllowSetEvent += OnAllowRotateAllowTrigger;
+            animationTriggers.OnRotateDisallowSetEvent+= OnAllowRotateDisallowTrigger;
 
             animationTriggers.OnForceEvent += OnForceEventTrigger;
             animationTriggers.OnSpeedMultiplierDefaultEvent += OnSpeedMultiplierDefaultTrigger;
             //animationTriggers.OnMovementSetEvent += OnMovementSetTrigger;
-            PlayAnimationOnEnter();
+            if (baseAnimParam != null)
+                PlayAnimationOnEnter();
         }
 
 
         public override void Exit()
         {
             animationTriggers.OnAnimationEndEvent -= OnAnimationEndTrigger;
-            animationTriggers.OnAnimationEndableListenEvent -= OnAnimationEndTriggerListen;
             animationTriggers.OnAnimationnEndableEvent -= OnAnimationEndableTrigger;
+            animationTriggers.OnAnimationEndableListenEvent -= OnAnimationEndTriggerListen;
+            animationTriggers.OnAnimationEndableStopListenEvent -= OnAnimationEndTriggerStoplisten;
 
             animationTriggers.OnAttackTriggerEvent -= OnAttackTrigger;
+            animationTriggers.OnRotateAllowSetEvent -= OnAllowRotateAllowTrigger;
+            animationTriggers.OnRotateDisallowSetEvent -= OnAllowRotateDisallowTrigger;
 
             animationTriggers.OnForceEvent -= OnForceEventTrigger;
             animationTriggers.OnSpeedMultiplierDefaultEvent -= OnSpeedMultiplierDefaultTrigger;
@@ -77,23 +68,30 @@ namespace Swift_Blade.FSM.States
             base.Exit();
         }
 
-        public virtual void PlayAnimationOnEnter()
+        protected virtual void PlayAnimationOnEnter()
         {
-            if (baseAnimParam != null)
-            {
-                Debug.Log(baseAnimParam);
-                ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1);
-            }
+            ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1);
         }
-        protected void PlayAnimation(AnimationParameterSO param)
+        protected void PlayAnimation(AnimationParameterSO param, int layer = -1)
         {
             Debug.Assert(param != null, "parameterSO is null");
-            ownerAnimator.Play(param.GetAnimationHash, -1);
+            ownerAnimator.Play(param.GetAnimationHash, layer);
         }
 
         protected void PlayAnimation(int hash, float normalizedTime = 0)
         {
             ownerAnimator.Play(hash, -1, normalizedTime);
+        }
+        protected void PlayAnimationRebind(AnimationParameterSO param, int layer = -1)
+        {
+            Debug.Assert(param != null, "parameterSO is null");
+            ownerAnimator.Rebind();
+            ownerAnimator.Play(param.GetAnimationHash, layer);
+        }
+        protected void PlayAnimationRebind(int hash, int layer = -1)
+        {
+            ownerAnimator.Rebind();
+            ownerAnimator.Play(hash, layer);
         }
     }
 }

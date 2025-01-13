@@ -1,96 +1,146 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Swift_Blade.FSM.States
 {
-    public class PlayerAttackState : BasePlayerMovementState
+    public class PlayerAttackState : BasePlayerState
     {
-        protected override bool BaseAllowStateChangeToAttack { get; } = false;
+        protected override bool BaseAllowParryInput => false;
 
-        //todo : change this to non-readonly variables and init when weapon is changed
-        private readonly IReadOnlyList<AnimationParameterSO> comboParamHash;
-        private readonly IReadOnlyList<Vector3> comboForceList;
-        private readonly IReadOnlyList<float> perioids;
-        private readonly PlayerDamageCaster playerDamageCaster;
         private readonly PlayerRenderer playerRenderer;
+        private ComboData currentComboData;
 
         private bool allowListening;
-        private bool allowNextAttack;
+        private bool isCurrentAnimationEndable;
         private bool inputBuffer;
 
-        private float deadPeriod;
-        private int currentIdx;
-        private readonly int maxIdx;
-        private bool IsIndexValid => currentIdx < maxIdx;
+        private float delayContinuousCombo;
+
+        private bool IsContinuousComboAllowed => delayContinuousCombo > Time.time;
         /// <summary>
-        /// bad name
+        /// todo : bad name
         /// </summary>
-        private bool IsDeadPeriodOver => deadPeriod > Time.time;
+        public EComboState PreviousComboState { get; set; }
+        private readonly List<EComboState> comboStateHistory = new(5);
         public PlayerAttackState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null)
             : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
-            comboParamHash = entity.GetComboHashAtk;
-            comboForceList = entity.GetComboForceList;
-            perioids = entity.GetPeriods;
-            playerDamageCaster = entity.GetPlayerDamageCaster;
-            playerRenderer = entity.GetPlayerRenderer;
-            maxIdx = comboParamHash.Count - 1;
+            playerRenderer = player.GetPlayerRenderer;
             Player.Debug_Updt += () =>
             {
-                UI_DebugPlayer.DebugText(3, inputBuffer, "inputBuffer", DBG_UI_KEYS.Keys_PlayerAction);
-                UI_DebugPlayer.DebugText(4, allowListening, "allowListen", DBG_UI_KEYS.Keys_PlayerAction);
-                UI_DebugPlayer.DebugText(5, allowNextAttack, "allowNext", DBG_UI_KEYS.Keys_PlayerAction);
+                UI_DebugPlayer.DebugText(2, IsContinuousComboAllowed, "dpover", DBG_UI_KEYS.Keys_PlayerAction);
+                UI_DebugPlayer.DebugText(3, delayContinuousCombo, "deadPeriod", DBG_UI_KEYS.Keys_PlayerAction);
+                UI_DebugPlayer.DebugText(4, Time.time, "time", DBG_UI_KEYS.Keys_PlayerAction);
+                UI_DebugPlayer.DebugText(5, comboStateHistory.Count, "cshCount", DBG_UI_KEYS.Keys_PlayerAction);
+                if (Input.GetKeyDown(KeyCode.X))
+                    comboStateHistory.Clear();
+
             };
         }
 
         public override void Enter()
         {
             base.Enter();
-            bool mouseMove = true;
-            Vector3 direction = mouseMove == true ?
-                player.GetPlayerInput.GetMousePositionWorld - playerMovement.transform.position :
-                player.GetPlayerInput.GetInputDirectionRawRotated;
-            playerRenderer.LookAtDirection(direction);
-            playerMovement.UseMouseLock = true;
-            Attack();
+            if(!IsContinuousComboAllowed)
+                comboStateHistory.Clear();
+
+            comboStateHistory.Add(PreviousComboState);
+            bool matchFound = GetMatchingComboSO(out currentComboData);
+            if (matchFound)
+            {
+                bool mouseMove = true;
+                Vector3 direction = mouseMove ?
+                    player.GetPlayerInput.GetMousePositionWorld - playerMovement.transform.position :
+                    player.GetPlayerInput.GetInputDirectionRawRotated;
+                playerRenderer.LookAtDirection(direction);
+                playerMovement.UseMouseLock = true;
+
+                ComboAttack();
+            }
+            else
+            {
+                OnComboFail();
+            }
         }
         public override void Update()
         {
             base.Update();
-            if (Input.GetKeyDown(KeyCode.Mouse0) && allowListening)
-                inputBuffer = true;
-            if (inputBuffer && allowNextAttack && IsIndexValid)
-                Attack();
+            if (inputBuffer && isCurrentAnimationEndable && IsContinuousComboAllowed)
+            {
+                comboStateHistory.Add(PreviousComboState);
+                if (GetMatchingComboSO(out currentComboData))
+                {
+                    ComboAttack();
+                }
+                else
+                {
+                    OnComboFail();
+                }
+            }
         }
-        private void Attack()
+        /// <summary>
+        /// todo : try remove currentComboData.GetPeriod?
+        /// if fail start over and play no exit shit.
+        /// </summary>
+        private void OnComboFail()
         {
-            if (IsIndexValid && IsDeadPeriodOver)
-                currentIdx++;
+            comboStateHistory.Clear();
+            delayContinuousCombo = 0;
+            comboStateHistory.Add(PreviousComboState);
+            if (GetMatchingComboSO(out currentComboData))
+                ComboAttack();
             else
-                currentIdx = 0;
-
+            {
+                GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
+                Debug.Log("no match, no combo, no attack");
+            }
+        }
+        private bool GetMatchingComboSO(out ComboData comboData)
+        {
+            comboData = null;
+            foreach (AttackComboSO comboSO in player.GetComboList)
+            {
+                if (comboSO.IsMatch(comboStateHistory, out comboData))
+                    return true;
+            }
+            return false;
+        }
+        private void ComboAttack()
+        {
             inputBuffer = false;
             allowListening = false;
-            allowNextAttack = false;
-            deadPeriod = perioids[currentIdx] + Time.time;
+            isCurrentAnimationEndable = false;
 
-            playerDamageCaster.CastDamage();
-            
-            AnimationParameterSO param = comboParamHash[currentIdx];
-            PlayAnimation(param);
+            delayContinuousCombo = currentComboData.GetPeriod + Time.time;
+            AnimationParameterSO param = currentComboData.GetAnimParam;
+            PlayAnimationRebind(param);
+            Debug.Log(param.name);
+        }
+        protected override void OnAttackInput(EComboState currentState)
+        {
+            if (allowListening && inputBuffer != true)
+            {
+                PreviousComboState = currentState;
+                Debug.Log(PreviousComboState);
+                inputBuffer = true;
+            }
+        }
+        protected override void PlayAnimationOnEnter()
+        {
+            PlayAnimationRebind(baseAnimParam);
         }
         protected override void OnAnimationEndTriggerListen() => allowListening = true;
-        protected override void OnAnimationEndableTrigger() => allowNextAttack = true;
+        protected override void OnAnimationEndableTrigger() => isCurrentAnimationEndable = true;
         protected override void OnForceEventTrigger(float force)
         {
-            Vector3 result = comboForceList[currentIdx] * force;
+            Vector3 result = currentComboData.GetComboForce * force;
             playerMovement.AddForceFacingDirection(result);
         }
         public override void Exit()
         {
-            Debug.Log("exit");
             playerMovement.SpeedMultiplierDefault = 1;
-            playerMovement.UseMouseLock = false;
+            //playerMovement.UseMouseLock = false;
             base.Exit();
         }
     }
