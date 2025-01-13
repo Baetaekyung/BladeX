@@ -78,10 +78,10 @@ namespace Swift_Blade.FSM.States
         public override void Exit()
         {
             _playerHealthCompo.OnHitEvent.RemoveListener(ParryOnHitByVicinityHandler);
-
+            
            
             //_currentDuration = 0f;
-
+            parryController.SetParry(false);
             player.IsParryState = false;
             playerMovement.AllowInputMove = true;
             

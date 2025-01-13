@@ -8,7 +8,6 @@ namespace Swift_Blade.Combat.Health
     public class BossBaseHealth : MonoBehaviour,IDamageble
     {
         public UnityEvent<ActionData> OnHitEvent;
-        public UnityEvent<ActionData> OnParryHitEvent;
         public UnityEvent OnDeadEvent;
         
         public Action<float> OnChangeHealthEvent; 

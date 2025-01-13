@@ -3,6 +3,7 @@ using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
+using Swift_Blade.Combat.Caster;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "SetUnparryable", story: "SetUnparryable", category: "Action", id: "29a337b686e33b6b38898a201bd0df71")]

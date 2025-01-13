@@ -3,6 +3,7 @@ using Swift_Blade.FSM.States;
 using System;
 using System.Collections.Generic;
 using Swift_Blade.Combat;
+using Swift_Blade.Combat.Caster;
 using UnityEngine;
 
 namespace Swift_Blade
