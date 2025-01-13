@@ -56,13 +56,14 @@ namespace Swift_Blade
         {
             base.Awake();
             Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator.GetAnimator;
-            playerStateMachine.AddState(PlayerStateEnum.Move,   new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
-            playerAttackState =                                 new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null);
+            playerStateMachine.AddState(PlayerStateEnum.Move, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
+            playerAttackState = new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null);
             playerStateMachine.AddState(PlayerStateEnum.Attack, playerAttackState);
-            playerStateMachine.AddState(PlayerStateEnum.Roll,   new PlayerRollState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_roll));
-            playerStateMachine.AddState(PlayerStateEnum.Parry,  new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
-            playerStateMachine.AddState(PlayerStateEnum.Dead,  new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death));
+            playerStateMachine.AddState(PlayerStateEnum.Roll, new PlayerRollState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_roll));
+            playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
+            playerStateMachine.AddState(PlayerStateEnum.Dead, new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death));
             playerStateMachine.SetStartState(PlayerStateEnum.Move);
+            GetEntityComponent<PlayerHealth>().OnDeadEvent.AddListener(() => { playerStateMachine.ChangeState(PlayerStateEnum.Dead); });
         }
         private void Update()
         {
@@ -78,11 +79,17 @@ namespace Swift_Blade
             //    GetPlayerAnimator.GetAnimator.Play(anim_death.GetAnimationHash, -1);
             //}
         }
-        public void Attack(EComboState previousState)
+        public void Attack(EComboState previousState, EComboState nonImmediateState = EComboState.None)
         {
             playerAttackState.PreviousComboState = previousState;
+            playerAttackState.NonImmediateComboState = nonImmediateState;
             playerStateMachine.ChangeState(PlayerStateEnum.Attack);
         }
+        public void ClearComboHistory()
+        {
+            playerAttackState.ClearComboHistory();
+        }
+
 
     }
 }

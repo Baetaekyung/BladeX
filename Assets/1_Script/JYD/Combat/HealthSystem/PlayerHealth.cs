@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace Swift_Blade
 {
-    public class PlayerHealth : MonoBehaviour,IDamageble
+    public class PlayerHealth : MonoBehaviour, IEntityComponent ,IDamageble
     {
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
@@ -14,7 +14,6 @@ namespace Swift_Blade
 
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
-
         private void Update()
         {
             /*if (Input.GetKeyDown(KeyCode.P))
@@ -54,6 +53,10 @@ namespace Swift_Blade
             _statCompo.SetBaseValue(_healthStat, _maxHealth + value);
             _maxHealth = _healthStat.Value;
             _currentHealth = Mathf.Clamp(_currentHealth + value, 0, _healthStat.Value);
+        }
+
+        public void EntityComponentAwake(Entity entity)
+        {
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Swift_Blade
     public class PlayerStatCompo : StatComponent, IEntityComponent
     {
         [SerializeField] private StyleMeter styleMeter;
-
+        public StyleMeter GetStyleMeter => styleMeter;
         // private void Update()
         // {
         //     if (Input.GetKeyDown(KeyCode.K))

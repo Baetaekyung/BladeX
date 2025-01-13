@@ -26,6 +26,7 @@ namespace Swift_Blade.FSM.States
         public override void Enter()
         {
             base.Enter();
+            player.ClearComboHistory();
             inputLocalLerp = Vector3.zero;
             allowListening = false;
             inputBuffer = false;
@@ -39,7 +40,7 @@ namespace Swift_Blade.FSM.States
             player.GetPlayerMovement.AllowInputMove = false;
             entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirection.normalized, 10);
         }
-        protected override void OnAttackInput(EComboState previousState)
+        protected override void OnAttackInput(EComboState previousState, EComboState nonImeediateState = EComboState.None)
         {
             if (!allowListening) return;
             inputBuffer = true;
@@ -48,7 +49,7 @@ namespace Swift_Blade.FSM.States
         }
         private void ChangeToAttack()
         {
-            base.OnAttackInput(EComboState.Dash);
+            base.OnAttackInput(EComboState.AnyAttack, EComboState.Dash);
         }
         protected override void OnAnimationEndTriggerListen() => allowListening = true;
         protected override void OnAnimationEndTriggerStoplisten() => allowListening = false;
