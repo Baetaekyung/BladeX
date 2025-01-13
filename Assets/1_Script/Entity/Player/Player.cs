@@ -73,5 +73,7 @@ namespace Swift_Blade
             playerStateMachine.ChangeState(PlayerStateEnum.Attack);
         }
 
+        public PlayerStateEnum GetCurrentState() => playerStateMachine.GetState();
+        
     }
 }

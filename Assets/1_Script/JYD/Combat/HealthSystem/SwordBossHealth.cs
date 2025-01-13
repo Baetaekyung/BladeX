@@ -18,21 +18,7 @@ namespace Swift_Blade.Combat.Health
         public override void TakeDamage(ActionData actionData)
         {
             if (isDead) return;
-
-            if (actionData.attackType == AttackType.Parry)
-            {
-                TriggerState(BossState.Hurt);
-
-                OnParryHitEvent?.Invoke(actionData);
-                return;
-            }
-
-            /*if (Random.value <= 0.3f)
-            {
-                TriggerState(BossState.Step);
-                return;
-            }*/
-
+            
             currentHealth -= actionData.damageAmount;
             OnChangeHealthEvent?.Invoke(currentHealth/ maxHealth);
 

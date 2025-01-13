@@ -22,5 +22,17 @@ namespace Swift_Blade.FSM
             CurrentState.Enter();
         }
         public void UpdateState() => CurrentState.Current.Invoke();
+
+
+        public StateEnum GetState()
+        {
+            foreach (var kvp in StateDictionary)
+            {
+                if (kvp.Value == CurrentState)
+                    return kvp.Key;
+            }
+
+            return default;
+        }
     }
 }

@@ -4,8 +4,9 @@ using UnityEngine.Events;
 
 namespace Swift_Blade
 {
-    public class PlayerHealth : MonoBehaviour,IDamageble
+    public class PlayerHealth : MonoBehaviour,IDamageble,IEntityComponent
     {
+        
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
 
@@ -17,6 +18,13 @@ namespace Swift_Blade
 
         private float damageInterval = 0.5f;
         private float lastDamageTime = 0;
+
+        private Player _player;
+        
+        public void EntityComponentAwake(Entity entity)
+        {
+            _player = entity as Player;
+        }
         
         
         private void Update()
@@ -63,5 +71,8 @@ namespace Swift_Blade
             _maxHealth = _healthStat.Value;
             _currentHealth = Mathf.Clamp(_currentHealth + value, 0, _healthStat.Value);
         }
+
+        public PlayerStateEnum GetCurrentState() => _player.GetCurrentState();
+
     }
 }
