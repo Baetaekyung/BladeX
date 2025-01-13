@@ -7,33 +7,26 @@ namespace Swift_Blade
     public enum StatType
     {
         HEALTH,
-        STAMINA,
-        STRENGTH,
-        MOVESPEED,
-        ATTACKSPEED,
-        CRITICALPERCENT,
-        CRITICALDAMAGE,
-        PARRYDURATION,
+        DAMAGE,
+        AGILITY
     }
     
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]
     public class StatSO : ScriptableObject, ICloneable
     {
         public delegate void ValueChangeHandler(StatSO stat, float current, float prev);
-
         public ValueChangeHandler OnValueChange;
+
+        [SerializeField] private StyleMeter stlyeMeter;
 
         public StatType statType;
         public string statName;
         [TextArea(4, 5)] public string description;
-        public Sprite icon;
         public string displayName;
         [SerializeField] private float _baseValue, _minValue, _maxValue;
         
         private Dictionary<object, float> _modifyValueByKeys = new Dictionary<object, float>();
         
-        [field:SerializeField] public bool IsPercent { get; private set; }
-
         public float _modifiedValue = 0;
 
         public float MaxValue
@@ -48,7 +41,17 @@ namespace Swift_Blade
             set => _minValue = value;
         }
 
-        public float Value => Mathf.Clamp(_baseValue + _modifiedValue, MinValue, MaxValue);
+        public float Value
+        {
+            get
+            {
+                if (statType == StatType.HEALTH)
+                    return Mathf.Clamp((_baseValue + _modifiedValue), MinValue, MaxValue);
+                
+                return Mathf.Clamp((_baseValue + _modifiedValue) * stlyeMeter.statMultiplier , MinValue, MaxValue);
+            }
+        }
+        
         public bool IsMax => Mathf.Approximately(Value, MaxValue);
         public bool IsMin => Mathf.Approximately(Value, MinValue);
 

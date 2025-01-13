@@ -7,94 +7,26 @@ using UnityEngine.UI;
 
 namespace Swift_Blade
 {
-    public enum StyleMeterScore : short
+    [CreateAssetMenu(fileName = "StyleMeter", menuName = "SO/StyleMeter")]
+    public class StyleMeter : ScriptableObject
     {
-        NONE = 0,
-        D = 1,
-        C = 2,
-        B = 3,
-        A = 4,
-        S = 5,
-        Swift = 6
-    }
-    
-    public class StyleMeter : MonoSingleton<StyleMeter>
-    {
-        private readonly int _changeMeterUPAnimHash = Animator.StringToHash("ChangeMeterUP");
-        private readonly int _changeMeterDOWNAnimHash = Animator.StringToHash("ChangeMeterDOWN");
+        public event Action OnSuccessHitEvent;
+        public event Action OnDamagedEvent;
 
-        public Action<StyleMeterScore> OnStyleMeterUpEvent;
-        public Action<StyleMeterScore> OnStyleMeterDownEvent;
+        public float statMultiplier = 1f;
         
-        [Header("About visual")]
-        private Animator _animator;
-        [SerializeField] private Image _swiftIcon;
-        
-        [Header("StyleMeter Score")]
-        private StyleMeterScore _currentMeterScore = StyleMeterScore.NONE;
-
-        [Header("Timer")]
-        [SerializeField] private float _downMeterScoreTime = 6f; //스타일 미터 유지 시간
-        private float _currentTime = 0f;
-        private float _meterUpPercent = 0f;
-        private int _currentMeterRank = 0; //미터 스코어 정수화
-
-        private void Start()
+        public void SuccessHit()
         {
-            _animator = GetComponentInChildren<Animator>();
-            
-            float normalizedValue = (float)_currentMeterScore / 6;
-            _swiftIcon.fillAmount = normalizedValue;
+            statMultiplier += 0.01f;
+
+            OnSuccessHitEvent?.Invoke();
         }
 
-        private void Update()
+        public void MeterInitialize()
         {
-            if (_downMeterScoreTime <= _currentTime)
-                DowngradeMeterRank();
-            else
-                _currentTime += Time.deltaTime;
-        }
+            statMultiplier = 1f;
 
-        public void RaiseMeterPercent(float raisePercent)
-        {
-            _meterUpPercent += raisePercent;
-            
-            if (_meterUpPercent >= 100f)
-                UpgradeMeterRank();
-        }
-        
-        public void UpgradeMeterRank()
-        {
-            if (_currentMeterScore == StyleMeterScore.Swift) return;
-
-            _meterUpPercent = 0f;
-            _currentTime = 0f; //다운그레이드 초기화
-            
-            _currentMeterRank++;
-            _currentMeterScore = (StyleMeterScore)_currentMeterRank;
-            
-            OnStyleMeterUpEvent?.Invoke(_currentMeterScore);
-
-            float normalizedValue = (float)_currentMeterScore / 6;
-            _swiftIcon.fillAmount = normalizedValue;
-            
-            _animator.SetTrigger(_changeMeterUPAnimHash);
-        }
-
-        public void DowngradeMeterRank()
-        {
-            _currentTime = 0f;
-            if (_currentMeterScore == StyleMeterScore.NONE) return;
-
-            _currentMeterRank--;
-            _currentMeterScore = (StyleMeterScore)_currentMeterRank;
-            
-            OnStyleMeterDownEvent?.Invoke(_currentMeterScore);
-            
-            _animator.SetTrigger(_changeMeterDOWNAnimHash);
-            
-            float normalizedValue = (float)_currentMeterScore / 6;
-            _swiftIcon.fillAmount = normalizedValue;
+            OnDamagedEvent?.Invoke();
         }
     }
 }

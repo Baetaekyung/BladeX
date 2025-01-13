@@ -7,6 +7,6 @@ namespace Swift_Blade.UI
         Option,
         Help,
         Text,
-        Dialog
+        Shop
     }
 }

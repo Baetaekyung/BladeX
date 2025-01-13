@@ -18,10 +18,7 @@ namespace Swift_Blade
         
         [SerializeField] private TextMeshProUGUI _healthText;
         [SerializeField] private TextMeshProUGUI _strengthText;
-        [SerializeField] private TextMeshProUGUI _attackSpeedText;
-        [SerializeField] private TextMeshProUGUI _moveSpeedText;
-        [SerializeField] private TextMeshProUGUI _criticalChanceText;
-        [SerializeField] private TextMeshProUGUI _criticalDamageText;
+        [SerializeField] private TextMeshProUGUI _agilityText;
         
         [SerializeField] private StatComponent _targetStat; //테스트용 Serialize
         private readonly StringBuilder _sb = new StringBuilder();
@@ -60,11 +57,8 @@ namespace Swift_Blade
         private void UpdateStatUI() //모든 스텟 세팅
         {
             SetStatUI(_targetStat.GetStatByType(StatType.HEALTH), _healthText);
-            SetStatUI(_targetStat.GetStatByType(StatType.STRENGTH), _strengthText);
-            SetStatUI(_targetStat.GetStatByType(StatType.ATTACKSPEED), _attackSpeedText, true);
-            SetStatUI(_targetStat.GetStatByType(StatType.MOVESPEED), _moveSpeedText, true);
-            SetStatUI(_targetStat.GetStatByType(StatType.CRITICALPERCENT), _criticalChanceText, true);
-            SetStatUI(_targetStat.GetStatByType(StatType.CRITICALDAMAGE), _criticalDamageText, true);
+            SetStatUI(_targetStat.GetStatByType(StatType.DAMAGE), _strengthText);
+            SetStatUI(_targetStat.GetStatByType(StatType.AGILITY), _agilityText);
         }
 
         private void SetStatUI(StatSO stat, TextMeshProUGUI targetText, bool isPercent = false) //스텟 세팅
