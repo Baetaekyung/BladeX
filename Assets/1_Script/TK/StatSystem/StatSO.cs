@@ -58,53 +58,30 @@ namespace Swift_Blade
         public float BaseValue
         {
             get => _baseValue;
-            set
-            {
-                float prevValue = Value;
-                _baseValue = Mathf.Clamp(value, MinValue, MaxValue);
-                TryInvokeValueChangeEvent(Value, prevValue);
-            }
-        }
-
-        private void TryInvokeValueChangeEvent(float value, float prevValue)
-        {
-            if (Mathf.Approximately(value, prevValue) == false)
-            {
-                OnValueChange?.Invoke(this, value, prevValue);
-            }
+            set => _baseValue = Mathf.Clamp(value, MinValue, MaxValue);
         }
 
         public void AddModifier(object key, float value)
         {
             if (_modifyValueByKeys.ContainsKey(key)) return;
 
-            float prevValue = Value;
-
             _modifiedValue += value;
             _modifyValueByKeys.Add(key, value);
-            
-            TryInvokeValueChangeEvent(Value, prevValue);
         }
 
         public void RemoveModifier(object key)
         {
             if (_modifyValueByKeys.TryGetValue(key, out float value))
             {
-                float prevValue = Value;
                 _modifiedValue -= value; 
                 _modifyValueByKeys.Remove(key);
-                
-                TryInvokeValueChangeEvent(Value, prevValue);
             }
         }
 
         public void ClearModifier()
         {
-            float prevValue = Value;
             _modifyValueByKeys.Clear();
             _modifiedValue = 0;
-            
-            TryInvokeValueChangeEvent(Value, prevValue);
         }
         
         public object Clone() => Instantiate(this);

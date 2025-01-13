@@ -14,7 +14,12 @@ namespace Swift_Blade
         public event Action OnDamagedEvent;
 
         public float statMultiplier = 1f;
-        
+
+        private void OnEnable()
+        {
+            statMultiplier = 1f;
+        }
+
         public void SuccessHit()
         {
             statMultiplier += 0.01f;
