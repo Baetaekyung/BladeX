@@ -106,17 +106,15 @@ namespace Swift_Blade.FSM.States
             allowListening = false;
             isCurrentAnimationEndable = false;
 
-            delayContinuousCombo = currentComboData.GetPeriod + Time.time;
+            delayContinuousCombo = currentComboData.GetAnimParam.GetPeriod + Time.time;
             AnimationParameterSO param = currentComboData.GetAnimParam;
             PlayAnimationRebind(param);
-            Debug.Log(param.name);
         }
         protected override void OnAttackInput(EComboState currentState, EComboState nonImeediateState = EComboState.None)
         {
             if (allowListening && inputBuffer != true)
             {
                 PreviousComboState = currentState;
-                Debug.Log(PreviousComboState);
                 inputBuffer = true;
             }
         }
@@ -134,6 +132,7 @@ namespace Swift_Blade.FSM.States
         public override void Exit()
         {
             playerMovement.SpeedMultiplierDefault = 1;
+            inputLocalLerp = Vector3.zero;
             //playerMovement.UseMouseLock = false;
             base.Exit();
         }
