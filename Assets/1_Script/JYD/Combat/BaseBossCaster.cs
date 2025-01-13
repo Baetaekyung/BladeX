@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿using Swift_Blade;
+using Swift_Blade.Combat;
+using UnityEngine;
+using UnityEngine.Events;
 
-public class SphereCaster : LayerCaster
+public class BaseBossCaster : LayerCaster
 {
     [SerializeField][Range(0.5f, 10f)] private float _casterRadius = 1f;
     [SerializeField][Range(0f, 10f)] private float _casterInterpolation = 0.5f;
     [SerializeField][Range(0f, 10f)] private float _castingRange = 1f;
+
+    public UnityEvent parryEvents;
     
     public override bool CastDamage()
     {
@@ -17,30 +22,47 @@ public class SphereCaster : LayerCaster
             out RaycastHit hit, 
             _castingRange, targetLayer);
 
-        if(isHit)
+        if (isHit && hit.collider.TryGetComponent(out IDamageble health))
         {
-            //Debug.Log($"맞았습니다. {hit.collider.name}");
-            OnCastDamageEvent?.Invoke();
-            if(hit.collider.TryGetComponent(out IDamageble health))
+            if (hit.collider.TryGetComponent(out PlayerParryController parryController))
             {
-                float knockbackPower = 3f;
-                
-                ActionData actionData = new ActionData
+                if (parryController.CanParry())
                 {
-                    damageAmount = 10,
-                    knockbackDir = transform.forward,
-                    knockbackDuration = 0.2f,
-                    knockbackPower = 5,
-                    dealer = transform
-                };
-
-                health.TakeDamage(actionData);
-                        
+                    parryEvents?.Invoke();
+                    print("응어아잇");
+                }
+                else
+                {
+                    ApplyDamage(health);
+                }
+            }
+            else
+            {
+                ApplyDamage(health);
             }
         }
+
+        
+
         return isHit;
     }
 
+    void ApplyDamage(IDamageble health)
+    {
+        OnCastDamageEvent?.Invoke();
+
+        ActionData actionData = new ActionData
+        {
+            damageAmount = 10,
+            knockbackDir = transform.forward,
+            knockbackDuration = 0.2f,
+            knockbackPower = 5,
+            dealer = transform
+        };
+
+        health.TakeDamage(actionData);
+    }
+    
     public Vector3 GetStartPosition()
     {
         return transform.position + transform.forward * -_casterInterpolation * 2; 

@@ -2,6 +2,7 @@ using Swift_Blade.FSM;
 using Swift_Blade.FSM.States;
 using System;
 using System.Collections.Generic;
+using Swift_Blade.Combat;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -47,6 +48,8 @@ namespace Swift_Blade
         public PlayerRenderer GetPlayerRenderer => GetEntityComponent<PlayerRenderer>();
         public PlayerAnimator GetPlayerAnimator => GetEntityComponent<PlayerAnimator>();
         public PlayerDamageCaster GetPlayerDamageCaster => GetEntityComponent<PlayerDamageCaster>();
+        public PlayerParryController GetPlayerParryController => GetEntityComponent<PlayerParryController>();
+        
         #endregion
 
         public static event Action Debug_Updt;
@@ -91,5 +94,7 @@ namespace Swift_Blade
         }
 
 
+        public PlayerStateEnum GetCurrentState() => playerStateMachine.GetState();
+        
     }
 }

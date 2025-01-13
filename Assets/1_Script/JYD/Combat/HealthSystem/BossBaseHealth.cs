@@ -32,14 +32,6 @@ namespace Swift_Blade.Combat.Health
         {
             if(isDead)return;
         
-            if (actionData.attackType == AttackType.Parry)
-            {
-                TriggerState(BossState.Hurt);
-            
-                OnParryHitEvent?.Invoke(actionData);
-                return;
-            }
-            
             currentHealth -= actionData.damageAmount;
             OnChangeHealthEvent?.Invoke(GetHealthPercent());
         
@@ -75,6 +67,11 @@ namespace Swift_Blade.Combat.Health
         {
             print("ÀÀ¾î¾ÆÀÕ");
             return currentHealth / maxHealth;
+        }
+
+        public void ChangeParryState()
+        {
+            TriggerState(BossState.Hurt);
         }
         
         

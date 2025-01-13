@@ -14,7 +14,8 @@ namespace Swift_Blade.Boss
         private float attackMoveSpeed;
         
         public float AttackMoveSpeed => attackMoveSpeed;
-                
+        
+        [Space]
         public bool animationEnd;
         public bool isManualRotate;
         public bool isManualMove;
