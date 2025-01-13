@@ -8,7 +8,11 @@ public class BaseBossCaster : LayerCaster
     [SerializeField][Range(0.5f, 10f)] private float _casterRadius = 1f;
     [SerializeField][Range(0f, 10f)] private float _casterInterpolation = 0.5f;
     [SerializeField][Range(0f, 10f)] private float _castingRange = 1f;
-
+    
+    [Space(20)]
+    public bool CanCurrentAttackParry = true;
+    [Space(10)]
+    
     public UnityEvent parryEvents;
     
     public override bool CastDamage()
@@ -24,12 +28,12 @@ public class BaseBossCaster : LayerCaster
 
         if (isHit && hit.collider.TryGetComponent(out IDamageble health))
         {
-            if (hit.collider.TryGetComponent(out PlayerParryController parryController))
+            if (CanCurrentAttackParry && hit.collider.TryGetComponent(out PlayerParryController parryController))
             {
                 if (parryController.CanParry())
                 {
                     parryEvents?.Invoke();
-                    print("응어아잇");
+                    print("패링성공함!!!");
                 }
                 else
                 {
@@ -42,12 +46,12 @@ public class BaseBossCaster : LayerCaster
             }
         }
 
+        CanCurrentAttackParry = true;
         
-
         return isHit;
     }
 
-    void ApplyDamage(IDamageble health)
+    private void ApplyDamage(IDamageble health)
     {
         OnCastDamageEvent?.Invoke();
 
@@ -66,6 +70,11 @@ public class BaseBossCaster : LayerCaster
     public Vector3 GetStartPosition()
     {
         return transform.position + transform.forward * -_casterInterpolation * 2; 
+    }
+    
+    public void DisableParryForCurrentAttack()
+    {
+        CanCurrentAttackParry = false;
     }
     
     protected void OnDrawGizmosSelected()
