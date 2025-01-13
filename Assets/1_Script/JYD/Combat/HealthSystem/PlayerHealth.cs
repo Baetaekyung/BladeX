@@ -1,20 +1,31 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Swift_Blade
 {
-    public class PlayerHealth : MonoBehaviour,IDamageble
+    public class PlayerHealth : MonoBehaviour,IDamageble,IEntityComponent
     {
+        
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
-
+        
         private float _maxHealth;
         [SerializeField] private float _currentHealth;
 
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
+        
+        private float damageInterval = 0.5f;
+        private float lastDamageTime = 0;
 
+        private Player _player;
+        
+        public void EntityComponentAwake(Entity entity)
+        {
+            _player = entity as Player;
+        }
+        
+        
         private void Update()
         {
             /*if (Input.GetKeyDown(KeyCode.P))
@@ -26,11 +37,15 @@ namespace Swift_Blade
 
         public void TakeDamage(ActionData actionData)
         {
+            if(lastDamageTime + damageInterval > Time.time)return;
+            
             float damageAmount = actionData.damageAmount;
             _currentHealth -= damageAmount;
+
+            lastDamageTime = Time.time;
             
             OnHitEvent?.Invoke(actionData);
-
+        
             if (_currentHealth <= 0)
             {
                 Dead();
@@ -55,5 +70,8 @@ namespace Swift_Blade
             _maxHealth = _healthStat.Value;
             _currentHealth = Mathf.Clamp(_currentHealth + value, 0, _healthStat.Value);
         }
+
+        //public PlayerStateEnum GetCurrentState() => _player.GetCurrentState();
+
     }
 }
