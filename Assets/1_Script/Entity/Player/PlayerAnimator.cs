@@ -11,5 +11,10 @@ namespace Swift_Blade
         {
 
         }
+        public void PlayAnimation(int hash, int layer = -1)
+        {
+            animator.Play(hash, layer);
+        }
+
     }
 }
