@@ -7,7 +7,7 @@ namespace Swift_Blade.FSM.States
         where StateEnum : Enum
         where Entity : global::Entity
     {
-        private readonly AnimationParameterSO baseAnimParam;
+        protected readonly AnimationParameterSO baseAnimParam;
         private readonly Animator ownerAnimator;
         private readonly AnimationTriggers animationTriggers;
         protected readonly Entity entity;
@@ -46,7 +46,8 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnForceEvent += OnForceEventTrigger;
             animationTriggers.OnSpeedMultiplierDefaultEvent += OnSpeedMultiplierDefaultTrigger;
             //animationTriggers.OnMovementSetEvent += OnMovementSetTrigger;
-            PlayAnimationOnEnter();
+            if (baseAnimParam != null)
+                PlayAnimationOnEnter();
         }
 
 
@@ -69,18 +70,28 @@ namespace Swift_Blade.FSM.States
 
         protected virtual void PlayAnimationOnEnter()
         {
-            if (baseAnimParam != null)
-                ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1);
+            ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1);
         }
-        protected void PlayAnimation(AnimationParameterSO param)
+        protected void PlayAnimation(AnimationParameterSO param, int layer = -1)
         {
             Debug.Assert(param != null, "parameterSO is null");
-            ownerAnimator.Play(param.GetAnimationHash, -1);
+            ownerAnimator.Play(param.GetAnimationHash, layer);
         }
 
         protected void PlayAnimation(int hash, float normalizedTime = 0)
         {
             ownerAnimator.Play(hash, -1, normalizedTime);
+        }
+        protected void PlayAnimationRebind(AnimationParameterSO param, int layer = -1)
+        {
+            Debug.Assert(param != null, "parameterSO is null");
+            ownerAnimator.Rebind();
+            ownerAnimator.Play(param.GetAnimationHash, layer);
+        }
+        protected void PlayAnimationRebind(int hash, int layer = -1)
+        {
+            ownerAnimator.Rebind();
+            ownerAnimator.Play(hash, layer);
         }
     }
 }

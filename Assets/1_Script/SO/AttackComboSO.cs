@@ -8,9 +8,9 @@ namespace Swift_Blade
     {
         None,
         Dash,
-        WeakAttack,
+        LightAttack,
         PowerAttack,
-        AnyAttack
+        AnyAttack// todo : implement this feature
     }
     /// <summary>
     /// note : if intersecting EComboStates have different param, it won't work properly
@@ -30,24 +30,19 @@ namespace Swift_Blade
     [CreateAssetMenu(fileName = "AttackComboSO", menuName = "Scriptable Objects/AttackComboSO")]
     public class AttackComboSO : ScriptableObject
     {
-        [SerializeField] private ComboData[] comboes;
-        public IReadOnlyList<ComboData> GetComboes => comboes;
-        // todo :
-        public bool IsMatchFirstIndex(EComboState comboState, out AttackComboSO result)
+        [SerializeField] private ComboData[] combos;
+        public IReadOnlyList<ComboData> GetCombos => combos;
+        public bool IsMatch(IReadOnlyList<EComboState> comboStructs, out ComboData result)
         {
             result = null;
-            //if (comboes[0].GetComboState == comboState)
-            //{
-            //
-            //    return true;
-            //}
-            return false;
-        }
-        // todo :
-        public bool IsMatch(IReadOnlyList<EComboState> comboStructs, out AttackComboSO result)
-        {
-            result = null;
-            return default;
+            if (comboStructs.Count > combos.Length) return false;
+            for (int i = 0; i < comboStructs.Count; i++)
+            {
+                if (comboStructs[i] != combos[i].GetComboState)
+                    return false;
+            }
+            result = combos[comboStructs.Count - 1];
+            return true;
         }
     }
 }

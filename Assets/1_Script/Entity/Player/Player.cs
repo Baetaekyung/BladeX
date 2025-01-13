@@ -11,7 +11,8 @@ namespace Swift_Blade
         Move,
         Attack,
         Roll,
-        Parry
+        Parry,
+        Dead
     }
     public class Player : Entity
     {
@@ -22,9 +23,13 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO anim_parry;
         [SerializeField] private AnimationParameterSO anim_roll;
         [SerializeField] private AnimationParameterSO anim_rollAttack;
+        [SerializeField] private AnimationParameterSO anim_death;
+
+        [SerializeField] private AnimationParameterSO anim_dbg;
 
         [Header("Combo")]
         [SerializeField] protected AttackComboSO[] comboList;
+        public EComboState[] dbg_comboHistory;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
         //[SerializeField] private AnimationParameterSO[] comboParamHash;
         //[SerializeField] private Vector3[] comboForceList;
@@ -56,6 +61,7 @@ namespace Swift_Blade
             playerStateMachine.AddState(PlayerStateEnum.Attack, playerAttackState);
             playerStateMachine.AddState(PlayerStateEnum.Roll,   new PlayerRollState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_roll));
             playerStateMachine.AddState(PlayerStateEnum.Parry,  new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
+            playerStateMachine.AddState(PlayerStateEnum.Dead,  new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death));
             playerStateMachine.SetStartState(PlayerStateEnum.Move);
         }
         private void Update()
@@ -66,6 +72,11 @@ namespace Swift_Blade
             if (Input.GetKeyDown(KeyCode.F1))
                 UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
             UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
+            //if (Input.GetKeyDown(KeyCode.F))
+            //{
+            //    GetPlayerAnimator.GetAnimator.Rebind();
+            //    GetPlayerAnimator.GetAnimator.Play(anim_death.GetAnimationHash, -1);
+            //}
         }
         public void Attack(EComboState previousState)
         {
