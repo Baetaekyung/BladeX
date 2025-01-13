@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using System.Collections;
+using System.Linq;
 using UnityEngine.Rendering;
 
 namespace Swift_Blade.Combat.Feedbck
@@ -20,6 +21,16 @@ namespace Swift_Blade.Combat.Feedbck
         
         private void Start()
         {
+            volume = FindObjectsOfType<Volume>().ToList().FirstOrDefault();
+
+            if (volume == null)
+            {
+                Debug.LogError("JYD씬에 가서 Global Volume을 복사해서 들고 오셈.");
+                Debug.LogError("JYD씬에 가서 Global Volume을 복사해서 들고 오셈.");
+                Debug.LogError("JYD씬에 가서 Global Volume을 복사해서 들고 오셈.");
+                Debug.LogError("JYD씬에 가서 Global Volume을 복사해서 들고 오셈.");
+            }
+            
             volume.profile.TryGet(out vignette);
         }
 
