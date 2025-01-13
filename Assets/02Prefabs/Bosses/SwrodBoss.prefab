@@ -47055,6 +47055,7 @@ MonoBehaviour:
   _casterRadius: 3.89
   _casterInterpolation: 1.78
   _castingRange: 5.59
+  CanCurrentAttackParry: 1
   parryEvents:
     m_PersistentCalls:
       m_Calls:
@@ -52970,6 +52971,7 @@ MonoBehaviour:
   - rid: 1607273377352123010
   - rid: 1607273377352123011
   - rid: 2640862035359039746
+  - rid: 3879321420735710083
   references:
     version: 2
     RefIds:
@@ -53037,6 +53039,14 @@ MonoBehaviour:
           m_Value1: 6349385616022663559
         Name: MoveSpeed
         m_Value: 10
+    - rid: 3879321420735710083
+      type: {class: 'BlackboardVariable`1[[BaseBossCaster, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1769366677957602175
+          m_Value1: 12334370175818000770
+        Name: DamageCaster
+        m_Value: {fileID: 1971498008487481040}
 --- !u!114 &7450418079246112077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53051,8 +53061,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   cameraShakeType: 0
-  checkDistance: 7.1
-  checkTrm: {fileID: 5910815105313577398}
 --- !u!114 &4912597996633521281
 MonoBehaviour:
   m_ObjectHideFlags: 0

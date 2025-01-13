@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!208 &158377646
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1266,10 +1266,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 763201422}
-  - component: {fileID: 763201423}
   - component: {fileID: 763201426}
   - component: {fileID: 763201424}
   - component: {fileID: 763201425}
+  - component: {fileID: 763201427}
   m_Layer: 7
   m_Name: DamageCaster
   m_TagString: Untagged
@@ -1292,30 +1292,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4761846310622532}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &763201423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 763201421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3edc02f1693843e78cb87a933589c9f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  OnCastDamageEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  _casterRadius: 3.75
-  _casterInterpolation: 1.53
-  _castingRange: 5.79
-  parryEvents:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &763201424
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1335,8 +1311,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 3, y: 2, z: 2}
-  m_Center: {x: 0, y: 1, z: 0.5}
+  m_Size: {x: 2, y: 2, z: 1.5}
+  m_Center: {x: 0, y: 1, z: 0.25}
 --- !u!54 &763201425
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1376,6 +1352,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d24a670aea6b8439513fc98b994d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &763201427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763201421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8c94935cd7242d43a72622090ee08b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  OnCastDamageEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _casterRadius: 3.91
+  _casterInterpolation: 1.94
+  _castingRange: 5.48
+  CanCurrentAttackParry: 1
+  parryEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 95032059225202456}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BossBaseHealth, Assembly-CSharp
+        m_MethodName: ChangeParryState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  jumpAttackRadius: 12
 --- !u!114 &891924426 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 755142993258876006, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
@@ -1406,7 +1420,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!208 &1038142979
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1580,7 +1594,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!208 &1332476121
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -1742,6 +1756,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SwrodBoss
       objectReference: {fileID: 0}
+    - target: {fileID: 6652257015900168520, guid: 039ef463e7718f84389c3d1ae749ff85, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7450418079246112077, guid: 039ef463e7718f84389c3d1ae749ff85, type: 3}
       propertyPath: target
       value: 
@@ -1819,7 +1837,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1249726565225635276, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: parryTime
-      value: 0.1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1308237488150232717, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: volume
@@ -1828,6 +1846,10 @@ PrefabInstance:
     - target: {fileID: 2777080882551110989, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_Name
       value: PlayerCategory
+      objectReference: {fileID: 0}
+    - target: {fileID: 4863692531285898503, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: _currentHealth
+      value: 73.21
       objectReference: {fileID: 0}
     - target: {fileID: 5704459122665910530, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1893,7 +1915,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!208 &2066843027
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -9099,16 +9121,16 @@ GameObject:
   - component: {fileID: 95032059225202451}
   - component: {fileID: 95032059225202452}
   - component: {fileID: 95032059225202455}
-  - component: {fileID: 95032059225202453}
   - component: {fileID: 95032059225202454}
   - component: {fileID: 95032059225202456}
+  - component: {fileID: 95032059225202457}
   m_Layer: 7
   m_Name: GolemBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1518899628626312
 GameObject:
   m_ObjectHideFlags: 0
@@ -26559,7 +26581,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.83, y: 0, z: -3.25}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalScale: {x: 3.8, y: 3.8, z: 3.8}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4361059133781876}
@@ -29622,22 +29644,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &95032059225202453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1515044743650006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c119b932384cc3749ba253393b204855, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultAttackMoveSpeed: 8.9
-  animationEnd: 0
-  isManualRotate: 0
-  isManualMove: 0
 --- !u!114 &95032059225202454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29652,11 +29658,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 305192454}
   cameraShakeType: 4
-  jumpAttackRadius: 12
-  whatIsTarget:
-    serializedVersion: 2
-    m_Bits: 64
-  collider: {fileID: 763201424}
 --- !u!114 &95032059225202455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29679,6 +29680,7 @@ MonoBehaviour:
   - rid: 2640862034972902094
   - rid: 2640862034972902095
   - rid: 2640862035359039971
+  - rid: 3879321421432488503
   references:
     version: 2
     RefIds:
@@ -29729,7 +29731,7 @@ MonoBehaviour:
           m_Value0: 15547141081581643986
           m_Value1: 14044624205978326227
         Name: BossAnimator
-        m_Value: {fileID: 95032059225202453}
+        m_Value: {fileID: 95032059225202457}
     - rid: 2640862034972902095
       type: {class: 'BlackboardVariable`1[[ChangeBossState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -29746,6 +29748,14 @@ MonoBehaviour:
           m_Value1: 15826921796212577334
         Name: MoveSpeed
         m_Value: 1.5
+    - rid: 3879321421432488503
+      type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Caster.BaseBossCaster, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15737492742483077491
+          m_Value1: 16839332317643058106
+        Name: DamageCaster
+        m_Value: {fileID: 763201427}
 --- !u!114 &95032059225202456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29773,9 +29783,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnParryHitEvent:
-    m_PersistentCalls:
-      m_Calls: []
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls:
@@ -29796,6 +29803,23 @@ MonoBehaviour:
   isDead: 0
   BehaviorGraphAgent: {fileID: 95032059225202455}
   changeBossState: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
+--- !u!114 &95032059225202457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515044743650006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdd894461143a3949b3ba1776cbea5ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultAttackMoveSpeed: 8.9
+  animationEnd: 0
+  isManualRotate: 0
+  isManualMove: 0
+  bodyCollider: {fileID: 763201424}
 --- !u!137 &137001983105163272
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
