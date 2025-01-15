@@ -38,7 +38,7 @@ namespace Swift_Blade.FSM.States
             playerRenderer.LookAtDirection(direction);
 
             player.GetPlayerMovement.AllowInputMove = false;
-            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirection.normalized, 10);
+            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirectionRawRotated.normalized, 10);
         }
         protected override void OnAttackInput(EComboState previousState, EComboState nonImeediateState = EComboState.None)
         {
