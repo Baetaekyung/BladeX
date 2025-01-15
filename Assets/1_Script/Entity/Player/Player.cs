@@ -44,7 +44,7 @@ namespace Swift_Blade
         //public IReadOnlyList<Vector3> GetComboForceList => comboForceList;
         //public IReadOnlyList<float> GetPeriods => periods;
         public bool IsParryState { get; set; }
-
+        public bool IsPlayerDead { get; private set; }
         #region PlayerComponentGetter
         public PlayerCamera GetPlayerCamera => GetEntityComponent<PlayerCamera>();
         public PlayerMovement GetPlayerMovement => GetEntityComponent<PlayerMovement>();
@@ -68,16 +68,21 @@ namespace Swift_Blade
             playerStateMachine.AddState(PlayerStateEnum.Attack, playerAttackState);
             playerStateMachine.AddState(PlayerStateEnum.Roll, new PlayerRollState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_roll));
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
-            playerStateMachine.AddState(PlayerStateEnum.Dead, new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death));
+            PlayerDeadState playerDeadState = new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death);
+            playerStateMachine.AddState(PlayerStateEnum.Dead, playerDeadState);
             playerStateMachine.AddState(PlayerStateEnum.HitStun, new PlayerHitStunState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_hitStun));
             playerStateMachine.SetStartState(PlayerStateEnum.Move);
+            playerDeadState.OnPlayerDead += () =>
+            {
+                IsPlayerDead = true;
+            };
             GetEntityComponent<PlayerHealth>().OnHitEvent.AddListener((data) => 
             {
+                if (IsPlayerDead) return;
                 bool isHitStun = true;
                 if (isHitStun)
                     playerStateMachine.ChangeState(PlayerStateEnum.HitStun);
-            }
-            );
+            });
             GetEntityComponent<PlayerHealth>().OnDeadEvent.AddListener(() => { playerStateMachine.ChangeState(PlayerStateEnum.Dead); });
         }
         private void Update()
