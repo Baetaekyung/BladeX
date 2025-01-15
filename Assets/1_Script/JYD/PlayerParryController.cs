@@ -7,7 +7,7 @@ namespace Swift_Blade.Combat
         private Player player;
         private bool canParry;
 
-        [Range(0.1f, 1.5f)] [SerializeField] private float parryTime;
+        [Range(0.01f, 1.5f)] [SerializeField] private float parryTime;
         public float ParryTime => parryTime;
         
         public void EntityComponentAwake(Entity entity)
