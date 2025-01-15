@@ -38,12 +38,16 @@ namespace Swift_Blade.Boss.Golem
 
         public void CreateStone()
         {
-            throwStone = Instantiate(stone , stoneTrm.position , Quaternion.identity);
+            throwStone = Instantiate(stone);
+            
+            throwStone.transform.SetParent(stoneTrm);
+            throwStone.transform.localPosition = Vector3.zero;
         }
 
         public void ThrowStone()
         {
             throwStone.SetDirection(transform.forward);
+            throwStone = null;
         }
         
         

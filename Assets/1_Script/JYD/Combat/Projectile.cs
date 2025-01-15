@@ -38,12 +38,14 @@ namespace Swift_Blade.projectile
                 Destroy(gameObject);
         }
 
-        public void SetDirection(Vector3 vector3)
+        public void SetDirection(Vector3 force)
         {
-            Rigidbody.useGravity = false;
-            Rigidbody.isKinematic = true;
+            transform.parent = null;
             
-            Rigidbody.AddForce(vector3 * 20);
+            Rigidbody.useGravity = true;
+            Rigidbody.isKinematic = false;
+            
+            Rigidbody.AddForce(force * 100,ForceMode.Impulse);
         }
         
     }
