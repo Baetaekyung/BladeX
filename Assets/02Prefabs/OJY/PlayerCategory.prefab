@@ -13466,7 +13466,6 @@ GameObject:
   - component: {fileID: 296104839605046796}
   - component: {fileID: 755142993258876006}
   - component: {fileID: 8096457750588971972}
-  - component: {fileID: 8162421343820411782}
   - component: {fileID: 130090762284198635}
   m_Layer: 0
   m_Name: CinemachineCamera
@@ -13483,14 +13482,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2830836079372413566}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2840153, y: 0, z: 0, w: 0.95881975}
-  m_LocalPosition: {x: 4.25, y: 7.6550026, z: -9.091728}
+  m_LocalRotation: {x: 0.35355338, y: -0.35355338, z: 0.1464466, w: 0.8535535}
+  m_LocalPosition: {x: 9.750001, y: 8.897511, z: -4.527681}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5572484209019780262}
   m_Father: {fileID: 320425046425690778}
-  m_LocalEulerAnglesHint: {x: 33, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: -45, z: 0}
 --- !u!114 &755142993258876006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13546,7 +13545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886251e9a18ece04ea8e61686c173e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraDistance: 12
+  CameraDistance: 11
   DeadZoneDepth: 0
   Composition:
     ScreenPosition: {x: 0, y: 0}
@@ -13559,25 +13558,12 @@ MonoBehaviour:
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 0.5, z: 0}
-  Damping: {x: 1, y: 1, z: 1}
+  Damping: {x: 2, y: 2, z: 2}
   Lookahead:
     Enabled: 0
     Time: 0.1
     Smoothing: 2
     IgnoreY: 0
---- !u!114 &8162421343820411782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2830836079372413566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4afa82ae3200b82408d605c3dbdd1e38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damping: 0.1
 --- !u!114 &130090762284198635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37422,7 +37408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26a599977c9f08e4ea24418051ee4665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parryTime: 1.5
+  parryTime: 0.049999997
 --- !u!54 &8928013613842272787
 Rigidbody:
   m_ObjectHideFlags: 0
