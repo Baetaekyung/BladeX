@@ -72,6 +72,7 @@ namespace Swift_Blade
         {
             currentRollStamina += Time.deltaTime;
             currentRollStamina = Mathf.Min(GetMaxStamina, currentRollStamina);
+            //print(SpeedMultiplierDefault);
         }
         private void FixedUpdate()
         {

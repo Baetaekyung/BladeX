@@ -76,6 +76,7 @@ namespace Swift_Blade.FSM.States
         protected sealed override void OnAllowRotateDisallowTrigger() => playerMovement.AllowRotate = false;
         protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
         protected sealed override void OnSpeedMultiplierDefaultTrigger(float set) => playerMovement.SpeedMultiplierDefault = set;
+
         //protected sealed override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetAdditionalVelocity(value);
         protected sealed override void OnAttackTrigger()
         {
