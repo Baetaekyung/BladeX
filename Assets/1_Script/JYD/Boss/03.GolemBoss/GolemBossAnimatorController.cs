@@ -1,4 +1,3 @@
-using Swift_Blade.Boss;
 using Swift_Blade.Combat.Caster;
 using Swift_Blade.projectile;
 using UnityEngine;
@@ -7,6 +6,8 @@ namespace Swift_Blade.Boss.Golem
 {
     public class GolemBossAnimatorController : BossAnimationController
     {
+        public Transform target;
+        
         [SerializeField] private Collider bodyCollider;
 
         [SerializeField] private Transform stoneTrm;
@@ -46,7 +47,9 @@ namespace Swift_Blade.Boss.Golem
 
         public void ThrowStone()
         {
-            throwStone.SetDirection(transform.forward);
+            Vector3 direction = (target.position - transform.position).normalized;
+            
+            throwStone.SetDirection(direction);
             throwStone = null;
         }
         

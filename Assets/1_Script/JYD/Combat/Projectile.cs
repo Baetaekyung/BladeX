@@ -45,7 +45,7 @@ namespace Swift_Blade.projectile
             Rigidbody.useGravity = true;
             Rigidbody.isKinematic = false;
             
-            Rigidbody.AddForce(force * 100,ForceMode.Impulse);
+            Rigidbody.AddForce(force * 20,ForceMode.Impulse);
         }
         
     }
