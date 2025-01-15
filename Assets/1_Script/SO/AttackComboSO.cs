@@ -21,11 +21,11 @@ namespace Swift_Blade
         [SerializeField] private EComboState comboState;
         [SerializeField] private AnimationParameterSO comboData;
         [SerializeField] private Vector3 comboForce;
-        [SerializeField] private float period;
+        //[SerializeField] private float period;
         public EComboState GetComboState => comboState;
         public AnimationParameterSO GetAnimParam => comboData;
         public Vector3 GetComboForce => comboForce;
-        public float GetPeriod => period;
+        //public float GetPeriod => period;
     }
     [CreateAssetMenu(fileName = "AttackComboSO", menuName = "Scriptable Objects/AttackComboSO")]
     public class AttackComboSO : ScriptableObject

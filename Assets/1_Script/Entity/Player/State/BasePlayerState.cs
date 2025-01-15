@@ -11,7 +11,7 @@ namespace Swift_Blade.FSM.States
         protected readonly PlayerInput playerInput;
 
         //private static float additionalZValue;
-        protected Vector3 inputLocalLerp;
+        protected static Vector3 inputLocalLerp;
         protected virtual bool BaseAllowAttackInput { get; } = true;
         protected virtual bool BaseAllowParryInput { get; } = true;
         protected virtual bool BaseAllowDashInput { get; } = true;
