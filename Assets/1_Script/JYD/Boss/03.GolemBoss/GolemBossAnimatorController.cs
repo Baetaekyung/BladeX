@@ -1,5 +1,6 @@
 using Swift_Blade.Boss;
 using Swift_Blade.Combat.Caster;
+using Swift_Blade.projectile;
 using UnityEngine;
 
 namespace Swift_Blade.Boss.Golem
@@ -7,6 +8,10 @@ namespace Swift_Blade.Boss.Golem
     public class GolemBossAnimatorController : BossAnimationController
     {
         [SerializeField] private Collider bodyCollider;
+
+        [SerializeField] private Transform stoneTrm;
+        [SerializeField] private Projectile stone;
+        private Projectile throwStone;
         
         private GolemBossCaster damageCaster;
 
@@ -30,6 +35,17 @@ namespace Swift_Blade.Boss.Golem
         {
             damageCaster.JumpAttackCast();
         }
+
+        public void CreateStone()
+        {
+            throwStone = Instantiate(stone , stoneTrm.position , Quaternion.identity);
+        }
+
+        public void ThrowStone()
+        {
+            throwStone.SetDirection(transform.forward);
+        }
+        
         
     }
 }
