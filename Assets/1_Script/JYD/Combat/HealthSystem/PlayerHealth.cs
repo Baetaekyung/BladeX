@@ -3,29 +3,30 @@ using UnityEngine.Events;
 
 namespace Swift_Blade
 {
-    public class PlayerHealth : MonoBehaviour,IDamageble,IEntityComponent
+    public class PlayerHealth : MonoBehaviour, IDamageble, IEntityComponent
     {
-        
+
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
-        
+
         private float _maxHealth;
         [SerializeField] private float _currentHealth;
 
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
-        
-        private float damageInterval = 0.5f;
+
+        private const float damageInterval = 0.5f;
         private float lastDamageTime = 0;
 
-        private Player _player;
-        
+        public bool IsPlayerInvincible { get; set; }
+        //private Player _player;
+
         public void EntityComponentAwake(Entity entity)
         {
-            _player = entity as Player;
+            //_player = entity as Player;
         }
-        
-        
+
+
         private void Update()
         {
             /*if (Input.GetKeyDown(KeyCode.P))
@@ -37,21 +38,22 @@ namespace Swift_Blade
 
         public void TakeDamage(ActionData actionData)
         {
-            if(lastDamageTime + damageInterval > Time.time)return;
-            
+            if (lastDamageTime + damageInterval > Time.time) return;
+            if (IsPlayerInvincible) return;
+
             float damageAmount = actionData.damageAmount;
             _currentHealth -= damageAmount;
 
             lastDamageTime = Time.time;
-            
+
             OnHitEvent?.Invoke(actionData);
-        
+
             if (_currentHealth <= 0)
             {
                 Dead();
             }
         }
-        
+
         public void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
         {
             _currentHealth = Mathf.Clamp(_currentHealth + healAmount, 0, _maxHealth);
@@ -62,7 +64,7 @@ namespace Swift_Blade
             OnDeadEvent?.Invoke();
             //Debug.Log("플레이어 죽었슴");
         }
-        
+
         /// <param name="value">추가할 체력 값</param>
         public void AddBaseHealth(float value) //기본 값 변경이라 키 값이 필요 없음.
         {
