@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace Swift_Blade.Boss
 {
-    public class BossBase : MonoBehaviour
+    public class BaseBoss : MonoBehaviour
     {
         protected BossAnimationController bossAnimationController;
         

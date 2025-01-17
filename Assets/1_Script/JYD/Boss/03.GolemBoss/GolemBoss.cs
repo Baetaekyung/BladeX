@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Boss.Golem
 {
-    public class GolemBoss : BossBase
+    public class GolemBoss : BaseBoss
     {
         protected override void Update()
         {
@@ -13,7 +13,7 @@ namespace Swift_Blade.Boss.Golem
 
             if (bossAnimationController.isManualMove)
             {
-                attackDestination = transform.position + transform.forward * 1f;
+                attackDestination = transform.position + transform.forward;
 
                 transform.position = Vector3.MoveTowards(transform.position, attackDestination, 
                     bossAnimationController.AttackMoveSpeed * Time.deltaTime);
