@@ -36,6 +36,10 @@ namespace Swift_Blade
         [SerializeField] protected AttackComboSO[] comboList;
         public EComboState[] dbg_comboHistory;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
+
+        [Header("Roll")]
+        [SerializeField] private float invinciblePeriod;
+        public float GetInvinciblePeriod => invinciblePeriod;
         //[SerializeField] private AnimationParameterSO[] comboParamHash;
         //[SerializeField] private Vector3[] comboForceList;
         //[SerializeField] private float[] periods;
@@ -53,7 +57,7 @@ namespace Swift_Blade
         public PlayerAnimator GetPlayerAnimator => GetEntityComponent<PlayerAnimator>();
         public PlayerDamageCaster GetPlayerDamageCaster => GetEntityComponent<PlayerDamageCaster>();
         public PlayerParryController GetPlayerParryController => GetEntityComponent<PlayerParryController>();
-        
+        public PlayerHealth GetPlayerHealth => GetEntityComponent<PlayerHealth>();
         #endregion
 
         public static event Action Debug_Updt;
@@ -76,14 +80,15 @@ namespace Swift_Blade
             {
                 IsPlayerDead = true;
             };
-            GetEntityComponent<PlayerHealth>().OnHitEvent.AddListener((data) => 
+            PlayerHealth playerHealth = GetPlayerHealth;
+            playerHealth.OnHitEvent.AddListener((data) => 
             {
-                if (IsPlayerDead) return;
+                if (IsPlayerDead || GetPlayerHealth.IsPlayerInvincible) return;
                 bool isHitStun = true;
                 if (isHitStun)
                     playerStateMachine.ChangeState(PlayerStateEnum.HitStun);
             });
-            GetEntityComponent<PlayerHealth>().OnDeadEvent.AddListener(() => { playerStateMachine.ChangeState(PlayerStateEnum.Dead); });
+            playerHealth.OnDeadEvent.AddListener(() => { playerStateMachine.ChangeState(PlayerStateEnum.Dead); });
         }
         private void Update()
         {
