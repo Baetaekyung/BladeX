@@ -5,49 +5,49 @@ using UnityEngine.Events;
 
 namespace Swift_Blade.Combat.Health
 {
-    public class BossBaseHealth : MonoBehaviour,IDamageble
+    public class BossBaseHealth : MonoBehaviour, IDamageble
     {
         public UnityEvent<ActionData> OnHitEvent;
         public UnityEvent OnDeadEvent;
-        
-        public Action<float> OnChangeHealthEvent; 
-        
+
+        public Action<float> OnChangeHealthEvent;
+
         public float maxHealth;
         public float currentHealth;
         public bool isDead = false;
-        
+
         [Space]
         [SerializeField] protected BehaviorGraphAgent BehaviorGraphAgent;
         [SerializeField] protected ChangeBossState changeBossState;
-        
+
         protected virtual void Start()
         {
             currentHealth = maxHealth;
 
             BehaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
         }
-        
+
         public virtual void TakeDamage(ActionData actionData)
         {
-            if(isDead)return;
-        
+            if (isDead) return;
+
             currentHealth -= actionData.damageAmount;
             OnChangeHealthEvent?.Invoke(GetHealthPercent());
-        
+
             if (currentHealth <= 0)
             {
                 TriggerState(BossState.Dead);
                 Dead();
                 return;
             }
-                
+
             OnHitEvent?.Invoke(actionData);
         }
 
         public virtual void TakeHeal(float amount)
         {
             currentHealth += amount;
-            currentHealth = Mathf.Min(currentHealth , maxHealth);
+            currentHealth = Mathf.Min(currentHealth, maxHealth);
         }
 
         public virtual void Dead()
@@ -55,13 +55,13 @@ namespace Swift_Blade.Combat.Health
             isDead = true;
             OnDeadEvent?.Invoke();
         }
-        
+
         protected void TriggerState(BossState state)
         {
             BehaviorGraphAgent.SetVariableValue("BossState", state);
             changeBossState.SendEventMessage(state);
         }
-        
+
         protected float GetHealthPercent()
         {
             print("ÀÀ¾î¾ÆÀÕ");
@@ -72,7 +72,7 @@ namespace Swift_Blade.Combat.Health
         {
             TriggerState(BossState.Hurt);
         }
-        
-        
+
+
     }
 }

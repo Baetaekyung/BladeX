@@ -25,7 +25,7 @@ namespace Swift_Blade
         public string displayName;
         [SerializeField] private float _baseValue, _minValue, _maxValue;
         
-        private Dictionary<object, float> _modifyValueByKeys = new Dictionary<object, float>();
+        private readonly Dictionary<object, float> _modifyValueByKeys = new Dictionary<object, float>();
         
         public float _modifiedValue = 0;
 
