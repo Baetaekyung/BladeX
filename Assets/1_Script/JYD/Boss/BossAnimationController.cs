@@ -8,7 +8,8 @@ namespace Swift_Blade.Boss
     {
         protected Animator Animator;
         protected NavMeshAgent NavMeshAgent;
-        
+
+        protected BaseBoss boss;
         protected LayerCaster layerCaster;
 
         [SerializeField] [Range(1,60)] private float defaultAttackMoveSpeed;
@@ -24,6 +25,8 @@ namespace Swift_Blade.Boss
         protected virtual void Start()
         {
             layerCaster = GetComponentInChildren<LayerCaster>();
+            boss = GetComponent<BaseBoss>();
+            
             Animator = GetComponent<Animator>();
             NavMeshAgent = GetComponent<NavMeshAgent>();
         }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Swift_Blade.Feeling;
+﻿using Swift_Blade.Feeling;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -91,7 +90,7 @@ namespace Swift_Blade.Boss
         }
         
         
-        public void SetDead()
+        public virtual void SetDead()
         {
             bossAnimationController.StopAllAnimationEvents();
             StopImmediately();
@@ -102,7 +101,7 @@ namespace Swift_Blade.Boss
             CameraShakeManager.Instance.DoShake(cameraShakeType);
         }
         
-        private void SetForce(ActionData actionData)
+        /*private void SetForce(ActionData actionData)
         {
             Vector3 dir = actionData.knockbackDir.normalized; // 방향 정규화
             dir.y = 0; // y축은 고정
@@ -131,6 +130,6 @@ namespace Swift_Blade.Boss
 
             // 목표 위치에 도달한 후 위치를 보정
             transform.position = targetPos;
-        }
+        }*/
     }
 }
