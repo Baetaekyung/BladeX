@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Swift_Blade.Boss.Goblin
@@ -6,7 +7,16 @@ namespace Swift_Blade.Boss.Goblin
     {
         [Range(1, 100)] public float knockbackSpeed;
         public bool isManualKnockback;
+
+        public bool isRouting;
+
+        private int routingAnimationHash = Animator.StringToHash("Routing");
         
+        private void Update()
+        {
+            Animator.SetBool(routingAnimationHash,isRouting);
+        }
+
         public void StartManualKnockback()
         {
             isManualKnockback = true;
@@ -26,9 +36,10 @@ namespace Swift_Blade.Boss.Goblin
 
         public void SetAnimationSpeed(float _speed)
         {
-            //Animator.SetFloat("AnimationEnd",_speed);
+            //Animator.SetFloat("AnimationSpeed",_speed);
         }
         
-                
+        
+        
     }
 }

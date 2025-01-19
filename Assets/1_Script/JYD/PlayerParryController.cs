@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Swift_Blade.Combat
 {
@@ -9,6 +10,8 @@ namespace Swift_Blade.Combat
 
         [Range(0.01f, 1.5f)] [SerializeField] private float parryTime;
         public float ParryTime => parryTime;
+
+        public UnityEvent ParryEvents;
         
         public void EntityComponentAwake(Entity entity)
         {
@@ -21,7 +24,6 @@ namespace Swift_Blade.Combat
         }
         
         public bool CanParry() => canParry;
-        
         
     }
 }

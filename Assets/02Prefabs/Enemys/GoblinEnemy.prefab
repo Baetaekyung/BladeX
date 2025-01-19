@@ -7929,7 +7929,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 0
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -7945,7 +7945,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1392135386396453775}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
@@ -7959,8 +7959,6 @@ MonoBehaviour:
   - rid: 3879321506256519320
   - rid: 3879321506256519321
   - rid: 3879321506256519322
-  - rid: 3879321507416506442
-  - rid: 3879321507456614427
   references:
     version: 2
     RefIds:
@@ -7987,7 +7985,7 @@ MonoBehaviour:
           m_Value0: 13897812490964975154
           m_Value1: 6349385616022663559
         Name: MoveSpeed
-        m_Value: 15
+        m_Value: 8
     - rid: 3879321506256519318
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -7995,7 +7993,7 @@ MonoBehaviour:
           m_Value0: 16842789263302442139
           m_Value1: 15124673902740489662
         Name: AttackDistance
-        m_Value: 7
+        m_Value: 2
     - rid: 3879321506256519320
       type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -8020,22 +8018,6 @@ MonoBehaviour:
           m_Value1: 10486772480902912100
         Name: ChangeBossState
         m_Value: {fileID: 11400000, guid: 32d8f51aea165d948a846d3c8b16f8b7, type: 2}
-    - rid: 3879321507416506442
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 18161553395296250440
-          m_Value1: 1598338716999467112
-        Name: MeleeDistance
-        m_Value: 10
-    - rid: 3879321507456614427
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Caster.BaseBossCaster, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 9477954891741127956
-          m_Value1: 18151398301787368271
-        Name: BossDamageCaster
-        m_Value: {fileID: 8841979614406697360}
 --- !u!136 &5310102516177426533
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8093,7 +8075,7 @@ MonoBehaviour:
   currentHealth: 0
   isDead: 0
   BehaviorGraphAgent: {fileID: 6327415822309261459}
-  changeBossState: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
+  changeBossState: {fileID: 0}
 --- !u!114 &4927739943843310412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8126,9 +8108,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   cameraShakeType: 0
-  stopDistance: 0.8
+  rotateSpeed: 50
+  stopDistance: 0.4
   maxAnimationSpeed: 1.25
   minAnimationSpeed: 0.75
+  btAgent: {fileID: 6327415822309261459}
 --- !u!1 &1399413493489491318
 GameObject:
   m_ObjectHideFlags: 0

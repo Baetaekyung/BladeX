@@ -1,5 +1,6 @@
 using System;
 using Unity.Behavior;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -25,6 +26,15 @@ namespace Swift_Blade.Combat.Health
             currentHealth = maxHealth;
 
             BehaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
+            BehaviorGraphAgent.GetVariable("ChangeBossState",out BlackboardVariable<ChangeBossState> state);
+
+            if (state != null)
+                changeBossState = state;
+            else
+            {
+                Debug.LogError("Goblin Enemy has Not State Change");
+            }
+            
         }
         
         public virtual void TakeDamage(ActionData actionData)
