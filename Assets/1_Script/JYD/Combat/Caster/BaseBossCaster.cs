@@ -31,7 +31,8 @@ namespace Swift_Blade.Combat.Caster
                     if (parryController.CanParry())
                     {
                         parryEvents?.Invoke();
-                        print("패링성공함!!!");
+                        parryController.ParryEvents?.Invoke();
+                        //print("패링성공함!!!");
                     }
                     else
                     {

@@ -1,4 +1,6 @@
+using Unity.Behavior;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Boss.Goblin
 {
@@ -6,14 +8,28 @@ namespace Swift_Blade.Boss.Goblin
     {
         private GoblinBoss boss;
         public float stopDistance;
-
+        
         public float maxAnimationSpeed;
         public float minAnimationSpeed;
+
+        private BehaviorGraphAgent btAgent;
+
+        private void Awake()
+        {
+            btAgent = GetComponent<BehaviorGraphAgent>();
+            
+            if (target == null)
+            {
+                target = GameObject.Find("Player").transform;
+                btAgent.BlackboardReference.SetVariableValue("Target", target);
+                btAgent.enabled = true;
+            }
+        }
         
         protected override void Start()
         {
             base.Start();
-
+                                    
             float animationSpeed = Random.Range(minAnimationSpeed , maxAnimationSpeed);
             (bossAnimationController as GoblinAnimatorController).SetAnimationSpeed(animationSpeed);
         }

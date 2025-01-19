@@ -16,6 +16,7 @@ namespace Swift_Blade.Boss
         public Transform target;
                
         [SerializeField] protected CameraShakeType cameraShakeType;
+        [SerializeField] protected float rotateSpeed;
         
         /*[Header("Knockback info")]
         public bool isKnockback;
@@ -54,7 +55,7 @@ namespace Swift_Blade.Boss
             Quaternion targetRot = Quaternion.LookRotation(target - transform.position);
             Vector3 currentEulerAngle = transform.rotation.eulerAngles;
 
-            float yRotation = Mathf.LerpAngle(currentEulerAngle.y, targetRot.eulerAngles.y, 20 * Time.deltaTime);
+            float yRotation = Mathf.LerpAngle(currentEulerAngle.y, targetRot.eulerAngles.y, rotateSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(currentEulerAngle.x, yRotation, currentEulerAngle.z);
         }
         
