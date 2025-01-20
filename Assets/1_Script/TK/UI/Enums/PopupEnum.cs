@@ -6,7 +6,7 @@ namespace Swift_Blade.UI
     {
         Option,
         Help,
-        Text,
+        Inventory,
         Shop
     }
 }

@@ -41,6 +41,9 @@ namespace Swift_Blade
         public void AddModifier(StatSO stat, object key, float value)
             => GetStat(stat).AddModifier(key, value);
 
+        public void AddModifier(StatType statType, object key, float value)
+            => GetStatByType(statType).AddModifier(key, value);
+
         public void RemoveModifier(StatSO stat, object key)
             => GetStat(stat).RemoveModifier(key);
 

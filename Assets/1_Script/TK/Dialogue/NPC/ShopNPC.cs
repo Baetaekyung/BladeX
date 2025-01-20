@@ -26,13 +26,5 @@ namespace Swift_Blade
         {
             PopupManager.Instance.PopUp(PopupType.Shop);
         }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                Interact();
-            }
-        }
     }
 }
