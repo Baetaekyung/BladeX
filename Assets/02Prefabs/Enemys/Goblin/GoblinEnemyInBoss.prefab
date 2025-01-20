@@ -7866,10 +7866,10 @@ GameObject:
   - component: {fileID: 6327415822309261459}
   - component: {fileID: 5310102516177426533}
   - component: {fileID: 4105503933083427737}
-  - component: {fileID: 4927739943843310412}
+  - component: {fileID: 2326033422187720537}
   - component: {fileID: -6619329512110227562}
   m_Layer: 7
-  m_Name: GoblinEnemy
+  m_Name: GoblinEnemyInBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8009,7 +8009,7 @@ MonoBehaviour:
           m_Value0: 15547141081581643986
           m_Value1: 14044624205978326227
         Name: BossAnimator
-        m_Value: {fileID: 4927739943843310412}
+        m_Value: {fileID: 0}
     - rid: 3879321506256519322
       type: {class: 'BlackboardVariable`1[[ChangeBossState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -8070,13 +8070,25 @@ MonoBehaviour:
         m_CallState: 2
   OnDeadEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -6619329512110227562}
+        m_TargetAssemblyTypeName: Swift_Blade.Boss.Goblin.GoblinEnemy, Assembly-CSharp
+        m_MethodName: SetDead
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   maxHealth: 30
   currentHealth: 0
   isDead: 0
   BehaviorGraphAgent: {fileID: 6327415822309261459}
   changeBossState: {fileID: 0}
---- !u!114 &4927739943843310412
+--- !u!114 &2326033422187720537
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8085,7 +8097,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1392135386396453775}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e41c1dd04d3de24aa6de84e8dc46743, type: 3}
+  m_Script: {fileID: 11500000, guid: 84dce44692c365e459ea3a5d91a7b22f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   defaultAttackMoveSpeed: 4.9
@@ -8112,7 +8124,6 @@ MonoBehaviour:
   stopDistance: 0.4
   maxAnimationSpeed: 1.25
   minAnimationSpeed: 0.75
-  btAgent: {fileID: 6327415822309261459}
 --- !u!1 &1399413493489491318
 GameObject:
   m_ObjectHideFlags: 0

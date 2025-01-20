@@ -4,19 +4,25 @@ using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Boss.Goblin
 {
-    public class GoblinEnemy : BaseBoss
+    public class GoblinEnemyInBoss : BaseGoblin
     {
-        private GoblinBoss boss;
-        public float stopDistance;
+        private GoblinBoss parent;
         
-        public float maxAnimationSpeed;
-        public float minAnimationSpeed;
-
-        private BehaviorGraphAgent btAgent;
-
-        private void Awake()
+        [SerializeField] private float maxAnimationSpeed;
+        [SerializeField] private float minAnimationSpeed;
+        
+        public void Init(GoblinBoss boss)
         {
-            btAgent = GetComponent<BehaviorGraphAgent>();
+            parent = boss;
+            
+            float animationSpeed = Random.Range(minAnimationSpeed , maxAnimationSpeed);
+            goblinAnimator.SetAnimationSpeed(animationSpeed);
+        }
+        
+        protected override void Start()
+        {
+            base.Start();
+            btAgent.enabled = false;
             
             if (target == null)
             {
@@ -24,14 +30,6 @@ namespace Swift_Blade.Boss.Goblin
                 btAgent.BlackboardReference.SetVariableValue("Target", target);
                 btAgent.enabled = true;
             }
-        }
-        
-        protected override void Start()
-        {
-            base.Start();
-                                    
-            float animationSpeed = Random.Range(minAnimationSpeed , maxAnimationSpeed);
-            (bossAnimationController as GoblinAnimatorController).SetAnimationSpeed(animationSpeed);
         }
 
         protected override void Update()
@@ -54,7 +52,7 @@ namespace Swift_Blade.Boss.Goblin
                 }
             }
 
-            if (bossAnimationController is GoblinAnimatorController goblinAnimatorController)
+            if (bossAnimationController is GoblinBossAnimatorController goblinAnimatorController)
             {
                 if (goblinAnimatorController.isManualKnockback)
                 {
@@ -70,13 +68,9 @@ namespace Swift_Blade.Boss.Goblin
         public override void SetDead()
         {
             base.SetDead();
-            boss.RemoveInSummonList(this);
+            parent.RemoveInSummonList(this);
         }
-
-        public void Init(GoblinBoss _boss)
-        {
-            boss = _boss;
-        }
+                
         
     }
 }

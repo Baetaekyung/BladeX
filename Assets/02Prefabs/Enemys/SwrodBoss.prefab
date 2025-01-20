@@ -971,6 +971,7 @@ Transform:
   - {fileID: 3030278781560826328}
   - {fileID: 8812740072588733809}
   - {fileID: 3547659624966331436}
+  - {fileID: 4427617076782051338}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1664787154566102327
@@ -1081,7 +1082,7 @@ MonoBehaviour:
           m_Value0: 16842789263302442139
           m_Value1: 15124673902740489662
         Name: AttackDistance
-        m_Value: 20
+        m_Value: 13
     - rid: 1607273058493268003
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -1089,7 +1090,7 @@ MonoBehaviour:
           m_Value0: 8799685740808257774
           m_Value1: 11337077293980532446
         Name: MeleeDistance
-        m_Value: 10
+        m_Value: 6
     - rid: 1607273377352123009
       type: {class: 'BlackboardVariable`1[[ChangeBossState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -1129,7 +1130,7 @@ MonoBehaviour:
           m_Value0: 13897812490964975154
           m_Value1: 6349385616022663559
         Name: MoveSpeed
-        m_Value: 10
+        m_Value: 8
     - rid: 3879321466313638874
       type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Caster.BaseBossCaster, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -1152,6 +1153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   cameraShakeType: 0
+  rotateSpeed: 30
 --- !u!114 &3960991341273811214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1164,7 +1166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c119b932384cc3749ba253393b204855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultAttackMoveSpeed: 20.6
+  defaultAttackMoveSpeed: 29
   animationEnd: 0
   isManualRotate: 0
   isManualMove: 0
@@ -6732,12 +6734,12 @@ GameObject:
   - component: {fileID: 4278772280634335646}
   - component: {fileID: 7039817508708231449}
   m_Layer: 0
-  m_Name: SM_Wep_Sword_Large_01
+  m_Name: SM_Wep_Sword_Large_01_no
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &597175555631860071
 Transform:
   m_ObjectHideFlags: 0
@@ -9046,7 +9048,7 @@ GameObject:
   - component: {fileID: 2635647568664471886}
   - component: {fileID: 411424498076143593}
   m_Layer: 0
-  m_Name: SM_Wep_Sword_Large_01
+  m_Name: SM_Wep_Sword_Large_01_no
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26928,7 +26930,7 @@ GameObject:
   - component: {fileID: 8212967763802948257}
   - component: {fileID: 5540845730344402469}
   m_Layer: 0
-  m_Name: SM_Wep_Sword_Large_01
+  m_Name: SM_Wep_Sword_Large_01_no
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27371,6 +27373,104 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.17864355, y: 0.00042811036, z: 0}
     m_Extent: {x: 0.18130288, y: 0.15082178, z: 0.13306473}
   m_DirtyAABB: 0
+--- !u!1 &3273386755364360650
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4427617076782051338}
+  - component: {fileID: 1231830349088914565}
+  - component: {fileID: 2436547976205349673}
+  m_Layer: 7
+  m_Name: CinemachineCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4427617076782051338
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3273386755364360650}
+  serializedVersion: 2
+  m_LocalRotation: {x: -8.76264e-17, y: 0.99965733, z: -0.026176924, w: 2.3058469e-15}
+  m_LocalPosition: {x: 0, y: 1.7, z: 4.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5383592680462117539}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1231830349088914565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3273386755364360650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Priority:
+    Enabled: 1
+    m_Value: -1
+  OutputChannel: 1
+  StandbyUpdate: 2
+  m_StreamingVersion: 20241001
+  m_LegacyPriority: 0
+  Target:
+    TrackingTarget: {fileID: 0}
+    LookAtTarget: {fileID: 0}
+    CustomLookAtTarget: 0
+  Lens:
+    FieldOfView: 60.000004
+    OrthographicSize: 5
+    NearClipPlane: 0.3
+    FarClipPlane: 500
+    Dutch: 0
+    ModeOverride: 0
+    PhysicalProperties:
+      GateFit: 2
+      SensorSize: {x: 21.946, y: 16.002}
+      LensShift: {x: 0, y: 0}
+      FocusDistance: 10
+      Iso: 200
+      ShutterSpeed: 0.005
+      Aperture: 16
+      BladeCount: 5
+      Curvature: {x: 2, y: 11}
+      BarrelClipping: 0.25
+      Anamorphism: 0
+  BlendHint: 0
+--- !u!95 &2436547976205349673
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3273386755364360650}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3274363516701903067
 GameObject:
   m_ObjectHideFlags: 0
@@ -48464,7 +48564,7 @@ GameObject:
   - component: {fileID: 5216849530143296170}
   - component: {fileID: 7292784562836757564}
   m_Layer: 0
-  m_Name: SM_Wep_Sword_Large_01
+  m_Name: SM_Wep_Sword_Large_01_no
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

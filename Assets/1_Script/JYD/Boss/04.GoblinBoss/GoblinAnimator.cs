@@ -1,22 +1,13 @@
-using System;
 using UnityEngine;
 
 namespace Swift_Blade.Boss.Goblin
 {
-    public class GoblinAnimatorController : BossAnimationController
+    public class GoblinAnimator : BossAnimationController
     {
         [Range(1, 100)] public float knockbackSpeed;
+
         public bool isManualKnockback;
-
-        public bool isRouting;
-
-        private int routingAnimationHash = Animator.StringToHash("Routing");
-        
-        private void Update()
-        {
-            Animator.SetBool(routingAnimationHash,isRouting);
-        }
-
+                
         public void StartManualKnockback()
         {
             isManualKnockback = true;
@@ -29,20 +20,21 @@ namespace Swift_Blade.Boss.Goblin
             NavMeshAgent.enabled = true;
         }
         
-        public void CreateSummon()
-        {
-            (boss as GoblinBoss).Summon();
-        }
-
         public void SetAnimationSpeed(float _speed)
         {
-            //Animator.SetFloat("AnimationSpeed",_speed);
+            if (Animator == null)
+            {
+                Animator = GetComponent<Animator>();
+            }
+            
+            Animator.SetFloat("AnimationSpeed",_speed);
         }
-
+        
         public override void StopAllAnimationEvents()
         {
             base.StopAllAnimationEvents();
             StopManualKnockback();
         }
+        
     }
 }

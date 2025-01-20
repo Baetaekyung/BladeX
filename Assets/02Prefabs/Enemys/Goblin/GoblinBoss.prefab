@@ -41509,9 +41509,9 @@ GameObject:
   - component: {fileID: 7622672094500868969}
   - component: {fileID: 577997153873634866}
   - component: {fileID: 9071798113333779999}
-  - component: {fileID: 8096793257624456222}
   - component: {fileID: 7299549705132047896}
   - component: {fileID: 2793936844356009275}
+  - component: {fileID: 8096793257624456222}
   m_Layer: 7
   m_Name: GoblinBoss
   m_TagString: Untagged
@@ -41640,7 +41640,7 @@ MonoBehaviour:
           m_Value0: 16842789263302442139
           m_Value1: 15124673902740489662
         Name: AttackDistance
-        m_Value: 6
+        m_Value: 7
     - rid: 3879321506256519320
       type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -41672,7 +41672,7 @@ MonoBehaviour:
           m_Value0: 18161553395296250440
           m_Value1: 1598338716999467112
         Name: MeleeDistance
-        m_Value: 4
+        m_Value: 6
     - rid: 3879321507456614427
       type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Caster.BaseBossCaster, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -41704,26 +41704,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &8096793257624456222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8303769953094703629}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6df4a432ad4c90f43987b00bba33a32f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  cameraShakeType: 0
-  rotateSpeed: 40
-  stopDistance: 1.5
-  summonPrefab: {fileID: -6619329512110227562, guid: f4bedd91a9c4bdd47a5bd4271b27c777, type: 3}
-  maxSummonCount: 4
-  minSummonCount: 2
-  summonRadius: 4.03
 --- !u!114 &7299549705132047896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41753,7 +41733,19 @@ MonoBehaviour:
         m_CallState: 2
   OnDeadEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8096793257624456222}
+        m_TargetAssemblyTypeName: Swift_Blade.Boss.BaseBoss, Assembly-CSharp
+        m_MethodName: SetDead
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   maxHealth: 30
   currentHealth: 0
   isDead: 0
@@ -41778,6 +41770,26 @@ MonoBehaviour:
   knockbackSpeed: 50.5
   isManualKnockback: 0
   isRouting: 0
+--- !u!114 &8096793257624456222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8303769953094703629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df4a432ad4c90f43987b00bba33a32f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  cameraShakeType: 0
+  rotateSpeed: 40
+  stopDistance: 1.5
+  summonPrefab: {fileID: -6619329512110227562, guid: f4bedd91a9c4bdd47a5bd4271b27c777, type: 3}
+  maxSummonCount: 4
+  minSummonCount: 2
+  summonRadius: 4.03
 --- !u!1 &8319140980237445606
 GameObject:
   m_ObjectHideFlags: 0

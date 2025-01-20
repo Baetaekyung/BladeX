@@ -14,6 +14,7 @@ public partial class SetStopAction : Action
     
     protected override Status OnStart()
     {
+        
         self.Value.isStopped = Param.Value;
         return Status.Success;
     }

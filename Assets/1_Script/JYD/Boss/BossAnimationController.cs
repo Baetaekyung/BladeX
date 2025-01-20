@@ -25,8 +25,8 @@ namespace Swift_Blade.Boss
         protected virtual void Start()
         {
             layerCaster = GetComponentInChildren<LayerCaster>();
-            boss = GetComponent<BaseBoss>();
             
+            boss = GetComponent<BaseBoss>();
             Animator = GetComponent<Animator>();
             NavMeshAgent = GetComponent<NavMeshAgent>();
         }
@@ -35,15 +35,14 @@ namespace Swift_Blade.Boss
         {
             layerCaster.CastDamage();
         }
-                
+          
         public void SetAnimationEnd() => animationEnd = true;
         public void StopAnimationEnd() => animationEnd = false;
         public void StartManualRotate() => isManualRotate = true;
         public void StopManualRotate() => isManualRotate = false;
-
         public void StartApplyRootMotion() => Animator.applyRootMotion = true;
         public void StopApplyRootMotion() => Animator.applyRootMotion = false;
-
+        
         public void StartManualMove(float _moveSpeed = 0)
         {
             attackMoveSpeed = _moveSpeed == 0 ? defaultAttackMoveSpeed : _moveSpeed;
@@ -52,7 +51,6 @@ namespace Swift_Blade.Boss
 
             NavMeshAgent.enabled = false;
         }
-
         public void StopManualMove()
         {
             attackMoveSpeed = defaultAttackMoveSpeed;
@@ -69,9 +67,8 @@ namespace Swift_Blade.Boss
             StopManualMove();
             StopManualRotate();
             StopApplyRootMotion();
-            
         }
-        
+                
         public void SetAllAnimationEnd()
         {
             foreach (AnimatorControllerParameter parameter in Animator.parameters)

@@ -3,58 +3,21 @@ using UnityEngine;
 
 namespace Swift_Blade.Boss.Goblin
 {
-    public class GoblinBoss : BaseBoss
+    public class GoblinBoss : BaseGoblin
     {
-        public float stopDistance;
-        
         [Space]
         [Header("Summon info")]
-        public GoblinEnemy summonPrefab;
-        public int maxSummonCount;
-        public int minSummonCount;
-
-        public float summonRadius;
-        
-        private List<GoblinEnemy> summons;
+        [SerializeField] private GoblinEnemyInBoss summonPrefab;
+        [SerializeField] private int maxSummonCount;
+        [SerializeField] private int minSummonCount;
+        [SerializeField] private float summonRadius;
+        private List<GoblinEnemyInBoss> summons;
         
         protected override void Start()
         {
             base.Start();
-            summons = new List<GoblinEnemy>();
+            summons = new List<GoblinEnemyInBoss>();
         }
-
-        protected override void Update()
-        {
-            if (bossAnimationController.isManualRotate)
-            {
-                FactToTarget(target.position);
-            }
-
-            if (bossAnimationController.isManualMove)
-            {
-                float distance = Vector3.Distance(transform.position , target.position);
-                
-                if (distance > stopDistance)
-                {
-                    attackDestination = transform.position + transform.forward;
-
-                    transform.position = Vector3.MoveTowards(transform.position, attackDestination, 
-                        bossAnimationController.AttackMoveSpeed * Time.deltaTime);
-                }
-            }
-
-            if (bossAnimationController is GoblinAnimatorController goblinAnimatorController)
-            {
-                if (goblinAnimatorController.isManualKnockback)
-                {
-                    attackDestination = transform.position + -transform.forward;
-
-                    transform.position = Vector3.MoveTowards(transform.position, attackDestination, 
-                        goblinAnimatorController.knockbackSpeed * Time.deltaTime); 
-                }
-            }
-        }
-        
         
         public void Summon()
         {
@@ -65,23 +28,26 @@ namespace Swift_Blade.Boss.Goblin
                 Vector2 randomPos = Random.insideUnitCircle * summonRadius;
                 Vector3 spawnPosition = new Vector3(transform.position.x + randomPos.x, transform.position.y, transform.position.z + randomPos.y);
 
-                GoblinEnemy newGoblin = Instantiate(summonPrefab, spawnPosition, Quaternion.identity);
+                GoblinEnemyInBoss newGoblin = Instantiate(summonPrefab, spawnPosition, Quaternion.identity);
                 newGoblin.Init(this);
                 
                 summons.Add(newGoblin);
             }
             
         }
-
-        public bool CanCreateSummon() => summons.Count <= 0 ? true : false;
+        public bool CanCreateSummon() => summons.Count <= 0;
         
-        public void RemoveInSummonList(GoblinEnemy _goblin)
+        public void RemoveInSummonList(GoblinEnemyInBoss _goblin)
         {
             summons.Remove(_goblin);
             if(summons.Count == 0)
                 summons.Clear();
         }
-        
-        
+
+        public override void SetDead()
+        {
+            StopImmediately();
+            goblinAnimator.StopAllAnimationEvents();
+        }
     }
 }
