@@ -1,4 +1,5 @@
-﻿using Swift_Blade.Feeling;
+﻿using Swift_Blade.Combat.Health;
+using Swift_Blade.Feeling;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,6 +8,7 @@ namespace Swift_Blade.Boss
     public class BaseBoss : MonoBehaviour
     {
         protected BossAnimationController bossAnimationController;
+        protected BaseBossHealth baseHealth;
         
         protected NavMeshAgent NavmeshAgent;
         
@@ -18,19 +20,17 @@ namespace Swift_Blade.Boss
         [SerializeField] protected CameraShakeType cameraShakeType;
         [SerializeField] protected float rotateSpeed;
         
-        /*[Header("Knockback info")]
-        public bool isKnockback;
-        public float knockbackTime;
-        public float knockbackThreshold;*/
-
         protected virtual void Start()
         {
             bossAnimationController = GetComponent<BossAnimationController>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
+            baseHealth = GetComponent<BaseBossHealth>();
         }
-
+        
         protected virtual void Update()
         {
+            if(baseHealth.isDead)return;
+            
             if (bossAnimationController.isManualRotate)
             {
                 FactToTarget(target.position);
@@ -49,7 +49,6 @@ namespace Swift_Blade.Boss
             }
         }
         
-        
         public void FactToTarget(Vector3 target)
         {
             Quaternion targetRot = Quaternion.LookRotation(target - transform.position);
@@ -58,15 +57,15 @@ namespace Swift_Blade.Boss
             float yRotation = Mathf.LerpAngle(currentEulerAngle.y, targetRot.eulerAngles.y, rotateSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(currentEulerAngle.x, yRotation, currentEulerAngle.z);
         }
-        
-        private void StopImmediately()
+                
+        protected void StopImmediately()
         {
             if (NavmeshAgent.enabled == false) return;
 
             NavmeshAgent.isStopped = true;
             NavmeshAgent.velocity = Vector3.zero;
         }
-
+        
         private Vector3 GetNextPathPoint()
         {
             NavMeshPath path = NavmeshAgent.path;
@@ -90,11 +89,10 @@ namespace Swift_Blade.Boss
             return nextPathPoint;
         }
         
-        
         public virtual void SetDead()
         {
-            bossAnimationController.StopAllAnimationEvents();
             StopImmediately();
+            bossAnimationController.StopAllAnimationEvents();
         }
         
         public void ShakeCam()
@@ -102,35 +100,6 @@ namespace Swift_Blade.Boss
             CameraShakeManager.Instance.DoShake(cameraShakeType);
         }
         
-        /*private void SetForce(ActionData actionData)
-        {
-            Vector3 dir = actionData.knockbackDir.normalized; // 방향 정규화
-            dir.y = 0; // y축은 고정
-
-            float power = actionData.knockbackPower;
-            float duration = actionData.knockbackDuration;
-
-            StartCoroutine(AddForce(dir, power, duration));
-        }
         
-        private IEnumerator AddForce(Vector3 dir, float power, float duration)
-        {
-            StopImmediately(); // 움직임 초기화
-            float currentTime = 0f;
-
-            Vector3 initialPos = transform.position; // 시작 위치
-            Vector3 targetPos = initialPos + dir * power; // 목표 위치
-
-            while (currentTime < duration)
-            {
-                currentTime += Time.deltaTime;
-                float t = currentTime / duration; // 0에서 1로 진행
-                transform.position = Vector3.Lerp(initialPos, targetPos, t); // 보간
-                yield return null;
-            }
-
-            // 목표 위치에 도달한 후 위치를 보정
-            transform.position = targetPos;
-        }*/
     }
 }
