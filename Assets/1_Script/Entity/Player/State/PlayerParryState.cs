@@ -1,7 +1,5 @@
-using System;
-using Swift_Blade.Feeling;
+using Swift_Blade.Combat;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Swift_Blade.FSM.States
 {
@@ -12,13 +10,20 @@ namespace Swift_Blade.FSM.States
         protected override bool BaseAllowAttackInput => false;
         private readonly PlayerHealth _playerHealthCompo;
         private readonly PlayerRenderer playerRenderer;
-
-        private float _currentDuration = 0f;
-        private float _parryDuration;
+        
+        //parry의 판정을 검사할 타임과 타이머
+        private float canParryTime;
+        private float parryTimer;
+        
+        private PlayerParryController parryController;
+        
+        /*private float _currentDuration = 0f;
+        private float _parryDuration;*/
         
         public PlayerParryState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
             playerRenderer = player.GetPlayerRenderer;
+            parryController = player.GetPlayerParryController;
             
             _playerHealthCompo = player.GetComponentInChildren<PlayerHealth>();
         }
@@ -27,37 +32,56 @@ namespace Swift_Blade.FSM.States
         {
             base.Enter();
             bool mouseMove = true;
+            
             Vector3 direction = mouseMove == true ?
                 player.GetPlayerInput.GetMousePositionWorld - playerMovement.transform.position :
                 player.GetPlayerInput.GetInputDirectionRawRotated;
+            
             playerRenderer.LookAtDirection(direction);
-
+            
             player.IsParryState = true;
             playerMovement.AllowInputMove = false;
-
-            _parryDuration = 0.4f;
-
+            
+            //_parryDuration = 0.4f;
             _playerHealthCompo.OnHitEvent.AddListener(ParryOnHitByVicinityHandler);
+            
+            //ParryTime/ParryTimer 초기화
+            canParryTime = parryController.ParryTime;
+            parryTimer = 0;
+
+            parryController.SetParry(true);
         }
 
         public override void Update()
         {
             base.Update();
 
-            _currentDuration += Time.deltaTime;
+            parryTimer += Time.deltaTime;
+            
+            if (parryTimer >= canParryTime)//Parry이 타임이 다 됐는데도 Parry가 가능하면 Parry끄기.
+            {
+                if(parryController.CanParry())
+                    parryController.SetParry(false);
+            }
+            
+            
+            //_currentDuration += Time.deltaTime;
 
-            if (_currentDuration >= _parryDuration)
+            /*if (_currentDuration >= _parryDuration)
             {
                 _playerHealthCompo.OnHitEvent.RemoveListener(ParryOnHitByVicinityHandler);
-            }
+            }*/
+
+
         }
 
         public override void Exit()
         {
             _playerHealthCompo.OnHitEvent.RemoveListener(ParryOnHitByVicinityHandler);
             
-            _currentDuration = 0f;
-
+           
+            //_currentDuration = 0f;
+            parryController.SetParry(false);
             player.IsParryState = false;
             playerMovement.AllowInputMove = true;
             
@@ -94,7 +118,6 @@ namespace Swift_Blade.FSM.States
         //     
         //     GetOwnerFsm.ChangeState(PlayerStateEnum.Attack);
         // }
-        
         private void LookAtTarget(ActionData actionData)
         {
             Vector3 dir = actionData.dealer.transform.position - playerRenderer.GetPlayerVisualTrasnform.position;
@@ -103,6 +126,8 @@ namespace Swift_Blade.FSM.States
             //lookRotation.x = 0; //y축만 회전하도록
             //lookRotation.z = 0; //y축만 회전하도록
         }
-
+        
+                
+        
     }
 }

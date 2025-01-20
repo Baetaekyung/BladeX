@@ -6,7 +6,7 @@ namespace Swift_Blade.FSM.States
 {
     public class PlayerAttackState : BasePlayerState
     {
-        protected override bool BaseAllowParryInput => false;
+        //protected override bool BaseAllowParryInput => false;
 
         private readonly PlayerRenderer playerRenderer;
         private ComboData currentComboData;
@@ -16,13 +16,11 @@ namespace Swift_Blade.FSM.States
         private bool inputBuffer;
 
         private float delayContinuousCombo;
-
         private bool IsContinuousComboAllowed => delayContinuousCombo > Time.time;
-        /// <summary>
-        /// todo : bad name
-        /// </summary>
         public EComboState PreviousComboState { get; set; }
+        public EComboState NonImmediateComboState { get; set; }
         private readonly List<EComboState> comboStateHistory = new(5);
+        public void ClearComboHistory() => comboStateHistory.Clear();
         public PlayerAttackState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null)
             : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
@@ -33,17 +31,20 @@ namespace Swift_Blade.FSM.States
                 UI_DebugPlayer.DebugText(3, delayContinuousCombo, "deadPeriod", DBG_UI_KEYS.Keys_PlayerAction);
                 UI_DebugPlayer.DebugText(4, Time.time, "time", DBG_UI_KEYS.Keys_PlayerAction);
                 UI_DebugPlayer.DebugText(5, comboStateHistory.Count, "cshCount", DBG_UI_KEYS.Keys_PlayerAction);
-                if (Input.GetKeyDown(KeyCode.X))
-                    comboStateHistory.Clear();
-
             };
         }
 
         public override void Enter()
         {
             base.Enter();
-            if(!IsContinuousComboAllowed)
+            if (!IsContinuousComboAllowed)
                 comboStateHistory.Clear();
+
+            if (NonImmediateComboState != EComboState.None)
+            {
+                comboStateHistory.Add(NonImmediateComboState);
+                NonImmediateComboState = EComboState.None;
+            }
 
             comboStateHistory.Add(PreviousComboState);
             bool matchFound = GetMatchingComboSO(out currentComboData);
@@ -59,9 +60,7 @@ namespace Swift_Blade.FSM.States
                 ComboAttack();
             }
             else
-            {
                 OnComboFail();
-            }
         }
         public override void Update()
         {
@@ -70,18 +69,13 @@ namespace Swift_Blade.FSM.States
             {
                 comboStateHistory.Add(PreviousComboState);
                 if (GetMatchingComboSO(out currentComboData))
-                {
                     ComboAttack();
-                }
                 else
-                {
                     OnComboFail();
-                }
             }
         }
         /// <summary>
         /// todo : try remove currentComboData.GetPeriod?
-        /// if fail start over and play no exit shit.
         /// </summary>
         private void OnComboFail()
         {
@@ -112,17 +106,15 @@ namespace Swift_Blade.FSM.States
             allowListening = false;
             isCurrentAnimationEndable = false;
 
-            delayContinuousCombo = currentComboData.GetPeriod + Time.time;
+            delayContinuousCombo = currentComboData.GetAnimParam.GetPeriod + Time.time;
             AnimationParameterSO param = currentComboData.GetAnimParam;
             PlayAnimationRebind(param);
-            Debug.Log(param.name);
         }
-        protected override void OnAttackInput(EComboState currentState)
+        protected override void OnAttackInput(EComboState currentState, EComboState nonImeediateState = EComboState.None)
         {
             if (allowListening && inputBuffer != true)
             {
                 PreviousComboState = currentState;
-                Debug.Log(PreviousComboState);
                 inputBuffer = true;
             }
         }
@@ -140,6 +132,7 @@ namespace Swift_Blade.FSM.States
         public override void Exit()
         {
             playerMovement.SpeedMultiplierDefault = 1;
+            inputLocalLerp = Vector3.zero;
             //playerMovement.UseMouseLock = false;
             base.Exit();
         }

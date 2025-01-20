@@ -11,7 +11,7 @@ namespace Swift_Blade.FSM.States
         protected readonly PlayerInput playerInput;
 
         //private static float additionalZValue;
-        protected Vector3 inputLocalLerp;
+        protected static Vector3 inputLocalLerp;
         protected virtual bool BaseAllowAttackInput { get; } = true;
         protected virtual bool BaseAllowParryInput { get; } = true;
         protected virtual bool BaseAllowDashInput { get; } = true;
@@ -60,9 +60,9 @@ namespace Swift_Blade.FSM.States
         /// <summary>
         /// </summary>
         /// <param name="previousComboState">current Combo State</param>
-        protected virtual void OnAttackInput(EComboState previousComboState)
+        protected virtual void OnAttackInput(EComboState previousComboState, EComboState nonImeediateState = EComboState.None)
         {
-            player.Attack(previousComboState);
+            player.Attack(previousComboState, nonImeediateState);
         }
         protected virtual void OnParryInput()
         {
@@ -76,7 +76,14 @@ namespace Swift_Blade.FSM.States
         protected sealed override void OnAllowRotateDisallowTrigger() => playerMovement.AllowRotate = false;
         protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
         protected sealed override void OnSpeedMultiplierDefaultTrigger(float set) => playerMovement.SpeedMultiplierDefault = set;
+
         //protected sealed override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetAdditionalVelocity(value);
-        protected sealed override void OnAttackTrigger() => player.GetPlayerDamageCaster.CastDamage();
+        protected sealed override void OnAttackTrigger()
+        {
+            if (player.GetPlayerDamageCaster.CastDamage())
+            {
+                player.GetEntityComponent<PlayerStatCompo>().GetStyleMeter.SuccessHit();
+            }
+        }
     }
 }

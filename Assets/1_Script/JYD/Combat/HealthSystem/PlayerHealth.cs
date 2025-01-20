@@ -1,11 +1,11 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Swift_Blade
 {
-    public class PlayerHealth : MonoBehaviour,IDamageble
+    public class PlayerHealth : MonoBehaviour, IDamageble, IEntityComponent
     {
+
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
 
@@ -14,6 +14,18 @@ namespace Swift_Blade
 
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
+
+        private const float damageInterval = 0.5f;
+        private float lastDamageTime = 0;
+
+        public bool IsPlayerInvincible { get; set; }
+        //private Player _player;
+
+        public void EntityComponentAwake(Entity entity)
+        {
+            //_player = entity as Player;
+        }
+
 
         private void Update()
         {
@@ -26,9 +38,14 @@ namespace Swift_Blade
 
         public void TakeDamage(ActionData actionData)
         {
+            if (lastDamageTime + damageInterval > Time.time) return;
+            if (IsPlayerInvincible) return;
+
             float damageAmount = actionData.damageAmount;
             _currentHealth -= damageAmount;
-            
+
+            lastDamageTime = Time.time;
+
             OnHitEvent?.Invoke(actionData);
 
             if (_currentHealth <= 0)
@@ -36,7 +53,7 @@ namespace Swift_Blade
                 Dead();
             }
         }
-        
+
         public void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
         {
             _currentHealth = Mathf.Clamp(_currentHealth + healAmount, 0, _maxHealth);
@@ -47,7 +64,7 @@ namespace Swift_Blade
             OnDeadEvent?.Invoke();
             //Debug.Log("플레이어 죽었슴");
         }
-        
+
         /// <param name="value">추가할 체력 값</param>
         public void AddBaseHealth(float value) //기본 값 변경이라 키 값이 필요 없음.
         {
@@ -55,5 +72,8 @@ namespace Swift_Blade
             _maxHealth = _healthStat.Value;
             _currentHealth = Mathf.Clamp(_currentHealth + value, 0, _healthStat.Value);
         }
+
+        //public PlayerStateEnum GetCurrentState() => _player.GetCurrentState();
+
     }
 }

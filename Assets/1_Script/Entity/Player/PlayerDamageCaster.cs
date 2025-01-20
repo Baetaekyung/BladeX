@@ -1,7 +1,7 @@
-using TMPro;
+using Swift_Blade.Combat.Caster;
 using UnityEngine;
 
-namespace Swift_Blade
+namespace Swift_Blade.Combat.Caster
 {
     public class PlayerDamageCaster : LayerCaster, IEntityComponent
     {
