@@ -38,8 +38,11 @@ namespace Swift_Blade.Boss.Goblin
         {
             //Animator.SetFloat("AnimationSpeed",_speed);
         }
-        
-        
-        
+
+        public override void StopAllAnimationEvents()
+        {
+            base.StopAllAnimationEvents();
+            StopManualKnockback();
+        }
     }
 }

@@ -20,7 +20,10 @@ namespace Swift_Blade.Boss.Golem
             }
         }
         
-        
-        
+        /*public override void SetDead()
+        {
+            base.SetDead();
+            
+        }*/
     }
 }

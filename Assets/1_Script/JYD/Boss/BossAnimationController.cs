@@ -63,7 +63,7 @@ namespace Swift_Blade.Boss
             NavMeshAgent.enabled = true;
         }
 
-        public void StopAllAnimationEvents()
+        public virtual void StopAllAnimationEvents()
         {
             StopAnimationEnd();
             StopManualMove();
