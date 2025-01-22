@@ -29,6 +29,11 @@ namespace Swift_Blade
 
         private void Update()
         {
+            if (Keyboard.current.iKey.wasPressedThisFrame)
+            {
+                PopUp(PopupType.Inventory);
+            }
+            
             if (Keyboard.current.escapeKey.wasPressedThisFrame 
                 && !DialogueManager.Instance.IsDialogOpen)
             {

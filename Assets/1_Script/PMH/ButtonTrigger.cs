@@ -3,9 +3,18 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
+    public enum TriggerType
+    {
+        Door,
+        Ground
+    }
+
     public class ButtonTrigger : MonoBehaviour
     {
-        [SerializeField] private Transform CurrentDoor;
+        [SerializeField] private TriggerType type;
+        [SerializeField] private Transform targetPos;
+
+        [SerializeField] private Transform CurrentObj;
 
         private bool canTrigger = false;
 
@@ -17,7 +26,16 @@ namespace Swift_Blade
             {
                 if(Input.GetKeyDown(KeyCode.F))
                 {
-                    DoorOpenTrigger();
+                    switch (type)
+                    {
+                        case TriggerType.Door:
+                            DoorOpenTrigger();
+                            break;
+                        case TriggerType.Ground:
+                            GroundMoveTrigger();
+                            break;
+                    }
+
                 }
             }
         }
@@ -47,15 +65,20 @@ namespace Swift_Blade
 
             if (doorActive)
             {
-                CurrentDoor.DOMoveY(CurrentDoor.position.y - 3, 0.5f);
+                CurrentObj.DOMoveY(CurrentObj.position.y - 3, 0.5f);
             }
             else
             {
-                CurrentDoor.DOMoveY(CurrentDoor.position.y + 3, 0.5f);
-            }
+                CurrentObj.DOMoveY(CurrentObj.position.y + 3, 0.5f);
+            }  
+        }
 
-            
-           
+        private void GroundMoveTrigger()
+        {
+            Debug.Log(CurrentObj.position);
+            Debug.Log(targetPos.position);
+            float dist = Vector3.Distance(CurrentObj.position, targetPos.position);
+            CurrentObj.DOMoveY(targetPos.position.y, dist * 0.5f);
         }
     }
 }

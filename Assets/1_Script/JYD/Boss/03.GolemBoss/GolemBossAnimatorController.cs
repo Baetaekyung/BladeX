@@ -1,6 +1,8 @@
+using DG.Tweening;
 using Swift_Blade.Combat.Caster;
 using Swift_Blade.projectile;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 namespace Swift_Blade.Boss.Golem
 {
@@ -16,6 +18,8 @@ namespace Swift_Blade.Boss.Golem
         
         private GolemBossCaster damageCaster;
 
+        [SerializeField] private Rig rig;
+        
         protected override void Start()
         {
             base.Start();
@@ -52,7 +56,27 @@ namespace Swift_Blade.Boss.Golem
             throwStone.SetDirection(direction);
             throwStone = null;
         }
+
+        public void StartManualLook()
+        {
+            DOVirtual.Float(rig.weight, 1f, 0.3f, (value) => {
+                rig.weight = value;
+            });
+        }
         
-        
+        public void StopManualLook()
+        {
+            DOVirtual.Float(rig.weight, 0f, 0.3f, (value) => {
+                rig.weight = value;
+            });
+        }
+
+        public override void StopAllAnimationEvents()
+        {
+            base.StopAllAnimationEvents();
+            print("¾Ó ¼½½º ±â¸ð¶ì");
+            StopManualLook();
+            StopManualCollider();
+        }
     }
 }
