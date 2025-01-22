@@ -33,6 +33,8 @@ namespace Swift_Blade
                     isActive = true;
                 }
 
+                //æ»≥Á«œººø‰ º±ª˝¥‘ ªÔ∞°∞Ì¿Œ¿«
+
                 yield return new WaitForSeconds(delay);
             }
         }
