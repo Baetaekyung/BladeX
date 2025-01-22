@@ -1,5 +1,6 @@
 ﻿using Swift_Blade.Combat.Health;
 using Swift_Blade.Feeling;
+using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,6 +12,7 @@ namespace Swift_Blade.Boss
         protected BaseBossHealth baseHealth;
         
         protected NavMeshAgent NavmeshAgent;
+        protected BehaviorGraphAgent btAgent;
         
         protected Vector3 nextPathPoint;
         protected Vector3 attackDestination;
@@ -22,9 +24,11 @@ namespace Swift_Blade.Boss
         
         protected virtual void Start()
         {
+            btAgent = GetComponent<BehaviorGraphAgent>();
             bossAnimationController = GetComponent<BossAnimationController>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
             baseHealth = GetComponent<BaseBossHealth>();
+                                    
         }
         
         protected virtual void Update()

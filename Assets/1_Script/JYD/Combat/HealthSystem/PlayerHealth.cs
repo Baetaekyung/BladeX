@@ -15,18 +15,17 @@ namespace Swift_Blade
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
 
-        private const float damageInterval = 0.5f;
-        private float lastDamageTime = 0;
-
+        private const float DamageInterval = 0.1f;
+        private float lastDamageTime;
+        
         public bool IsPlayerInvincible { get; set; }
         //private Player _player;
-
+        
         public void EntityComponentAwake(Entity entity)
         {
             //_player = entity as Player;
         }
-
-
+        
         private void Update()
         {
             /*if (Input.GetKeyDown(KeyCode.P))
@@ -38,7 +37,7 @@ namespace Swift_Blade
 
         public void TakeDamage(ActionData actionData)
         {
-            if (lastDamageTime + damageInterval > Time.time) return;
+            if (lastDamageTime + DamageInterval > Time.time) return;
             if (IsPlayerInvincible) return;
 
             float damageAmount = actionData.damageAmount;

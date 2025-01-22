@@ -8,13 +8,13 @@ namespace Swift_Blade.Boss.Goblin
     {
         [Range(0,2)][SerializeField] protected float stopDistance;
         
-        protected BehaviorGraphAgent btAgent;
+      
         protected GoblinAnimator goblinAnimator;
         
         protected override void Start()
         {
             base.Start();
-            btAgent = GetComponent<BehaviorGraphAgent>();
+            
             
             goblinAnimator = bossAnimationController as GoblinAnimator;
         }
