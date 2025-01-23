@@ -9,11 +9,11 @@ namespace Swift_Blade.Pool
         protected override string PoolParentName => $"MonoPool_{typeof(T)}";
         public MonoPool(T prefab, int initialPoolCapacity = 100, int maxCapacity = 1000, int preCreate = 10) : base(prefab, initialPoolCapacity, maxCapacity, preCreate)
         {
-            UnityObjectPool.PoolDestroyEvent += base.Clear;
+            UnityObjectPool.SceneChangePoolDestroyEvent += base.Clear;
         }
         ~MonoPool()
         {
-            UnityObjectPool.PoolDestroyEvent -= base.Clear;
+            UnityObjectPool.SceneChangePoolDestroyEvent -= base.Clear;
         }
         protected override T Create()
         {
@@ -29,10 +29,12 @@ namespace Swift_Blade.Pool
         {
             instance.Initialize();
             instance.gameObject.SetActive(true);
+            instance.transform.parent = null;
         }
         protected override void OnPush(T instance)
         {
             instance.gameObject.SetActive(false);
+            instance.transform.parent = poolParent;
         }
 
         public override void Clear()

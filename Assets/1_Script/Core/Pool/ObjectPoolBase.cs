@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Swift_Blade.Pool
@@ -5,12 +6,12 @@ namespace Swift_Blade.Pool
     internal static class ObjectPoolBase
     {
         internal static bool collisionCheck = false;
+#if UNITY_EDITOR
         static ObjectPoolBase()
         {
-#if UNITY_EDITOR
             collisionCheck = true;
-#endif  
         }
+#endif  
 
     }
 
@@ -49,6 +50,16 @@ namespace Swift_Blade.Pool
         }
         public void Push(T instance)
         {
+            bool collision = ObjectPoolBase.collisionCheck;
+            if (collision)
+            {
+                foreach (T item in poolList)
+                {
+                    if (item == instance)
+                        throw new Exception($"Collision Detected. prefab : {instance}, {nameof(T)}_POOL");
+                }
+            }
+
             if (poolList.Count < maxCapacity)
             {
                 poolList.Add(instance);

@@ -7,21 +7,26 @@ namespace Swift_Blade.Pool
     internal static class UnityObjectPool
     {
         private static Transform baseParent;
-        private const string BASE_PARENT_NAME = "UnityObjectPool_BaseParent";
+        private const string BASE_PARENT_NAME = "_UnityObjectPool_BaseParent";
         internal static Transform GetBaseParent => baseParent;
-        internal static event UnityPoolDestroyDelegate PoolDestroyEvent;
+        internal static event UnityPoolDestroyDelegate SceneChangePoolDestroyEvent;
         static UnityObjectPool()
         {
-            baseParent = new GameObject(BASE_PARENT_NAME).transform;
-            //Object.DontDestroyOnLoad(baseParent);
+            CreateBaseParent();
+            //Object.DontDestroyOnLoad(baseParent); // scene dependent
             SceneManager.sceneLoaded += (_, _) =>
             {
                 if (baseParent == null)
                 {
-                    PoolDestroyEvent?.Invoke();
-                    baseParent = new GameObject(BASE_PARENT_NAME).transform;
+                    SceneChangePoolDestroyEvent?.Invoke();
+                    CreateBaseParent();
                 }
             };
+            static void CreateBaseParent()
+            {
+                baseParent = new GameObject(BASE_PARENT_NAME).transform;
+                baseParent.hideFlags = HideFlags.HideInHierarchy;
+            }
         }
     }
     internal abstract class UnityObjectPool<T> : ObjectPoolBase<T>
@@ -29,11 +34,13 @@ namespace Swift_Blade.Pool
     {
         protected readonly T prefab;
         protected readonly Transform poolParent;
-        protected virtual string PoolParentName { get; set; }
+        protected virtual string PoolParentName { get; private set; }
         public UnityObjectPool(T prefab, int initialPoolCapacity = 10, int maxCapacity = 1000, int preCreate = 10) : base(initialPoolCapacity, maxCapacity, preCreate)
         {
             poolParent = new GameObject(PoolParentName).transform;
             poolParent.parent = UnityObjectPool.GetBaseParent;
+            poolParent.hideFlags = HideFlags.HideInHierarchy;
+
             this.prefab = prefab;
             for (int i = 0; i < preCreate; i++)
             {

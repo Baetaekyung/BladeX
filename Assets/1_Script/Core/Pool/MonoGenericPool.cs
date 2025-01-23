@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Swift_Blade.Pool
@@ -20,15 +19,15 @@ namespace Swift_Blade.Pool
         /// </summary>
         public static void Initialize(PoolPrefabMonoBehaviourSO prefabSO)
         {
-            bool collisionCheck = monoPool == null;
-            Debug.Assert(collisionCheck, $"field:monoPool is already initialized. {prefabSO.name}");
+            bool isMonoPoolNotInitialized = monoPool == null;
+            Debug.Assert(isMonoPoolNotInitialized, $"field:monoPool is already initialized. {prefabSO.name}");
 
-            if (collisionCheck)
+            if (isMonoPoolNotInitialized)
             {
                 T prefab = prefabSO.GetMono as T;
                 monoPool = new MonoPool<T>(prefab);
 
-                Debug.Assert(prefab != null, "failed to cast Mono to T");//Debug.Log(prefabSO.GetMono as T == null);
+                Debug.Assert(prefab != null, "failed to cast Mono to T");
             }
         }
         public static T Pop()
@@ -46,7 +45,6 @@ namespace Swift_Blade.Pool
             Debug.Assert(monoPool != null, "field:monoPool is not initialized.");
             monoPool.Clear();
         }
-
         public static int Dbg_print()
         {
             return monoPool.Dbg_Cnt();

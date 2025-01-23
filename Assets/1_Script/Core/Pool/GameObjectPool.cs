@@ -7,11 +7,11 @@ namespace Swift_Blade.Pool
         protected override string PoolParentName => $"UnityObjectPool_{nameof(prefab)}";
         public GameObjectPool(GameObject prefab, int initialPoolCapacity = 10, int maxCapacity = 1000, int preCreate = 10) : base(prefab, initialPoolCapacity, maxCapacity, preCreate)
         {
-            UnityObjectPool.PoolDestroyEvent += base.Clear;
+            UnityObjectPool.SceneChangePoolDestroyEvent += base.Clear;
         }
         ~GameObjectPool()
         {
-            UnityObjectPool.PoolDestroyEvent -= base.Clear;
+            UnityObjectPool.SceneChangePoolDestroyEvent -= base.Clear;
         }
         protected override GameObject Create()
         {
@@ -25,10 +25,12 @@ namespace Swift_Blade.Pool
         }
         protected override void OnPop(GameObject instance)
         {
+            instance.hideFlags = HideFlags.None;
             instance.SetActive(true);
         }
         protected override void OnPush(GameObject instance)
         {
+            instance.hideFlags = HideFlags.HideInHierarchy;
             instance.SetActive(false);
         }
         public override void Clear()

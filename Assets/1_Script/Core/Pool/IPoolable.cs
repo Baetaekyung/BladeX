@@ -1,6 +1,3 @@
-using System;
-using UnityEngine;
-
 namespace Swift_Blade.Pool
 {
     public interface IPoolable
