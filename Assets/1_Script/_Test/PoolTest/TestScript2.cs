@@ -6,7 +6,7 @@ namespace Swift_Blade
     public class TestScript2 : MonoBehaviour
     {
         [SerializeField] private TestMonoPoolTar targetPrefab;
-        [SerializeField] private TestMonoPoolTar returnTarget;
+        [SerializeField] private GameObject returnTarget;
         [SerializeField] private PoolPrefabGameObjectSO ppSO;
         private void Awake()
         {
@@ -23,7 +23,7 @@ namespace Swift_Blade
             if (Input.GetKeyDown(KeyCode.K))
             {
                 //MonoGenericPool<TestMonoPoolTar>.Push(returnTarget);
-                GameObjectPoolManager.Push(ppSO, returnTarget.gameObject);
+                GameObjectPoolManager.Push(ppSO, returnTarget);
             }
             if (Input.GetKeyDown(KeyCode.L))
             {
