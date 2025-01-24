@@ -60,6 +60,7 @@ namespace Swift_Blade
         public PlayerHealth GetPlayerHealth => GetEntityComponent<PlayerHealth>();
         #endregion
 
+        
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
         private PlayerAttackState playerAttackState;
