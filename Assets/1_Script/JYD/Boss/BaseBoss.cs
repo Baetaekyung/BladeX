@@ -21,14 +21,15 @@ namespace Swift_Blade.Boss
                
         [SerializeField] protected CameraShakeType cameraShakeType;
         [SerializeField] protected float rotateSpeed;
+        [Range(0,2)][SerializeField] protected float stopDistance;
         
         protected virtual void Start()
         {
             btAgent = GetComponent<BehaviorGraphAgent>();
-            bossAnimationController = GetComponent<BossAnimationController>();
+            bossAnimationController = GetComponentInChildren<BossAnimationController>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
             baseHealth = GetComponent<BaseBossHealth>();
-                                    
+            
         }
         
         protected virtual void Update()
@@ -43,11 +44,17 @@ namespace Swift_Blade.Boss
             if (bossAnimationController.isManualMove)
             {
                 Vector3 directionToTarget = (target.position - transform.position).normalized;
-
                 attackDestination = target.position - directionToTarget * 1f;
+                
+                float distance = Vector3.Distance(transform.position , target.position);
+                
+                if (distance > stopDistance)
+                {
+                    attackDestination = transform.position + transform.forward;
 
-                transform.position = Vector3.MoveTowards(transform.position, attackDestination,
-                    bossAnimationController.AttackMoveSpeed * Time.deltaTime);
+                    transform.position = Vector3.MoveTowards(transform.position, attackDestination,
+                        bossAnimationController.AttackMoveSpeed * Time.deltaTime);
+                }
 
                 //NavmeshAgent.Warp(transform.position);
             }

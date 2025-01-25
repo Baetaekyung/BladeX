@@ -8,7 +8,7 @@ namespace Swift_Blade.Boss
     {
         protected Animator Animator;
         protected NavMeshAgent NavMeshAgent;
-
+        
         protected BaseBoss boss;
         protected LayerCaster layerCaster;
 
