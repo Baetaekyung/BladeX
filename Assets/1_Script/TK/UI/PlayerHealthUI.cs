@@ -22,6 +22,12 @@ namespace Swift_Blade.UI
             playerUIContainer.playerHealthUI = this;
         }
 
+        [ContextMenu("Test Setting Health")]
+        public void SetHealthUITest()
+        {
+            SetHealthUI(5, 4);
+        }
+        
         public void SetHealthUI(int maxHealth, int currentHealth)
         {
             if (_healthIcons.Count != 0)
