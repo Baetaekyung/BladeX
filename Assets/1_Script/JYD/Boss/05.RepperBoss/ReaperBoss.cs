@@ -30,8 +30,8 @@ namespace Swift_Blade.Boss.Reaper
 
         public void SetCollision(bool _active)
         {
-            NavmeshAgent.enabled = false;
-            collider.enabled = false;
+            NavmeshAgent.enabled = _active;
+            collider.enabled = _active;
         }
         
                         

@@ -27,6 +27,12 @@ public partial class MoveToCircleAction : Action
     
     protected override Status OnStart()
     {
+        float currentDistance = Vector3.Distance(Agent.Value.position, Target.Value.position);
+        radius = Mathf.Max(currentDistance, MinDistance.Value);
+        
+        Vector3 directionToAgent = Agent.Value.position - Target.Value.position;
+        angle = Mathf.Atan2(directionToAgent.z, directionToAgent.x);
+        
         fixedY = Agent.Value.position.y;
         lastPosition = Agent.Value.position;
 
@@ -46,8 +52,8 @@ public partial class MoveToCircleAction : Action
         Vector3 agentXZ = new Vector3(Agent.Value.position.x, 0, Agent.Value.position.z);
         Vector3 targetXZ = new Vector3(Target.Value.position.x, 0, Target.Value.position.z);
         float currentDistance = Vector3.Distance(agentXZ, targetXZ);
-
-        if (currentDistance < MinDistance.Value)
+        
+        if (currentDistance <= MinDistance.Value)
         {
             isCircling = false;
             MoveAwayFromTarget();
@@ -70,19 +76,18 @@ public partial class MoveToCircleAction : Action
     private void MoveAwayFromTarget()
     {
         Vector3 directionFromTarget = (Agent.Value.position - Target.Value.position).normalized;
-        Vector3 targetPosition = new Vector3(
-            Target.Value.position.x + directionFromTarget.x * MinDistance.Value + 1,
-            fixedY,
-            Target.Value.position.z + directionFromTarget.z * MinDistance.Value + 1
-        );
-
+        Vector3 targetPosition = Target.Value.position + directionFromTarget * (MinDistance.Value + 1);
+        
         Agent.Value.position = Vector3.MoveTowards(Agent.Value.position, targetPosition, Speed.Value * Time.deltaTime);
     }
 
+
     private void UpdateCircularPosition()
     {
-        angle += (moveDirection.Value * Speed.Value * Time.deltaTime);
-
+        float rotationSpeed = Speed.Value / radius; 
+        angle += moveDirection.Value * rotationSpeed * Time.deltaTime;
+        
+        
         Vector3 targetPosition = new Vector3(
             Target.Value.position.x + radius * Mathf.Cos(angle),
             fixedY,

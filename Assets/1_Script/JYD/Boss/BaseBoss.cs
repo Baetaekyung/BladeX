@@ -21,7 +21,7 @@ namespace Swift_Blade.Boss
                
         [SerializeField] protected CameraShakeType cameraShakeType;
         [SerializeField] protected float rotateSpeed;
-        [Range(0,2)][SerializeField] protected float stopDistance;
+        [Range(0,5)][SerializeField] protected float stopDistance;
         
         protected virtual void Start()
         {
