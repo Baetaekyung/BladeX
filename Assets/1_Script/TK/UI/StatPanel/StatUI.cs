@@ -23,6 +23,11 @@ namespace Swift_Blade
         [SerializeField] private StatComponent _targetStat; //테스트용 Serialize
         private readonly StringBuilder _sb = new StringBuilder();
 
+        private void Start()
+        {
+            UnShowStatUI();
+        }
+
         //이거 호출해서 스텟 표시할 타겟 설정
         public void SetTargetStat(StatComponent statCompo) 
         {
