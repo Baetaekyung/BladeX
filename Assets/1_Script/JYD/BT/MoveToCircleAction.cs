@@ -1,4 +1,5 @@
 using System;
+using Swift_Blade.Boss.Reaper;
 using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
@@ -11,17 +12,27 @@ public partial class MoveToCircleAction : Action
     [SerializeReference] public BlackboardVariable<float> Speed;
     [SerializeReference] public BlackboardVariable<float> MinDistance;
     
-    [SerializeReference] public BlackboardVariable<Transform> Agent ;
+    [SerializeReference] public BlackboardVariable<Transform> Agent;
     [SerializeReference] public BlackboardVariable<Transform> Target;
         
     [SerializeReference] public BlackboardVariable<int> moveDirection;
+
+    private ReaperBoss reaperBoss;
     
     private float radius;
-    private float angle; 
+    private float angle;
+    private bool isCircling = false;
+    private float fixedY;
+    private Vector3 lastPosition;
     
     protected override Status OnStart()
     {
-        radius = Vector3.Distance(Agent.Value.position , Target.Value.position);
+        fixedY = Agent.Value.position.y;
+        lastPosition = Agent.Value.position;
+
+        reaperBoss = Agent.Value.GetComponent<ReaperBoss>();
+        reaperBoss.SetCollision(false);
+        
         return Status.Running;
     }
     
@@ -31,34 +42,75 @@ public partial class MoveToCircleAction : Action
         {
             return Status.Failure;
         }
+        
+        Vector3 agentXZ = new Vector3(Agent.Value.position.x, 0, Agent.Value.position.z);
+        Vector3 targetXZ = new Vector3(Target.Value.position.x, 0, Target.Value.position.z);
+        float currentDistance = Vector3.Distance(agentXZ, targetXZ);
 
-        radius = Vector3.Distance(Agent.Value.position, Target.Value.position);
-
-        if (radius <= MinDistance)
+        if (currentDistance < MinDistance.Value)
         {
-            return Status.Failure;
+            isCircling = false;
+            MoveAwayFromTarget();
         }
-
-        UpdateTargetPosition();
-      
+        else
+        {
+            if (!isCircling)
+            {
+                radius = Mathf.Max(MinDistance.Value, currentDistance);
+                isCircling = true;
+            }
+            UpdateCircularPosition();
+        }
+        
+        SetVelocity();
 
         return Status.Running;
     }
 
-
-    private void UpdateTargetPosition()
+    private void MoveAwayFromTarget()
     {
-        angle += Mathf.PI / 16 * moveDirection;
+        Vector3 directionFromTarget = (Agent.Value.position - Target.Value.position).normalized;
+        Vector3 targetPosition = new Vector3(
+            Target.Value.position.x + directionFromTarget.x * MinDistance.Value + 1,
+            fixedY,
+            Target.Value.position.z + directionFromTarget.z * MinDistance.Value + 1
+        );
 
-        float x = Target.Value.position.x + radius * Mathf.Cos(angle);
-        float z = Target.Value.position.z + radius * Mathf.Sin(angle);
-        Vector3 targetPosition = new Vector3(x, Agent.Value.position.y, z);
-        
         Agent.Value.position = Vector3.MoveTowards(Agent.Value.position, targetPosition, Speed.Value * Time.deltaTime);
+    }
+
+    private void UpdateCircularPosition()
+    {
+        angle += (moveDirection.Value * Speed.Value * Time.deltaTime);
+
+        Vector3 targetPosition = new Vector3(
+            Target.Value.position.x + radius * Mathf.Cos(angle),
+            fixedY,
+            Target.Value.position.z + radius * Mathf.Sin(angle)
+        );
+        
+        Agent.Value.position = Vector3.MoveTowards(
+            Agent.Value.position, 
+            targetPosition, 
+            Speed.Value * Time.deltaTime
+        );
+    }
+
+    private void SetVelocity()
+    {
+        Vector3 movement = (Agent.Value.position - lastPosition) / Time.deltaTime;
+        lastPosition = Agent.Value.position;
+
+        Vector3 localVelocity = Agent.Value.InverseTransformDirection(movement);
+
+        reaperBoss._reaperAnimatorController.SetVelocity(
+            _x: localVelocity.x,
+            _z: localVelocity.z
+        );
     }
     
     protected override void OnEnd()
     {
+        reaperBoss.SetCollision(true);
     }
 }
-
