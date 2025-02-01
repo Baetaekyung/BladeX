@@ -1,4 +1,5 @@
-﻿using Swift_Blade.Combat.Health;
+﻿using System.Linq;
+using Swift_Blade.Combat.Health;
 using Swift_Blade.Feeling;
 using Unity.Behavior;
 using UnityEngine;
@@ -29,9 +30,25 @@ namespace Swift_Blade.Boss
             bossAnimationController = GetComponentInChildren<BossAnimationController>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
             baseHealth = GetComponent<BaseBossHealth>();
-            
+
+            InitTarget();
         }
-        
+
+        private void InitTarget()
+        {
+            btAgent.enabled = false;
+            if (target == null)
+            {
+                var player = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None).FirstOrDefault();
+                if (player != null)
+                    target = player.transform;
+            }
+
+            if (target == null) return;
+            btAgent.SetVariableValue("Target", target);
+            btAgent.enabled = true;
+        }
+
         protected virtual void Update()
         {
             if(baseHealth.isDead)return;

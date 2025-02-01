@@ -7,14 +7,24 @@ namespace Swift_Blade.Boss.Reaper
     {
         private Collider collider;
         [HideInInspector] public ReaperBossAnimatorController _reaperAnimatorController;
-       
+
+        private Vector3 lastPosition;
+        
         protected override void Start()
         {
             base.Start();
             collider = GetComponent<Collider>();
             _reaperAnimatorController = bossAnimationController as ReaperBossAnimatorController;;
         }
-        
+
+        protected override void Update()
+        {
+            base.Update();
+            
+            SetVelocity();
+        }
+
+
         public void MoveInGround()
         {
             _reaperAnimatorController.MoveDown();
@@ -32,6 +42,19 @@ namespace Swift_Blade.Boss.Reaper
         {
             NavmeshAgent.enabled = _active;
             collider.enabled = _active;
+        }
+        
+        private void SetVelocity()
+        {
+            Vector3 movement = (transform.position - lastPosition) / Time.deltaTime;
+            lastPosition = transform.position;
+
+            Vector3 localVelocity = transform.InverseTransformDirection(movement);
+
+            _reaperAnimatorController.SetVelocity(
+                _x: localVelocity.x,
+                _z: localVelocity.z
+            );
         }
         
                         

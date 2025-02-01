@@ -23,7 +23,6 @@ public partial class MoveToCircleAction : Action
     private float angle;
     private bool isCircling = false;
     private float fixedY;
-    private Vector3 lastPosition;
     
     protected override Status OnStart()
     {
@@ -34,7 +33,6 @@ public partial class MoveToCircleAction : Action
         angle = Mathf.Atan2(directionToAgent.z, directionToAgent.x);
         
         fixedY = Agent.Value.position.y;
-        lastPosition = Agent.Value.position;
 
         reaperBoss = Agent.Value.GetComponent<ReaperBoss>();
         reaperBoss.SetCollision(false);
@@ -67,8 +65,6 @@ public partial class MoveToCircleAction : Action
             }
             UpdateCircularPosition();
         }
-        
-        SetVelocity();
 
         return Status.Running;
     }
@@ -101,18 +97,7 @@ public partial class MoveToCircleAction : Action
         );
     }
 
-    private void SetVelocity()
-    {
-        Vector3 movement = (Agent.Value.position - lastPosition) / Time.deltaTime;
-        lastPosition = Agent.Value.position;
-
-        Vector3 localVelocity = Agent.Value.InverseTransformDirection(movement);
-
-        reaperBoss._reaperAnimatorController.SetVelocity(
-            _x: localVelocity.x,
-            _z: localVelocity.z
-        );
-    }
+    
     
     protected override void OnEnd()
     {
