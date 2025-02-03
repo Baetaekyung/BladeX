@@ -28,13 +28,13 @@ namespace Swift_Blade.Audio
         private IEnumerator WaitUntilAudioEnd(Action callBack)
         {
             Debug.Assert(callBack != null, "callback is null");
-                print("st");
+            //print("st");
             while (audioSource3D.isPlaying)
             {
-                print("waiting");
+                //print("waiting");
                 yield return null;
             }
-                print("end");
+            //print("end");
             callBack.Invoke();
         }
         private void Initialize(AudioSO audioSO)
@@ -64,11 +64,6 @@ namespace Swift_Blade.Audio
         public void OnPopInitialize()
         {
 
-        }
-        private void OnDestroy()
-        {
-            print("dest");
-            StopAllCoroutines();
         }
     }
 }
