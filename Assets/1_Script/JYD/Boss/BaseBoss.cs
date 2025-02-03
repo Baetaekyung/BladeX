@@ -1,4 +1,5 @@
-﻿using Swift_Blade.Combat.Health;
+﻿using System.Linq;
+using Swift_Blade.Combat.Health;
 using Swift_Blade.Feeling;
 using Unity.Behavior;
 using UnityEngine;
@@ -21,16 +22,33 @@ namespace Swift_Blade.Boss
                
         [SerializeField] protected CameraShakeType cameraShakeType;
         [SerializeField] protected float rotateSpeed;
+        [Range(0,5)][SerializeField] protected float stopDistance;
         
         protected virtual void Start()
         {
             btAgent = GetComponent<BehaviorGraphAgent>();
-            bossAnimationController = GetComponent<BossAnimationController>();
+            bossAnimationController = GetComponentInChildren<BossAnimationController>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
             baseHealth = GetComponent<BaseBossHealth>();
-                                    
+
+            InitTarget();
         }
-        
+
+        private void InitTarget()
+        {
+            btAgent.enabled = false;
+            if (target == null)
+            {
+                var player = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None).FirstOrDefault();
+                if (player != null)
+                    target = player.transform;
+            }
+
+            if (target == null) return;
+            btAgent.SetVariableValue("Target", target);
+            btAgent.enabled = true;
+        }
+
         protected virtual void Update()
         {
             if(baseHealth.isDead)return;
@@ -43,11 +61,17 @@ namespace Swift_Blade.Boss
             if (bossAnimationController.isManualMove)
             {
                 Vector3 directionToTarget = (target.position - transform.position).normalized;
-
                 attackDestination = target.position - directionToTarget * 1f;
+                
+                float distance = Vector3.Distance(transform.position , target.position);
+                
+                if (distance > stopDistance)
+                {
+                    attackDestination = transform.position + transform.forward;
 
-                transform.position = Vector3.MoveTowards(transform.position, attackDestination,
-                    bossAnimationController.AttackMoveSpeed * Time.deltaTime);
+                    transform.position = Vector3.MoveTowards(transform.position, attackDestination,
+                        bossAnimationController.AttackMoveSpeed * Time.deltaTime);
+                }
 
                 //NavmeshAgent.Warp(transform.position);
             }

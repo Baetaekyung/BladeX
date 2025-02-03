@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Swift_Blade.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,8 +12,6 @@ namespace Swift_Blade
         public SerializableDictionary<PopupType, PopupUI> popups
             = new SerializableDictionary<PopupType, PopupUI>();
         private Stack<PopupUI> _popupStack = new Stack<PopupUI>();
-        
-        private float _delayTime = 3f; //이거 리터럴 임시변수고 SetDelay로 설정해주기
         
         private void Start()
         {
@@ -86,11 +85,6 @@ namespace Swift_Blade
             }
         }
 
-        public void PopDown(PopupType popupType)
-        {
-            
-        }
-
         public PopupUI GetPopupUI(PopupType type)
         {
             if (popups.ContainsKey(type) is false)
@@ -101,7 +95,5 @@ namespace Swift_Blade
             
             return popups[type];
         }
-        
-        public void SetDelay(float delay) => _delayTime = delay;
     }
 }

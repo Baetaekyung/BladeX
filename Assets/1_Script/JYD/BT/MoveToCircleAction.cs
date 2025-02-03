@@ -1,4 +1,5 @@
 using System;
+using Swift_Blade.Boss.Reaper;
 using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
@@ -11,17 +12,31 @@ public partial class MoveToCircleAction : Action
     [SerializeReference] public BlackboardVariable<float> Speed;
     [SerializeReference] public BlackboardVariable<float> MinDistance;
     
-    [SerializeReference] public BlackboardVariable<Transform> Agent ;
+    [SerializeReference] public BlackboardVariable<Transform> Agent;
     [SerializeReference] public BlackboardVariable<Transform> Target;
         
     [SerializeReference] public BlackboardVariable<int> moveDirection;
+
+    private ReaperBoss reaperBoss;
     
     private float radius;
-    private float angle; 
+    private float angle;
+    private bool isCircling = false;
+    private float fixedY;
     
     protected override Status OnStart()
     {
-        radius = Vector3.Distance(Agent.Value.position , Target.Value.position);
+        float currentDistance = Vector3.Distance(Agent.Value.position, Target.Value.position);
+        radius = Mathf.Max(currentDistance, MinDistance.Value);
+        
+        Vector3 directionToAgent = Agent.Value.position - Target.Value.position;
+        angle = Mathf.Atan2(directionToAgent.z, directionToAgent.x);
+        
+        fixedY = Agent.Value.position.y;
+
+        reaperBoss = Agent.Value.GetComponent<ReaperBoss>();
+        reaperBoss.SetCollision(false);
+        
         return Status.Running;
     }
     
@@ -31,34 +46,61 @@ public partial class MoveToCircleAction : Action
         {
             return Status.Failure;
         }
-
-        radius = Vector3.Distance(Agent.Value.position, Target.Value.position);
-
-        if (radius <= MinDistance)
+        
+        Vector3 agentXZ = new Vector3(Agent.Value.position.x, 0, Agent.Value.position.z);
+        Vector3 targetXZ = new Vector3(Target.Value.position.x, 0, Target.Value.position.z);
+        float currentDistance = Vector3.Distance(agentXZ, targetXZ);
+        
+        if (currentDistance <= MinDistance.Value)
         {
-            return Status.Failure;
+            isCircling = false;
+            MoveAwayFromTarget();
         }
-
-        UpdateTargetPosition();
-      
+        else
+        {
+            if (!isCircling)
+            {
+                radius = Mathf.Max(MinDistance.Value, currentDistance);
+                isCircling = true;
+            }
+            UpdateCircularPosition();
+        }
 
         return Status.Running;
     }
 
-
-    private void UpdateTargetPosition()
+    private void MoveAwayFromTarget()
     {
-        angle += Mathf.PI / 16 * moveDirection;
-
-        float x = Target.Value.position.x + radius * Mathf.Cos(angle);
-        float z = Target.Value.position.z + radius * Mathf.Sin(angle);
-        Vector3 targetPosition = new Vector3(x, Agent.Value.position.y, z);
+        Vector3 directionFromTarget = (Agent.Value.position - Target.Value.position).normalized;
+        Vector3 targetPosition = Target.Value.position + directionFromTarget * (MinDistance.Value + 1);
         
         Agent.Value.position = Vector3.MoveTowards(Agent.Value.position, targetPosition, Speed.Value * Time.deltaTime);
     }
+
+
+    private void UpdateCircularPosition()
+    {
+        float rotationSpeed = Speed.Value / radius; 
+        angle += moveDirection.Value * rotationSpeed * Time.deltaTime;
+        
+        
+        Vector3 targetPosition = new Vector3(
+            Target.Value.position.x + radius * Mathf.Cos(angle),
+            fixedY,
+            Target.Value.position.z + radius * Mathf.Sin(angle)
+        );
+        
+        Agent.Value.position = Vector3.MoveTowards(
+            Agent.Value.position, 
+            targetPosition, 
+            Speed.Value * Time.deltaTime
+        );
+    }
+
+    
     
     protected override void OnEnd()
     {
+        reaperBoss.SetCollision(true);
     }
 }
-
