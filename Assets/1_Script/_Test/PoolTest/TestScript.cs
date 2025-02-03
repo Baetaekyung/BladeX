@@ -17,17 +17,17 @@ namespace Swift_Blade
         {
             if (Input.GetKeyDown(KeyCode.J))
             {
-                MonoGenericPool<TestMonoPoolTar>.Pop();
+                //MonoGenericPool<TestMonoPoolTar>.Pop();
                 //GameObjectPoolManager.Pop(ppSO);
             }
             if (Input.GetKeyDown(KeyCode.K))
             {
-                MonoGenericPool<TestMonoPoolTar>.Push(returnTarget);
+                //MonoGenericPool<TestMonoPoolTar>.Push(returnTarget);
                 //GameObjectPoolManager.Push(ppSO, returnTarget);
             }
             if (Input.GetKeyDown(KeyCode.L))
             {
-                print(MonoGenericPool<TestMonoPoolTar>.Dbg_print());
+                //print(MonoGenericPool<TestMonoPoolTar>.Dbg_print());
                 //print(GameObjectPoolManager.Dbg(ppSO));
             }
 

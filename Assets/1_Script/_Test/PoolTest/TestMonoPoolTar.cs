@@ -7,7 +7,7 @@ namespace Swift_Blade
     {
         [SerializeField] private int a = 0;
         private float timer = 0;
-        public void Initialize()
+        public void OnPopInitialize()
         {
             a = 0;
             timer = 0;
