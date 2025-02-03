@@ -13,8 +13,18 @@ namespace Swift_Blade
         public List<ItemDataSO> itemInventory;
 
         [HideInInspector] public List<ItemSlot> itemSlots;
-        public List<EquipmentStatData> currentEquipment;
+        public List<EquipmentStatData> currentEquipment = new List<EquipmentStatData>();
 
         public Action OnEquipmentChanged;
+
+        private void OnEnable()
+        {
+            currentEquipment = new List<EquipmentStatData>();
+        }
+
+        public void InvokeEquipChange()
+        {
+            OnEquipmentChanged?.Invoke();
+        }
     }
 }

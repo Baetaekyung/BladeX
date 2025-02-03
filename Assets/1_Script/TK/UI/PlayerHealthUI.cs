@@ -25,7 +25,7 @@ namespace Swift_Blade.UI
         [ContextMenu("Test Setting Health")]
         public void SetHealthUITest()
         {
-            SetHealthUI(5, 4);
+            SetHealthUI(5, 5);
         }
         
         public void SetHealthUI(int maxHealth, int currentHealth)

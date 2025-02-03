@@ -53,7 +53,8 @@ namespace Swift_Blade
         {
             if(!inventoryManager.isDragging) return;
             if (inventoryManager.SelectedItem != _itemDataSO) return;
-
+            if (inventoryManager.isSlotChanged == false) return;
+            
             inventoryManager.isSlotChanged = false;
             SetItemData(null);
         }

@@ -22,6 +22,7 @@ namespace Swift_Blade
         [SerializeField] private RectTransform canvasTrm;
         [SerializeField] private RectTransform cursorTrm;
         [SerializeField] private SelectItem_UI selectedItemImage;
+        [SerializeField] private List<EquipInfoUI> equipInfoUIs = new(4);
         
         public string currentSlotID;
         private SelectItem_UI _createdItemUI;
@@ -48,7 +49,6 @@ namespace Swift_Blade
         private void InitializeSlots()
         {
             playerInventory.itemSlots = new List<ItemSlot>();
-            playerInventory.currentEquipment = new List<EquipmentStatData>();
             
             for (int i = 0; i < itemSlots.Count; i++)
                 playerInventory.itemSlots.Add(itemSlots[i]);
@@ -156,6 +156,22 @@ namespace Swift_Blade
                 return true;
             }
             return false;
+        }
+
+        public void UpdateEquipInfoUI()
+        {
+            if (Inventory.currentEquipment.Count == 0)
+                return;
+
+            for (int j = 0; j < equipInfoUIs.Count; j++)
+            {
+                equipInfoUIs[j].SetIcon(null);
+            }
+            
+            for (int i = 0; i < Inventory.currentEquipment.Count; i++)
+            {
+                equipInfoUIs[i].SetIcon(Inventory.currentEquipment[i].icon);
+            }
         }
 
         public void EquipmentChangeApply() => playerInventory.OnEquipmentChanged?.Invoke();
