@@ -1,7 +1,6 @@
 using Swift_Blade.Pool;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Swift_Blade.Audio
@@ -10,20 +9,47 @@ namespace Swift_Blade.Audio
     {
         private AudioSource audioSource3D;
         public AudioClip CurrentClip { get; private set; }
+        private bool isAllowKill;
         private void Awake()
         {
             audioSource3D = GetComponent<AudioSource>();
         }
+        public void OnPopInitialize()
+        {
+            isAllowKill = false;
+        }
+        public void Play(bool destroyOnEnd = true)
+        {
+            audioSource3D.Play();
+            if (destroyOnEnd)
+                DestroyOnEnd();
+            isAllowKill = true;
+        }
         public void Play(AudioSO audioSO, bool destroyOnEnd = true)
         {
             Initialize(audioSO);
-            audioSource3D.Play();
-            if(destroyOnEnd)
-                DestroyOnEnd();
+            Play(destroyOnEnd);
         }
+        public void PlayOneShot(AudioSO audioSO)
+        {
+            audioSource3D.PlayOneShot(audioSO.clip);
+            isAllowKill = true;
+        }
+        public void StopAudio()
+        {
+            audioSource3D.Stop();
+        }
+        public void KillAudio()
+        {
+            StopAllCoroutines();
+            Debug.Assert(isAllowKill, "killing unkillable emitter instacne");
+            if(isAllowKill)
+                MonoGenericPool<AudioEmitter>.Push(this);
+        }
+
         private void DestroyOnEnd()
         {
-            StartCoroutine(WaitUntilAudioEnd(() => { MonoGenericPool<AudioEmitter>.Push(this); }));
+            StartCoroutine(WaitUntilAudioEnd(KillAudio));
         }
         private IEnumerator WaitUntilAudioEnd(Action callBack)
         {
@@ -37,7 +63,7 @@ namespace Swift_Blade.Audio
             //print("end");
             callBack.Invoke();
         }
-        private void Initialize(AudioSO audioSO)
+        public void Initialize(AudioSO audioSO)
         {
             CurrentClip = audioSO.clip;
 
@@ -61,9 +87,6 @@ namespace Swift_Blade.Audio
             if (audioSO.audioRolloffMode == AudioRolloffMode.Custom)
                 audioSource3D.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioSO.curve);
         }
-        public void OnPopInitialize()
-        {
 
-        }
     }
 }
