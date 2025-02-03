@@ -2,7 +2,7 @@ namespace Swift_Blade.Pool
 {
     public interface IPoolable
     {
-        public void Initialize();
+        public void OnPopInitialize();
     }
 
     //public interface IPoolable<T> : IPoolable

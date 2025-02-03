@@ -58,7 +58,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
             singletonFlag = singletonAttribute != null
                 ? singletonAttribute.Flag
                 : MonoSingletonFlags.None;
-            if (singletonFlag.Value.HasFlag(MonoSingletonFlags.DontDestroyOnLoad)) DontDestroyOnLoad(gameObject);
+            if (singletonAttribute.Flag.HasFlag(MonoSingletonFlags.DontDestroyOnLoad)) DontDestroyOnLoad(gameObject);
         }
 
         //init

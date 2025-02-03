@@ -6,6 +6,7 @@ namespace Swift_Blade.Pool
     public static class GameObjectPoolManager
     {
         private readonly static Dictionary<int, GameObjectPool> gameObjectPoolDictionary;
+
         static GameObjectPoolManager()
         {
             gameObjectPoolDictionary = new Dictionary<int, GameObjectPool>();
@@ -45,6 +46,7 @@ namespace Swift_Blade.Pool
                 result = value.Pop();
             else
             {
+                Debug.Assert(true, "runtimeInitializing! call Initialize Function before calling this");
                 GameObjectPool gameObjectPool = CreateDictionary(prefabSO);
                 result = gameObjectPool.Pop();
             }
@@ -56,6 +58,7 @@ namespace Swift_Blade.Pool
                 value.Push(instance);
             else
             {
+                Debug.Assert(true, "runtimeInitializing! call Initialize Function before calling this");
                 GameObjectPool gameObjectPool = CreateDictionary(prefabSO);
                 gameObjectPool.Push(instance);
             }

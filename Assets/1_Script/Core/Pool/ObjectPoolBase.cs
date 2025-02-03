@@ -19,7 +19,9 @@ namespace Swift_Blade.Pool
         where T : class
     {
         protected readonly List<T> poolList;
+        public int Count => poolList.Count;
         private readonly int maxCapacity;
+        public IReadOnlyList<T> GetList => poolList;
         public ObjectPoolBase(int initialPoolCapacity = 10, int maxCapacity = 1000, int preCreate = 10)
         {
             poolList = new List<T>(initialPoolCapacity);

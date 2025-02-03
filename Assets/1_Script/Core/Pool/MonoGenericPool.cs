@@ -6,14 +6,7 @@ namespace Swift_Blade.Pool
         where T : MonoBehaviour, IPoolable
     {
         private static MonoPool<T> monoPool;
-        //private static MonoPool<T> MonoPool
-        //{
-        //    get
-        //    {
-        //        Debug.Assert(monoPool != null, "field:monoPool is not initialized.");
-        //        return monoPool;
-        //    }
-        //}
+        public static ObjectPoolBase<T> GetPool => monoPool;
         /// <summary>
         /// This function must be called before calling any other methods.
         /// </summary>

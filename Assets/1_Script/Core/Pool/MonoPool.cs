@@ -27,7 +27,7 @@ namespace Swift_Blade.Pool
         }
         protected override void OnPop(T instance)
         {
-            instance.Initialize();
+            instance.OnPopInitialize();
             instance.gameObject.SetActive(true);
             instance.transform.parent = null;
         }
