@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Swift_Blade.Level
 {
@@ -11,15 +13,22 @@ namespace Swift_Blade.Level
         public Transform player;
         
         public int currentLevel = 0;
+
+        [Space] 
+        public string baseSceneName;
+        public bool useDistanceAdjustment;
         [Range(0.1f , 3)] public float moveTime;
         public float rotateSpeed = 0.5f;
-
+        
         private bool isMoing;
 
         [SerializeField] private FadeController _fadeController;
         
         private void Start()
         {
+            if (_fadeController == null)
+                _fadeController = FindObjectsByType<FadeController>(FindObjectsSortMode.None).FirstOrDefault();
+            
             MovePlayer(currentLevel);
         }
 
@@ -47,7 +56,7 @@ namespace Swift_Blade.Level
             if (isMoing) return;
             
             isMoing = true;
-            _fadeController.StartFade(()=> isMoing = false);
+            _fadeController.StartFade(()=> SceneManager.LoadScene($"{baseSceneName}_{currentLevel + 1}"),()=> isMoing = false);
         }
 
         private void NextLevel()
@@ -68,8 +77,9 @@ namespace Swift_Blade.Level
             
             Vector3 targetPos = levels[levelIndex].position;
             Vector3 direction = (targetPos - player.position).normalized;
-            float distance = Vector3.Distance(player.position, targetPos);
 
+            float distance = useDistanceAdjustment ? Vector3.Distance(player.position, targetPos) : 1;
+                        
             float adjustedMoveTime = moveTime * distance; 
         
             if (direction != Vector3.zero)
