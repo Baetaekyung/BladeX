@@ -7,7 +7,7 @@ namespace Swift_Blade
     {
         [SerializeField] protected DialogueDataSO dialogueData;
         
-        protected bool _isAlreadyRead = false;
+        protected bool  _isAlreadyRead = false;
 
         [Header("Dialogue end Event")] 
         public UnityEvent OnDialogueEndEvent;
@@ -24,7 +24,7 @@ namespace Swift_Blade
             DialogueManager.Instance.DoDialog(dialogueData).OnComplete(HandleEndEventRegister);
         }
 
-        protected virtual void HandleEndEventRegister()
+        protected void HandleEndEventRegister()
         {
             _isAlreadyRead = true;
             OnDialogueEndEvent?.Invoke();
