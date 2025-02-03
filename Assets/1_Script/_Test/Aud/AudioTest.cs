@@ -11,6 +11,7 @@ namespace Swift_Blade
         private void Start()
         {
             audioEmitterInstance = AudioManager.GetEmitter();
+            //audioEmitterInstance.Initialize(so);
         }
         void Update()
         {
