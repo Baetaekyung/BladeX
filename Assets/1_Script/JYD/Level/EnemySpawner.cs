@@ -24,6 +24,7 @@ namespace Swift_Blade.Level
 
         private void Start()
         {
+            currentEnemies = new List<BaseBoss>();
             Spawn();
         }
 
@@ -42,8 +43,8 @@ namespace Swift_Blade.Level
                     newEnemy.transform.position = spawnEnemies[waveCount].spawnPosition.position;
                     
                     
-                    ++waveCount;
                 }
+                ++waveCount;
             }
         }
         
