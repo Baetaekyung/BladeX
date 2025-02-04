@@ -11,14 +11,12 @@ namespace Swift_Blade
         private ParticleSystem _ps;
         private Material _mat;
         private Coroutine _coroutine;
-
-        [SerializeField] private Material slashMaterial;
         
         private void Awake()
         {
             _ps = GetComponent<ParticleSystem>();
-            _mat = new Material(slashMaterial);
             ParticleSystemRenderer renderModule = _ps.GetComponent<ParticleSystemRenderer>();
+            _mat = new Material(renderModule.material);
             
             renderModule.material = _mat;
         }
@@ -36,9 +34,9 @@ namespace Swift_Blade
             float time = 0;
             _mat.SetFloat(_durationHash, 0);
 
-            while (time < _ps.main.duration)
+            while (time < _ps.main.startLifetimeMultiplier)
             {
-                _mat.SetFloat(_durationHash, time / _ps.main.duration);
+                _mat.SetFloat(_durationHash, 1 - time / _ps.main.startLifetimeMultiplier);
                 
                 time += Time.unscaledDeltaTime;
                 yield return null;
