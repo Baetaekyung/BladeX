@@ -1,22 +1,22 @@
 using UnityEngine;
-using DG.Tweening;
 
 namespace Swift_Blade
 {
     public class DisplayLevel : MonoBehaviour
     {
         [SerializeField] private float moveDistance = 2f;
-        [SerializeField] private float moveDuration = 1f;
+        [SerializeField] private float moveSpeed = 1f;
+        private Vector3 startPos;
 
         void Start()
         {
-            MoveUpDown();
+            startPos = transform.position;
         }
 
-        void MoveUpDown()
+        void Update()
         {
-            transform.DOMoveY(transform.position.y + moveDistance, moveDuration)
-                .SetLoops(-1, LoopType.Yoyo);
+            float newY = startPos.y + Mathf.Sin(Time.time * moveSpeed) * moveDistance;
+            transform.position = new Vector3(startPos.x, newY, startPos.z);
         }
     }
 }
