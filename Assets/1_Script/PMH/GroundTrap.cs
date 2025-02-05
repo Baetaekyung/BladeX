@@ -8,7 +8,7 @@ namespace Swift_Blade
         private bool isActive = false;
 
         [SerializeField] private Transform trapSpears;
-        [SerializeField] private float delay;
+        [SerializeField] private float delay = 1;
         private float timer;
 
         private void Start()
@@ -32,6 +32,14 @@ namespace Swift_Blade
             const float activeYValue = 0;
             const float deactiveYValue = -2;
             return isActive ? activeYValue : deactiveYValue;
+        }
+        private void OnTriggerStay(Collider other)
+        {
+            if (!isActive) return;
+            if (other.TryGetComponent(out PlayerHealth playerHealth))
+            {
+                playerHealth.TakeDamage(new ActionData { damageAmount = 1, attackType = AttackType.Melee });
+            }
         }
         //IEnumerator ActiveCoroutine()
         //{
