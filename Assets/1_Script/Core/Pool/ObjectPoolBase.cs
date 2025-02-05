@@ -22,16 +22,11 @@ namespace Swift_Blade.Pool
         public int Count => poolList.Count;
         private readonly int maxCapacity;
         public IReadOnlyList<T> GetList => poolList;
-        public ObjectPoolBase(int initialPoolCapacity = 10, int maxCapacity = 1000, int preCreate = 10)
+        public ObjectPoolBase(int initialPoolCapacity = 10, int maxCapacity = 1000)
         {
             poolList = new List<T>(initialPoolCapacity);
             this.maxCapacity = maxCapacity;
-            //for (int i = 0; i < preCreate; i++)
-            //{
-            //    Push(Create());
-            //}
         }
-
         public int Dbg_Cnt()
         {
             return poolList.Count;
