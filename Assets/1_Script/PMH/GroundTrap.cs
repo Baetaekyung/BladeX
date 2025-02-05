@@ -1,42 +1,55 @@
 using DG.Tweening;
-using System.Collections;
 using UnityEngine;
 
 namespace Swift_Blade
 {
     public class GroundTrap : MonoBehaviour
     {
-        [SerializeField] private bool isActive = false;
+        private bool isActive = false;
 
-        [SerializeField] private float delay;
         [SerializeField] private Transform trapSpears;
+        [SerializeField] private float delay;
+        private float timer;
 
         private void Start()
         {
-            trapSpears.localPosition = new Vector3(0, (isActive ? 0 : -2), 0);
-
-            StartCoroutine(ActiveCoroutine());
+            trapSpears.localPosition = new Vector3(0, GetYValue());
+            //StartCoroutine(ActiveCoroutine());
         }
-
-        IEnumerator ActiveCoroutine()
+        private void Update()
         {
-            while (true)
+            timer += Time.deltaTime;
+            if (timer > delay)
             {
-                if (isActive)
-                {
-                    trapSpears.DOMoveY(transform.localPosition.y - 2, 0.5f);
-                    isActive = false;
-                }
-                else
-                {
-                    trapSpears.DOMoveY(transform.localPosition.y, 0.5f);
-                    isActive = true;
-                }
-
-                //æ»≥Á«œººø‰ º±ª˝¥‘ ªÔ∞°∞Ì¿Œ¿«
-
-                yield return new WaitForSeconds(delay);
+                timer = 0;
+                isActive = !isActive;
+                float targetY = GetYValue();
+                trapSpears.DOMoveY(targetY, 0.5f);
             }
         }
+        private float GetYValue()
+        {
+            const float activeYValue = 0;
+            const float deactiveYValue = -2;
+            return isActive ? activeYValue : deactiveYValue;
+        }
+        //IEnumerator ActiveCoroutine()
+        //{
+        //    while (true)
+        //    {
+        //        if (isActive)
+        //        {
+        //            trapSpears.DOMoveY(transform.localPosition.y - 2, 0.5f);
+        //            isActive = false;
+        //        }
+        //        else
+        //        {
+        //            trapSpears.DOMoveY(transform.localPosition.y, 0.5f);
+        //            isActive = true;
+        //        }
+        //
+        //        yield return new WaitForSeconds(delay);
+        //    }
+        //}
     }
 }
