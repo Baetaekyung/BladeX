@@ -70,7 +70,8 @@ namespace Swift_Blade.FSM.States
 
         protected virtual void PlayAnimationOnEnter()
         {
-            ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1);
+            PlayAnimationRebind(baseAnimParam.GetAnimationHash, -1);
+            //ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1);
         }
         protected void PlayAnimation(AnimationParameterSO param, int layer = -1)
         {
