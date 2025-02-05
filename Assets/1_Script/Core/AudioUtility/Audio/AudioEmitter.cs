@@ -26,7 +26,7 @@ namespace Swift_Blade.Audio
 
             audioSource.Play();
             if (destroyOnEnd)
-                DestroyOnEnd();
+                Cor_DestroyOnEnd();
             isAllowKill = true;
         }
         public void PlayWithInit(AudioSO audioSO, bool destroyOnEnd = false)
@@ -56,21 +56,21 @@ namespace Swift_Blade.Audio
             if(isAllowKill)
                 MonoGenericPool<AudioEmitter>.Push(this);
         }
-        private void DestroyOnEnd()
+        private void Cor_DestroyOnEnd()
         {
             StartCoroutine(WaitUntilAudioEnd(KillAudio));
-        }
-        private IEnumerator WaitUntilAudioEnd(Action callBack)
-        {
-            Debug.Assert(callBack != null, "callback is null");
-            print("st");
-            while (audioSource.isPlaying)
+            IEnumerator WaitUntilAudioEnd(Action callBack)
             {
-                print("waiting");
-                yield return null;
+                Debug.Assert(callBack != null, "callback is null");
+                print("st");
+                while (audioSource.isPlaying)
+                {
+                    print("waiting");
+                    yield return null;
+                }
+                print("end");
+                callBack.Invoke();
             }
-            print("end");
-            callBack.Invoke();
         }
         public void Initialize(AudioSO audioSO)
         {

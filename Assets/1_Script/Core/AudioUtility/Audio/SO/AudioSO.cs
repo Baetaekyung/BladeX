@@ -24,6 +24,7 @@ namespace Swift_Blade.Audio
         public AudioMixerGroup audioMixerGroup;
         public bool loop;
 
+        [Header("Global Values, StartValue")]
         [Space(10)]
         [Range(0, 256)]     public int priority = 128;
         [Range(0, 1)]       public float volume = 1;
