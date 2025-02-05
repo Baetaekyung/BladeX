@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Feeling
 {
+    [MonoSingletonUsage(MonoSingletonFlags.DontDestroyOnLoad)]
     public class HitStopManager : MonoSingleton<HitStopManager>
     {        
         [Header("타임 스케일 관련 변수 및 우선순위")]
