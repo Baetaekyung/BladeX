@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Swift_Blade.Feeling;
 using UnityEngine;
 
@@ -5,6 +6,13 @@ namespace Swift_Blade.Enemy.Boss.Golem
 {
     public class GolemBoss : BaseEnemy
     {
+        protected override void Start()
+        {
+            base.Start();
+            
+            (baseAnimationController as GolemAnimatorController).target = target;
+        }
+
         protected override void Update()
         {
             if (baseAnimationController.isManualRotate)

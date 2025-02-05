@@ -14,7 +14,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
 
         [SerializeField] private Transform stoneTrm;
         [SerializeField] private Projectile stone;
-        private Projectile throwStone;
+        [SerializeField] private Projectile throwStone;
         
         private GolemBossCaster damageCaster;
 
@@ -74,7 +74,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
         public override void StopAllAnimationEvents()
         {
             base.StopAllAnimationEvents();
-            print("¾Ó ¼½½º ±â¸ð¶ì");
+            
             StopManualLook();
             StopManualCollider();
         }
