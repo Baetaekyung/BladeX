@@ -3,15 +3,11 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
-
 namespace Swift_Blade.Feeling
 {
-    public class CameraShakeManager : MonoBehaviour
+    [MonoSingletonUsage(MonoSingletonFlags.DontDestroyOnLoad)]
+    public class CameraShakeManager : MonoSingleton<CameraShakeManager>
     {
-        private static CameraShakeManager _instance;
-
-        public static CameraShakeManager Instance => _instance;
-
         [Header("Camera Shaking")]
         [SerializeField] private SerializableDictionary<CameraShakeType, CameraShakeSO> impulseDictionary;
         private Coroutine _cameraShakeCoroutine;
@@ -19,18 +15,7 @@ namespace Swift_Blade.Feeling
 
         private Action _onCompleteEvent = null;
         
-        private void Awake()
-        {
-            if (_instance is null)
-            {
-                _instance = this;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
-
+        
         public CameraShakeManager DoShake(CameraShakeType shakeType, CameraShakePriority priority = CameraShakePriority.NONE)
         {
             if (_cameraShakeCoroutine is not null)

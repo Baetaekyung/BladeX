@@ -5,7 +5,6 @@ namespace Swift_Blade.Boss.Reaper
 {
     public class ReaperBoss : BaseBoss
     {
-        private Collider collider;
         [HideInInspector] public ReaperBossAnimatorController _reaperAnimatorController;
 
         private Vector3 lastPosition;
@@ -13,7 +12,7 @@ namespace Swift_Blade.Boss.Reaper
         protected override void Start()
         {
             base.Start();
-            collider = GetComponent<Collider>();
+            _collider = GetComponent<Collider>();
             _reaperAnimatorController = bossAnimationController as ReaperBossAnimatorController;;
         }
 
@@ -41,7 +40,7 @@ namespace Swift_Blade.Boss.Reaper
         public void SetCollision(bool _active)
         {
             NavmeshAgent.enabled = _active;
-            collider.enabled = _active;
+            GetComponent<Collider>().enabled = _active;
         }
         
         private void SetVelocity()

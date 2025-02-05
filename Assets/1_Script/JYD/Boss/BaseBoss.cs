@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Feeling;
+using Swift_Blade.Level;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,6 +24,10 @@ namespace Swift_Blade.Boss
         [SerializeField] protected CameraShakeType cameraShakeType;
         [SerializeField] protected float rotateSpeed;
         [Range(0,5)][SerializeField] protected float stopDistance;
+
+        protected EnemySpawner owner;
+        protected Collider _collider;
+
         
         protected virtual void Start()
         {
@@ -30,7 +35,8 @@ namespace Swift_Blade.Boss
             bossAnimationController = GetComponentInChildren<BossAnimationController>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
             baseHealth = GetComponent<BaseBossHealth>();
-
+            _collider = GetComponent<Collider>();
+            
             InitTarget();
         }
 
@@ -72,8 +78,7 @@ namespace Swift_Blade.Boss
                     transform.position = Vector3.MoveTowards(transform.position, attackDestination,
                         bossAnimationController.AttackMoveSpeed * Time.deltaTime);
                 }
-
-                //NavmeshAgent.Warp(transform.position);
+                
             }
         }
         
@@ -119,15 +124,18 @@ namespace Swift_Blade.Boss
         
         public virtual void SetDead()
         {
+            owner?.CheckSpawn();
+            
+            _collider.enabled = false;
+                        
             StopImmediately();
             bossAnimationController.StopAllAnimationEvents();
         }
-        
-        public void ShakeCam()
+
+        public void SetOwner(EnemySpawner _owner)
         {
-            CameraShakeManager.Instance.DoShake(cameraShakeType);
+            owner = _owner;
         }
-        
-        
+                
     }
 }
