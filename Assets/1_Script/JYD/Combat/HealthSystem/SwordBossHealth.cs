@@ -3,7 +3,7 @@ using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat.Health
 {
-    public class SwordBossHealth : BaseBossHealth
+    public class SwordBossHealth : BaseEnemyHealth
     {
         private void Update()
         {

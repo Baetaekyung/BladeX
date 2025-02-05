@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using Swift_Blade.Enemy.Goblin;
+using Swift_Blade.Enemy.Golbin;
 using UnityEngine;
 
-namespace Swift_Blade.Boss.Goblin
+namespace Swift_Blade.Enemy.Boss.Golbin
 {
     public class GoblinBoss : BaseGoblin
     {
@@ -46,7 +48,8 @@ namespace Swift_Blade.Boss.Goblin
 
         public override void SetDead()
         {
-            StopImmediately();
+            base.SetDead();
+                        
             goblinAnimator.StopAllAnimationEvents();
         }
     }

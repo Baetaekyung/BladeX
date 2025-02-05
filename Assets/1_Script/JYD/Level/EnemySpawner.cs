@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using Swift_Blade.Boss;
+using Swift_Blade.Enemy;
 using UnityEngine;
 
 [System.Serializable]
 public struct SpawnInfo
 {
-    public BaseBoss enemy;
+    public BaseEnemy enemy;
     public Transform spawnPosition;
     public int enemyCount;
 }
@@ -39,7 +39,7 @@ namespace Swift_Blade.Level
             
             for (int i = 0; i < spawnEnemies[waveCount].enemyCount; i++)
             {
-                BaseBoss newEnemy = Instantiate(spawnEnemies[waveCount].enemy);
+                BaseEnemy newEnemy = Instantiate(spawnEnemies[waveCount].enemy);
                 newEnemy.transform.position = spawnEnemies[waveCount].spawnPosition.position;
                 newEnemy.SetOwner(this);
                 ++enemyCount;

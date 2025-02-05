@@ -1,6 +1,7 @@
+using Swift_Blade.Enemy.Golbin;
 using UnityEngine;
 
-namespace Swift_Blade.Boss.Goblin
+namespace Swift_Blade.Enemy.Boss.Golbin
 {
     public class GoblinBossAnimatorController : GoblinAnimator
     {
@@ -15,11 +16,8 @@ namespace Swift_Blade.Boss.Goblin
                 
         public void CreateSummon()
         {
-            (boss as GoblinBoss)?.Summon();
+            (enemy as GoblinBoss)?.Summon();
         }
-
-        
-
-       
+               
     }
 }

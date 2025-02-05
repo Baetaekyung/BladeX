@@ -2,14 +2,14 @@ using Swift_Blade.Combat.Caster;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Swift_Blade.Boss
+namespace Swift_Blade.Enemy
 {
-    public class BossAnimationController : MonoBehaviour
+    public class BaseEnemyAnimationController : MonoBehaviour
     {
         protected Animator Animator;
         protected NavMeshAgent NavMeshAgent;
         
-        protected BaseBoss boss;
+        protected BaseEnemy enemy;
         protected LayerCaster layerCaster;
 
         [SerializeField] [Range(1,60)] private float defaultAttackMoveSpeed;
@@ -26,7 +26,7 @@ namespace Swift_Blade.Boss
         {
             layerCaster = GetComponentInChildren<LayerCaster>();
             
-            boss = GetComponent<BaseBoss>();
+            enemy = GetComponent<BaseEnemy>();
             Animator = GetComponent<Animator>();
             NavMeshAgent = GetComponent<NavMeshAgent>();
         }

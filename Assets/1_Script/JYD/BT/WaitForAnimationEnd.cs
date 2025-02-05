@@ -1,5 +1,5 @@
 using System;
-using Swift_Blade.Boss;
+using Swift_Blade.Enemy;
 using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
@@ -9,7 +9,7 @@ using Unity.Properties;
 [NodeDescription(name: "WaitForAnimationEnd", story: "Wait for AnimationEnd", category: "Action", id: "76468958c1353048a0f3623f15a9a17b")]
 public partial class WaitForAnimationEndAction : Action
 {
-    [SerializeReference] public BlackboardVariable<BossAnimationController> animationController;
+    [SerializeReference] public BlackboardVariable<BaseEnemyAnimationController> animationController;
     
     protected override Status OnUpdate()
     {

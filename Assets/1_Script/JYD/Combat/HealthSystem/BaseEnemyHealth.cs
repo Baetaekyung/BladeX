@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace Swift_Blade.Combat.Health
 {
-    public class BaseBossHealth : MonoBehaviour,IDamageble
+    public class BaseEnemyHealth : MonoBehaviour,IDamageble
     {
         public UnityEvent<ActionData> OnHitEvent;
         public UnityEvent OnDeadEvent;

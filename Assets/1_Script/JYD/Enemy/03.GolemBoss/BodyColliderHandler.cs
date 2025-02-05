@@ -4,7 +4,6 @@ namespace Swift_Blade.Combat
 {
     public class BodyColliderHandler : MonoBehaviour
     {
-        
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))

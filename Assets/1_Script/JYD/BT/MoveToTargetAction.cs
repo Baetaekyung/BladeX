@@ -4,13 +4,13 @@ using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using UnityEngine.AI;
-using Swift_Blade.Boss;
+using Swift_Blade.Enemy;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "MoveToTarget", story: "Move To [Target]", category: "Action", id: "fe3d7f0e9abad8283274f183328a793d")]
 public partial class MoveToTargetAction : Action
 {
-    [SerializeReference] public BlackboardVariable<BaseBoss> Boss;
+    [SerializeReference] public BlackboardVariable<BaseEnemy> Boss;
     [SerializeReference] public BlackboardVariable<Transform> Target;
     [SerializeReference] public BlackboardVariable<float> MoveSpeed;
     

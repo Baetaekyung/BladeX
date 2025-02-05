@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace Swift_Blade.Boss.Goblin
+namespace Swift_Blade.Enemy.Golbin
 {
-    public class GoblinAnimator : BossAnimationController
+    public class GoblinAnimator : BaseEnemyAnimationController
     {
         [Range(1, 100)] public float knockbackSpeed;
 

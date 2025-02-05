@@ -1,6 +1,5 @@
 using System;
-using Swift_Blade.Boss;
-using Swift_Blade.Boss.Reaper;
+using Swift_Blade.Enemy.Boss.Reaper;
 using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;

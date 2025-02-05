@@ -1,8 +1,9 @@
 using System;
+using Swift_Blade.Enemy.Goblin;
 using Unity.Behavior;
 using UnityEngine;
 
-namespace Swift_Blade.Boss.Goblin
+namespace Swift_Blade.Enemy.Golbin
 {
     public class GoblinEnemyInStreet : BaseGoblin
     {

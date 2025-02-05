@@ -6,12 +6,12 @@ using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Swift_Blade.Boss
+namespace Swift_Blade.Enemy
 {
-    public class BaseBoss : MonoBehaviour
+    public class BaseEnemy : MonoBehaviour
     {
-        protected BossAnimationController bossAnimationController;
-        protected BaseBossHealth baseHealth;
+        protected BaseEnemyAnimationController baseAnimationController;
+        protected BaseEnemyHealth baseHealth;
         
         protected NavMeshAgent NavmeshAgent;
         protected BehaviorGraphAgent btAgent;
@@ -32,9 +32,9 @@ namespace Swift_Blade.Boss
         protected virtual void Start()
         {
             btAgent = GetComponent<BehaviorGraphAgent>();
-            bossAnimationController = GetComponentInChildren<BossAnimationController>();
+            baseAnimationController = GetComponentInChildren<BaseEnemyAnimationController>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
-            baseHealth = GetComponent<BaseBossHealth>();
+            baseHealth = GetComponent<BaseEnemyHealth>();
             _collider = GetComponent<Collider>();
             
             InitTarget();
@@ -59,12 +59,12 @@ namespace Swift_Blade.Boss
         {
             if(baseHealth.isDead)return;
             
-            if (bossAnimationController.isManualRotate)
+            if (baseAnimationController.isManualRotate)
             {
                 FactToTarget(target.position);
             }
 
-            if (bossAnimationController.isManualMove)
+            if (baseAnimationController.isManualMove)
             {
                 Vector3 directionToTarget = (target.position - transform.position).normalized;
                 attackDestination = target.position - directionToTarget * 1f;
@@ -76,7 +76,7 @@ namespace Swift_Blade.Boss
                     attackDestination = transform.position + transform.forward;
 
                     transform.position = Vector3.MoveTowards(transform.position, attackDestination,
-                        bossAnimationController.AttackMoveSpeed * Time.deltaTime);
+                        baseAnimationController.AttackMoveSpeed * Time.deltaTime);
                 }
                 
             }
@@ -127,9 +127,9 @@ namespace Swift_Blade.Boss
             owner?.CheckSpawn();
             
             _collider.enabled = false;
-                        
+            
             StopImmediately();
-            bossAnimationController.StopAllAnimationEvents();
+            baseAnimationController.StopAllAnimationEvents();
         }
 
         public void SetOwner(EnemySpawner _owner)

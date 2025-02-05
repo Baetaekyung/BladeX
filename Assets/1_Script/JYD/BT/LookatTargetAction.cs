@@ -1,5 +1,5 @@
 using System;
-using Swift_Blade.Boss;
+using Swift_Blade.Enemy;
 using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
@@ -10,7 +10,7 @@ using Unity.Properties;
 public partial class LookatTargetAction : Action
 {
     [SerializeReference] public BlackboardVariable<bool> Param;
-    [SerializeReference] public BlackboardVariable<BossAnimationController> AnimatorController;
+    [SerializeReference] public BlackboardVariable<BaseEnemyAnimationController> AnimatorController;
     protected override Status OnStart()
     {
         AnimatorController.Value.isManualRotate = Param.Value;

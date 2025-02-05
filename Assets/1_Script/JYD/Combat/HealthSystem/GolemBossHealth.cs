@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Combat.Health
 {
-    public class GolemBossHealth : BaseBossHealth
+    public class GolemBossHealth : BaseEnemyHealth
     {
         private void Update()
         {

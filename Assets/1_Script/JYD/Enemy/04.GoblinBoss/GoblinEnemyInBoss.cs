@@ -1,8 +1,10 @@
+using Swift_Blade.Enemy.Boss.Golbin;
+using Swift_Blade.Enemy.Goblin;
 using Unity.Behavior;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Swift_Blade.Boss.Goblin
+namespace Swift_Blade.Enemy.Golbin
 {
     public class GoblinEnemyInBoss : BaseGoblin
     {
@@ -34,12 +36,12 @@ namespace Swift_Blade.Boss.Goblin
 
         protected override void Update()
         {
-            if (bossAnimationController.isManualRotate)
+            if (baseAnimationController.isManualRotate)
             {
                 FactToTarget(target.position);
             }
 
-            if (bossAnimationController.isManualMove)
+            if (baseAnimationController.isManualMove)
             {
                 float distance = Vector3.Distance(transform.position , target.position);
                 
@@ -48,11 +50,11 @@ namespace Swift_Blade.Boss.Goblin
                     attackDestination = transform.position + transform.forward;
 
                     transform.position = Vector3.MoveTowards(transform.position, attackDestination, 
-                        bossAnimationController.AttackMoveSpeed * Time.deltaTime);
+                        baseAnimationController.AttackMoveSpeed * Time.deltaTime);
                 }
             }
 
-            if (bossAnimationController is GoblinBossAnimatorController goblinAnimatorController)
+            if (baseAnimationController is GoblinBossAnimatorController goblinAnimatorController)
             {
                 if (goblinAnimatorController.isManualKnockback)
                 {

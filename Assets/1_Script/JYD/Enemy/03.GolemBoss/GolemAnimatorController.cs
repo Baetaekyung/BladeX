@@ -4,9 +4,9 @@ using Swift_Blade.projectile;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-namespace Swift_Blade.Boss.Golem
+namespace Swift_Blade.Enemy.Boss.Golem
 {
-    public class GolemBossAnimatorController : BossAnimationController
+    public class GolemAnimatorController : BaseEnemyAnimationController
     {
         public Transform target;
         

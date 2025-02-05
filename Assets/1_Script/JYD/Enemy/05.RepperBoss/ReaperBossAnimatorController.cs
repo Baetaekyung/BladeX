@@ -1,21 +1,20 @@
-using Swift_Blade.Boss;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Swift_Blade.Boss.Reaper
+namespace Swift_Blade.Enemy.Boss.Reaper
 {
-    public class ReaperBossAnimatorController : BossAnimationController
+    public class ReaperBossAnimatorController : BaseEnemyAnimationController
     {
-        private readonly int xVelocity = UnityEngine.Animator.StringToHash("XVelocity");
-        private readonly int yVelocity = UnityEngine.Animator.StringToHash("YVelocity");
-        private readonly int zVelocity = UnityEngine.Animator.StringToHash("ZVelocity");
-        private readonly int yMove = UnityEngine.Animator.StringToHash("YMove");
+        private readonly int xVelocity = Animator.StringToHash("XVelocity");
+        private readonly int yVelocity = Animator.StringToHash("YVelocity");
+        private readonly int zVelocity = Animator.StringToHash("ZVelocity");
+        private readonly int yMove = Animator.StringToHash("YMove");
         
         protected override void Start()
         {
             base.Start();
             NavMeshAgent = GetComponentInParent<NavMeshAgent>();
-            boss = GetComponentInParent<BaseBoss>();
+            enemy = GetComponentInParent<BaseEnemy>();
 
         }
         public void MoveDown()

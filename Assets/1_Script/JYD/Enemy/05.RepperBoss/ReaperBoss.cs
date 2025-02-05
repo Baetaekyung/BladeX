@@ -1,9 +1,8 @@
-using Swift_Blade.Boss;
 using UnityEngine;
 
-namespace Swift_Blade.Boss.Reaper
+namespace Swift_Blade.Enemy.Boss.Reaper
 {
-    public class ReaperBoss : BaseBoss
+    public class ReaperBoss : BaseEnemy
     {
         [HideInInspector] public ReaperBossAnimatorController _reaperAnimatorController;
 
@@ -13,7 +12,7 @@ namespace Swift_Blade.Boss.Reaper
         {
             base.Start();
             _collider = GetComponent<Collider>();
-            _reaperAnimatorController = bossAnimationController as ReaperBossAnimatorController;;
+            _reaperAnimatorController = baseAnimationController as ReaperBossAnimatorController;;
         }
 
         protected override void Update()

@@ -1,5 +1,5 @@
 using System;
-using Swift_Blade.Boss.Goblin;
+using Swift_Blade.Enemy.Boss.Golbin;
 using Unity.Behavior;
 using UnityEngine;
 

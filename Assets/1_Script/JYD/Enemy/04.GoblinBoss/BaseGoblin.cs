@@ -1,10 +1,9 @@
-using System;
-using Unity.Behavior;
+using Swift_Blade.Enemy.Golbin;
 using UnityEngine;
 
-namespace Swift_Blade.Boss.Goblin
+namespace Swift_Blade.Enemy.Goblin
 {
-    public class BaseGoblin : BaseBoss
+    public class BaseGoblin : BaseEnemy
     {
         protected GoblinAnimator goblinAnimator;
         
@@ -12,19 +11,19 @@ namespace Swift_Blade.Boss.Goblin
         {
             base.Start();
             
-            goblinAnimator = bossAnimationController as GoblinAnimator;
+            goblinAnimator =  baseAnimationController as GoblinAnimator;
         }
 
         protected override void Update()
         {
             if(baseHealth.isDead)return;
             
-            if (bossAnimationController.isManualRotate)
+            if (baseAnimationController.isManualRotate)
             {
                 FactToTarget(target.position);
             }
 
-            if (bossAnimationController.isManualMove)
+            if (baseAnimationController.isManualMove)
             {
                 float distance = Vector3.Distance(transform.position , target.position);
                 
@@ -33,7 +32,7 @@ namespace Swift_Blade.Boss.Goblin
                     attackDestination = transform.position + transform.forward;
 
                     transform.position = Vector3.MoveTowards(transform.position, attackDestination, 
-                        bossAnimationController.AttackMoveSpeed * Time.deltaTime);
+                        baseAnimationController.AttackMoveSpeed * Time.deltaTime);
                 }
             }
 

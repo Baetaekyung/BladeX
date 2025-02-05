@@ -1,5 +1,5 @@
 using System;
-using Swift_Blade.Boss;
+using Swift_Blade.Enemy;
 using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
@@ -9,7 +9,7 @@ using Unity.Properties;
 [NodeDescription(name: "SetApplyRootMotion", story: "RootMotion [Param]", category: "Action", id: "58403f578a4504714ddc80a114b7e9c7")]
 public partial class SetApplyRootMotionAction : Action
 {
-    [SerializeReference] public BlackboardVariable<BossAnimationController> Animator;
+    [SerializeReference] public BlackboardVariable<BaseEnemyAnimationController> Animator;
     [SerializeReference] public BlackboardVariable<bool> Param;
     
     protected override Status OnStart()
