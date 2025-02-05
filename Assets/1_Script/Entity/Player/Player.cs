@@ -84,7 +84,7 @@ namespace Swift_Blade
             PlayerHealth playerHealth = GetPlayerHealth;
             playerHealth.OnHitEvent.AddListener((data) => 
             {
-                if (IsPlayerDead || GetPlayerHealth.IsPlayerInvincible) return;
+                if (IsPlayerDead) return;
                 bool isHitStun = true;
                 if (isHitStun)
                     playerStateMachine.ChangeState(PlayerStateEnum.HitStun);
@@ -96,9 +96,9 @@ namespace Swift_Blade
             playerStateMachine.UpdateState();
 
             Debug_Updt?.Invoke();
-            //if (Input.GetKeyDown(KeyCode.F1))
-            //    UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
-            //UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
+            if (Input.GetKeyDown(KeyCode.F1))
+                UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
+            UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
             //if (Input.GetKeyDown(KeyCode.F))
             //{
             //    GetPlayerAnimator.GetAnimator.Rebind();
