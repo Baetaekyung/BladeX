@@ -30,8 +30,8 @@ namespace Swift_Blade.Combat.Feedbck
         
         private void Start()
         {
-            volume = FindObjectsOfType<Volume>().ToList().FirstOrDefault();
-
+            volume = FindFirstObjectByType<Volume>();
+            
             if (volume == null)
             {
                 Debug.LogError("JYD씬에 가서 Global Volume을 복사해서 들고 오셈.");
@@ -41,12 +41,8 @@ namespace Swift_Blade.Combat.Feedbck
             }
             
             volume.profile.TryGet(out vignette);
+            ApplyVignetteInfo(origin);
             
-            // 시작할 때 origin 설정 적용
-            if(vignette != null)
-            {
-                ApplyVignetteInfo(origin);
-            }
         }
 
         private void ApplyVignetteInfo(VignetteInfo info)
@@ -89,7 +85,6 @@ namespace Swift_Blade.Combat.Feedbck
 
             elapsedTime = 0f;
 
-            // origin으로 돌아가기
             while (elapsedTime < decreaseDuration)
             {
                 elapsedTime += Time.deltaTime;

@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using DG.Tweening;
 using Swift_Blade.Boss;
 using UnityEngine;
-using UnityEngine.Events;
 
 [System.Serializable]
 public struct SpawnInfo
@@ -17,42 +14,59 @@ namespace Swift_Blade.Level
 {
     public class EnemySpawner : MonoBehaviour
     {
+        public LevelClearEventSO levelEvent;
         public List<SpawnInfo> spawnEnemies;
-        private List<BaseBoss> currentEnemies;
 
         public int waveCount;
+        private int enemyCount;
+        private int enemyCounter;
 
         private void Start()
         {
-            currentEnemies = new List<BaseBoss>();
             Spawn();
         }
 
-        public void Spawn()
+        private void Spawn()
         {
             if (waveCount >= spawnEnemies.Count)
             {
-                Debug.Log("이 스테이지 클리어.");    
+                Debug.Log("모든 웨이브를 클리어했습니다!");
+                return;
+            }
+
+            enemyCount = 0; 
+            enemyCounter = 0; 
+            
+            for (int i = 0; i < spawnEnemies[waveCount].enemyCount; i++)
+            {
+                BaseBoss newEnemy = Instantiate(spawnEnemies[waveCount].enemy);
+                newEnemy.transform.position = spawnEnemies[waveCount].spawnPosition.position;
+                newEnemy.SetOwner(this);
+                ++enemyCount;
+            }
+
+            ++waveCount;
+        }
+
+        public void CheckSpawn()
+        {
+            ++enemyCounter;
+            
+            if (waveCount >= spawnEnemies.Count)
+            {
+                if (enemyCount == enemyCounter)
+                {
+                    levelEvent.LevelClearEvent?.Invoke();
+                    Debug.Log("이 스테이지를 클리어했습니다!");
+                }
             }
             else
             {
-                for (int i = 0; i <spawnEnemies[waveCount].enemyCount; i++ )
+                if (enemyCount == enemyCounter)
                 {
-                    BaseBoss newEnemy = Instantiate(spawnEnemies[waveCount].enemy);
-                    currentEnemies.Add(newEnemy);
-                    newEnemy.transform.position = spawnEnemies[waveCount].spawnPosition.position;
-                    
-                    
+                    Spawn();
                 }
-                ++waveCount;
             }
         }
-        
-        public void Remove()
-        {
-            
-        }
-        
-        
     }
 }
