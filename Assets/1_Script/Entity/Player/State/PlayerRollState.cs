@@ -17,14 +17,14 @@ namespace Swift_Blade.FSM.States
         {
             playerRenderer = player.GetPlayerRenderer;
             playerHealth = player.GetPlayerHealth;
-#if UNITY_EDITOR
-            Player.Debug_Updt += () =>
-            {
-                UI_DebugPlayer.DebugText(3, inputBuffer, "inputBuffer", DBG_UI_KEYS.Keys_PlayerMovement);
-                UI_DebugPlayer.DebugText(4, allowListening, "allowListen", DBG_UI_KEYS.Keys_PlayerMovement);
-                UI_DebugPlayer.DebugText(5, allowChangeToAttack, "allowNext", DBG_UI_KEYS.Keys_PlayerMovement);
-            };
-#endif
+//#if UNITY_EDITOR
+//            Player.Debug_Updt += () =>
+//            {
+//                UI_DebugPlayer.DebugText(3, inputBuffer, "inputBuffer", DBG_UI_KEYS.Keys_PlayerMovement);
+//                UI_DebugPlayer.DebugText(4, allowListening, "allowListen", DBG_UI_KEYS.Keys_PlayerMovement);
+//                UI_DebugPlayer.DebugText(5, allowChangeToAttack, "allowNext", DBG_UI_KEYS.Keys_PlayerMovement);
+//            };
+//#endif
         }
         public override void Enter()
         {

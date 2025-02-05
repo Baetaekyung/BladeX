@@ -25,13 +25,13 @@ namespace Swift_Blade.FSM.States
             : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
             playerRenderer = player.GetPlayerRenderer;
-            Player.Debug_Updt += () =>
-            {
-                UI_DebugPlayer.DebugText(2, IsContinuousComboAllowed, "dpover", DBG_UI_KEYS.Keys_PlayerAction);
-                UI_DebugPlayer.DebugText(3, delayContinuousCombo, "deadPeriod", DBG_UI_KEYS.Keys_PlayerAction);
-                UI_DebugPlayer.DebugText(4, Time.time, "time", DBG_UI_KEYS.Keys_PlayerAction);
-                UI_DebugPlayer.DebugText(5, comboStateHistory.Count, "cshCount", DBG_UI_KEYS.Keys_PlayerAction);
-            };
+            //Player.Debug_Updt += () =>
+            //{
+            //    //UI_DebugPlayer.DebugText(2, IsContinuousComboAllowed, "dpover", DBG_UI_KEYS.Keys_PlayerAction);
+            //    //UI_DebugPlayer.DebugText(3, delayContinuousCombo, "deadPeriod", DBG_UI_KEYS.Keys_PlayerAction);
+            //    //UI_DebugPlayer.DebugText(4, Time.time, "time", DBG_UI_KEYS.Keys_PlayerAction);
+            //    //UI_DebugPlayer.DebugText(5, comboStateHistory.Count, "cshCount", DBG_UI_KEYS.Keys_PlayerAction);
+            //};
         }
 
         public override void Enter()
