@@ -1,9 +1,16 @@
-using System;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using System.Collections;
 using System.Linq;
 using UnityEngine.Rendering;
+
+[System.Serializable]
+public struct VignetteInfo
+{
+    public Color color;
+    public float intensity;
+    public float smoothness;
+}
 
 namespace Swift_Blade.Combat.Feedbck
 {
@@ -11,12 +18,14 @@ namespace Swift_Blade.Combat.Feedbck
     {
         public Volume volume;
 
+        public VignetteInfo origin;
+        public VignetteInfo bloodScreen;
+        
         private Vignette vignette;
         
         [Range(0.1f, 1)] [SerializeField] private float increaseDuration = 0.5f; 
         [Range(0.1f, 2)] [SerializeField] private float decreaseDuration = 0.5f; 
-        [Range(0.1f, 1)] [SerializeField] private float maxValue = 0.5f;
-
+        
         private Coroutine feedbackCoroutine;
         
         private void Start()
@@ -32,11 +41,24 @@ namespace Swift_Blade.Combat.Feedbck
             }
             
             volume.profile.TryGet(out vignette);
+            
+            // 시작할 때 origin 설정 적용
+            if(vignette != null)
+            {
+                ApplyVignetteInfo(origin);
+            }
+        }
+
+        private void ApplyVignetteInfo(VignetteInfo info)
+        {
+            vignette.color.value = info.color;
+            vignette.intensity.value = info.intensity;
+            vignette.smoothness.value = info.smoothness;
         }
 
         public override void PlayFeedback()
         {
-            if(vignette == null)return;
+            if(vignette == null) return;
             
             if (feedbackCoroutine != null)
             {
@@ -49,19 +71,34 @@ namespace Swift_Blade.Combat.Feedbck
         {
             float elapsedTime = 0f;
 
+            Color startColor = vignette.color.value;
+            float startIntensity = vignette.intensity.value;
+            float startSmoothness = vignette.smoothness.value;
+            
             while (elapsedTime < increaseDuration)
             {
                 elapsedTime += Time.deltaTime;
-                vignette.intensity.value = Mathf.Lerp(0f, maxValue, elapsedTime / increaseDuration);
+                float t = elapsedTime / increaseDuration;
+                
+                vignette.color.value = Color.Lerp(startColor, bloodScreen.color, t);
+                vignette.intensity.value = Mathf.Lerp(startIntensity, bloodScreen.intensity, t);
+                vignette.smoothness.value = Mathf.Lerp(startSmoothness, bloodScreen.smoothness, t);
+                
                 yield return null;
             }
 
             elapsedTime = 0f;
 
+            // origin으로 돌아가기
             while (elapsedTime < decreaseDuration)
             {
                 elapsedTime += Time.deltaTime;
-                vignette.intensity.value = Mathf.Lerp(maxValue, 0f, elapsedTime / decreaseDuration);
+                float t = elapsedTime / decreaseDuration;
+                
+                vignette.color.value = Color.Lerp(bloodScreen.color, origin.color, t);
+                vignette.intensity.value = Mathf.Lerp(bloodScreen.intensity, origin.intensity, t);
+                vignette.smoothness.value = Mathf.Lerp(bloodScreen.smoothness, origin.smoothness, t);
+                
                 yield return null;
             }
 
@@ -70,7 +107,7 @@ namespace Swift_Blade.Combat.Feedbck
 
         public override void ResetFeedback()
         {
-            vignette.intensity.value = 0f; 
+            ApplyVignetteInfo(origin);
         }
     }
 }

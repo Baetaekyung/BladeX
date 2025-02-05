@@ -19,9 +19,14 @@ namespace Swift_Blade.Feeling
         private readonly WaitForEndOfFrame _waitFrame = new WaitForEndOfFrame(); //코루틴 최적화 변수
 
         private Action _onCompleteEvent;
+
         
+
         private void Start()
         {
+            if (_camera == null)
+                _camera = FindFirstObjectByType<CinemachineCamera>();
+            
             _targetCamera = _camera;
         }
 
