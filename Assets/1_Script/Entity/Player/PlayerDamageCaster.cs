@@ -36,7 +36,6 @@ namespace Swift_Blade.Combat.Caster
                 
                 if(hit.collider.TryGetComponent(out IDamageble health))
                 {
-                    float knockbackPower = 3f;
 
                     var actionData = new ActionData
                     {

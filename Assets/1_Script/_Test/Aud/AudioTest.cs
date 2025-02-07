@@ -11,17 +11,19 @@ namespace Swift_Blade
         private void Start()
         {
             audioEmitterInstance = AudioManager.GetEmitter();
+            audioEmitterInstance.Initialize(so);
         }
         void Update()
         {
+            audioEmitterInstance.transform.position = instancePosition;
             if (Input.GetKeyDown(KeyCode.J))
             {
                 AudioEmitter instance = audioEmitterInstance;
                 instance.transform.position = instancePosition;
-                instance.PlayOneShot(so);
+                instance.Play(true);
             }
             if (Input.GetKeyDown(KeyCode.K))
-                audioEmitterInstance.KillAudio();
+                audioEmitterInstance.StopAudio();
         }
     }
 }

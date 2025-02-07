@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
-using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Swift_Blade.Feeling
 {
+    [MonoSingletonUsage(MonoSingletonFlags.DontDestroyOnLoad)]
     public class CameraFocusManager : MonoSingleton<CameraFocusManager>
     {
         private const float DEFAULT_CAMERA_FOV = 60f; //기본 FOV
@@ -22,9 +23,23 @@ namespace Swift_Blade.Feeling
         
         private void Start()
         {
-            _targetCamera = _camera;
+            SceneManager.sceneLoaded += FindCamera;
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            
+            SceneManager.sceneLoaded -= FindCamera;
+        }
+
+        private void FindCamera(Scene scene, LoadSceneMode mode)
+        {
+            _camera = FindFirstObjectByType<CinemachineCamera>();
+            if(_camera != null)
+                _targetCamera = _camera;
+        }
+        
         //포커스할 카메라 바꿀거면 이거 실행해서 변경
         public void SetTargetCamera(CinemachineCamera targetCamera)
         {

@@ -9,6 +9,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     //    public static T GetPreset => preset;
     //}
 
+    //todo : chagne nullable to Sentinel value
     private static MonoSingletonFlags? singletonFlag;
     private static T _instance = null;
 
@@ -58,7 +59,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
             singletonFlag = singletonAttribute != null
                 ? singletonAttribute.Flag
                 : MonoSingletonFlags.None;
-            if (singletonAttribute.Flag.HasFlag(MonoSingletonFlags.DontDestroyOnLoad)) DontDestroyOnLoad(gameObject);
+            if (singletonFlag.Value.HasFlag(MonoSingletonFlags.DontDestroyOnLoad)) DontDestroyOnLoad(gameObject);
         }
 
         //init

@@ -4,11 +4,14 @@ using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace Swift_Blade.Level
 {
     public class LevelMenuController : MonoBehaviour
     {
+        public LevelClearEventSO levelEvent;
+        
         public List<Transform> levels;
         public Transform player;
         
@@ -22,13 +25,9 @@ namespace Swift_Blade.Level
         
         private bool isMoing;
 
-        [SerializeField] private FadeController _fadeController;
-        
+                
         private void Start()
         {
-            if (_fadeController == null)
-                _fadeController = FindObjectsByType<FadeController>(FindObjectsSortMode.None).FirstOrDefault();
-            
             MovePlayer(currentLevel);
         }
 
@@ -55,8 +54,10 @@ namespace Swift_Blade.Level
         {
             if (isMoing) return;
             
+            string currentLevelStr = $"{baseSceneName}_{currentLevel + 1}";
+                        
+            levelEvent.SceneMoveEvent?.Invoke(currentLevelStr , ()=> isMoing = false);
             isMoing = true;
-            _fadeController.StartFade(()=> SceneManager.LoadScene($"{baseSceneName}_{currentLevel + 1}"),()=> isMoing = false);
         }
 
         private void NextLevel()

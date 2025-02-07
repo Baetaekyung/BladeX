@@ -6,10 +6,10 @@ namespace Swift_Blade.Pool
     public static class GameObjectPoolManager
     {
         private readonly static Dictionary<int, GameObjectPool> gameObjectPoolDictionary;
-
+        private const int DictionaryCapacity = 10;//todo : get prefab count from so
         static GameObjectPoolManager()
         {
-            gameObjectPoolDictionary = new Dictionary<int, GameObjectPool>();
+            gameObjectPoolDictionary = new Dictionary<int, GameObjectPool>(DictionaryCapacity);
         }
         public static int Dbg(PoolPrefabGameObjectSO poolPrefabSO)
         {
@@ -29,8 +29,7 @@ namespace Swift_Blade.Pool
             bool collisionCheck = !gameObjectPoolDictionary.ContainsKey(prefabSO.GetHash);
             Debug.Assert(collisionCheck, $"Trying to add a key that has been added to the dictionary. {prefab.name}{hash}");
 
-            if (collisionCheck)
-                CreateDictionary(prefabSO);
+            CreateDictionary(prefabSO);
         }
         public static void Initialize(IEnumerable<PoolPrefabGameObjectSO> poolPrefabSOs)
         {
@@ -46,7 +45,7 @@ namespace Swift_Blade.Pool
                 result = value.Pop();
             else
             {
-                Debug.Assert(true, "runtimeInitializing! call Initialize Function before calling this");
+                Debug.Assert(true, "runtimeInitializing! call func:Initialize before calling this");
                 GameObjectPool gameObjectPool = CreateDictionary(prefabSO);
                 result = gameObjectPool.Pop();
             }
@@ -54,11 +53,13 @@ namespace Swift_Blade.Pool
         }
         public static void Push(PoolPrefabGameObjectSO prefabSO, GameObject instance)
         {
+            Debug.Assert(instance != null, "local: push instance is null");
+
             if (gameObjectPoolDictionary.TryGetValue(prefabSO.GetHash, out GameObjectPool value))
                 value.Push(instance);
             else
             {
-                Debug.Assert(true, "runtimeInitializing! call Initialize Function before calling this");
+                Debug.Assert(true, "runtimeInitializing! call func:Initialize before calling this");
                 GameObjectPool gameObjectPool = CreateDictionary(prefabSO);
                 gameObjectPool.Push(instance);
             }
@@ -66,6 +67,13 @@ namespace Swift_Blade.Pool
         public static void Clear(PoolPrefabGameObjectSO prefabSO)
         {
             gameObjectPoolDictionary[prefabSO.GetHash].Clear();
+        }
+        public static void ClearAll()
+        {
+            foreach (GameObjectPool item in gameObjectPoolDictionary.Values)
+            {
+                item.Clear();
+            }
         }
     }
 }
