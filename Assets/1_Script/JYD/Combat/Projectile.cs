@@ -7,7 +7,7 @@ namespace Swift_Blade.projectile
     {
         [SerializeField] protected float moveSpeed;
         [SerializeField] protected LayerMask whatIsTarget;
-        
+        [SerializeField] protected LayerMask whatIsGround;
         protected Rigidbody Rigidbody;
         protected float timer = 0;
 
@@ -16,9 +16,8 @@ namespace Swift_Blade.projectile
          private void Start()
         {
             Rigidbody = GetComponent<Rigidbody>();
-            
-            Rigidbody.useGravity = false;
-            Rigidbody.isKinematic = true;
+
+            SetPhysicsState(true);
         }
 
         public virtual void Update()
@@ -32,18 +31,23 @@ namespace Swift_Blade.projectile
             Rigidbody.linearVelocity = transform.forward * moveSpeed;*/
         }
         
-        protected virtual void OnTriggerEnter(Collider other)
+        protected virtual void OnCollisionEnter(Collision other)
         {
-            if((whatIsTarget & (1 << other.gameObject.layer)) != 0)
-                Destroy(gameObject);
+                                        
         }
 
+        public void SetPhysicsState(bool isActive)  
+        {  
+            Rigidbody.useGravity = !isActive;  
+            Rigidbody.isKinematic = isActive;  
+        }  
+
+        
         public void SetDirection(Vector3 force)
         {
             transform.parent = null;
-            
-            Rigidbody.useGravity = true;
-            Rigidbody.isKinematic = false;
+
+            SetPhysicsState(false);
             
             Rigidbody.AddForce(force * 20,ForceMode.Impulse);
         }

@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Feeling;
 using Swift_Blade.Level;
 using Unity.Behavior;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -28,6 +30,11 @@ namespace Swift_Blade.Enemy
         protected EnemySpawner owner;
         protected Collider _collider;
 
+        [Header("Detect Forward")] 
+        public Transform checkForward;
+        public LayerMask whatIsWall;
+        public float maxDistance;
+        public bool showGizmo;
         
         protected virtual void Start()
         {
@@ -99,7 +106,7 @@ namespace Swift_Blade.Enemy
             NavmeshAgent.velocity = Vector3.zero;
         }
         
-        private Vector3 GetNextPathPoint()
+        /*private Vector3 GetNextPathPoint()
         {
             NavMeshPath path = NavmeshAgent.path;
 
@@ -120,7 +127,7 @@ namespace Swift_Blade.Enemy
             }
 
             return nextPathPoint;
-        }
+        }*/
         
         public virtual void SetDead()
         {
@@ -136,6 +143,25 @@ namespace Swift_Blade.Enemy
         {
             owner = _owner;
         }
+
+        public bool DetectForwardObstacle()
+        {
+            Ray ray = new Ray(checkForward.position, checkForward.forward);
+            RaycastHit hit;
+            
+            if (Physics.Raycast(ray, out hit, maxDistance,whatIsWall))
+            {
+                return true;
+            }
+            return false;
+            
+        }
+
+        private void OnDrawGizmos()
+        {
+            if(showGizmo)
+                Gizmos.DrawRay(checkForward.position , checkForward.forward * maxDistance);
                 
+        }
     }
 }

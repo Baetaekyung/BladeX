@@ -12,7 +12,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
             
             (baseAnimationController as GolemAnimatorController).target = target;
         }
-
+        
         protected override void Update()
         {
             if (baseAnimationController.isManualRotate)
@@ -20,7 +20,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
                 FactToTarget(target.position);
             }
 
-            if (baseAnimationController.isManualMove)
+            if (baseAnimationController.isManualMove && !DetectForwardObstacle())
             {
                 attackDestination = transform.position + transform.forward;
 

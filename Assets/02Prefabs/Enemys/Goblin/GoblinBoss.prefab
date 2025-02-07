@@ -31941,6 +31941,7 @@ Transform:
   - {fileID: 7937257158551221192}
   - {fileID: 3064383226392793024}
   - {fileID: 8770876646748119100}
+  - {fileID: 3854553854343625318}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4502871627910593828
@@ -32181,6 +32182,12 @@ MonoBehaviour:
   cameraShakeType: 0
   rotateSpeed: 40
   stopDistance: 1.5
+  checkForward: {fileID: 3854553854343625318}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 256
+  maxDistance: 1.6
+  showGizmo: 1
   summonPrefab: {fileID: -6619329512110227562, guid: f4bedd91a9c4bdd47a5bd4271b27c777, type: 3}
   maxSummonCount: 4
   minSummonCount: 2
@@ -34678,6 +34685,37 @@ Transform:
   - {fileID: 4392641398729721387}
   - {fileID: 1490289392868142223}
   m_Father: {fileID: 1045178970587903423}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7008102180417022490
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3854553854343625318}
+  m_Layer: 7
+  m_Name: CheckForward
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3854553854343625318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7008102180417022490}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3783396098422510907}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7013481470342431226
 GameObject:

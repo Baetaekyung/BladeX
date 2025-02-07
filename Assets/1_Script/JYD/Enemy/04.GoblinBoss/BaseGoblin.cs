@@ -23,7 +23,7 @@ namespace Swift_Blade.Enemy.Goblin
                 FactToTarget(target.position);
             }
 
-            if (baseAnimationController.isManualMove)
+            if (baseAnimationController.isManualMove && !DetectForwardObstacle())
             {
                 float distance = Vector3.Distance(transform.position , target.position);
                 
