@@ -1,6 +1,6 @@
 using DG.Tweening;
 using Swift_Blade.Combat.Caster;
-using Swift_Blade.projectile;
+using Swift_Blade.Combat.Projectile;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -13,7 +13,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
         [SerializeField] private Collider bodyCollider;
 
         [SerializeField] private Transform stoneTrm;
-        private Projectile throwStone;
+        private Stone throwStone;
         
         private GolemBossCaster damageCaster;
 
@@ -40,7 +40,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
             damageCaster.JumpAttackCast();
         }
 
-        public void SetStone(Projectile _stone)
+        public void SetStone(Stone _stone)
         {
             throwStone = _stone;
         }

@@ -1,7 +1,7 @@
 using System;
+using Swift_Blade.Combat.Projectile;
 using Swift_Blade.Enemy;
 using Swift_Blade.Enemy.Boss.Golem;
-using Swift_Blade.projectile;
 using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
@@ -25,7 +25,7 @@ public partial class CatchObjectToHandAction : Action
         if (_golemAnimatorController == null)
             return Status.Failure;
         
-        _golemAnimatorController.SetStone(Object.Value.GetComponent<Projectile>());
+        _golemAnimatorController.SetStone(Object.Value.GetComponent<Stone>());
                 
         return Status.Success;
     }

@@ -1,15 +1,16 @@
+using Swift_Blade.Combat.Projectile;
 using UnityEngine;
 
 namespace Swift_Blade.projectile
 {
-    public class GravityProjectile : Projectile
+    public class GravityStone : Stone
     {
         [SerializeField] private float gravity = 9.8f;
 
         private Vector3 initialPosition;           
         private Vector3 initialVelocity;
         
-        public override void Update()
+        public void Update()
         {
             transform.rotation = Quaternion.LookRotation(Rigidbody.linearVelocity);
         }
