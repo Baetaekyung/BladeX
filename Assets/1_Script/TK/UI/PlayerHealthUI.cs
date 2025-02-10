@@ -9,17 +9,42 @@ namespace Swift_Blade.UI
 {
     public class PlayerHealthUI : MonoBehaviour
     {
-        [SerializeField] private PlayerUIContainerSO playerUIContainer;
-        
+        private PlayerHealth _playerHealth;
         [SerializeField] private RectTransform healthUI;
         [SerializeField] private GameObject fullHealthPrefab;
         [SerializeField] private GameObject burnHealthPrefab;
 
         private List<GameObject> _healthIcons = new List<GameObject>();
 
-        private void Awake()
+        private void Start()
         {
-            playerUIContainer.playerHealthUI = this;
+            _playerHealth = FindFirstObjectByType<PlayerHealth>();
+
+            if (_playerHealth != null)
+            {
+                SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth);
+                
+                _playerHealth.OnHitEvent.AddListener(HandleSetHealthUI);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_playerHealth != null)
+            {
+                _playerHealth.OnHitEvent.RemoveListener(HandleSetHealthUI);
+            }
+        }
+
+        private void HandleSetHealthUI(ActionData actionData)
+        {
+            if (_playerHealth == null)
+            {
+                Debug.Log("Player health compo is null, PlayerHealthUI.cs line: 35");
+                return;
+            }
+            
+            SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth);
         }
 
         [ContextMenu("Test Setting Health")]
@@ -28,7 +53,7 @@ namespace Swift_Blade.UI
             SetHealthUI(5, 5);
         }
         
-        public void SetHealthUI(int maxHealth, int currentHealth)
+        public void SetHealthUI(float maxHealth, float currentHealth)
         {
             if (_healthIcons.Count != 0)
             {
@@ -38,9 +63,9 @@ namespace Swift_Blade.UI
             
             healthUI.sizeDelta = new Vector2(75 * maxHealth, 100f);
             
-            int emptyHealth = maxHealth - currentHealth;
+            float emptyHealth = maxHealth - currentHealth;
 
-            for (int i = 0; i < maxHealth - emptyHealth; i++)
+            for (int i = 0; i < Mathf.RoundToInt(maxHealth - emptyHealth); i++)
             {
                 GameObject icon = Instantiate(fullHealthPrefab, healthUI);
                 _healthIcons.Add(icon);

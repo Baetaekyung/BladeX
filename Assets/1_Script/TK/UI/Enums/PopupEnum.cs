@@ -5,8 +5,9 @@ namespace Swift_Blade.UI
     public enum PopupType
     {
         Option,
-        Help,
+        Text,
         Inventory,
-        Shop
+        Shop,
+        GameOver
     }
 }

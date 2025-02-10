@@ -8,9 +8,11 @@ namespace Swift_Blade
 
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
+        public StatSO GetHealthStat => _healthStat;
 
         private float _maxHealth;
         [SerializeField] private float _currentHealth;
+        public float GetCurrentHealth => _currentHealth;
 
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;

@@ -6,7 +6,7 @@ namespace Swift_Blade.UI
     {
         protected override void ClickEvent()
         {
-            PopupManager.Instance.PopUp(PopupType.Help);
+            PopupManager.Instance.PopUp(PopupType.Text);
         }
     }
 }

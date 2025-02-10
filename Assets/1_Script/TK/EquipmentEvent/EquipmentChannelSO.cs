@@ -34,7 +34,7 @@ namespace Swift_Blade
     {
         public Action OnEquipped; //매게변수 없이 실행만 할때
         public Action<EquipmentEventArgSO> OnEquippedWithArg; //매게변수가 필요할 때
-
+        [Space]
         public EquipmentEventArgSO equipmentArgSO;
 
         public void RaiseEvent()

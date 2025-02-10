@@ -6,20 +6,16 @@ namespace Swift_Blade
 {
     public class Shop : MonoBehaviour
     {
-        [SerializeField] private ItemTableSO testItemTable;
-        
         [SerializeField] private List<ShopSlotUI> shopSlots = new List<ShopSlotUI>();
-
-        private void Awake()
-        {
-            SetItems(testItemTable);
-        }
-
+        
         public void SetItems(ItemTableSO itemTable)
         {
-            foreach (var shopSlot in shopSlots)
+            for (int i = 0; i < shopSlots.Count; i++)
             {
-                shopSlot.SetSlotItem(itemTable.GetRandomItemData());
+                ItemSet currentItem = itemTable.GetRandomItemData();
+                
+                shopSlots[i].SetSlotItem(currentItem.itemData, 
+                    currentItem.itemCount, currentItem.itemCost);
             }
         }
     }

@@ -32,9 +32,6 @@ namespace Swift_Blade
         private void Update()
         {
             HandleEffectShake();
-
-            if(Input.GetKey(KeyCode.Space))
-                styleMeter.SuccessHit();
         }
 
         private void HandleEffectShake()
