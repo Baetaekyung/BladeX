@@ -14,8 +14,8 @@ public struct ActionData
     public float damageAmount;
     public Transform dealer;
     public AttackType attackType;
-    
-    public ActionData(Vector3 knockbackDir, float knockbackDuration, float knockbackPower, float damageAmount, Transform dealer, AttackType attackType)
+    public bool stun;
+    public ActionData(Vector3 knockbackDir, float knockbackDuration, float knockbackPower, float damageAmount, Transform dealer, AttackType attackType, bool stun)
     {
         this.knockbackDir = knockbackDir;
         this.knockbackDuration = knockbackDuration;
@@ -23,6 +23,7 @@ public struct ActionData
         this.damageAmount = damageAmount;
         this.dealer = dealer;
         this.attackType = attackType;
+        this.stun = stun;
     }
     
 }
