@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
-    [CreateAssetMenu(fileName = "ItemData_", menuName = "SO/Item/ItemData")]
+    [Serializable] [CreateAssetMenu(fileName = "ItemData_", menuName = "SO/Item/ItemData")]
     public class ItemDataSO : ScriptableObject
     {
         public Sprite itemImage;
@@ -17,8 +17,12 @@ namespace Swift_Blade
         private ItemSlot _itemSlot;
         public ItemSlot GetItemSlot => _itemSlot;
 
+        [FormerlySerializedAs("data")]
+        [FormerlySerializedAs("statData")]
+        [Header("장비일 때 필요한 변수들")]
         [Space]
-        public EquipmentStatData statData; //장비일 때만 넣어주기
+        public EquipmentData equipmentData; //장비일 때만 넣어주기
+        public BaseEquipment equipmentObject;
         
         public void SetSlot(ItemSlot slot) => _itemSlot = slot;
         public bool IsEquipment() => itemType == ItemType.EQUIPMENT;

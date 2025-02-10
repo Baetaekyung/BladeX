@@ -15,11 +15,10 @@ namespace Swift_Blade
             
             base.OnPointerEnter(eventData);
             
-            inventoryManager.Inventory.currentEquipment.Add(_itemDataSO.statData);
+            inventoryManager.Inventory.currentEquipment.Add(_itemDataSO.equipmentData);
             inventoryManager.Inventory.itemInventory.Remove(_itemDataSO);
             
-            inventoryManager.Inventory.OnEquipmentChanged += HandleStatChange;
-            inventoryManager.Inventory.InvokeEquipChange();
+            _itemDataSO.equipmentObject.OnEquipment();
         }
 
         public override void OnPointerDown(PointerEventData eventData)
@@ -28,10 +27,11 @@ namespace Swift_Blade
             {
                 if (eventData.button == PointerEventData.InputButton.Right)
                 {
-                    if (inventoryManager.Inventory.currentEquipment.Contains(_itemDataSO.statData))
+                    if (inventoryManager.Inventory.currentEquipment.Contains(_itemDataSO.equipmentData))
                     {
-                        inventoryManager.Inventory.OnEquipmentChanged -= HandleStatChange;
-                        inventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.statData);
+                        _itemDataSO.equipmentObject.OffEquipment();
+                        
+                        inventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);
                         inventoryManager.UpdateEquipInfoUI();
                         
                         inventoryManager.AddItemToEmptySlot(_itemDataSO);
@@ -49,35 +49,17 @@ namespace Swift_Blade
             if(!inventoryManager.isDragging) return;
             if (inventoryManager.isSlotChanged == false) return;
             
+            _itemDataSO.equipmentObject.OffEquipment();
+
             inventoryManager.isSlotChanged = false;
-            inventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.statData);
+            inventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);
             inventoryManager.Inventory.itemInventory.Add(_itemDataSO);
             SetItemData(null);
             
-            inventoryManager.Inventory.OnEquipmentChanged -= HandleStatChange;
             inventoryManager.UpdateEquipInfoUI();
         }
 
-        private void HandleStatChange()
-        {
-            if (_itemDataSO.IsEquipment() == false) return;
-            
-            inventoryManager.UpdateEquipInfoUI();
-            
-            if (inventoryManager.PlayerStat == null)
-            {
-                if (_itemDataSO.statData == null) return;
-                
-                //foreach (var statType in _itemDataSO.statData.statAddValues.Keys)
-                //{
-                //    inventoryManager.PlayerStat.AddModifier(
-                //        statType,
-                //        _itemDataSO.statData.itemId,
-                //        _itemDataSO.statData.statAddValues[statType]);
-                //}
-            }
-        }
-        
+
         public override void OnPointerUp(PointerEventData eventData) {}
     }
 }

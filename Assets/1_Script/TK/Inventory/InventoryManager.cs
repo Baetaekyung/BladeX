@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 namespace Swift_Blade
 {
+    [Serializable]
     public enum ItemType
     {
         ITEM,
@@ -170,10 +171,8 @@ namespace Swift_Blade
             
             for (int i = 0; i < Inventory.currentEquipment.Count; i++)
             {
-                equipInfoUIs[i].SetIcon(Inventory.currentEquipment[i].icon);
+                equipInfoUIs[i].SetIcon(Inventory.currentEquipment[i].equipmentIcon);
             }
         }
-
-        public void EquipmentChangeApply() => playerInventory.OnEquipmentChanged?.Invoke();
     }
 }
