@@ -1,15 +1,14 @@
 using System.Collections;
-using Swift_Blade.Combat.Health;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Swift_Blade.Combat.Health;
 
 namespace Swift_Blade.UI
 {
     public class BossHealthUI : MonoBehaviour
     {
         [SerializeField] private Image _bossHealthFillAmount;
-        [SerializeField] private BaseBossHealth swordBaseBossHealth;
+        [SerializeField] private BaseEnemyHealth swordBaseBossHealth;
         
         /// <param name="normalizedHealth"> 현재 체력 / 최대 체력 넣기</param>
         private void Start()
