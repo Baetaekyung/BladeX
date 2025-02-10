@@ -6,7 +6,6 @@ namespace Swift_Blade.Pool
         where T : MonoBehaviour, IPoolable
     {
         private static MonoPool<T> monoPool;
-        public static ObjectPoolBase<T> GetPool => monoPool;
         /// <summary>
         /// This function must be called before calling any other methods.
         /// </summary>

@@ -18,10 +18,12 @@ namespace Swift_Blade.Pool
     public abstract class ObjectPoolBase<T>
         where T : class
     {
-        protected readonly List<T> poolList;
-        public int Count => poolList.Count;
-        private readonly int maxCapacity;
+        public event Action ClearEvent;
+
         public IReadOnlyList<T> GetList => poolList;
+        protected readonly List<T> poolList;
+        private readonly int maxCapacity;
+
         public ObjectPoolBase(int initialPoolCapacity = 10, int maxCapacity = 1000)
         {
             poolList = new List<T>(initialPoolCapacity);
@@ -31,7 +33,7 @@ namespace Swift_Blade.Pool
         {
             return poolList.Count;
         }
-        public T Pop()
+        public virtual T Pop()
         {
             T result;
             int lastIndex = poolList.Count - 1;
@@ -42,10 +44,9 @@ namespace Swift_Blade.Pool
                 result = poolList[lastIndex];
                 poolList.RemoveAt(lastIndex);
             }
-            OnPop(result);
             return result;
         }
-        public void Push(T instance)
+        public virtual void Push(T instance)
         {
             bool collision = ObjectPoolBase.collisionCheck;
             if (collision)
@@ -60,23 +61,16 @@ namespace Swift_Blade.Pool
             if (poolList.Count < maxCapacity)
             {
                 poolList.Add(instance);
-                OnPush(instance);
             }
             else
-                OnDestroy(instance);
+                Destroy(instance);
         }
         protected abstract T Create();
-        protected virtual void OnDestroy(T instance)
-        {
-        }
-        protected virtual void OnPop(T instance)
-        {
-        }
-        protected virtual void OnPush(T instance)
-        {
-        }
+        protected abstract void Destroy(T instance);
+        
         public virtual void Clear()
         {
+            ClearEvent?.Invoke();
             poolList.Clear();
         }
     }
