@@ -13,16 +13,18 @@ namespace Swift_Blade.Audio
     //    [Range(-3, 3)] public float pitch;// = 0;
     //    public bool is3D;
     //    public bool isLoop;
-    //}
+    //}   
 
     [CreateAssetMenu(fileName = "AudioSO", menuName = "Scriptable Objects/AudioSO")]
     public class AudioSO : ScriptableObject
     {
+
         [Header("General")]
-        public int maxCount = 5;
         public AudioClip clip;
         public AudioMixerGroup audioMixerGroup;
         public bool loop;
+        public bool enableMaxCount = true;
+        public int maxCount = 5;
 
         [Header("Global Values, StartValue")]
         [Space(10)]

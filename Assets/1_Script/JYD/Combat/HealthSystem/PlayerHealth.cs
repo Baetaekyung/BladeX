@@ -17,7 +17,7 @@ namespace Swift_Blade
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
 
-        private const float DamageInterval = 0.61f;
+        private const float DamageInterval = 0.71f;
         private float lastDamageTime;
         
         public bool IsPlayerInvincible { get; set; }

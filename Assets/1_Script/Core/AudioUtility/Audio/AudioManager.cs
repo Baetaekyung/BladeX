@@ -1,6 +1,7 @@
 using UnityEngine;
 using Swift_Blade.Pool;
 using System.Collections.Generic;
+using UnityEditor;
 
 namespace Swift_Blade.Audio
 {
@@ -9,7 +10,6 @@ namespace Swift_Blade.Audio
     {
         [SerializeField] private PoolPrefabMonoBehaviourSO poolPrefabMonoBehaviourSO;
         //private static AudioEmitter audioEmitter2D;
-        internal static readonly Dictionary<int, int> audioDictionary = new(16);
         protected override void Awake()
         {
             base.Awake();
@@ -22,19 +22,25 @@ namespace Swift_Blade.Audio
             AudioEmitter audioEmitter = MonoGenericPool<AudioEmitter>.Pop();
             return audioEmitter;
         }
-        public static AudioEmitter PlayWithInit(AudioSO audioSO)
+        public static AudioEmitter GetEmitter(AudioSO audioSO)
+        {
+            AudioEmitter audioEmitter = MonoGenericPool<AudioEmitter>.Pop();
+            audioEmitter.Initialize(audioSO);
+            return audioEmitter;
+        }
+        public static AudioEmitter PlayWithInit(AudioSO audioSO, bool destroyOnEnd = false)
         {
             Debug.Assert(audioSO != null, "audioSO is null");
 
-            int hash = audioSO.clip.GetHashCode();
-            audioDictionary[hash] = audioDictionary.TryGetValue(hash, out int count) 
-                ? count + 1 
-                : 1;
-
             AudioEmitter audioEmitter = GetEmitter();
-            audioEmitter.PlayWithInit(audioSO);
+            audioEmitter.PlayWithInit(audioSO, destroyOnEnd);
 
             return audioEmitter;
         }
+        public static AudioEmitter PlayOneShotWithInit(AudioSO audioSO)
+        {
+            return default;
+        }
+
     }
 }

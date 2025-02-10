@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Swift_Blade.Pool
 {
     [CreateAssetMenu(fileName = "PoolPrefabMonoBehaviourSO", menuName = "Scriptable Objects/Pool/PrefabMonoBehaviourSO")]
-    public class PoolPrefabMonoBehaviourSO : PoolPrefabBaseSO
+    public class PoolPrefabMonoBehaviourSO : PoolPrefabGameObjectSO
     {
         [SerializeField] private MonoBehaviour mono;
         public MonoBehaviour GetMono => mono;

@@ -12,8 +12,9 @@ namespace Swift_Blade.Audio
             DrawDefaultInspector();
             if (audioSO.audioRolloffMode == AudioRolloffMode.Custom)
             {
-                EditorGUILayout.LabelField("Animation Field", EditorStyles.boldLabel);
-                audioSO.curve = EditorGUILayout.CurveField("Curve", audioSO.curve);
+                EditorGUILayout.Space(10);
+                //EditorGUILayout.LabelField("Animation Field", EditorStyles.boldLabel);
+                audioSO.curve = EditorGUILayout.CurveField("Custom Audio Rolloff", audioSO.curve);
             }
             if (GUI.changed)
             {

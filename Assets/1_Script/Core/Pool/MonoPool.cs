@@ -22,22 +22,24 @@ namespace Swift_Blade.Pool
             result.hideFlags = HideFlags.HideInHierarchy;
             return result;
         }
-        protected override void OnDestroy(T instance)
+        protected override void Destroy(T instance)
         {
             Object.Destroy(instance);
         }
-        protected override void OnPop(T instance)
+        public override T Pop()
         {
+            T instance = base.Pop();
             instance.OnPopInitialize();
             instance.hideFlags = HideFlags.None;
             instance.gameObject.SetActive(true);
+            return instance;
         }
-        protected override void OnPush(T instance)
+        public override void Push(T instance)
         {
             instance.hideFlags = HideFlags.HideInHierarchy;
             instance.gameObject.SetActive(false);
+            base.Push(instance);
         }
-
         public override void Clear()
         {
             foreach (T item in poolList)
