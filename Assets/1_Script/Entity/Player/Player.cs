@@ -84,8 +84,8 @@ namespace Swift_Blade
             PlayerHealth playerHealth = GetPlayerHealth;
             playerHealth.OnHitEvent.AddListener((data) => 
             {
-                if (IsPlayerDead || GetPlayerHealth.IsPlayerInvincible) return;
-                bool isHitStun = true;
+                if (IsPlayerDead) return;
+                bool isHitStun = data.stun;
                 if (isHitStun)
                     playerStateMachine.ChangeState(PlayerStateEnum.HitStun);
             });

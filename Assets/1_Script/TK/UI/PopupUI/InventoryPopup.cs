@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using Swift_Blade.UI;
 using UnityEngine;
@@ -16,6 +17,11 @@ namespace Swift_Blade
             _raycaster = GetComponent<GraphicRaycaster>();
         }
 
+        private void OnEnable()
+        {
+            InventoryManager.Instance?.UpdateAllSlots();
+        }
+
         public override void Popup()
         {
             _cG.DOFade(1, _fadeTime)
@@ -28,8 +34,11 @@ namespace Swift_Blade
             _raycaster.enabled = false;
             _cG.DOFade(0, _fadeTime)
                 .SetEase(Ease.OutCirc);
-            
-            InventoryManager.Instance.EquipmentChangeApply();
+        }
+
+        private void OnDisable()
+        {
+            InventoryManager.Instance.UpdateAllSlots();
         }
     }
 }

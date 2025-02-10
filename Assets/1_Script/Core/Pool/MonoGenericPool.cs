@@ -6,7 +6,6 @@ namespace Swift_Blade.Pool
         where T : MonoBehaviour, IPoolable
     {
         private static MonoPool<T> monoPool;
-        public static ObjectPoolBase<T> GetPool => monoPool;
         /// <summary>
         /// This function must be called before calling any other methods.
         /// </summary>
@@ -15,27 +14,24 @@ namespace Swift_Blade.Pool
             bool isMonoPoolNotInitialized = monoPool == null;
             Debug.Assert(isMonoPoolNotInitialized, $"field:monoPool is already initialized. {prefabSO.name}");
 
-            if (isMonoPoolNotInitialized)
-            {
-                T prefab = prefabSO.GetMono as T;
-                monoPool = new MonoPool<T>(prefab);
-
-                Debug.Assert(prefab != null, "failed to cast Mono to T");
-            }
+            T prefab = prefabSO.GetMono as T;
+            monoPool = new MonoPool<T>(prefab);
+            
+            Debug.Assert(prefab != null, "failed to cast Mono to T, Wrong PoolPrefabMonoBehaviourSO values!");
         }
         public static T Pop()
         {
-            Debug.Assert(monoPool != null, "field:monoPool is not initialized.");
+            Debug.Assert(monoPool != null, "call func:Initialize");
             return monoPool.Pop();
         }
         public static void Push(T instance)
         {
-            Debug.Assert(monoPool != null, "field:monoPool is not initialized.");
+            Debug.Assert(monoPool != null, "call func:Initialize");
+            Debug.Assert(instance != null, "local:push instance is null");
             monoPool.Push(instance);
         }
         public static void Clear()
         {
-            Debug.Assert(monoPool != null, "field:monoPool is not initialized.");
             monoPool.Clear();
         }
         public static int Dbg_print()

@@ -7,22 +7,28 @@ namespace Swift_Blade
     {
         [SerializeField] private AudioSO so;
         [SerializeField] private Vector3 instancePosition;
-        private AudioEmitter audioEmitterInstance;
+        [SerializeField] private AudioEmitter audioEmitterInstance;
         private void Start()
         {
             audioEmitterInstance = AudioManager.GetEmitter();
-            //audioEmitterInstance.Initialize(so);
+            audioEmitterInstance.Initialize(so);
         }
         void Update()
         {
+            //audioEmitterInstance.transform.position = instancePosition;
             if (Input.GetKeyDown(KeyCode.J))
             {
-                AudioEmitter instance = audioEmitterInstance;
-                instance.transform.position = instancePosition;
-                instance.PlayOneShot(so);
+                audioEmitterInstance.Initialize(so);
             }
             if (Input.GetKeyDown(KeyCode.K))
-                audioEmitterInstance.KillAudio();
+            {
+                audioEmitterInstance.Play(true);
+            }
+            if(Input.GetKeyDown(KeyCode.Space))
+                AudioEmitter.Dbg(so);
+            //bool a = audioEmitterInstance.AudioSource.isPlaying;
+            //Debug.Log(a);
+            //if (!a) Debug.Log("_stopped!");
         }
     }
 }

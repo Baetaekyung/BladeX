@@ -15,7 +15,7 @@ namespace Swift_Blade
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
 
-        private const float DamageInterval = 0.1f;
+        private const float DamageInterval = 0.71f;
         private float lastDamageTime;
         
         public bool IsPlayerInvincible { get; set; }
@@ -26,14 +26,14 @@ namespace Swift_Blade
             //_player = entity as Player;
         }
         
-        private void Update()
-        {
-            /*if (Input.GetKeyDown(KeyCode.P))
-            {
-                ActionData action = new ActionData(Vector3.zero, 0.5f, 10f, 20f, transform, AttackType.Melee);
-                TakeDamage(action);
-            }*/
-        }
+        //private void Update()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.P))
+        //    {
+        //        ActionData action = new ActionData(Vector3.zero, 0.5f, 10f, 20f, transform, AttackType.Melee);
+        //        TakeDamage(action);
+        //    }
+        //}
 
         public void TakeDamage(ActionData actionData)
         {

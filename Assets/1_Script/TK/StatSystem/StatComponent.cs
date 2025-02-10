@@ -47,6 +47,9 @@ namespace Swift_Blade
         public void RemoveModifier(StatSO stat, object key)
             => GetStat(stat).RemoveModifier(key);
 
+        public void RemoveModifier(StatType statType, object key)
+            => GetStatByType(statType).RemoveModifier(key);
+
         public void ClearAllModifiers()
         {
             foreach (var stat in _stats)

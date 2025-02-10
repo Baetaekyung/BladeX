@@ -1,18 +1,15 @@
 using UnityEngine;
 using Swift_Blade.Pool;
 using System.Collections.Generic;
+using UnityEditor;
 
 namespace Swift_Blade.Audio
 {
     [MonoSingletonUsage(MonoSingletonFlags.DontDestroyOnLoad)]
     public class AudioManager : MonoSingleton<AudioManager>
     {
-		//https://docs.unity3d.com/ScriptReference/ScriptableSingleton_1.html
-		//https://docs.unity3d.com/ScriptReference/FilePathAttribute.html
-
         [SerializeField] private PoolPrefabMonoBehaviourSO poolPrefabMonoBehaviourSO;
         //private static AudioEmitter audioEmitter2D;
-        internal static readonly Dictionary<int, uint> audioDictionary = new(16);
         protected override void Awake()
         {
             base.Awake();
@@ -25,14 +22,25 @@ namespace Swift_Blade.Audio
             AudioEmitter audioEmitter = MonoGenericPool<AudioEmitter>.Pop();
             return audioEmitter;
         }
-        public static AudioEmitter Play(AudioSO audioSO)
+        public static AudioEmitter GetEmitter(AudioSO audioSO)
+        {
+            AudioEmitter audioEmitter = MonoGenericPool<AudioEmitter>.Pop();
+            audioEmitter.Initialize(audioSO);
+            return audioEmitter;
+        }
+        public static AudioEmitter PlayWithInit(AudioSO audioSO, bool destroyOnEnd = false)
         {
             Debug.Assert(audioSO != null, "audioSO is null");
 
             AudioEmitter audioEmitter = GetEmitter();
-            audioEmitter.PlayWithInit(audioSO);
+            audioEmitter.PlayWithInit(audioSO, destroyOnEnd);
 
             return audioEmitter;
         }
+        public static AudioEmitter PlayOneShotWithInit(AudioSO audioSO)
+        {
+            return default;
+        }
+
     }
 }

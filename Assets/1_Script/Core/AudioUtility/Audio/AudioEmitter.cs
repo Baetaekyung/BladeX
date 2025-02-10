@@ -1,83 +1,140 @@
 using Swift_Blade.Pool;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Swift_Blade.Audio
 {
     public class AudioEmitter : MonoBehaviour, IPoolable
     {
+        public event Action OnEndCallback;
+        //todo : clear this dictionary when scene changes
+        //todo : dont count if soundSO is set to uncount
+        private static readonly Dictionary<int, int> audioDictionary = new(16);
+
         private AudioSource audioSource;
-        public AudioSource GetAudioSource => audioSource;
-        public AudioClip CurrentClip { get; private set; }
-        private bool isAllowKill;
+        private AudioSO currentAudioSO;
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
         }
+        public static void Dbg(AudioSO audioSO)
+        {
+            Debug.Log(audioDictionary[audioSO.clip.GetHashCode()]);
+        }
+        private bool IsAudioPlayable(AudioSO audioSO, bool autoIncrement = false)
+        {
+            int hash = audioSO.clip.GetHashCode();
+            audioDictionary.TryGetValue(hash, out int count);
+
+            bool result = count < audioSO.maxCount;
+            if (result && autoIncrement)
+                audioDictionary[hash] = ++count;
+            return result;
+        }
+        private void DecreaseDictionaryInstance(AudioSO audioSO)
+        {
+            AudioClip currentClip = audioSO.clip;
+            int hash = currentClip.GetHashCode();
+            int result = audioDictionary[hash]--;
+            Debug.Assert(result >= 0, "there is no way this can happen, right? otherwise contact me. -ojy");
+        }
         public void OnPopInitialize()
         {
-            isAllowKill = false;
+            OnEndCallback = null;
+            currentAudioSO = null;
         }
+
         public void Play(bool destroyOnEnd = false)
         {
-            bool flag = audioSource.clip != null;
+            bool flag = currentAudioSO != null;
             Debug.Assert(flag, "playing audio without initialization");
 
+            if (audioSource.isPlaying)
+                StopAudio();
+
+            bool flag2 = IsAudioPlayable(currentAudioSO, true);
+            if (!flag2)
+            {
+                Debug.LogWarning($"AudioInstance Reached Max {currentAudioSO.name}");
+                return;
+            }
+
             audioSource.Play();
-            if (destroyOnEnd)
-                DestroyOnEnd();
-            isAllowKill = true;
+            StartCoroutine(WaitUntilAudioEnd());
+            
+            IEnumerator WaitUntilAudioEnd()
+            {
+                while (audioSource.isPlaying)
+                {
+                    yield return null;
+                }
+                OnEndCallback?.Invoke();
+                DecreaseDictionaryInstance(currentAudioSO);
+                print("corend");
+
+                if (destroyOnEnd)
+                    KillAudio();
+            }
         }
         public void PlayWithInit(AudioSO audioSO, bool destroyOnEnd = false)
         {
+            if(audioSource.isPlaying)
+                StopAudio();
             Initialize(audioSO);
             Play(destroyOnEnd);
         }
-        public void PlayOneShot(AudioSO audioSO)
-        {
-            audioSource.PlayOneShot(audioSO.clip);
-            isAllowKill = true;
-        }
-        public void PlayOneShotWithInit(AudioSO audioSO)
-        {
-            Initialize(audioSO);
-            PlayOneShot(audioSO);
-        }
+        //public void PlayOneShot()
+        //{
+        //    PlayOneShot(currentAudioSO);
+        //}
+        //public void PlayOneShot(AudioSO audioSO)
+        //{
+        //    bool flag = IsCurrentAudioPlayable(currentAudioSO, true);
+        //    if (!flag)
+        //    {
+        //        Debug.LogWarning($"AudioInstance Reached Max {currentAudioSO.name}");
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        audioSource.PlayOneShot(audioSO.clip);
+        //    }
+        //}
+        //public void PlayOneShotWithInit(AudioSO audioSO)
+        //{
+        //    Initialize(audioSO);
+        //    PlayOneShot(audioSO);
+        //}
+
         public void StopAudio()
         {
+            if (!audioSource.isPlaying) return;
+
+            StopAllCoroutines();
+
+            OnEndCallback?.Invoke();                    //should i call this?
+            DecreaseDictionaryInstance(currentAudioSO);
+
             audioSource.Stop();
         }
         public void KillAudio()
         {
-            //StopAllCoroutines();
             StopAudio();
-            Debug.Assert(isAllowKill, "killing unkillable emitter instacne");
-            if(isAllowKill)
-                MonoGenericPool<AudioEmitter>.Push(this);
-        }
-        private void DestroyOnEnd()
-        {
-            StartCoroutine(WaitUntilAudioEnd(KillAudio));
-        }
-        private IEnumerator WaitUntilAudioEnd(Action callBack)
-        {
-            Debug.Assert(callBack != null, "callback is null");
-            print("st");
-            while (audioSource.isPlaying)
-            {
-                print("waiting");
-                yield return null;
-            }
-            print("end");
-            callBack.Invoke();
+            MonoGenericPool<AudioEmitter>.Push(this);   //deactivate gameObject, auto cancel Coroutine.
         }
         public void Initialize(AudioSO audioSO)
         {
+            if (audioSource.isPlaying)
+            {
+                Debug.LogWarning($"n:{name}_initializing while playing audio");
+                return;
+            }
+
+            currentAudioSO = audioSO;
+
             //global
-
-            CurrentClip = audioSO.clip;
-
             audioSource.clip = audioSO.clip;
             audioSource.outputAudioMixerGroup = audioSO.audioMixerGroup;
             //audioSource3D.loop
@@ -98,6 +155,5 @@ namespace Swift_Blade.Audio
             if (audioSO.audioRolloffMode == AudioRolloffMode.Custom)
                 audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioSO.curve);
         }
-
     }
 }

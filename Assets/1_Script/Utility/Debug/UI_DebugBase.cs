@@ -39,23 +39,23 @@ public abstract class UI_DebugBase<T> : MonoSingleton<T> where T : UI_DebugBase<
     }
     public static void DebugText(int index, string stringValue, string prefix = "", int key = 0)
     {
-        /*T instance = Instance;
+        T instance = Instance;
         if (key != instance.Key || instance == null) return;
         instance.stringBuilder.Clear();
         instance.stringBuilder.Append(prefix);
         instance.stringBuilder.Append(" : ");
         instance.stringBuilder.Append(stringValue);
-        instance.list[index].text = instance.stringBuilder.ToString();*/
+        instance.list[index].text = instance.stringBuilder.ToString();
     }
     public static void DebugText(int index, ValueType valueType, string prefix = "", int key = 0)
     {
-        /*T instance = Instance;
+        T instance = Instance;
         if (key != instance.Key || instance == null) return;
         instance.stringBuilder.Clear();
         instance.stringBuilder.Append(prefix);
         instance.stringBuilder.Append(" : ");
         instance.stringBuilder.Append(valueType.ToString());
-        instance.list[index].text = instance.stringBuilder.ToString();*/
+        instance.list[index].text = instance.stringBuilder.ToString();
     }
 
 }

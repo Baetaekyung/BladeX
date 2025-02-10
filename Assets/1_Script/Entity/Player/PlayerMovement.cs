@@ -121,9 +121,9 @@ namespace Swift_Blade
             //float currentSpeed = Vector3.Magnitude(movementVector);// change this to dot
             //float speed = wishSpeed - currentSpeed;
             float speed = wishSpeed;
-            UI_DebugPlayer.DebugText(1, speed, "speed", DBG_UI_KEYS.Keys_PlayerMovement);
-            UI_DebugPlayer.DebugText(1, AllowInputMove, "allowInputMove", DBG_UI_KEYS.Keys_PlayerAction);
-            UI_DebugPlayer.DebugText(2, wishSpeed, "wishSpeed", DBG_UI_KEYS.Keys_PlayerMovement);
+            //UI_DebugPlayer.DebugText(1, speed, "speed", DBG_UI_KEYS.Keys_PlayerMovement);
+            //UI_DebugPlayer.DebugText(1, AllowInputMove, "allowInputMove", DBG_UI_KEYS.Keys_PlayerAction);
+            //UI_DebugPlayer.DebugText(2, wishSpeed, "wishSpeed", DBG_UI_KEYS.Keys_PlayerMovement);
 
             Vector3 addition = AdditionalVelocity + DashVelocity * rollCurve.Evaluate(rollValue);
             Vector3 result = input * speed + addition;
