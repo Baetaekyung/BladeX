@@ -22,7 +22,7 @@ namespace Swift_Blade.Combat.Projectile
         {
             base.Start();
             
-            MonoGenericPool<Explosion>.Initialize(explosionSO);
+            //MonoGenericPool<Explosion>.Initialize(explosionSO);
         }
 
         private void Explosion()
