@@ -24,7 +24,6 @@ namespace Swift_Blade
         public EquipmentData equipmentData; //장비일 때만 넣어주기
         public BaseEquipment equipmentObject;
         
-        public void SetSlot(ItemSlot slot) => _itemSlot = slot;
         public bool IsEquipment() => itemType == ItemType.EQUIPMENT;
     }
 }

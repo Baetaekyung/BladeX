@@ -8,6 +8,7 @@ namespace Swift_Blade.UI
     public abstract class PopupUI : MonoBehaviour
     {
         protected Coroutine _delayRoutine;
+        public PopupType popupType;
         
         public abstract void Popup();
         public abstract void PopDown();

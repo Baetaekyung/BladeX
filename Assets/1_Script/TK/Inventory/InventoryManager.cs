@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Animations.Rigging;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -25,10 +26,11 @@ namespace Swift_Blade
         [SerializeField] private SelectItem_UI selectedItemImage;
         [SerializeField] private List<EquipInfoUI> equipInfoUIs = new(4);
         
-        public string currentSlotID;
         private SelectItem_UI _createdItemUI;
         
-        [HideInInspector] public bool isDragging = false;
+        [HideInInspector] private bool isDragging = false;
+        public bool IsDragging { get; set; }
+        
         [HideInInspector] public bool isSlotChanged = false; 
         private bool _isExistUIObject = false;
 
@@ -40,11 +42,21 @@ namespace Swift_Blade
         private PlayerStatCompo _playerStat; //이건 나중에 변경이 필요할 듯함
         public PlayerStatCompo PlayerStat => _playerStat;
         
+        public bool isTestMode = true;
+        
         private void Start()
         {
             InitializeSlots();
 
             _playerStat = FindAnyObjectByType<PlayerStatCompo>();
+
+            if (isTestMode)
+            {
+                AddItemToEmptySlot(testData);
+                AddItemToEmptySlot(testData);
+                Inventory.currentInventoryCapacity++;
+                Inventory.currentInventoryCapacity++;
+            }
         }
 
         private void InitializeSlots()
@@ -59,7 +71,6 @@ namespace Swift_Blade
             {
                 ItemSlot emptySlot = GetEmptySlot();
                 emptySlot.SetItemData(playerInventory.itemInventory[i]);
-                playerInventory.itemInventory[i].SetSlot(emptySlot);
             }
 
             UpdateAllSlots();
@@ -67,9 +78,6 @@ namespace Swift_Blade
         
         private void Update()
         {
-            if(Input.GetKeyDown(KeyCode.L))
-                AddItemToEmptySlot(testData);
-            
             if (SelectedItem == null || isDragging == false) return;
             
             RectTransformUtility.ScreenPointToLocalPointInRectangle(

@@ -18,6 +18,12 @@ namespace Swift_Blade
         //     }
         // }
 
+        [ContextMenu("Init")]
+        public void TestInit()
+        {
+            Initalize();
+        }
+        
         public void EntityComponentAwake(Entity entity)
         {
             Initalize();
