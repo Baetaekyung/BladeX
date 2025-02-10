@@ -29,10 +29,6 @@ namespace Swift_Blade.Pool
             poolList = new List<T>(initialPoolCapacity);
             this.maxCapacity = maxCapacity;
         }
-        public int Dbg_Cnt()
-        {
-            return poolList.Count;
-        }
         public virtual T Pop()
         {
             T result;

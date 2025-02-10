@@ -11,10 +11,6 @@ namespace Swift_Blade.Pool
         {
             gameObjectPoolDictionary = new Dictionary<int, GameObjectPool>(DictionaryCapacity);
         }
-        public static int Dbg(PoolPrefabGameObjectSO poolPrefabSO)
-        {
-            return gameObjectPoolDictionary[poolPrefabSO.GetHash].Dbg_Cnt();
-        }
         private static GameObjectPool CreateDictionary(PoolPrefabGameObjectSO prefabSO)
         {
             GameObjectPool result = new GameObjectPool(prefabSO.GetPrefab, preCreate: prefabSO.GetPreCreate);

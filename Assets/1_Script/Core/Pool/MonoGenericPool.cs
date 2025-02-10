@@ -34,9 +34,5 @@ namespace Swift_Blade.Pool
         {
             monoPool.Clear();
         }
-        public static int Dbg_print()
-        {
-            return monoPool.Dbg_Cnt();
-        }
     }
 }
