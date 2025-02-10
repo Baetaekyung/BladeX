@@ -6,7 +6,6 @@ namespace Swift_Blade
 {
     public class EquipInfoUI : MonoBehaviour
     {
-        [SerializeField] private PlayerInventory inventory;
         [SerializeField] private Image icon;
 
         private void Awake()

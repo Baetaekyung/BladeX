@@ -1,37 +1,48 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade
 {
+    [Serializable]
+    public class ItemSet
+    {
+        public ItemDataSO itemData;
+        public int itemCount;
+        public int itemCost;
+    }
+    
     [CreateAssetMenu(fileName = "ItemTableSO", menuName = "SO/Item/Table")]
     public class ItemTableSO : ScriptableObject
     {
-        public List<ItemDataSO> itemTable;
-
-        public ItemDataSO GetItemData(string itemName)
+        public List<ItemSet> itemTable = new List<ItemSet>();
+        
+        public ItemSet GetItemData(string itemName)
         {
-            ItemDataSO item = itemTable.FirstOrDefault(i => i.name == itemName);
+            ItemSet itemSet = itemTable.FirstOrDefault(i => i.itemData.itemName == itemName);
 
-            if (item == null)
+            if (itemSet == null)
             {
                 Debug.Log("잘못된 아이템 이름: " + itemName);
                 return null;
             }
             
-            return item;
+            return itemSet;
         }
         
-        public ItemDataSO GetRandomItemData()
+        public ItemSet GetRandomItemData()
         {
             int randomIndex = Random.Range(0, itemTable.Count);
 
             return itemTable[randomIndex];
         }
 
-        public ItemDataSO GetRandomItemData(ItemType type)
+        public ItemSet GetRandomItemData(ItemType type)
         {
-            List<ItemDataSO> typedItems = itemTable.FindAll(item => item.itemType == type);
+            List<ItemSet> typedItems = itemTable.FindAll(item => item.itemData.itemType == type);
             
             if(typedItems.Count == 0)
             {

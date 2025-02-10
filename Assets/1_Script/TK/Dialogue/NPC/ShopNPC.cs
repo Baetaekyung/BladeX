@@ -6,6 +6,15 @@ namespace Swift_Blade
 {
     public class ShopNPC : NPC
     {
+        private Shop _shop;
+
+        [SerializeField] private ItemTableSO shopItems;
+        
+        private void Awake()
+        {
+            _shop = FindFirstObjectByType<Shop>(FindObjectsInactive.Include);
+        }
+
         public override void Interact()
         {
             if (_isAlreadyRead) //이미 보상을 받았음
@@ -24,6 +33,8 @@ namespace Swift_Blade
 
         private void HandleOpenShop()
         {
+            _shop.SetItems(shopItems);
+            
             PopupManager.Instance.PopUp(PopupType.Shop);
         }
     }

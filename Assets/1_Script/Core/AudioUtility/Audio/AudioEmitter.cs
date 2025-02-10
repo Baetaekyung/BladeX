@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace Swift_Blade.Audio
 {
+    /// <summary>
+    /// please only use AudioEmitter as runtime audio player.
+    /// AudioEmitter can be preplaced though.
+    /// </summary>
     public class AudioEmitter : MonoBehaviour, IPoolable
     {
         public event Action OnEndCallback;
@@ -25,6 +29,8 @@ namespace Swift_Blade.Audio
         }
         private bool IsAudioPlayable(AudioSO audioSO, bool autoIncrement = false)
         {
+            if (!audioSO.enableMaxCount) return true;
+
             int hash = audioSO.clip.GetHashCode();
             audioDictionary.TryGetValue(hash, out int count);
 
@@ -35,6 +41,8 @@ namespace Swift_Blade.Audio
         }
         private void DecreaseDictionaryInstance(AudioSO audioSO)
         {
+            if (!audioSO.enableMaxCount) return;
+
             AudioClip currentClip = audioSO.clip;
             int hash = currentClip.GetHashCode();
             int result = audioDictionary[hash]--;
@@ -72,7 +80,6 @@ namespace Swift_Blade.Audio
                 }
                 OnEndCallback?.Invoke();
                 DecreaseDictionaryInstance(currentAudioSO);
-                print("corend");
 
                 if (destroyOnEnd)
                     KillAudio();

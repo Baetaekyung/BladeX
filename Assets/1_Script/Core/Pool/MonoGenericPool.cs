@@ -11,7 +11,7 @@ namespace Swift_Blade.Pool
         /// </summary>
         public static void Initialize(PoolPrefabMonoBehaviourSO prefabSO)
         {
-            bool isMonoPoolNotInitialized = monoPool == null;
+            bool isMonoPoolNotInitialized = monoPool != null;
             Debug.Assert(isMonoPoolNotInitialized, $"field:monoPool is already initialized. {prefabSO.name}");
 
             T prefab = prefabSO.GetMono as T;
@@ -33,10 +33,6 @@ namespace Swift_Blade.Pool
         public static void Clear()
         {
             monoPool.Clear();
-        }
-        public static int Dbg_print()
-        {
-            return monoPool.Dbg_Cnt();
         }
     }
 }

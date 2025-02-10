@@ -28,7 +28,6 @@ namespace Swift_Blade
             if (Input.GetKeyDown(KeyCode.L))
             {
                 //print(MonoGenericPool<TestMonoPoolTar>.Dbg_print());
-                print(GameObjectPoolManager.Dbg(ppSO));
             }
 
         }

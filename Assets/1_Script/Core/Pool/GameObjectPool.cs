@@ -17,8 +17,8 @@ namespace Swift_Blade.Pool
         protected override GameObject Create()
         {
             GameObject result = Object.Instantiate(prefab, Vector3.zero, Quaternion.identity);
+            result.gameObject.hideFlags = HideFlags.HideInHierarchy;
             result.SetActive(false);
-            result.hideFlags = HideFlags.HideInHierarchy;
             return result;
         }
         protected override void Destroy(GameObject instance)
@@ -28,13 +28,13 @@ namespace Swift_Blade.Pool
         public override GameObject Pop()
         {
             GameObject result =  base.Pop();
-            result.hideFlags = HideFlags.None;
+            result.gameObject.hideFlags = HideFlags.None;
             result.SetActive(true);
             return result;
         }
         public override void Push(GameObject instance)
         {
-            instance.hideFlags = HideFlags.HideInHierarchy;
+            instance.gameObject.hideFlags = HideFlags.HideInHierarchy;
             instance.SetActive(false);
             base.Push(instance);
         }
