@@ -29,7 +29,6 @@ namespace Swift_Blade.Audio
             audioDictionary.TryGetValue(hash, out int count);
 
             bool result = count < audioSO.maxCount;
-            print(result);
             if (result && autoIncrement)
                 audioDictionary[hash] = ++count;
             return result;
