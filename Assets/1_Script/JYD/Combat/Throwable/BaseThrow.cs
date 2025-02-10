@@ -2,34 +2,34 @@ using UnityEngine;
 
 namespace Swift_Blade.Combat.Projectile
 {
-    public class Stone : MonoBehaviour,Throwable
+    public class BaseThrow : MonoBehaviour
     {
         [SerializeField] protected float moveSpeed;
-        public LayerMask whatIsTarget;
+        public float forceAmount;
         
         protected Rigidbody Rigidbody;
         
-        private void Start()
+        protected virtual void Start()
         {
             Rigidbody = GetComponent<Rigidbody>();
 
-            SetPhysicsState(true);
+            //SetPhysicsState(true);
         }
         
-        public void SetPhysicsState(bool isActive)  
+        public virtual void SetPhysicsState(bool isActive)  
         {  
             Rigidbody.useGravity = !isActive;  
             Rigidbody.isKinematic = isActive;  
         }
 
 
-        public void SetDirection(Vector3 force)
+        public virtual void SetDirection(Vector3 force)
         {
             transform.parent = null;
-
+            
             SetPhysicsState(false);
             
-            Rigidbody.AddForce(force * 20,ForceMode.Impulse);
+            Rigidbody.AddForce(force * forceAmount,ForceMode.Impulse);
         }
     }
 }

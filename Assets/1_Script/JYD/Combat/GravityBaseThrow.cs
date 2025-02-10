@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Swift_Blade.projectile
 {
-    public class GravityStone : Stone
+    public class GravityBaseThrow : BaseThrow
     {
         [SerializeField] private float gravity = 9.8f;
 

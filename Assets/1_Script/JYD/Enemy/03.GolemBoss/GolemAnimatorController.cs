@@ -13,7 +13,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
         [SerializeField] private Collider bodyCollider;
 
         [SerializeField] private Transform stoneTrm;
-        private Stone throwStone;
+        private BaseThrow _throwBaseThrow;
         
         private GolemBossCaster damageCaster;
 
@@ -40,24 +40,30 @@ namespace Swift_Blade.Enemy.Boss.Golem
             damageCaster.JumpAttackCast();
         }
 
-        public void SetStone(Stone _stone)
+        public void SetStone(BaseThrow baseThrow)
         {
-            throwStone = _stone;
+            if (baseThrow == null)
+            {
+                if(_throwBaseThrow != null)
+                    _throwBaseThrow.transform.SetParent(null);
+            }
+                            
+            _throwBaseThrow = baseThrow;
         }
         
         public void CatchStone()
         {
-            throwStone.SetPhysicsState(true);
-            throwStone.transform.SetParent(stoneTrm);
-            throwStone.transform.localPosition = Vector3.zero;
+            _throwBaseThrow.SetPhysicsState(true);
+            _throwBaseThrow.transform.SetParent(stoneTrm);
+            _throwBaseThrow.transform.localPosition = Vector3.zero;
         }
         
         public void ThrowStone()
         {
             Vector3 direction = (target.position - transform.position).normalized;
             
-            throwStone.SetDirection(direction);
-            throwStone = null;
+            _throwBaseThrow.SetDirection(direction);
+            _throwBaseThrow = null;
         }
 
         public void StartManualLook()

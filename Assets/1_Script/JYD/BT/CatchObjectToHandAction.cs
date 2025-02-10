@@ -25,7 +25,7 @@ public partial class CatchObjectToHandAction : Action
         if (_golemAnimatorController == null)
             return Status.Failure;
         
-        _golemAnimatorController.SetStone(Object.Value.GetComponent<Stone>());
+        _golemAnimatorController.SetStone(Object.Value.GetComponent<BaseThrow>());
                 
         return Status.Success;
     }
