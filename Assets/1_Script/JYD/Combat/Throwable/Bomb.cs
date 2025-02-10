@@ -1,5 +1,6 @@
 using System;
 using Swift_Blade.Feeling;
+using Swift_Blade.Pool;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,7 +15,16 @@ namespace Swift_Blade.Combat.Projectile
 
         public CameraShakeType shakeType;
         private bool canExplosion;
+
+        public PoolPrefabMonoBehaviourSO explosionSO;
         
+        protected override void Start()
+        {
+            base.Start();
+            
+            MonoGenericPool<Explosion>.Initialize(explosionSO);
+        }
+
         private void Explosion()
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position , explosionRadius , whatIsTarget);
@@ -24,7 +34,8 @@ namespace Swift_Blade.Combat.Projectile
                 actionData.damageAmount = 40;
                 colliders[0].GetComponentInChildren<IDamageble>().TakeDamage(actionData);
                 CameraShakeManager.Instance.DoShake(shakeType);
-                Destroy(gameObject);
+                
+                MonoGenericPool<Explosion>.Pop();
             }
         }
 
@@ -49,5 +60,7 @@ namespace Swift_Blade.Combat.Projectile
         {
             Gizmos.DrawWireSphere(transform.position , explosionRadius);
         }
+
+        
     }
 }

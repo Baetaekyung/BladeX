@@ -1,16 +1,15 @@
 using UnityEngine;
 
-namespace Swift_Blade.Enemy.Boss.Sword
+namespace Swift_Blade.Enemy
 {
-    public class Sword : MonoBehaviour
+    public class EnemyWeapon : MonoBehaviour
     {
         void Start()
         {
+            transform.parent = null;
             gameObject.AddComponent<BoxCollider>();
             
             Rigidbody rb = gameObject.AddComponent<Rigidbody>();
-            rb.useGravity = true; 
-                        
         }
     }
 }

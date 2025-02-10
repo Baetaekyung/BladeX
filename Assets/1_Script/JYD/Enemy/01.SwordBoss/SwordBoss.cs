@@ -15,9 +15,7 @@ namespace Swift_Blade.Enemy.Boss.Sword
         {
             base.SetDead();
                 
-            sword.AddComponent<Sword>();
-            sword.transform.parent = null;
-            
+            sword.AddComponent<EnemyWeapon>();
         }
         
     }

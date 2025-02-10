@@ -1,3 +1,4 @@
+using Swift_Blade.Pool;
 using UnityEngine;
 
 namespace Swift_Blade.Combat.Projectile
@@ -31,5 +32,7 @@ namespace Swift_Blade.Combat.Projectile
             
             Rigidbody.AddForce(force * forceAmount,ForceMode.Impulse);
         }
+
+        
     }
 }

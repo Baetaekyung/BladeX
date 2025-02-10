@@ -2,12 +2,19 @@ using System.Collections.Generic;
 using Swift_Blade.Enemy;
 using UnityEngine;
 
+
 [System.Serializable]
 public struct SpawnInfo
 {
     public BaseEnemy enemy;
     public Transform spawnPosition;
-    public int enemyCount;
+}
+
+
+[System.Serializable]
+public struct SpawnInfos
+{
+    public SpawnInfo[] spawnInfos;
 }
 
 namespace Swift_Blade.Level
@@ -15,7 +22,7 @@ namespace Swift_Blade.Level
     public class EnemySpawner : MonoBehaviour
     {
         public LevelClearEventSO levelEvent;
-        public List<SpawnInfo> spawnEnemies;
+        public List<SpawnInfos> spawnEnemies;
 
         public int waveCount;
         private int enemyCount;
@@ -37,14 +44,13 @@ namespace Swift_Blade.Level
             enemyCount = 0; 
             enemyCounter = 0; 
             
-            for (int i = 0; i < spawnEnemies[waveCount].enemyCount; i++)
+            for (int i = 0; i < spawnEnemies[waveCount].spawnInfos.Length; i++)
             {
-                BaseEnemy newEnemy = Instantiate(spawnEnemies[waveCount].enemy);
-                newEnemy.transform.position = spawnEnemies[waveCount].spawnPosition.position;
+                BaseEnemy newEnemy = Instantiate(spawnEnemies[waveCount].spawnInfos[i].enemy ,spawnEnemies[waveCount].spawnInfos[i].spawnPosition);
                 newEnemy.SetOwner(this);
                 ++enemyCount;
             }
-
+            
             ++waveCount;
         }
 

@@ -5,8 +5,10 @@ namespace Swift_Blade.Enemy.Boss.Reaper
     public class ReaperBoss : BaseEnemy
     {
         [HideInInspector] public ReaperBossAnimatorController _reaperAnimatorController;
-
+        
         private Vector3 lastPosition;
+        
+        public GameObject weapon;
         
         protected override void Start()
         {
@@ -54,7 +56,12 @@ namespace Swift_Blade.Enemy.Boss.Reaper
                 _z: localVelocity.z
             );
         }
-        
-                        
+
+
+        public override void SetDead()
+        {
+            base.SetDead();
+            weapon.AddComponent<EnemyWeapon>();
+        }
     }
 }

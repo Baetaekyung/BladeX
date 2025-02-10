@@ -163,6 +163,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4252352692290016099}
+  - {fileID: 3473995024026824681}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &484872833663179892
@@ -231,10 +232,18 @@ MonoBehaviour:
   - rid: 3879321691919482923
   - rid: 3879321691919482924
   - rid: 3879321691991573354
-  - rid: 3879321691991573355
+  - rid: 2781718477335429511
   references:
     version: 2
     RefIds:
+    - rid: 2781718477335429511
+      type: {class: 'BlackboardVariable`1[[Swift_Blade.Enemy.BaseEnemyAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 7270422014901884034
+          m_Value1: 1337080013107440021
+        Name: AnimationController
+        m_Value: {fileID: 5482958178528929731}
     - rid: 3879321691665465479
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -291,14 +300,6 @@ MonoBehaviour:
           m_Value1: 16617269392962309977
         Name: Target
         m_Value: {fileID: 0}
-    - rid: 3879321691991573355
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Boss.BossAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15547141081581643986
-          m_Value1: 14044624205978326227
-        Name: BossAnimator
-        m_Value: {fileID: 5482958178528929731}
 --- !u!114 &5934979267723800791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,7 +316,14 @@ MonoBehaviour:
   cameraShakeType: 0
   rotateSpeed: 20
   stopDistance: 2
+  checkForward: {fileID: 0}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDistance: 0
+  showGizmo: 0
   _reaperAnimatorController: {fileID: 0}
+  weapon: {fileID: 4365632184279621298}
 --- !u!114 &1682144210723192009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,7 +338,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnHitEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1023605026187249242}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -712,7 +732,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ea24e01b03f54464eadda8d044dc3d2e, type: 2}
+  - {fileID: 2100000, guid: 8b0a500b6178cae4c9de7db5f31c8ba2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1394,6 +1414,55 @@ Transform:
   - {fileID: 3285462674415111163}
   m_Father: {fileID: 5027465669270943278}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5548752218182746247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 373244763214888900}
+  - component: {fileID: 1023605026187249242}
+  m_Layer: 7
+  m_Name: HitFeedbacks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &373244763214888900
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5548752218182746247}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3473995024026824681}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1023605026187249242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5548752218182746247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02036a99bd8ba114c8f8b11d6a8b11ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  root: {fileID: 2982642285546565355}
+  flashDuration: 0.095
+  flashCount: 1
+  _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
+  _meshRenderers: []
 --- !u!1 &6194183243003205590
 GameObject:
   m_ObjectHideFlags: 0
@@ -1753,6 +1822,38 @@ Transform:
   - {fileID: 5619690904216948826}
   - {fileID: 3617650594875394389}
   m_Father: {fileID: 1661047743860055846}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8164624371437091356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3473995024026824681}
+  m_Layer: 7
+  m_Name: Feedback
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3473995024026824681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8164624371437091356}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 373244763214888900}
+  m_Father: {fileID: 7792499517035505052}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8212627794688261507
 GameObject:
@@ -2396,5 +2497,10 @@ PrefabInstance:
 --- !u!4 &4365632184279198826 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 472372, guid: a0e8e2ba9cb9e5b498192bf4610b8206, type: 3}
+  m_PrefabInstance: {fileID: 4365632184279521630}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4365632184279621298 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100332, guid: a0e8e2ba9cb9e5b498192bf4610b8206, type: 3}
   m_PrefabInstance: {fileID: 4365632184279521630}
   m_PrefabAsset: {fileID: 0}

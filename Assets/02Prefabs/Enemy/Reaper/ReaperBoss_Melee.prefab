@@ -225,6 +225,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7473488121865437534}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &566124932414865928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9131180741318259079}
+  - component: {fileID: 1121988006812966173}
+  m_Layer: 7
+  m_Name: HitFeedbacks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9131180741318259079
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566124932414865928}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6712760004554013498}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1121988006812966173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566124932414865928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02036a99bd8ba114c8f8b11d6a8b11ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  root: {fileID: 243164252830753244}
+  flashDuration: 0.095
+  flashCount: 1
+  _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
+  _meshRenderers: []
 --- !u!1 &686743814509893875
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,6 +1006,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5026587585700530391}
+  - {fileID: 6712760004554013498}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &237640271603621295
@@ -1025,10 +1075,18 @@ MonoBehaviour:
   - rid: 3879321691919482923
   - rid: 3879321691919482924
   - rid: 3879321691991573354
-  - rid: 3879321691991573355
+  - rid: 2781718477335429510
   references:
     version: 2
     RefIds:
+    - rid: 2781718477335429510
+      type: {class: 'BlackboardVariable`1[[Swift_Blade.Enemy.BaseEnemyAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 7270422014901884034
+          m_Value1: 1337080013107440021
+        Name: AnimationController
+        m_Value: {fileID: 2888206600592001660}
     - rid: 3879321691665465479
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -1085,14 +1143,6 @@ MonoBehaviour:
           m_Value1: 16617269392962309977
         Name: Target
         m_Value: {fileID: 0}
-    - rid: 3879321691991573355
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Boss.BossAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15547141081581643986
-          m_Value1: 14044624205978326227
-        Name: BossAnimator
-        m_Value: {fileID: 2888206600592001660}
 --- !u!114 &5226963268164371234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1109,7 +1159,14 @@ MonoBehaviour:
   cameraShakeType: 0
   rotateSpeed: 20
   stopDistance: 2
+  checkForward: {fileID: 0}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDistance: 0
+  showGizmo: 0
   _reaperAnimatorController: {fileID: 0}
+  weapon: {fileID: 6575829019224273674}
 --- !u!114 &7247834950103633631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1124,10 +1181,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnHitEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1121988006812966173}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnDeadEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5226963268164371234}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Boss.Reaper.ReaperBoss, Assembly-CSharp
+        m_MethodName: SetDead
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   maxHealth: 100
   currentHealth: 100
   isDead: 0
@@ -1228,6 +1309,38 @@ Transform:
   m_Children:
   - {fileID: 8902672160000114405}
   m_Father: {fileID: 3080251681811327274}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4573027731662090921
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6712760004554013498}
+  m_Layer: 7
+  m_Name: Feedback
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6712760004554013498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4573027731662090921}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5.96}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9131180741318259079}
+  m_Father: {fileID: 7380286626791576000}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4821624855697699212
 GameObject:
@@ -2393,6 +2506,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0e8e2ba9cb9e5b498192bf4610b8206, type: 3}
+--- !u!1 &6575829019224273674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100332, guid: a0e8e2ba9cb9e5b498192bf4610b8206, type: 3}
+  m_PrefabInstance: {fileID: 6575829019224241382}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6575829019224687058 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 472372, guid: a0e8e2ba9cb9e5b498192bf4610b8206, type: 3}
