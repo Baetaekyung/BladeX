@@ -1,12 +1,10 @@
-using System;
-using DG.Tweening;
 using Swift_Blade.Feeling;
 using Swift_Blade.Pool;
-using UnityEditor;
 using UnityEngine;
 
 namespace Swift_Blade.Combat.Projectile
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class Bomb : BaseThrow
     {
         public float explosionRadius;
