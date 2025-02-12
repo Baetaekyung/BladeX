@@ -5,16 +5,27 @@ namespace Swift_Blade
 {
     public class GroundTrap : MonoBehaviour
     {
-        private bool isActive = false;
 
+        [Header("General")]
         [SerializeField] private Transform trapSpears;
         [SerializeField] private float delay = 1;
-        private float timer;
+        [SerializeField] private MeshRenderer meshRenderer;
 
-        private void Start()
+        [Header("Active/Inactive")]
+        [SerializeField] private AnimationCurve easeCurbeActive;
+        [SerializeField] private AnimationCurve easeCurveInactive;
+
+        [SerializeField] private Color32 colorActive;
+        private Color32 colorInactive;
+
+
+        private bool isActive;
+        private float timer;
+        private void Awake()
         {
+            colorInactive = meshRenderer.material.color;
             trapSpears.localPosition = new Vector3(0, GetYValue());
-            //StartCoroutine(ActiveCoroutine());
+
         }
         private void Update()
         {
@@ -23,22 +34,28 @@ namespace Swift_Blade
             {
                 timer = 0;
                 isActive = !isActive;
+
+                AnimationCurve curve = isActive ? easeCurbeActive : easeCurveInactive;
+                Color32 color = isActive ? colorActive : colorInactive;
+
+                const float duration = 0.5f;
                 float targetY = GetYValue();
-                trapSpears.DOMoveY(targetY, 0.5f);
+                trapSpears.DOLocalMoveY(targetY, duration).SetEase(curve);
+                meshRenderer.material.DOColor(color, duration).SetEase(curve);
             }
         }
         private float GetYValue()
         {
-            const float activeYValue = 0;
-            const float deactiveYValue = -2;
-            return isActive ? activeYValue : deactiveYValue;
+            const float yActive = 0;
+            const float yInactive = -2.5f;
+            return isActive ? yActive : yInactive;
         }
         private void OnTriggerStay(Collider other)
         {
             if (!isActive) return;
             if (other.TryGetComponent(out PlayerHealth playerHealth))
             {
-                playerHealth.TakeDamage(new ActionData { damageAmount = 1, attackType = AttackType.Melee });
+                playerHealth.TakeDamage(new ActionData { damageAmount = 1, attackType = AttackType.Melee, stun = true });
             }
         }
         //IEnumerator ActiveCoroutine()

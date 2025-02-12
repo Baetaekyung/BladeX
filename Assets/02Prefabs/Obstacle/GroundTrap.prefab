@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3579986667559915961}
   - component: {fileID: 4193166625437013956}
   - component: {fileID: 2130008973632705329}
-  - component: {fileID: 7147459327269738422}
   m_Layer: 3
   m_Name: Collider
   m_TagString: Untagged
@@ -101,7 +100,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 959
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -109,20 +108,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7147459327269738422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 850268874542577113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d2e28e1eb56dbc4982c8b6573e7025e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trapSpears: {fileID: 6848627424597271201}
-  delay: 1
 --- !u!1 &1661829037819999551
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,6 +117,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3640766434388168692}
+  - component: {fileID: 2526777604161425186}
+  - component: {fileID: 8210626857709552303}
   m_Layer: 0
   m_Name: GroundTrap
   m_TagString: Untagged
@@ -147,7 +134,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661829037819999551}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.6999999, y: 1, z: 1.6999999}
   m_ConstrainProportionsScale: 0
@@ -156,6 +143,165 @@ Transform:
   - {fileID: 6203213716248091089}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2526777604161425186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661829037819999551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d2e28e1eb56dbc4982c8b6573e7025e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trapSpears: {fileID: 6848627424597271201}
+  delay: 1
+  material: {fileID: 0}
+  easeCurbeActive:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 12.880719
+      outSlope: 12.880719
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.15983038
+    - serializedVersion: 3
+      time: 0.119468935
+      value: 0.9590661
+      inSlope: 3.1278238
+      outSlope: 3.1278238
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.094724596
+    - serializedVersion: 3
+      time: 0.20336461
+      value: 1.0889091
+      inSlope: 0.50407106
+      outSlope: 0.50407106
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.54257643
+    - serializedVersion: 3
+      time: 0.43137783
+      value: 1.0050856
+      inSlope: -0.36908907
+      outSlope: -0.36908907
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.32291192
+      outWeight: 0.25257936
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0.3486316
+      outSlope: -0.3486316
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.26379552
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  easeCurveInactive:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 7.321164
+      outSlope: 7.321164
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.39930418
+    - serializedVersion: 3
+      time: 0.11542612
+      value: 0.6974403
+      inSlope: 4.9186754
+      outSlope: 4.9186754
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.14521542
+    - serializedVersion: 3
+      time: 0.1988161
+      value: 0.99770486
+      inSlope: 1.654227
+      outSlope: 1.654227
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.7249295
+    - serializedVersion: 3
+      time: 0.3368902
+      value: 1.0968091
+      inSlope: -0.23599386
+      outSlope: -0.23599386
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4773377
+      value: 1
+      inSlope: -0.21405186
+      outSlope: -0.21405186
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  colorActive:
+    serializedVersion: 2
+    rgba: 0
+  colorInactive:
+    serializedVersion: 2
+    rgba: 0
+--- !u!54 &8210626857709552303
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661829037819999551}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5755808233260442561
 GameObject:
   m_ObjectHideFlags: 0
