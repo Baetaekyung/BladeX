@@ -55,6 +55,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
         {
             _throwBaseThrow.SetPhysicsState(true);
             _throwBaseThrow.transform.SetParent(stoneTrm);
+            _throwBaseThrow.transform.localEulerAngles = Vector3.zero;
             _throwBaseThrow.transform.localPosition = Vector3.zero;
         }
         
