@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Swift_Blade.Feeling;
 using Swift_Blade.Pool;
 using UnityEditor;
@@ -22,21 +23,7 @@ namespace Swift_Blade.Combat.Projectile
         {
             base.Start();
             
-            //MonoGenericPool<Explosion>.Initialize(explosionSO);
-        }
-
-        private void Explosion()
-        {
-            Collider[] colliders = Physics.OverlapSphere(transform.position , explosionRadius , whatIsTarget);
-            if (colliders.Length > 0)
-            {
-                ActionData actionData = new ActionData();
-                actionData.damageAmount = 40;
-                colliders[0].GetComponentInChildren<IDamageble>().TakeDamage(actionData);
-                CameraShakeManager.Instance.DoShake(shakeType);
-                
-                MonoGenericPool<Explosion>.Pop();
-            }
+            MonoGenericPool<Explosion>.Initialize(explosionSO);
         }
 
         private void OnCollisionEnter(Collision other)
@@ -44,9 +31,27 @@ namespace Swift_Blade.Combat.Projectile
             if ((whatIsGround & (1 << other.gameObject.layer)) != 0)
             {
                 if (canExplosion)
-                    Explosion();
+                    Explosion(other.contacts[0].point);
             }
         }
+
+        private void Explosion(Vector3 explosionPoint)
+        {
+            Collider[] colliders = Physics.OverlapSphere(explosionPoint, explosionRadius, whatIsTarget);
+            if (colliders.Length > 0)
+            {
+                ActionData actionData = new ActionData();
+                actionData.damageAmount = 40;
+                colliders[0].GetComponentInChildren<IDamageble>().TakeDamage(actionData);
+                CameraShakeManager.Instance.DoShake(shakeType);
+        
+                Explosion e = MonoGenericPool<Explosion>.Pop();
+                e.transform.position = explosionPoint;
+                
+                Destroy(gameObject);
+            }
+        }
+
 
         public override void SetPhysicsState(bool isActive)
         {
