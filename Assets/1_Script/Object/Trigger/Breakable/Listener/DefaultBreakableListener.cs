@@ -5,10 +5,10 @@ namespace Swift_Blade
 {
     public class DefaultBreakableListener : MonoBehaviour
     {
+        [SerializeField] private BreakableObject breakableObject;
         [SerializeField] private GameObject brokenModel;
         private void Awake()
         {
-            BreakableObject breakableObject = GetComponent<BreakableObject>();
             breakableObject.OnDeadStart += OnDeadStart;
             breakableObject.OnGameObjectDestroy += OnGameObjectDestroy;
         }
@@ -19,7 +19,7 @@ namespace Swift_Blade
         }
         private void OnGameObjectDestroy(BreakableObject breakableObject)
         {
-            Destroy(brokenModel);
+            Destroy(gameObject);
         }
     }
 }

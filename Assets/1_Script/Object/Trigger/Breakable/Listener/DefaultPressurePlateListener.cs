@@ -4,10 +4,10 @@ namespace Swift_Blade
 {
     public class DefaultPressurePlateListener : MonoBehaviour
     {
+        [SerializeField] private PressurePlate pressurePlate;
         [SerializeField] private GameObject objectToSpawn;
         private void Awake()
         {
-            PressurePlate pressurePlate = GetComponentInParent<PressurePlate>();
             pressurePlate.OnPressed += OnPressed;
         }
         private void OnPressed()
