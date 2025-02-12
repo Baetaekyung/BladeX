@@ -1,6 +1,7 @@
 using DG.Tweening;
 using Swift_Blade.Combat.Caster;
 using Swift_Blade.Combat.Projectile;
+using Swift_Blade.Pool;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
@@ -13,16 +14,23 @@ namespace Swift_Blade.Enemy.Boss.Golem
         [SerializeField] private Collider bodyCollider;
 
         [SerializeField] private Transform stoneTrm;
-        private BaseThrow _throwBaseThrow;
-        
-        private GolemBossCaster damageCaster;
-
         [SerializeField] private Rig rig;
+        
+        [SerializeField] private PoolPrefabMonoBehaviourSO groundCrackSO;
+        
+        [SerializeField] private Transform rightGroundCrackTrm;
+        [SerializeField] private Transform leftGroundCrackTrm;
+        [SerializeField] private Transform forwardGroundCrackTrm;
+        
+        private BaseThrow _throwBaseThrow;
+        private GolemBossCaster damageCaster;
         
         protected override void Start()
         {
             base.Start();
             damageCaster = layerCaster as GolemBossCaster;
+            
+            MonoGenericPool<GroundCrack>.Initialize(groundCrackSO);
         }
 
         public void StartManualCollider()
@@ -87,6 +95,27 @@ namespace Swift_Blade.Enemy.Boss.Golem
             
             StopManualLook();
             StopManualCollider();
+        }
+
+        public void CreateGroundCrack(int _direction)
+        {
+            if (_direction == 1)
+            {
+                GroundCrack g = MonoGenericPool<GroundCrack>.Pop();
+                g.transform.position = rightGroundCrackTrm.position;
+            }
+            if (_direction == -1)
+            {
+                GroundCrack g = MonoGenericPool<GroundCrack>.Pop();
+                g.transform.position = leftGroundCrackTrm.position;
+            }
+            
+            if (_direction == 0)
+            {
+                GroundCrack g = MonoGenericPool<GroundCrack>.Pop();
+                g.transform.position = forwardGroundCrackTrm.position;
+            }
+                        
         }
     }
 }

@@ -19,7 +19,6 @@ public partial class MoveToTargetAction : Action
     [SerializeReference] public BlackboardVariable<float> meleeAttackDistance;
     [SerializeReference] public BlackboardVariable<float> attackDistance;
     
-    
     private float distance;
     
     protected override Status OnStart()

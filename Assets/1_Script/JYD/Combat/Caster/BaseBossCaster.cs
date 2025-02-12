@@ -15,6 +15,8 @@ namespace Swift_Blade.Combat.Caster
 
         public override bool CastDamage()
         {
+            OnCastEvent?.Invoke();
+            
             Vector3 startPos = GetStartPosition();
 
             bool isHit = Physics.SphereCast(
