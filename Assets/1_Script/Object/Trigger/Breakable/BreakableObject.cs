@@ -6,12 +6,12 @@ namespace Swift_Blade
 {
     public class BreakableObject : MonoBehaviour, IDamageble
     {
-        public event Action OnDead;
-        public event Action OnGameObjectDestroy;
         public event Action<float> OnHit;
+        public event Action<BreakableObject> OnDeadStart;
+        public event Action<BreakableObject> OnGameObjectDestroy;
 
-        [SerializeField] private float health = 10;
-        [SerializeField] private float delayDead = 1;
+        public float delayDead = 1;
+        public float health = 10;
 
         private bool deadFlag;
         public void TakeDamage(ActionData actionData)
@@ -23,7 +23,7 @@ namespace Swift_Blade
 
             if (health <= 0)
             {
-                OnDead?.Invoke();
+                OnDeadStart?.Invoke(this);
                 deadFlag = true;
                 DeadDead();
             }
@@ -33,7 +33,7 @@ namespace Swift_Blade
             DOVirtual.DelayedCall(delayDead, () =>
             {
                 Destroy(gameObject);
-                OnGameObjectDestroy?.Invoke();
+                OnGameObjectDestroy?.Invoke(this);
             }, false);
         }
         public void TakeHeal(float amount)
