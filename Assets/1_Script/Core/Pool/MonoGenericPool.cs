@@ -5,12 +5,18 @@ namespace Swift_Blade.Pool
     public static class MonoGenericPool<T>
         where T : MonoBehaviour, IPoolable
     {
+        private static bool canInit = true;
+        
         private static MonoPool<T> monoPool;
         /// <summary>
         /// This function must be called before calling any other methods.
         /// </summary>
         public static void Initialize(PoolPrefabMonoBehaviourSO prefabSO)
         {
+            if(canInit == false)return;
+            
+            canInit = false;
+            
             bool isMonoPoolNotInitialized = monoPool == null;
             Debug.Assert(isMonoPoolNotInitialized, $"field:monoPool is already initialized. {prefabSO.name}");
 
