@@ -21,12 +21,10 @@ namespace Swift_Blade.Pool
         }
         public static T Pop()
         {
-            Debug.Assert(monoPool != null, "call func:Initialize");
             return monoPool.Pop();
         }
         public static void Push(T instance)
         {
-            Debug.Assert(monoPool != null, "call func:Initialize");
             Debug.Assert(instance != null, "local:push instance is null");
             monoPool.Push(instance);
         }

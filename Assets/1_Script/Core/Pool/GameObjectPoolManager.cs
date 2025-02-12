@@ -41,7 +41,7 @@ namespace Swift_Blade.Pool
                 result = value.Pop();
             else
             {
-                Debug.Assert(true, "runtimeInitializing! call func:Initialize before calling this");
+                Debug.LogWarning("runtimeInitializing! call func:Initialize before calling this");
                 GameObjectPool gameObjectPool = CreateDictionary(prefabSO);
                 result = gameObjectPool.Pop();
             }
@@ -55,7 +55,7 @@ namespace Swift_Blade.Pool
                 value.Push(instance);
             else
             {
-                Debug.Assert(true, "runtimeInitializing! call func:Initialize before calling this");
+                Debug.LogWarning("runtimeInitializing! call func:Initialize before calling this");
                 GameObjectPool gameObjectPool = CreateDictionary(prefabSO);
                 gameObjectPool.Push(instance);
             }
