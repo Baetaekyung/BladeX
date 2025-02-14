@@ -1,6 +1,7 @@
 using Swift_Blade.Combat.Caster;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 namespace Swift_Blade.Enemy
 {
@@ -21,6 +22,7 @@ namespace Swift_Blade.Enemy
         public bool animationEnd;
         public bool isManualRotate;
         public bool isManualMove;
+
         
         protected virtual void Start()
         {

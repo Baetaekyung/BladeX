@@ -7,6 +7,7 @@ namespace Swift_Blade.Combat.Caster
     {
         public LayerMask targetLayer;
         public UnityEvent OnCastDamageEvent;
+        public UnityEvent OnCastEvent;
         public abstract bool CastDamage();
 
     }

@@ -1,10 +1,9 @@
-using System;
 using Swift_Blade.Pool;
 using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class Explosion : MonoBehaviour,IPoolable
+    public abstract class ParticlePoolAble : MonoBehaviour,IPoolable
     {
         private ParticleSystem _particle;
 
@@ -24,9 +23,12 @@ namespace Swift_Blade
         private void Update()
         {
             pushTimer += Time.deltaTime;
-            
+
             if (pushTimer >= pushTime)
-                MonoGenericPool<Explosion>.Push(this);
+                Push();
         }
+
+        protected abstract void Push();
+        
     }
 }
