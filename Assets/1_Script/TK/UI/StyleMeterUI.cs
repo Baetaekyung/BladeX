@@ -51,13 +51,13 @@ namespace Swift_Blade
 
         private void HandleMultiplierChanged()
         {
-            statMultiplierText.text = styleMeter.statMultiplier.ToString("0.00");
+            statMultiplierText.text = styleMeter.appliedMultiplier.ToString("0.00");
             StyleMeterEffectChanged();
         }
 
         private void StyleMeterEffectChanged()
         {
-            _currentEffectSize = (styleMeter.statMultiplier - 1f) / _maxEffectSize;
+            _currentEffectSize = styleMeter.addedMultiplier / _maxEffectSize;
             _currentEffectSize = Mathf.Clamp(_currentEffectSize, 0f, 1f);
             
             effectShakeIntensity = Mathf.Lerp(0, maxEffectShakeIntensity, _currentEffectSize);

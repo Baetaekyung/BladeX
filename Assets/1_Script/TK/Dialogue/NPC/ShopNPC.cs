@@ -15,6 +15,7 @@ namespace Swift_Blade
             _shop = FindFirstObjectByType<Shop>(FindObjectsInactive.Include);
         }
 
+        [ContextMenu("Interact")]
         public override void Interact()
         {
             if (_isAlreadyRead) //이미 보상을 받았음

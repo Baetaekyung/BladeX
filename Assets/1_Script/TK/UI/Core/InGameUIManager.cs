@@ -1,5 +1,7 @@
 using System;
 using DG.Tweening;
+using Swift_Blade.Enemy;
+using Swift_Blade.UI;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -10,10 +12,10 @@ namespace Swift_Blade
 
         private void Start()
         {
-            EnableBossHealthBar(false);
+            EnableBossUIs(FindFirstObjectByType<BaseEnemy>() != null);
         }
 
-        public void EnableBossHealthBar(bool enable)
+        public void EnableBossUIs(bool enable)
         {
             if (enable)
             {

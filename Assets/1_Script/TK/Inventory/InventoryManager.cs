@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Animations.Rigging;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace Swift_Blade
 {
@@ -15,12 +12,13 @@ namespace Swift_Blade
         EQUIPMENT
     }
     
+    [DefaultExecutionOrder(201)]
     public class InventoryManager : MonoSingleton<InventoryManager>
     {
         [SerializeField] private ItemDataSO testData;
         
         [Header("UI ºÎºÐ")]
-        public ItemDataSO SelectedItem;
+        [HideInInspector] public ItemDataSO SelectedItem;
         [SerializeField] private RectTransform canvasTrm;
         [SerializeField] private RectTransform cursorTrm;
         [SerializeField] private SelectItem_UI selectedItemImage;
@@ -29,7 +27,7 @@ namespace Swift_Blade
         private SelectItem_UI _createdItemUI;
         
         [HideInInspector] private bool isDragging = false;
-        public bool IsDragging { get; set; }
+        public bool IsDragging { get => isDragging; set => isDragging = value; }
         
         [HideInInspector] public bool isSlotChanged = false; 
         private bool _isExistUIObject = false;
@@ -44,8 +42,9 @@ namespace Swift_Blade
         
         public bool isTestMode = true;
         
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
             InitializeSlots();
 
             _playerStat = FindAnyObjectByType<PlayerStatCompo>();

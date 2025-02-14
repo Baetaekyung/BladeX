@@ -19,7 +19,7 @@ namespace Swift_Blade.UI
         public override void Popup()
         {
             _cG.DOFade(1, _fadeTime)
-                .SetEase(Ease.InCirc);
+                .SetEase(Ease.OutCirc);
             _raycaster.enabled = true;
         }
 

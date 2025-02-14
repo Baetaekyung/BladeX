@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Swift_Blade.UI
 {
-    public class OptionsPopup : PopupUI
+    public class SettingPopup : PopupUI
     {
         [SerializeField] private CanvasGroup _cG;
         [SerializeField] private float _fadeTime;
@@ -19,7 +19,7 @@ namespace Swift_Blade.UI
 
         public override void Popup()
         {
-            _cG.DOFade(1, _fadeTime).SetEase(Ease.InCirc);
+            _cG.DOFade(1, _fadeTime).SetEase(Ease.OutCirc);
             _raycaster.enabled = true;
         }
 

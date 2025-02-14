@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
@@ -17,7 +18,7 @@ namespace Swift_Blade
         public delegate void ValueChangeHandler(StatSO stat, float current, float prev);
         public ValueChangeHandler OnValueChange;
 
-        [SerializeField] private StyleMeter stlyeMeter;
+        [FormerlySerializedAs("stlyeMeter")] [SerializeField] private StyleMeter styleMeter;
 
         public StatType statType;
         public string statName;
@@ -45,10 +46,23 @@ namespace Swift_Blade
         {
             get
             {
-                if (statType == StatType.HEALTH)
+                if (statType == StatType.HEALTH || styleMeter.CurrentState == MeterState.NONE)
                     return Mathf.Clamp((_baseValue + _modifiedValue), MinValue, MaxValue);
+
+                if (styleMeter.CurrentState == MeterState.B)
+                {
+                    if(statType == StatType.AGILITY)
+                        return Mathf.Clamp((_baseValue + _modifiedValue), MinValue, MaxValue);
+                }
+                else if (styleMeter.CurrentState == MeterState.S)
+                {
+                    if (statType == StatType.DAMAGE)
+                        return Mathf.Clamp((_baseValue + _modifiedValue), MinValue, MaxValue);
+                }
                 
-                return Mathf.Clamp((_baseValue + _modifiedValue) * stlyeMeter.statMultiplier , MinValue, MaxValue);
+                //현재 스타일 미터 계수에 따라서 적용되는 스텟 다르게 하기
+                return Mathf.Clamp((_baseValue + _modifiedValue) *
+                                   styleMeter.appliedMultiplier , MinValue, MaxValue);
             }
         }
         

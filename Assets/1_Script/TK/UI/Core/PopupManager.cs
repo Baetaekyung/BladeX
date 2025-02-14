@@ -140,5 +140,7 @@ namespace Swift_Blade
 
             return null;
         }
+
+        public void OpenSettingPopup() => PopUp(PopupType.Setting);
     }
 }

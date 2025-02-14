@@ -28,23 +28,5 @@ namespace Swift_Blade
         {
             Initalize();
         }
-
-        public float GetStatValue(StatType statType)
-        {
-            StatSO stat = GetStatByType(statType);
-
-            double value = stat.statType != StatType.HEALTH ? stat.Value * styleMeter.statMultiplier : stat.Value;
-
-            return (float)Math.Round(value, 2);
-        }
-
-        public float GetStatValue(StatSO statSO)
-        {
-            StatSO stat = GetStat(statSO);
-
-            double value = stat.statType != StatType.HEALTH ? stat.Value * styleMeter.statMultiplier : stat.Value;
-
-            return (float)Math.Round(value, 2);
-        }
     }
 }

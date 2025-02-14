@@ -4,6 +4,7 @@ namespace Swift_Blade.UI
 {
     public enum PopupType
     {
+        Setting,
         Option,
         Text,
         Inventory,
