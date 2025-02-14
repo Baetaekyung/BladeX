@@ -34,10 +34,11 @@ namespace Swift_Blade.FSM.States
         public override void Enter()
         {
             base.Enter();
+
             animationTriggers.OnAnimationEndEvent += OnAnimationEndTrigger;
-            animationTriggers.OnAnimationnEndableEvent += OnAnimationEndableTrigger;
-            animationTriggers.OnAnimationEndableListenEvent += OnAnimationEndTriggerListen;
-            animationTriggers.OnAnimationEndableStopListenEvent += OnAnimationEndTriggerStoplisten;
+            animationTriggers.OnAnimationEndableEvent += OnAnimationEndableTrigger;
+            animationTriggers.OnAnimationEndTriggeristenEvent += OnAnimationEndTriggerListen;
+            animationTriggers.OnAnimationEndTriggerStopListenEvent += OnAnimationEndTriggerStoplisten;
 
             animationTriggers.OnAttackTriggerEvent += OnAttackTrigger;
             animationTriggers.OnRotateAllowSetEvent += OnAllowRotateAllowTrigger;
@@ -54,9 +55,9 @@ namespace Swift_Blade.FSM.States
         public override void Exit()
         {
             animationTriggers.OnAnimationEndEvent -= OnAnimationEndTrigger;
-            animationTriggers.OnAnimationnEndableEvent -= OnAnimationEndableTrigger;
-            animationTriggers.OnAnimationEndableListenEvent -= OnAnimationEndTriggerListen;
-            animationTriggers.OnAnimationEndableStopListenEvent -= OnAnimationEndTriggerStoplisten;
+            animationTriggers.OnAnimationEndableEvent -= OnAnimationEndableTrigger;
+            animationTriggers.OnAnimationEndTriggeristenEvent -= OnAnimationEndTriggerListen;
+            animationTriggers.OnAnimationEndTriggerStopListenEvent -= OnAnimationEndTriggerStoplisten;
 
             animationTriggers.OnAttackTriggerEvent -= OnAttackTrigger;
             animationTriggers.OnRotateAllowSetEvent -= OnAllowRotateAllowTrigger;
@@ -66,6 +67,9 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnSpeedMultiplierDefaultEvent -= OnSpeedMultiplierDefaultTrigger;
             //animationTriggers.OnMovementSetEvent -= OnMovementSetTrigger;
             base.Exit();
+            //re init
+            OnAllowRotateAllowTrigger();
+            OnSpeedMultiplierDefaultTrigger(1);
         }
 
         protected virtual void PlayAnimationOnEnter()
@@ -86,13 +90,17 @@ namespace Swift_Blade.FSM.States
         protected void PlayAnimationRebind(AnimationParameterSO param, int layer = -1)
         {
             Debug.Assert(param != null, "parameterSO is null");
+            int hash = param.GetAnimationHash;
             ownerAnimator.Rebind();
             ownerAnimator.Play(param.GetAnimationHash, layer);
+            //ownerAnimator.CrossFadeInFixedTime(hash, 0.05f, layer);
         }
         protected void PlayAnimationRebind(int hash, int layer = -1)
         {
+            Debug.Log("dd");
             ownerAnimator.Rebind();
             ownerAnimator.Play(hash, layer);
+            //ownerAnimator.CrossFadeInFixedTime(hash, 0.05f, layer, 0, 0.2f);
         }
     }
 }
