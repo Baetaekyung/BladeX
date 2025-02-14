@@ -110,6 +110,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
                 var g = MonoGenericPool<GroundCrack>.Pop();
                 g.transform.position = forwardGroundCrackTrm.position;
             }
+            
         }
     }
 }
