@@ -1,31 +1,20 @@
-using Swift_Blade.Enemy.Boss.Golbin;
-using Swift_Blade.Enemy.Goblin;
-using Unity.Behavior;
+using Swift_Blade.Enemy.Boss.Goblin;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Swift_Blade.Enemy.Golbin
+namespace Swift_Blade.Enemy.Goblin
 {
     public class GoblinEnemyInBoss : BaseGoblin
     {
-        private GoblinBoss parent;
-        
         [SerializeField] private float maxAnimationSpeed;
         [SerializeField] private float minAnimationSpeed;
-        
-        public void Init(GoblinBoss boss)
-        {
-            parent = boss;
-            
-            float animationSpeed = Random.Range(minAnimationSpeed , maxAnimationSpeed);
-            goblinAnimator.SetAnimationSpeed(animationSpeed);
-        }
-        
+        private GoblinBoss parent;
+
         protected override void Start()
         {
             base.Start();
             btAgent.enabled = false;
-            
+
             if (target == null)
             {
                 target = GameObject.Find("Player").transform;
@@ -36,35 +25,37 @@ namespace Swift_Blade.Enemy.Golbin
 
         protected override void Update()
         {
-            if (baseAnimationController.isManualRotate)
-            {
-                FactToTarget(target.position);
-            }
+            if (baseAnimationController.isManualRotate) FactToTarget(target.position);
 
             if (baseAnimationController.isManualMove)
             {
-                float distance = Vector3.Distance(transform.position , target.position);
-                
+                var distance = Vector3.Distance(transform.position, target.position);
+
                 if (distance > stopDistance)
                 {
                     attackDestination = transform.position + transform.forward;
 
-                    transform.position = Vector3.MoveTowards(transform.position, attackDestination, 
+                    transform.position = Vector3.MoveTowards(transform.position, attackDestination,
                         baseAnimationController.AttackMoveSpeed * Time.deltaTime);
                 }
             }
 
             if (baseAnimationController is GoblinBossAnimatorController goblinAnimatorController)
-            {
                 if (goblinAnimatorController.isManualKnockback)
                 {
                     attackDestination = transform.position + -transform.forward;
 
-                    transform.position = Vector3.MoveTowards(transform.position, attackDestination, 
-                        goblinAnimatorController.knockbackSpeed * Time.deltaTime); 
+                    transform.position = Vector3.MoveTowards(transform.position, attackDestination,
+                        goblinAnimatorController.knockbackSpeed * Time.deltaTime);
                 }
-            }            
-            
+        }
+
+        public void Init(GoblinBoss boss)
+        {
+            parent = boss;
+
+            var animationSpeed = Random.Range(minAnimationSpeed, maxAnimationSpeed);
+            goblinAnimator.SetAnimationSpeed(animationSpeed);
         }
 
         public override void SetDead()
@@ -72,7 +63,5 @@ namespace Swift_Blade.Enemy.Golbin
             base.SetDead();
             parent.RemoveInSummonList(this);
         }
-                
-        
     }
 }
