@@ -9,9 +9,9 @@ namespace Swift_Blade
         public event Action OnAttackTriggerEvent;
 
         public event Action OnAnimationEndEvent;
-        public event Action OnAnimationnEndableEvent;
-        public event Action OnAnimationEndableListenEvent;
-        public event Action OnAnimationEndableStopListenEvent;
+        public event Action OnAnimationEndableEvent;
+        public event Action OnAnimationEndTriggeristenEvent;
+        public event Action OnAnimationEndTriggerStopListenEvent;
 
         public event Action<float> OnSpeedMultiplierDefaultEvent;
         public event Action<float> OnForceEvent;
@@ -29,17 +29,17 @@ namespace Swift_Blade
         [Preserve]
         private void OnAnimationEndableTrigger()
         {
-            OnAnimationnEndableEvent?.Invoke();
+            OnAnimationEndableEvent?.Invoke();
         }
         [Preserve]
         private void OnAnimationEndableListenTrigger()
         {
-            OnAnimationEndableListenEvent?.Invoke();
+            OnAnimationEndTriggeristenEvent?.Invoke();
         }
         [Preserve]
         private void OnAnimationEndableStopListenTrigger()
         {
-            OnAnimationEndableStopListenEvent?.Invoke();
+            OnAnimationEndTriggerStopListenEvent?.Invoke();
         }
         [Preserve]
         private void OnForceEventTrigger(float force)
