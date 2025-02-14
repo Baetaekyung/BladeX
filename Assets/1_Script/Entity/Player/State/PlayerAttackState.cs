@@ -74,9 +74,6 @@ namespace Swift_Blade.FSM.States
                     OnComboFail();
             }
         }
-        /// <summary>
-        /// todo : try remove currentComboData.GetPeriod?
-        /// </summary>
         private void OnComboFail()
         {
             comboStateHistory.Clear();

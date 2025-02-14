@@ -3,12 +3,6 @@ using System.Reflection;
 
 public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
-    //private static class SingletonPresetManager 
-    //{
-    //    private static T preset = null;
-    //    public static T GetPreset => preset;
-    //}
-
     private static MonoSingletonFlags? singletonFlag;
     private static T _instance = null;
 
@@ -20,25 +14,18 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
             {
                 if (IsShuttingDown) return null;
 
-                //if (singletonFlag.HasFlag(MonoSingletonFlags.SingletonPreset)) _instance = GetPresetSingleton();
-                else _instance = RuntimeInitialize();
+                _instance = RuntimeInitialize();
             }
             return _instance;
         }
     }
     private static bool IsShuttingDown { get; set; }
-    private static T GetPresetSingleton() => default;
-    protected virtual void CustomRuntimeInitializeEvent()
-    {
-    }
     private static T RuntimeInitialize()
     {
         GameObject gameObject = new(name: "Runtime_Singleton_" + typeof(T).Name);
         T result = gameObject.AddComponent<T>();
-        if (singletonFlag.Value.HasFlag(MonoSingletonFlags.CustomRuntimeInitialize))
-            result.CustomRuntimeInitializeEvent();
-        else
-            Debug.LogWarning("Runtime_Singleton_" + typeof(T).Name);
+
+        Debug.Log("Runtime_Singleton_" + typeof(T).Name);
         return result;
     }
     protected virtual void Awake()
@@ -62,7 +49,9 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         }
 
         //init
+#if UNITY_EDITOR
         print($"[Singleton_Awake] [type : {typeof(T).Name}] [name : {gameObject.name}]");
+#endif
         _instance = this as T;
 
     }

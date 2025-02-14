@@ -1,32 +1,28 @@
-using System;
-using Swift_Blade.Enemy.Goblin;
-using Unity.Behavior;
 using UnityEngine;
 
-namespace Swift_Blade.Enemy.Golbin
+namespace Swift_Blade.Enemy.Goblin
 {
     public class GoblinEnemyInStreet : BaseGoblin
     {
-        private Collider[] targets;
-        
         [SerializeField] private LayerMask whatIsTarget;
         [Range(1, 10)] [SerializeField] private float checkTargetRadius;
-        
+        private Collider[] targets;
+
         protected override void Start()
         {
             base.Start();
-            
+
             btAgent.enabled = false;
             targets = new Collider[10];
         }
 
         protected override void Update()
         {
-            Transform findTarget = FindNearTarget();
+            var findTarget = FindNearTarget();
             if (findTarget != null)
             {
-                bool isIsLine = CanSeeTarget(findTarget);
-                
+                var isIsLine = CanSeeTarget(findTarget);
+
                 if (isIsLine)
                 {
                     target = findTarget;
@@ -34,8 +30,15 @@ namespace Swift_Blade.Enemy.Golbin
                     btAgent.enabled = true;
                 }
             }
-            
+
             base.Update();
+        }
+
+        protected override void OnDrawGizmos()
+        {
+            base.OnDrawGizmos();
+
+            Gizmos.DrawWireSphere(transform.position, checkTargetRadius);
         }
 
         private Transform FindNearTarget()
@@ -48,20 +51,12 @@ namespace Swift_Blade.Enemy.Golbin
 
         private bool CanSeeTarget(Transform target)
         {
-            Vector3 directionToTarget = (target.position - transform.position).normalized;
-            float distanceToTarget = Vector3.Distance(transform.position, target.position);
+            var directionToTarget = (target.position - transform.position).normalized;
+            var distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-            if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, ~whatIsTarget))
-            {
-                return true; 
-            }
+            if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, ~whatIsTarget)) return true;
 
-            return false; 
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawWireSphere(transform.position , checkTargetRadius);
+            return false;
         }
     }
 }

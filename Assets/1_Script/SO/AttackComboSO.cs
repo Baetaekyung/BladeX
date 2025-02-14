@@ -25,7 +25,6 @@ namespace Swift_Blade
         public EComboState GetComboState => comboState;
         public AnimationParameterSO GetAnimParam => comboData;
         public Vector3 GetComboForce => comboForce;
-        //public float GetPeriod => period;
     }
     [CreateAssetMenu(fileName = "AttackComboSO", menuName = "Scriptable Objects/AttackComboSO")]
     public class AttackComboSO : ScriptableObject
