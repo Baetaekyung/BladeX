@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Feeling;
 using Swift_Blade.Level;
 using Unity.Behavior;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,30 +10,29 @@ namespace Swift_Blade.Enemy
 {
     public class BaseEnemy : MonoBehaviour
     {
-        protected BaseEnemyAnimationController baseAnimationController;
-        protected BaseEnemyHealth baseHealth;
-        
-        protected NavMeshAgent NavmeshAgent;
-        protected BehaviorGraphAgent btAgent;
-        
-        protected Vector3 nextPathPoint;
-        protected Vector3 attackDestination;
-        
         public Transform target;
-               
+
         [SerializeField] protected CameraShakeType cameraShakeType;
         [SerializeField] protected float rotateSpeed;
-        [Range(0,5)][SerializeField] protected float stopDistance;
+        [Range(0, 5)] [SerializeField] protected float stopDistance;
 
-        protected EnemySpawner owner;
-        protected Collider _collider;
+        [Header("Detect Forward")] public Transform checkForward;
 
-        [Header("Detect Forward")] 
-        public Transform checkForward;
         public LayerMask whatIsWall;
         public float maxDistance;
         public bool showGizmo;
-        
+        protected Collider _collider;
+        protected Vector3 attackDestination;
+        protected BaseEnemyAnimationController baseAnimationController;
+        protected BaseEnemyHealth baseHealth;
+        protected BehaviorGraphAgent btAgent;
+
+        protected NavMeshAgent NavmeshAgent;
+
+        protected Vector3 nextPathPoint;
+
+        protected EnemySpawner owner;
+
         protected virtual void Start()
         {
             btAgent = GetComponent<BehaviorGraphAgent>();
@@ -43,8 +40,38 @@ namespace Swift_Blade.Enemy
             NavmeshAgent = GetComponent<NavMeshAgent>();
             baseHealth = GetComponent<BaseEnemyHealth>();
             _collider = GetComponent<Collider>();
-            
+
             InitTarget();
+        }
+
+        protected virtual void Update()
+        {
+            if (baseHealth.isDead) return;
+
+            if (baseAnimationController.isManualRotate) FactToTarget(target.position);
+
+            if (baseAnimationController.isManualMove)
+            {
+                var directionToTarget = (target.position - transform.position).normalized;
+                attackDestination = target.position - directionToTarget * 1f;
+
+                var distance = Vector3.Distance(transform.position, target.position);
+
+                if (distance > stopDistance)
+                {
+                    attackDestination = transform.position + transform.forward;
+
+                    transform.position = Vector3.MoveTowards(transform.position, attackDestination,
+                        baseAnimationController.AttackMoveSpeed * Time.deltaTime);
+                }
+            }
+        }
+
+        protected virtual void OnDrawGizmos()
+        {
+            if (showGizmo == false) return;
+
+            Gizmos.DrawRay(checkForward.position, checkForward.forward * maxDistance);
         }
 
         private void InitTarget()
@@ -62,42 +89,15 @@ namespace Swift_Blade.Enemy
             btAgent.enabled = true;
         }
 
-        protected virtual void Update()
-        {
-            if(baseHealth.isDead)return;
-            
-            if (baseAnimationController.isManualRotate)
-            {
-                FactToTarget(target.position);
-            }
-
-            if (baseAnimationController.isManualMove)
-            {
-                Vector3 directionToTarget = (target.position - transform.position).normalized;
-                attackDestination = target.position - directionToTarget * 1f;
-                
-                float distance = Vector3.Distance(transform.position , target.position);
-                
-                if (distance > stopDistance)
-                {
-                    attackDestination = transform.position + transform.forward;
-
-                    transform.position = Vector3.MoveTowards(transform.position, attackDestination,
-                        baseAnimationController.AttackMoveSpeed * Time.deltaTime);
-                }
-                
-            }
-        }
-        
         public void FactToTarget(Vector3 target)
         {
-            Quaternion targetRot = Quaternion.LookRotation(target - transform.position);
-            Vector3 currentEulerAngle = transform.rotation.eulerAngles;
+            var targetRot = Quaternion.LookRotation(target - transform.position);
+            var currentEulerAngle = transform.rotation.eulerAngles;
 
-            float yRotation = Mathf.LerpAngle(currentEulerAngle.y, targetRot.eulerAngles.y, rotateSpeed * Time.deltaTime);
+            var yRotation = Mathf.LerpAngle(currentEulerAngle.y, targetRot.eulerAngles.y, rotateSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(currentEulerAngle.x, yRotation, currentEulerAngle.z);
         }
-                
+
         protected void StopImmediately()
         {
             if (NavmeshAgent.enabled == false) return;
@@ -105,19 +105,16 @@ namespace Swift_Blade.Enemy
             NavmeshAgent.isStopped = true;
             NavmeshAgent.velocity = Vector3.zero;
         }
-        
-        /*private Vector3 GetNextPathPoint()
+
+        public Vector3 GetNextPathPoint()
         {
-            NavMeshPath path = NavmeshAgent.path;
+            var path = NavmeshAgent.path;
 
-            if (path.corners.Length < 2)
-            {
-                return NavmeshAgent.destination;
-            }
+            if (path.corners.Length < 2) return NavmeshAgent.destination;
 
-            for (int i = 0; i < path.corners.Length; i++)
+            for (var i = 0; i < path.corners.Length; i++)
             {
-                float distance = Vector3.Distance(NavmeshAgent.transform.position, path.corners[i]);
+                var distance = Vector3.Distance(NavmeshAgent.transform.position, path.corners[i]);
 
                 if (distance < 1 && i < path.corners.Length - 1)
                 {
@@ -127,14 +124,14 @@ namespace Swift_Blade.Enemy
             }
 
             return nextPathPoint;
-        }*/
-        
+        }
+
         public virtual void SetDead()
         {
             owner?.CheckSpawn();
-            
+
             _collider.enabled = false;
-            
+
             StopImmediately();
             baseAnimationController.StopAllAnimationEvents();
         }
@@ -146,22 +143,11 @@ namespace Swift_Blade.Enemy
 
         public bool DetectForwardObstacle()
         {
-            Ray ray = new Ray(checkForward.position, checkForward.forward);
+            var ray = new Ray(checkForward.position, checkForward.forward);
             RaycastHit hit;
-            
-            if (Physics.Raycast(ray, out hit, maxDistance,whatIsWall))
-            {
-                return true;
-            }
-            return false;
-            
-        }
 
-        private void OnDrawGizmos()
-        {
-            if(showGizmo)
-                Gizmos.DrawRay(checkForward.position , checkForward.forward * maxDistance);
-                
+            if (Physics.Raycast(ray, out hit, maxDistance, whatIsWall)) return true;
+            return false;
         }
     }
 }

@@ -16079,6 +16079,9 @@ MonoBehaviour:
   OnCastDamageEvent:
     m_PersistentCalls:
       m_Calls: []
+  OnCastEvent:
+    m_PersistentCalls:
+      m_Calls: []
   _casterRadius: 3.91
   _casterInterpolation: 1.94
   _castingRange: 5.48
@@ -22693,6 +22696,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 27.678654, y: 2.6435533, z: -7.2242785}
     m_Extent: {x: 18.915508, y: 7.936356, z: 14.254788}
   m_DirtyAABB: 0
+--- !u!1 &2689088966062311673
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3076437332989430727}
+  m_Layer: 7
+  m_Name: ForwardGroundCrackTrm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3076437332989430727
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2689088966062311673}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.105, y: 0.1, z: 0.795}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5667943476977376147}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2694033931193863541
 GameObject:
   m_ObjectHideFlags: 0
@@ -35947,6 +35981,9 @@ Transform:
   - {fileID: 4863362397484142210}
   - {fileID: 7049314308212359658}
   - {fileID: 5240885335986100602}
+  - {fileID: 6734990834668514980}
+  - {fileID: 647857644824401392}
+  - {fileID: 3076437332989430727}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &8871817103265783144
@@ -35966,7 +36003,10 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Neck'\n\tTransform 'Head'\n\tTransform 'Neck'\n\tTransform
+    'Head'\n\tTransform 'Neck'\n\tTransform 'Head'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -36194,6 +36234,10 @@ MonoBehaviour:
   bodyCollider: {fileID: 6197281510146877967}
   stoneTrm: {fileID: 4242730501690653894}
   rig: {fileID: 6812827375013687127}
+  groundCrackSO: {fileID: 11400000, guid: ad129cfd44d58a54ea0cfe172c4d1734, type: 2}
+  rightGroundCrackTrm: {fileID: 647857644824401392}
+  leftGroundCrackTrm: {fileID: 6734990834668514980}
+  forwardGroundCrackTrm: {fileID: 3076437332989430727}
 --- !u!114 &6076430792158419863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46999,6 +47043,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -32.286476, y: 3.356413, z: 0.1856451}
     m_Extent: {x: 36.23388, y: 23.476429, z: 30.73249}
   m_DirtyAABB: 0
+--- !u!1 &5939191976501659291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6734990834668514980}
+  m_Layer: 7
+  m_Name: LeftGroundCrackTrm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6734990834668514980
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5939191976501659291}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.419, y: 0.1, z: 0.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5667943476977376147}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5951463402984532197
 GameObject:
   m_ObjectHideFlags: 0
@@ -61573,6 +61648,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -10.1630535, y: -2.6517084, z: 1.8461342}
     m_Extent: {x: 12.32995, y: 6.8348923, z: 10.382279}
   m_DirtyAABB: 0
+--- !u!1 &7892303855866142303
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 647857644824401392}
+  m_Layer: 7
+  m_Name: RightGroundCrackTrm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &647857644824401392
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7892303855866142303}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.415, y: 0.1, z: 0.017}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5667943476977376147}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7898558004763519542
 GameObject:
   m_ObjectHideFlags: 0

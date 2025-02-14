@@ -26083,6 +26083,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 21.652243, y: -5.878444, z: 0.000014305115}
     m_Extent: {x: 29.681402, y: 18.173765, z: 22.277023}
   m_DirtyAABB: 0
+--- !u!1 &5166522305687322223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2527107723555165245}
+  m_Layer: 7
+  m_Name: CheckForward
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2527107723555165245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5166522305687322223}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.029, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4507632083035242682}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5181736224944412437
 GameObject:
   m_ObjectHideFlags: 0
@@ -32133,6 +32164,7 @@ Transform:
   - {fileID: 6733260689350341714}
   - {fileID: 2117156614875570524}
   - {fileID: 4730492195976036769}
+  - {fileID: 2527107723555165245}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &519070926827355230
@@ -32186,7 +32218,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6326984885958572818}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
@@ -32350,14 +32382,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ac6243c23c4d6d448df6e406e50dced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 2527107723555165245}
   cameraShakeType: 0
   rotateSpeed: 50
   stopDistance: 0.4
+  checkForward: {fileID: 2527107723555165245}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 256
+  maxDistance: 0.95
+  showGizmo: 1
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 64
-  checkTargetRadius: 10
+  checkTargetRadius: 6
 --- !u!1 &6358376004863621638
 GameObject:
   m_ObjectHideFlags: 0
@@ -36685,6 +36723,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   OnCastDamageEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCastEvent:
     m_PersistentCalls:
       m_Calls: []
   _casterRadius: 1.24

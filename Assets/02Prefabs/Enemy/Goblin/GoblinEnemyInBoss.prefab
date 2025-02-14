@@ -7935,7 +7935,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: -0.01
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &6327415822309261459
@@ -7945,7 +7945,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1392135386396453775}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
@@ -8113,6 +8113,12 @@ MonoBehaviour:
   cameraShakeType: 0
   rotateSpeed: 50
   stopDistance: 0.4
+  checkForward: {fileID: 0}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDistance: 0
+  showGizmo: 0
   maxAnimationSpeed: 1.25
   minAnimationSpeed: 0.75
 --- !u!1 &1399413493489491318
@@ -16754,6 +16760,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   OnCastDamageEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCastEvent:
     m_PersistentCalls:
       m_Calls: []
   _casterRadius: 1.24
