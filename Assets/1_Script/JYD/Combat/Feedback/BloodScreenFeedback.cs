@@ -30,8 +30,6 @@ namespace Swift_Blade.Combat.Feedbck
         
         private void Start()
         {
-            volume = FindFirstObjectByType<Volume>();
-            
             if (volume == null)
             {
                 Debug.LogError("JYD씬에 가서 Global Volume을 복사해서 들고 오셈.");
