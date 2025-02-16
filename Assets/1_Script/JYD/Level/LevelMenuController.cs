@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
+
 
 namespace Swift_Blade.Level
 {
@@ -20,11 +17,11 @@ namespace Swift_Blade.Level
         [Space] 
         public string baseSceneName;
         public bool useDistanceAdjustment;
-        [Range(0.1f , 3)] public float moveTime;
+        [Range(0.1f , 10)] public float moveSpeed;
         public float rotateSpeed = 0.5f;
         
         private bool isMoing;
-
+        
                 
         private void Start()
         {
@@ -80,9 +77,9 @@ namespace Swift_Blade.Level
             Vector3 direction = (targetPos - player.position).normalized;
 
             float distance = useDistanceAdjustment ? Vector3.Distance(player.position, targetPos) : 1;
-                        
-            float adjustedMoveTime = moveTime * distance; 
-        
+
+            float adjustedMoveTime = distance / moveSpeed;  
+            
             if (direction != Vector3.zero)
             {
                 float targetYRotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
