@@ -9,14 +9,14 @@ namespace Swift_Blade.Enemy.Boss.Reaper
         private readonly int yVelocity = Animator.StringToHash("YVelocity");
         private readonly int zVelocity = Animator.StringToHash("ZVelocity");
         private readonly int yMove = Animator.StringToHash("YMove");
-        
-        protected override void Start()
+
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
             NavMeshAgent = GetComponentInParent<NavMeshAgent>();
             enemy = GetComponentInParent<BaseEnemy>();
-
         }
+              
         public void MoveDown()
         {
             Animator.SetFloat(yVelocity , -1);
