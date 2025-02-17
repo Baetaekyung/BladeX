@@ -97,7 +97,7 @@ namespace Swift_Blade.FSM.States
         }
         protected void PlayAnimationRebind(int hash, int layer = -1)
         {
-            Debug.Log("dd");
+            //Debug.Log("dd");
             ownerAnimator.Rebind();
             ownerAnimator.Play(hash, layer);
             //ownerAnimator.CrossFadeInFixedTime(hash, 0.05f, layer, 0, 0.2f);

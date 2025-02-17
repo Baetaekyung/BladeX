@@ -7,17 +7,21 @@ namespace Swift_Blade
         ,IEntityComponentStart
     {
         [SerializeField] private StatComponent _statCompo;
+        [SerializeField] private StatSO _healthStat;
 
         private float _maxHealth;
         public float GetMaxHealth => _maxHealth;
         [SerializeField] private float _currentHealth;
-        public float GetCurrentHealth => _currentHealth;
-
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
 
+        public float GetCurrentHealth => _currentHealth;
+        public StatSO GetHealthStat => _healthStat;
+
         private const float DamageInterval = 0.71f;
         private float lastDamageTime;
+        //private float _maxHealth;
+        private bool deadFlag;
         
         public bool IsPlayerInvincible { get; set; }
         //private Player _player;
@@ -32,6 +36,7 @@ namespace Swift_Blade
 
         public void TakeDamage(ActionData actionData)
         {
+            if (deadFlag) return;
             if (lastDamageTime + DamageInterval > Time.time) return;
             if (IsPlayerInvincible) return;
 
@@ -56,6 +61,7 @@ namespace Swift_Blade
         public void Dead()
         {
             OnDeadEvent?.Invoke();
+            deadFlag = true;
             //Debug.Log("플레이어 죽었슴");
         }
     }

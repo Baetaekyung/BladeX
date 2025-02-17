@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Swift_Blade.Combat;
 using Swift_Blade.Combat.Caster;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Swift_Blade
 {
@@ -15,7 +16,6 @@ namespace Swift_Blade
         Roll,
         Parry,
         Dead,
-        hit,
         HitStun
     }
     public class Player : Entity
@@ -37,9 +37,6 @@ namespace Swift_Blade
         public EComboState[] dbg_comboHistory;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
 
-        [Header("Roll")]
-        [SerializeField] private float invinciblePeriod;
-        public float GetInvinciblePeriod => invinciblePeriod;
         //[SerializeField] private AnimationParameterSO[] comboParamHash;
         //[SerializeField] private Vector3[] comboForceList;
         //[SerializeField] private float[] periods;
@@ -60,10 +57,11 @@ namespace Swift_Blade
         public PlayerHealth GetPlayerHealth => GetEntityComponent<PlayerHealth>();
         #endregion
 
-        
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
         private PlayerAttackState playerAttackState;
+
+        private Tween playerInvincibleTween;
         protected override void Awake()
         {
             base.Awake();
@@ -71,7 +69,8 @@ namespace Swift_Blade
             playerStateMachine.AddState(PlayerStateEnum.Move, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
             playerAttackState = new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null);
             playerStateMachine.AddState(PlayerStateEnum.Attack, playerAttackState);
-            playerStateMachine.AddState(PlayerStateEnum.Roll, new PlayerRollState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_roll));
+            PlayerRollState playerRollState = new PlayerRollState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_roll);
+            playerStateMachine.AddState(PlayerStateEnum.Roll, playerRollState);
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
             PlayerDeadState playerDeadState = new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death);
             playerStateMachine.AddState(PlayerStateEnum.Dead, playerDeadState);
@@ -81,8 +80,20 @@ namespace Swift_Blade
             {
                 IsPlayerDead = true;
             };
+            playerRollState.OnRollEnd += () =>
+            {
+                GetPlayerHealth.IsPlayerInvincible = true;
+                StatSO dashInvincibleTimeStat = GetEntityComponent<PlayerStatCompo>().GetStatByType(StatType.DASH_INVINCIBLE_TIME);
+                float delay = dashInvincibleTimeStat.Value;
+                playerInvincibleTween = DOVirtual.DelayedCall(delay, () =>
+                {
+                    GetPlayerHealth.IsPlayerInvincible = false;
+                }, false);
+            };
+
             PlayerHealth playerHealth = GetPlayerHealth;
-            playerHealth.OnHitEvent.AddListener((data) => 
+
+            playerHealth.OnHitEvent.AddListener((data) =>
             {
                 if (IsPlayerDead) return;
                 bool isHitStun = data.stun;
@@ -90,15 +101,24 @@ namespace Swift_Blade
                     playerStateMachine.ChangeState(PlayerStateEnum.HitStun);
             });
             playerHealth.OnDeadEvent.AddListener(() => { playerStateMachine.ChangeState(PlayerStateEnum.Dead); });
+            playerStateMachine.OnChangeState += (type) =>
+            {
+                if (type == PlayerStateEnum.Roll || type == PlayerStateEnum.HitStun)
+                {
+                    playerInvincibleTween?.Kill();
+                    print("kTween");
+                }
+            };
         }
         private void Update()
         {
             playerStateMachine.UpdateState();
 
+            UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
+
             Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))
-                playerStateMachine.ChangeState(PlayerStateEnum.Parry);
-                //UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
+                UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
             //UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
             //if (Input.GetKeyDown(KeyCode.F))
             //{
@@ -119,6 +139,6 @@ namespace Swift_Blade
 
 
         public PlayerStateEnum GetCurrentState() => playerStateMachine.GetState();
-        
+
     }
 }

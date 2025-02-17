@@ -5,6 +5,8 @@ namespace Swift_Blade.FSM.States
 {
     public class PlayerRollState : BasePlayerState
     {
+        public event Action OnRollEnd;
+
         protected override bool BaseAllowParryInput => false;
         protected override bool BaseAllowDashInput => false;
         private readonly PlayerRenderer playerRenderer;
@@ -12,7 +14,6 @@ namespace Swift_Blade.FSM.States
         private bool allowListening;
         private bool inputBuffer;
         private bool allowChangeToAttack;
-        private float invinciblePeriod;
         public PlayerRollState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
             playerRenderer = player.GetPlayerRenderer;
@@ -43,19 +44,11 @@ namespace Swift_Blade.FSM.States
             player.GetPlayerMovement.AllowInputMove = false;
             entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirectionRawRotated.normalized, 10);
 
-            invinciblePeriod = player.GetInvinciblePeriod;
             playerHealth.IsPlayerInvincible = true;
         }
         public override void Update()
         {
             base.Update();
-            invinciblePeriod -= Time.deltaTime;
-            if (invinciblePeriod < 0)
-            {
-                playerHealth.IsPlayerInvincible = false;
-                invinciblePeriod = 999;
-                //Debug.Log("invEnd");
-            }
         }
         protected override void OnAttackInput(EComboState previousState, EComboState nonImeediateState = EComboState.None)
         {
@@ -80,6 +73,7 @@ namespace Swift_Blade.FSM.States
         {
             player.GetPlayerMovement.AllowInputMove = true;
             playerHealth.IsPlayerInvincible = false;
+            OnRollEnd?.Invoke();
             base.Exit();
         }
     }
