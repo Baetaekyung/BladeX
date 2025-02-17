@@ -1,3 +1,4 @@
+using System;
 using Swift_Blade.Combat.Caster;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,16 +24,13 @@ namespace Swift_Blade.Enemy
         public bool isManualRotate;
         public bool isManualMove;
 
-        
-        protected virtual void Start()
+        protected virtual void Awake()
         {
-            layerCaster = GetComponentInChildren<LayerCaster>();
-            
-            enemy = GetComponent<BaseEnemy>();
             Animator = GetComponent<Animator>();
+            enemy = GetComponent<BaseEnemy>();
             NavMeshAgent = GetComponent<NavMeshAgent>();
+            layerCaster = GetComponentInChildren<LayerCaster>();
         }
-
         private void Cast()
         {
             layerCaster.CastDamage();

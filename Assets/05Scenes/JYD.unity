@@ -2707,6 +2707,71 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1001 &1590808863
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4397436418132759665, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_Name
+      value: GolemBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 4397436418132759665, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5667943476977376147, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 5667943476977376147, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5667943476977376147, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5667943476977376147, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5667943476977376147, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5667943476977376147, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5667943476977376147, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5667943476977376147, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5667943476977376147, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5667943476977376147, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8871817103265783144, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
 --- !u!1 &1611105283
 GameObject:
   m_ObjectHideFlags: 0
@@ -2781,21 +2846,17 @@ PrefabInstance:
       propertyPath: volume
       value: 
       objectReference: {fileID: 352193385}
-    - target: {fileID: 5346482904669399683, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 2007
-      objectReference: {fileID: 0}
     - target: {fileID: 5704459122665910530, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.32
       objectReference: {fileID: 0}
     - target: {fileID: 5704459122665910530, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.36
+      value: 0.74
       objectReference: {fileID: 0}
     - target: {fileID: 5704459122665910530, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.32
+      value: -1.6
       objectReference: {fileID: 0}
     - target: {fileID: 5704459122665910530, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2893,6 +2954,7 @@ Transform:
   m_Children:
   - {fileID: 1743052241}
   - {fileID: 1307803260}
+  - {fileID: 1879097198}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1754934613
@@ -2910,15 +2972,42 @@ MonoBehaviour:
   levelEvent: {fileID: 11400000, guid: a2d8f67d9c116a8499c86ab4cb0ed966, type: 2}
   spawnEnemies:
   - spawnInfos:
-    - enemy: {fileID: 3669204044569326016, guid: 692f1bd067bb08042ad43b019ba51815, type: 3}
-      spawnPosition: {fileID: 1743052241}
-  - spawnInfos:
-    - enemy: {fileID: 7719732985646483005, guid: ad89255e4cacde943b11a3aa91d8d515, type: 3}
+    - enemy: {fileID: 5226963268164371234, guid: 30d8343bf60ca3f458822f2ff290c30f, type: 3}
       spawnPosition: {fileID: 1307803260}
-  - spawnInfos:
-    - enemy: {fileID: 6024012862813766767, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+    - enemy: {fileID: 5934979267723800791, guid: f96b5f9ed4ff25d4d980356222c62cf9, type: 3}
       spawnPosition: {fileID: 1307803260}
   waveCount: 0
+--- !u!1 &1879097197
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1879097198}
+  m_Layer: 0
+  m_Name: SpawnTrm_02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1879097198
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879097197}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.11, y: 0.69, z: 13.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1754934612}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2113276895
 GameObject:
   m_ObjectHideFlags: 0
@@ -3104,3 +3193,4 @@ SceneRoots:
   - {fileID: 8364299649859555841}
   - {fileID: 84070491}
   - {fileID: 688852920}
+  - {fileID: 1590808863}
