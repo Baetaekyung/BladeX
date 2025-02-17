@@ -21,12 +21,12 @@ namespace Swift_Blade
         [ContextMenu("Init")]
         public void TestInit()
         {
-            Initalize();
+            Initialize();
         }
         
         public void EntityComponentAwake(Entity entity)
         {
-            Initalize();
+            Initialize();
         }
     }
 }

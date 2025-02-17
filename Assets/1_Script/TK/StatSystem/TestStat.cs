@@ -7,7 +7,7 @@ namespace Swift_Blade
     {
         private void Awake()
         {
-            Initalize();
+            Initialize();
         }
     }
 }

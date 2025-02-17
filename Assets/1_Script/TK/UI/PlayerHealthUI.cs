@@ -22,7 +22,7 @@ namespace Swift_Blade.UI
 
             if (_playerHealth != null)
             {
-                SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth);
+                SetHealthUI(_playerHealth.GetMaxHealth, _playerHealth.GetCurrentHealth);
                 
                 _playerHealth.OnHitEvent.AddListener(HandleSetHealthUI);
             }
@@ -44,7 +44,7 @@ namespace Swift_Blade.UI
                 return;
             }
             
-            SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth);
+            SetHealthUI(_playerHealth.GetCurrentHealth, _playerHealth.GetCurrentHealth);
         }
 
         [ContextMenu("Test Setting Health")]

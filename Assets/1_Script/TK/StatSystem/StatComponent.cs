@@ -10,7 +10,7 @@ namespace Swift_Blade
 
         protected StatSO[] _stats;
         
-        protected virtual void Initalize()
+        protected virtual void Initialize()
         {
             _stats = _statOverrides.Select(x => x.CreateStat()).ToArray();
         }
