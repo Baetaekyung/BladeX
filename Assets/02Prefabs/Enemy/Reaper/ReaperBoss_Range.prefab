@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 7792499517035505052}
   - component: {fileID: 484872833663179892}
   - component: {fileID: 4287351736702130246}
+  - component: {fileID: 5815188498518027818}
   - component: {fileID: 4560510482707501886}
   - component: {fileID: 5934979267723800791}
   - component: {fileID: 1682144210723192009}
@@ -160,7 +161,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.5, y: 0, z: 5.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4252352692290016099}
   - {fileID: 3473995024026824681}
@@ -211,6 +212,27 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!65 &5815188498518027818
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096080909143964931}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 2, y: 2, z: 3}
+  m_Center: {x: 0, y: 2, z: -1.6}
 --- !u!114 &4560510482707501886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,6 +346,7 @@ MonoBehaviour:
   showGizmo: 0
   _reaperAnimatorController: {fileID: 0}
   weapon: {fileID: 4365632184279621298}
+  knockbackCollider: {fileID: 5815188498518027818}
 --- !u!114 &1682144210723192009
 MonoBehaviour:
   m_ObjectHideFlags: 0

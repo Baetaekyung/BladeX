@@ -8,20 +8,20 @@ namespace Swift_Blade.Combat.Projectile
     {
         [SerializeField] protected float moveSpeed;
         public float forceAmount;
-        protected NavMeshObstacle obstacle;
+        //protected NavMeshObstacle obstacle;
 
         protected Rigidbody Rigidbody;
 
         protected virtual void Start()
         {
-            obstacle = GetComponent<NavMeshObstacle>();
+            //obstacle = GetComponent<NavMeshObstacle>();
             Rigidbody = GetComponent<Rigidbody>();
             //SetPhysicsState(true);
         }
 
         public virtual void SetPhysicsState(bool isActive)
         {
-            obstacle.enabled = false;
+            //obstacle.enabled = false;
 
             Rigidbody.useGravity = !isActive;
             Rigidbody.isKinematic = isActive;
