@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class ItemTest : BaseEquipment
+    public class EquiptmentDealyDashInvincible : BaseEquipment
     {
         public override void EquipmentEffect()
         {
