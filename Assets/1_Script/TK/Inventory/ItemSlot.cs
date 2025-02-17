@@ -56,7 +56,8 @@ namespace Swift_Blade
 
         public virtual void OnPointerUp(PointerEventData eventData)
         {
-            if (inventoryManager.SelectedItem == null && IsEmptySlot()) return;
+            if (inventoryManager.SelectedItem == null && IsEmptySlot())
+                return;
             
             if (inventoryManager.isSlotChanged == false)
                 ResetItems();

@@ -36,9 +36,6 @@ namespace Swift_Blade
         public PlayerInventory Inventory => playerInventory;
         
         [SerializeField] private List<ItemSlot> itemSlots = new List<ItemSlot>();
-
-        private PlayerStatCompo _playerStat; //이건 나중에 변경이 필요할 듯함
-        public PlayerStatCompo PlayerStat => _playerStat;
         
         public bool isTestMode = true;
         
@@ -46,9 +43,7 @@ namespace Swift_Blade
         {
             base.Awake();
             InitializeSlots();
-
-            _playerStat = FindAnyObjectByType<PlayerStatCompo>();
-
+            
             if (isTestMode)
             {
                 AddItemToEmptySlot(testData);
