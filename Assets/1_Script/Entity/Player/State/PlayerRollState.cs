@@ -5,6 +5,8 @@ namespace Swift_Blade.FSM.States
 {
     public class PlayerRollState : BasePlayerState
     {
+        public event Action OnRollEnd;
+
         protected override bool BaseAllowParryInput => false;
         protected override bool BaseAllowDashInput => false;
         private readonly PlayerRenderer playerRenderer;
@@ -71,6 +73,7 @@ namespace Swift_Blade.FSM.States
         {
             player.GetPlayerMovement.AllowInputMove = true;
             playerHealth.IsPlayerInvincible = false;
+            OnRollEnd?.Invoke();
             base.Exit();
         }
     }
