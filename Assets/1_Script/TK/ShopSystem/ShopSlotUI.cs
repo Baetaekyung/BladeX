@@ -39,6 +39,9 @@ namespace Swift_Blade
 
         private void GiveItemToPlayer()
         {
+            if (_itemCount <= 0)
+                return;
+            
             if (_currentItem == null)
                 return;
 
@@ -54,7 +57,7 @@ namespace Swift_Blade
                 return;
             }
 
-            inventory.itemInventory.Add(_currentItem);
+            InventoryManager.Instance.AddItemToEmptySlot(_currentItem);
             inventory.currentInventoryCapacity++;
         }
         
@@ -72,6 +75,24 @@ namespace Swift_Blade
 
         public void Buy()
         {
+            if (_itemCount <= 0)
+                return;
+            
+            if (_currentItem == null)
+                return;
+
+            if (inventory.Currency < _itemCost)
+            {
+                Debug.Log("소유중인 자원이 Item의 가격보다 적음");
+                return;
+            }
+            
+            if (inventory.currentInventoryCapacity == inventory.maxInventoryCapacity)
+            {
+                Debug.Log("Inventory 가득참");
+                return;
+            }
+            
             _itemCount--;
             remainCount.text = $"remain: {_itemCount.ToString()}";
             

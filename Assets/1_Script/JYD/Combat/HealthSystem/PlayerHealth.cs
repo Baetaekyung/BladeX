@@ -27,9 +27,7 @@ namespace Swift_Blade
         public void EntityComponentStart(Entity entity)
         {
             _maxHealth = _statCompo.GetStatByType(StatType.HEALTH).Value;
-            Debug.Log(_maxHealth);
             _currentHealth = _statCompo.GetStatByType(StatType.HEALTH).Value;
-            Debug.Log(_currentHealth);
         }
 
         public void TakeDamage(ActionData actionData)
