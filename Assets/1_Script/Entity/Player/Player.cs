@@ -37,9 +37,6 @@ namespace Swift_Blade
         public EComboState[] dbg_comboHistory;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
 
-        [Header("Roll")]
-        [SerializeField] private float invinciblePeriod;
-        public float GetInvinciblePeriod => invinciblePeriod;
         //[SerializeField] private AnimationParameterSO[] comboParamHash;
         //[SerializeField] private Vector3[] comboForceList;
         //[SerializeField] private float[] periods;
