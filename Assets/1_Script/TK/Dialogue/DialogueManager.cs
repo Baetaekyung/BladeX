@@ -34,11 +34,6 @@ namespace Swift_Blade
         
         private void Update()
         {
-            if (Keyboard.current.digit1Key.wasPressedThisFrame)
-            {
-                DoDialog(testDialogue).OnComplete(() => Debug.Log("다이얼로그 콜백 테스트"));
-            }
-            
             CancelByEscapeKey();
             SkipByEnterKey();
         }

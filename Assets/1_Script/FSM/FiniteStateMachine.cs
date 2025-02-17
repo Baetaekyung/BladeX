@@ -8,6 +8,8 @@ namespace Swift_Blade.FSM
     public class FiniteStateMachine<StateEnum> 
         where StateEnum : Enum
     {
+        public event Action<StateEnum> OnChangeState;
+
         public State<StateEnum> CurrentState { get; protected set; }
         //public IReadOnlyDictionary<StateEnum, State<StateEnum>> GetStateDictionary => StateDictionary;
         private Dictionary<StateEnum, State<StateEnum>> StateDictionary { get; } = new();
@@ -17,6 +19,7 @@ namespace Swift_Blade.FSM
         public void ChangeState(StateEnum type)
         {
             //Debug.Log(type.ToString());
+            OnChangeState?.Invoke(type);
             CurrentState.Exit();
             CurrentState = StateDictionary[type];
             CurrentState.Enter();

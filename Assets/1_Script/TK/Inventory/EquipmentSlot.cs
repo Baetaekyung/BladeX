@@ -40,6 +40,9 @@ namespace Swift_Blade
             inventoryManager.UpdateEquipInfoUI();
             
             _itemDataSO.equipmentObject.OnEquipment();
+            
+            inventoryManager.UpdateAllSlots();
+            inventoryManager.DeselectItem();
         }
 
         public override void OnPointerDown(PointerEventData eventData)
@@ -84,7 +87,7 @@ namespace Swift_Blade
             }
             
             _itemDataSO.equipmentObject.OffEquipment();
-
+            
             inventoryManager.isSlotChanged = false;
             inventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);
             inventoryManager.Inventory.itemInventory.Add(_itemDataSO);
