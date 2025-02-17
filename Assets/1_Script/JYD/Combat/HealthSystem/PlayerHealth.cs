@@ -6,9 +6,11 @@ namespace Swift_Blade
     public class PlayerHealth : MonoBehaviour, IDamageble, IEntityComponent
         ,IEntityComponentStart
     {
-
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
+
+        private float _maxHealth;
+        public float GetMaxHealth => _maxHealth;
         [SerializeField] private float _currentHealth;
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
@@ -18,7 +20,7 @@ namespace Swift_Blade
 
         private const float DamageInterval = 0.71f;
         private float lastDamageTime;
-        private float _maxHealth;
+        //private float _maxHealth;
         private bool deadFlag;
         
         public bool IsPlayerInvincible { get; set; }
@@ -29,7 +31,9 @@ namespace Swift_Blade
         public void EntityComponentStart(Entity entity)
         {
             _maxHealth = _statCompo.GetStatByType(StatType.HEALTH).Value;
+            Debug.Log(_maxHealth);
             _currentHealth = _statCompo.GetStatByType(StatType.HEALTH).Value;
+            Debug.Log(_currentHealth);
         }
 
         public void TakeDamage(ActionData actionData)
@@ -62,15 +66,5 @@ namespace Swift_Blade
             deadFlag = true;
             //Debug.Log("플레이어 죽었슴");
         }
-
-        /// <param name="value">추가할 체력 값</param>
-        public void AddBaseHealth(float value) //기본 값 변경이라 키 값이 필요 없음.
-        {
-            _statCompo.SetBaseValue(_healthStat, _maxHealth + value);
-            _maxHealth = _healthStat.Value;
-            _currentHealth = Mathf.Clamp(_currentHealth + value, 0, _healthStat.Value);
-        }
-
-        //public PlayerStateEnum GetCurrentState() => _player.GetCurrentState();
     }
 }
