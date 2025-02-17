@@ -40,5 +40,7 @@ namespace Swift_Blade.Enemy.Goblin
                     goblinAnimator.knockbackSpeed * Time.deltaTime);
             }
         }
+        
+        
     }
 }

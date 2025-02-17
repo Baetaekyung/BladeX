@@ -4,6 +4,7 @@ using UnityEngine.Events;
 namespace Swift_Blade
 {
     public class PlayerHealth : MonoBehaviour, IDamageble, IEntityComponent
+        ,IEntityComponentStart
     {
 
         [SerializeField] private StatComponent _statCompo;
@@ -23,19 +24,13 @@ namespace Swift_Blade
         public bool IsPlayerInvincible { get; set; }
         //private Player _player;
         
-        public void EntityComponentAwake(Entity entity)
-        {
-            //_player = entity as Player;
-        }
+        public void EntityComponentAwake(Entity entity) { }
         
-        //private void Update()
-        //{
-        //    if (Input.GetKeyDown(KeyCode.P))
-        //    {
-        //        ActionData action = new ActionData(Vector3.zero, 0.5f, 10f, 20f, transform, AttackType.Melee);
-        //        TakeDamage(action);
-        //    }
-        //}
+        public void EntityComponentStart(Entity entity)
+        {
+            _maxHealth = _statCompo.GetStatByType(StatType.HEALTH).Value;
+            _currentHealth = _statCompo.GetStatByType(StatType.HEALTH).Value;
+        }
 
         public void TakeDamage(ActionData actionData)
         {
@@ -75,6 +70,5 @@ namespace Swift_Blade
         }
 
         //public PlayerStateEnum GetCurrentState() => _player.GetCurrentState();
-
     }
 }

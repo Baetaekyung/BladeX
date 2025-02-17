@@ -25,9 +25,8 @@ namespace Swift_Blade.Enemy.Boss.Golem
         private BaseThrow _throwBaseThrow;
         private GolemBossCaster damageCaster;
 
-        protected override void Start()
+        protected void Start()
         {
-            base.Start();
             damageCaster = layerCaster as GolemBossCaster;
 
             MonoGenericPool<GroundCrack>.Initialize(groundCrackSO);
@@ -110,6 +109,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
                 var g = MonoGenericPool<GroundCrack>.Pop();
                 g.transform.position = forwardGroundCrackTrm.position;
             }
+            
         }
     }
 }
