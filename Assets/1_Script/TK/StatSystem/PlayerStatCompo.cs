@@ -27,6 +27,8 @@ namespace Swift_Blade
         public void EntityComponentAwake(Entity entity)
         {
             Initialize();
+
+            styleMeter.PlayerStat = this;
         }
     }
 }

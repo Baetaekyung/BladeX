@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -47,23 +48,18 @@ namespace Swift_Blade
         {
             get
             {
-                if (statType == StatType.HEALTH || styleMeter.CurrentState == MeterState.NONE)
-                    return Mathf.Clamp((_baseValue + _modifiedValue), MinValue, MaxValue);
+                bool isStyleMeterTargetStat =
+                    styleMeter.TargetStatTypes[Mathf.FloorToInt(styleMeter.appliedMultiplier - 1f)]
+                        .targetStats.Contains(statType);
 
-                if (styleMeter.CurrentState == MeterState.B)
+                if (isStyleMeterTargetStat)
                 {
-                    if(statType == StatType.AGILITY)
-                        return Mathf.Clamp((_baseValue + _modifiedValue), MinValue, MaxValue);
-                }
-                else if (styleMeter.CurrentState == MeterState.S)
-                {
-                    if (statType == StatType.DAMAGE)
-                        return Mathf.Clamp((_baseValue + _modifiedValue), MinValue, MaxValue);
+                    //현재 스타일 미터 계수에 따라서 적용되는 스텟 다르게 하기
+                    return Mathf.Clamp((_baseValue + _modifiedValue) *
+                                       styleMeter.appliedMultiplier , MinValue, MaxValue);
                 }
                 
-                //현재 스타일 미터 계수에 따라서 적용되는 스텟 다르게 하기
-                return Mathf.Clamp((_baseValue + _modifiedValue) *
-                                   styleMeter.appliedMultiplier , MinValue, MaxValue);
+                return Mathf.Clamp((_baseValue + _modifiedValue), MinValue, MaxValue);
             }
         }
         
