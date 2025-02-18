@@ -10892,6 +10892,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2889313541361825741}
   - component: {fileID: 8332071332477179229}
+  - component: {fileID: 4459300614775822468}
   m_Layer: 0
   m_Name: DamageCaster
   m_TagString: Untagged
@@ -10908,7 +10909,7 @@ Transform:
   m_GameObject: {fileID: 2376712662176941158}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10970,6 +10971,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 4459300614775822468}
+        m_TargetAssemblyTypeName: Swift_Blade.PlayerVFXPlayer, Assembly-CSharp
+        m_MethodName: PlayHitEffect
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnCastEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -10978,6 +10991,20 @@ MonoBehaviour:
   _castingRange: 2.7
   _visualTrm: {fileID: 4103815729079207692}
   _playerMovement: {fileID: 8177067181426564885}
+--- !u!114 &4459300614775822468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2376712662176941158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f799d164b4993f4f8b3f7dd0a3b272e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dustEffect: {fileID: 11400000, guid: 9948a7b5594f97746b8a52465d6ba870, type: 2}
+  hitSlashEffect: {fileID: 11400000, guid: 78344e406fd969349aecc415910520cd, type: 2}
 --- !u!1 &2397190681358233135
 GameObject:
   m_ObjectHideFlags: 0

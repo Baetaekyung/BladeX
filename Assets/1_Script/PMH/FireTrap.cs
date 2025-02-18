@@ -8,7 +8,7 @@ namespace Swift_Blade
         {
             if (other.TryGetComponent(out PlayerHealth playerHealth))
             {
-                playerHealth.TakeDamage(new ActionData { damageAmount = 1, attackType = AttackType.Melee, stun = false });
+                playerHealth.TakeDamage(new ActionData { damageAmount = 1, stun = false });
             }
         }
     }

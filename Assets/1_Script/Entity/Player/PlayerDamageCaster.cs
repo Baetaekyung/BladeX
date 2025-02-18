@@ -1,4 +1,3 @@
-using Swift_Blade.Combat.Caster;
 using UnityEngine;
 
 namespace Swift_Blade.Combat.Caster
@@ -11,7 +10,7 @@ namespace Swift_Blade.Combat.Caster
         
         [SerializeField] private Transform _visualTrm;
         [SerializeField] private PlayerMovement _playerMovement;
-
+        
         private Player _player;
         
         public void EntityComponentAwake(Entity entity)
@@ -22,41 +21,31 @@ namespace Swift_Blade.Combat.Caster
         public override bool CastDamage()
         {
             Vector3 startPos = GetStartPosition();
-        
+                    
             bool isHit = Physics.SphereCast(
                 startPos,
                 _casterRadius,
                 _visualTrm.forward, 
                 out RaycastHit hit,
                 _castingRange, targetLayer);
-
+        
             if(isHit)
             {
-                OnCastDamageEvent?.Invoke();
-                
                 if(hit.collider.TryGetComponent(out IDamageble health))
                 {
-
-                    var actionData = new ActionData
-                    {
-                        damageAmount = 10,
-                        knockbackDir = _visualTrm.forward,
-                        knockbackDuration = 0f,
-                        knockbackPower = 0f,
-                        dealer = _player.transform,
-                        attackType = _player.IsParryState ? AttackType.Parry : AttackType.Melee
-                        //attackType =  AttackType.Parry
-                    };
-                    //print(actionData.attackType == AttackType.Parry);
+                    ActionData actionData = new ActionData(hit.point, hit.normal, 10, transform , true);
+                                    
+                    OnCastDamageEvent?.Invoke(actionData);
+                    
                     health.TakeDamage(actionData);
                 }
             }
             return isHit;
         }
         
-        public Vector3 GetStartPosition()
+        private Vector3 GetStartPosition()
         {
-            return _playerMovement.transform.position
+            return transform.transform.position
                    + _visualTrm.forward * (-_casterInterpolation * 2);
         }
         
