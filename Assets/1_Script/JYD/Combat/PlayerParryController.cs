@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace Swift_Blade.Combat
 {
-    public class PlayerParryController : MonoBehaviour,IEntityComponent
+    public class PlayerParryController : MonoBehaviour,IEntityComponent,IEntityComponentStart
     {
         private Player player;
         private bool canParry;
@@ -17,6 +17,11 @@ namespace Swift_Blade.Combat
         {
             player = entity as Player;
         }
+        
+        public void EntityComponentStart(Entity entity)
+        {
+            
+        }
 
         public void SetParry(bool _active)
         {
@@ -24,6 +29,7 @@ namespace Swift_Blade.Combat
         }
         
         public bool CanParry() => canParry;
-        
+
+       
     }
 }
