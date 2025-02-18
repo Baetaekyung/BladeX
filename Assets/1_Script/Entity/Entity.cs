@@ -6,8 +6,10 @@ using UnityEngine;
 public abstract class Entity : MonoBehaviour
 {
     private readonly Dictionary<Type, IEntityComponent> componentDictionary = new();
+    private bool isAwakeInitializing;
     protected virtual void Awake()
     {
+        isAwakeInitializing = true;
         var componentList =
             GetComponentsInChildren<IEntityComponent>(true).
             ToList();
@@ -15,6 +17,7 @@ public abstract class Entity : MonoBehaviour
     }
     protected virtual void Start()
     {
+        isAwakeInitializing = false;
         var componentList = componentDictionary.Values.OfType<IEntityComponentStart>().ToList();
         componentList.ForEach(x => x.EntityComponentStart(this));
     }
@@ -26,6 +29,8 @@ public abstract class Entity : MonoBehaviour
     }
     public T GetEntityComponent<T>() where T : Component, IEntityComponent
     {
+        Debug.Assert(!isAwakeInitializing, "don't call this in awake, call this in IEntityComponentStart.start method");
+
         if (componentDictionary.TryGetValue(typeof(T), out IEntityComponent value))
             return value as T;
 
