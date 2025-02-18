@@ -14,7 +14,7 @@ namespace Swift_Blade.Feeling
     }
     
     /// <summary>
-    /// Low priority first
+    /// 우선순위가 낮을 수록 우선적임
     /// </summary>
     public enum CameraShakePriority
     {
@@ -22,7 +22,7 @@ namespace Swift_Blade.Feeling
         PLAYER = 1,
         ENEMY = 2,
         //else
-        LAST = 9 //magic num
+        LAST = 9 //이 이상으로 만들 것 같지는 않음
     }
     
     [CreateAssetMenu(fileName = "CameraShake_", menuName = "SO/CameraShakeData")]
