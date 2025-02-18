@@ -17,12 +17,11 @@ namespace Swift_Blade.Combat
         public void EntityComponentAwake(Entity entity)
         {
             player = entity as Player;
-            playerStatCompo = player.GetEntityComponent<PlayerStatCompo>(); 
         }
         
         public void EntityComponentStart(Entity entity)
         {
-            
+            playerStatCompo = player.GetEntityComponent<PlayerStatCompo>();
         }
 
         public void SetParry(bool _active)

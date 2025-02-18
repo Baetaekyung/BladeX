@@ -61,9 +61,9 @@ namespace Swift_Blade
         private PlayerAttackState playerAttackState;
 
         private Tween playerInvincibleTween;
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
+            base.Start();
             Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator.GetAnimator;
             playerStateMachine.AddState(PlayerStateEnum.Move, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
             playerAttackState = new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null);
