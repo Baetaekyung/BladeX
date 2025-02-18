@@ -5,6 +5,7 @@ namespace Swift_Blade
     public class EquiptmentOnHit : BaseEquipment
     {
         [SerializeField] private int cnt = 3;
+        [SerializeField] private int healAmount;
         public override void OnEquipment()
         {
             base.OnEquipment();
@@ -16,9 +17,8 @@ namespace Swift_Blade
             if (cnt >= 3)
             {
                 cnt = 0;
-
-                // todo : implement this
-                print("regenHeal");
+                PlayerHealth playerHealth = default;
+                playerHealth.TakeHeal(healAmount);
             }
         }
 
