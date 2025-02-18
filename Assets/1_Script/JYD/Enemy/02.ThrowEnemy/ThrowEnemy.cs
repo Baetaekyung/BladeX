@@ -1,4 +1,4 @@
-﻿using Swift_Blade.Enemy;
+﻿using UnityEngine;
 
 namespace Swift_Blade.Enemy.Throw
 {
@@ -12,6 +12,22 @@ namespace Swift_Blade.Enemy.Throw
             
             _throwEnemyAnimationController = baseAnimationController as ThrowAnimatorController;
             _throwEnemyAnimationController.target = target;
+        }
+
+        protected override void Update()
+        {
+            if (baseAnimationController.isManualRotate)
+            {
+                FactToTarget(target.position);
+            }
+
+            if (baseAnimationController.isManualMove && !DetectForwardObstacle())
+            {
+                attackDestination = transform.position + transform.forward;
+
+                transform.position = Vector3.MoveTowards(transform.position, attackDestination, 
+                    baseAnimationController.AttackMoveSpeed * Time.deltaTime);
+            }
         }
 
         public override void SetDead()

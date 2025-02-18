@@ -256,7 +256,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1555773795}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Trm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -324,7 +324,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelEvent: {fileID: 11400000, guid: a2d8f67d9c116a8499c86ab4cb0ed966, type: 2}
   spawnEnemies:
-  - spawnInfos: []
+  - spawnInfos:
+    - enemy: {fileID: 3789115119428442451, guid: 6425d3cf65ae67d43a3909f708be1037, type: 3}
+      spawnPosition: {fileID: 1555773795}
   waveCount: 0
 --- !u!1001 &1818540746
 PrefabInstance:
@@ -406,6 +408,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 813479813548934273, guid: 164dbddd4299b3247a56af3f3ad1b46f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 920679201806197610, guid: 164dbddd4299b3247a56af3f3ad1b46f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
