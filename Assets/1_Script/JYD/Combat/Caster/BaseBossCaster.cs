@@ -25,25 +25,26 @@ namespace Swift_Blade.Combat.Caster
                 transform.forward,
                 out RaycastHit hit,
                 _castingRange, targetLayer);
-
+            
             if (isHit && hit.collider.TryGetComponent(out IDamageble health))
             {
+                ActionData actionData = new ActionData(hit.point, hit.normal, 10, transform , true);
+                
                 if (CanCurrentAttackParry && hit.collider.TryGetComponent(out PlayerParryController parryController))
                 {
                     if (parryController.CanParry())
                     {
-                        parryEvents?.Invoke();
-                        parryController.ParryEvents?.Invoke();
-                        //print("패링성공함!!!");
+                        parryEvents?.Invoke();//적 쪽
+                        parryController.ParryEvents?.Invoke();//플레이어쪽
                     }
                     else
                     {
-                        ApplyDamage(health);
+                        ApplyDamage(health,actionData);
                     }
                 }
                 else
                 {
-                    ApplyDamage(health);
+                    ApplyDamage(health,actionData);
                 }
             }
 
@@ -52,19 +53,9 @@ namespace Swift_Blade.Combat.Caster
             return isHit;
         }
 
-        protected virtual void ApplyDamage(IDamageble health)
+        protected virtual void ApplyDamage(IDamageble health,ActionData actionData)
         {
-            OnCastDamageEvent?.Invoke();
-
-            ActionData actionData = new ActionData
-            {
-                damageAmount = 10,
-                knockbackDir = transform.forward,
-                knockbackDuration = 0.2f,
-                knockbackPower = 5,
-                dealer = transform
-            };
-
+            OnCastDamageEvent?.Invoke(actionData);
             health.TakeDamage(actionData);
         }
 

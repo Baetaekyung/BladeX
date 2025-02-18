@@ -75,7 +75,7 @@ public partial class MoveToCircleAction : Action
         directionFromTarget.y = 0;
         Vector3 targetPosition = Target.Value.position + directionFromTarget * (MinDistance.Value + 1);
         
-        Agent.Value.position = Vector3.MoveTowards(Agent.Value.position, targetPosition, Speed.Value / 2* Time.deltaTime);
+        Agent.Value.position = Vector3.MoveTowards(Agent.Value.position, targetPosition, Speed.Value / 2 * Time.deltaTime);
     }
     
     private void UpdateCircularPosition()
@@ -93,7 +93,7 @@ public partial class MoveToCircleAction : Action
         Agent.Value.position = Vector3.MoveTowards(
             Agent.Value.position, 
             targetPosition, 
-            Speed.Value 
+            Speed.Value * Time.deltaTime
         );
     }
 

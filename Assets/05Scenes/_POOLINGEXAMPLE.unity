@@ -1099,7 +1099,7 @@ PrefabInstance:
     - target: {fileID: 9146832383488059734, guid: 11588f96b119b0e45811f2f55363b0ae, type: 3}
       propertyPath: swordBossHealth
       value: 
-      objectReference: {fileID: 95032059225202456}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -29350,17 +29350,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4430477944909049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &95032059225202456 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7675906350579918066, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
-  m_PrefabInstance: {fileID: 5318678473248406077}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98b3c3206ea305d42acb508f1a13233f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &95282495657162785
 Animator:
   serializedVersion: 7
@@ -29424,8 +29413,6 @@ MonoBehaviour:
   - rid: 3879321506256519317
   - rid: 3879321506256519318
   - rid: 3879321506256519320
-  - rid: 3879321506256519321
-  - rid: 3879321506256519322
   references:
     version: 2
     RefIds:
@@ -29469,22 +29456,6 @@ MonoBehaviour:
           m_Value1: 8025144667599098049
         Name: Animator
         m_Value: {fileID: 95282495657162785}
-    - rid: 3879321506256519321
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Boss.BossAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15547141081581643986
-          m_Value1: 14044624205978326227
-        Name: BossAnimator
-        m_Value: {fileID: 95282495657162789}
-    - rid: 3879321506256519322
-      type: {class: 'BlackboardVariable`1[[ChangeBossState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 11937102824706042065
-          m_Value1: 10486772480902912100
-        Name: ChangeBossState
-        m_Value: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
 --- !u!136 &95282495657162788
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -29540,6 +29511,12 @@ MonoBehaviour:
   cameraShakeType: 0
   rotateSpeed: 0
   stopDistance: 1.5
+  checkForward: {fileID: 0}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDistance: 0
+  showGizmo: 0
   summonPrefab: {fileID: 0}
   maxSummonCount: 0
   minSummonCount: 0
@@ -73496,7 +73473,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 039ef463e7718f84389c3d1ae749ff85, type: 3}
 --- !u!4 &4135724495909218820 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 5383592680462117539, guid: 039ef463e7718f84389c3d1ae749ff85, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6679206513978228259, guid: 039ef463e7718f84389c3d1ae749ff85, type: 3}
   m_PrefabInstance: {fileID: 4135724495909218819}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5318678473248406077
@@ -73582,7 +73559,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
 --- !u!4 &5318678473248406078 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 8770637553375977595, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5667943476977376147, guid: 0f8aefbd5aa40ee4994d749ec5d0d936, type: 3}
   m_PrefabInstance: {fileID: 5318678473248406077}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807

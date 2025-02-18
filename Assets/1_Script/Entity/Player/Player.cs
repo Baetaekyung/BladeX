@@ -44,7 +44,6 @@ namespace Swift_Blade
         //public IReadOnlyList<AnimationParameterSO> GetComboHashAtk => comboParamHash;
         //public IReadOnlyList<Vector3> GetComboForceList => comboForceList;
         //public IReadOnlyList<float> GetPeriods => periods;
-        public bool IsParryState { get; set; }
         public bool IsPlayerDead { get; private set; }
         #region PlayerComponentGetter
         public PlayerCamera GetPlayerCamera => GetEntityComponent<PlayerCamera>();
@@ -106,7 +105,6 @@ namespace Swift_Blade
                 if (type == PlayerStateEnum.Roll || type == PlayerStateEnum.HitStun)
                 {
                     playerInvincibleTween?.Kill();
-                    print("kTween");
                 }
             };
         }

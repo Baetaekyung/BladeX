@@ -8,7 +8,7 @@ namespace Swift_Blade
     {
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
-
+        
         private float _maxHealth;
         public float GetMaxHealth => _maxHealth;
         [SerializeField] private float _currentHealth;
@@ -17,11 +17,11 @@ namespace Swift_Blade
 
         public float GetCurrentHealth => _currentHealth;
         public StatSO GetHealthStat => _healthStat;
-
-        private const float DamageInterval = 0.71f;
+        
+        private const float DamageInterval = 0.2f;
         private float lastDamageTime;
         //private float _maxHealth;
-        private bool deadFlag;
+        private bool isDead;
         
         public bool IsPlayerInvincible { get; set; }
         //private Player _player;
@@ -36,15 +36,15 @@ namespace Swift_Blade
 
         public void TakeDamage(ActionData actionData)
         {
-            if (deadFlag) return;
+            if (isDead) return;
             if (lastDamageTime + DamageInterval > Time.time) return;
             if (IsPlayerInvincible) return;
-
+            
             float damageAmount = actionData.damageAmount;
             _currentHealth -= damageAmount;
 
             lastDamageTime = Time.time;
-
+            
             OnHitEvent?.Invoke(actionData);
 
             if (_currentHealth <= 0)
@@ -52,7 +52,7 @@ namespace Swift_Blade
                 Dead();
             }
         }
-
+        
         public void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
         {
             _currentHealth = Mathf.Clamp(_currentHealth + healAmount, 0, _maxHealth);
@@ -61,7 +61,7 @@ namespace Swift_Blade
         public void Dead()
         {
             OnDeadEvent?.Invoke();
-            deadFlag = true;
+            isDead = true;
             //Debug.Log("플레이어 죽었슴");
         }
     }

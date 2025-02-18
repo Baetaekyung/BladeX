@@ -8063,9 +8063,16 @@ MonoBehaviour:
   OnCastDamageEvent:
     m_PersistentCalls:
       m_Calls: []
+  OnCastEvent:
+    m_PersistentCalls:
+      m_Calls: []
   _casterRadius: 3.12
   _casterInterpolation: 1.46
   _castingRange: 3.73
+  CanCurrentAttackParry: 1
+  parryEvents:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &224029870
 GameObject:
   m_ObjectHideFlags: 0
@@ -49518,9 +49525,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnParryHitEvent:
-    m_PersistentCalls:
-      m_Calls: []
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -49564,8 +49568,6 @@ MonoBehaviour:
   - rid: 1607273377352123009
   - rid: 1607273058493268002
   - rid: 1607273058493268003
-  - rid: 1607273377352123010
-  - rid: 1607273377352123011
   references:
     version: 2
     RefIds:
@@ -49601,22 +49603,6 @@ MonoBehaviour:
           m_Value1: 10486772480902912100
         Name: ChangeBossState
         m_Value: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
-    - rid: 1607273377352123010
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Boss.BossAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15547141081581643986
-          m_Value1: 14044624205978326227
-        Name: BossAnimator
-        m_Value: {fileID: 1344819218}
-    - rid: 1607273377352123011
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 6734034036057306792
-          m_Value1: 8025144667599098049
-        Name: Animator
-        m_Value: {fileID: 1344819223}
     - rid: 2285474097556357490
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -49736,6 +49722,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 305192454}
   cameraShakeType: 0
+  rotateSpeed: 0
+  stopDistance: 0
+  checkForward: {fileID: 0}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 0
+  maxDistance: 0
+  showGizmo: 0
+  sword: {fileID: 0}
 --- !u!1 &1345803917
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,15 +20,8 @@ namespace Swift_Blade.Combat.Caster
             {
                 if (hitCollider.TryGetComponent(out IDamageble health))
                 {
-                    ActionData actionData = new ActionData
-                    {
-                        damageAmount = 10,
-                        knockbackDir = transform.forward,
-                        knockbackDuration = 0.2f,
-                        knockbackPower = 5,
-                        dealer = transform,
-                    };
-
+                    ActionData actionData = new ActionData();
+        
                     health.TakeDamage(actionData);
                 }
             }

@@ -1,5 +1,6 @@
 using Swift_Blade.Feeling;
 using Swift_Blade.Pool;
+using Swift_Blade.Pool.Explosion;
 using UnityEngine;
 
 namespace Swift_Blade.Combat.Projectile
