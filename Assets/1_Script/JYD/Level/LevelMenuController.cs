@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 namespace Swift_Blade.Level
@@ -20,27 +22,26 @@ namespace Swift_Blade.Level
         [Range(0.1f , 10)] public float moveSpeed;
         public float rotateSpeed = 0.5f;
         
-        private bool isMoing;
+        [SerializeField] private bool isMoving;
         
-                
-        private void Start()
+        private void Awake()
         {
             MovePlayer(currentLevel);
         }
-
+        
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
             {
                 NextLevel();
             }
             
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
             {
                 PrevLevel();
             }
             
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Keyboard.current.enterKey.wasPressedThisFrame)
             {
                 SelectLevel();
             }
@@ -49,29 +50,29 @@ namespace Swift_Blade.Level
 
         private void SelectLevel()
         {
-            if (isMoing) return;
+            if (isMoving) return;
             
             string currentLevelStr = $"{baseSceneName}_{currentLevel + 1}";
                         
-            levelEvent.SceneMoveEvent?.Invoke(currentLevelStr , ()=> isMoing = false);
-            isMoing = true;
+            levelEvent.SceneMoveEvent?.Invoke(currentLevelStr , ()=> isMoving = false);
+            isMoving = true;
         }
 
         private void NextLevel()
         {
-            if (levels.Count - 1 <= currentLevel || isMoing) return;
+            if (levels.Count - 1 <= currentLevel || isMoving) return;
             MovePlayer(++currentLevel);
         }
         
         private void PrevLevel()
         {
-            if (currentLevel <= 0 || isMoing) return;
+            if (currentLevel <= 0 || isMoving) return;
             MovePlayer(--currentLevel);
         }
 
         private void MovePlayer(int levelIndex)
         {
-            isMoing = true;
+            isMoving = true;
             
             Vector3 targetPos = levels[levelIndex].position;
             Vector3 direction = (targetPos - player.position).normalized;
@@ -88,7 +89,7 @@ namespace Swift_Blade.Level
 
             player.transform.DOMove(targetPos, adjustedMoveTime).OnComplete(() =>
             {
-                isMoing = false;
+                isMoving = false;
             });
         }
 
