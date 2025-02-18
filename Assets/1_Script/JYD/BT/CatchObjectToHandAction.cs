@@ -2,6 +2,7 @@ using System;
 using Swift_Blade.Combat.Projectile;
 using Swift_Blade.Enemy;
 using Swift_Blade.Enemy.Boss.Golem;
+using Swift_Blade.Enemy.Throw;
 using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
@@ -14,18 +15,18 @@ public partial class CatchObjectToHandAction : Action
     [SerializeReference] public BlackboardVariable<BaseEnemyAnimationController> animationController;
     [SerializeReference] public BlackboardVariable<Transform> Object;
     
-    private GolemAnimatorController _golemAnimatorController;
+    private ThrowAnimatorController animator;
         
     protected override Status OnStart()
     {
         if (Object.Value == null)
             return Status.Failure;
-        if(_golemAnimatorController == null)
-            _golemAnimatorController = (animationController.Value as GolemAnimatorController);
-        if (_golemAnimatorController == null)
+        if(animator == null)
+            animator = (animationController.Value as ThrowAnimatorController);
+        if (animator == null)
             return Status.Failure;
         
-        _golemAnimatorController.SetStone(Object.Value.GetComponent<BaseThrow>());
+        animator.SetStone(Object.Value.GetComponent<BaseThrow>());
         
         return Status.Success;
     }

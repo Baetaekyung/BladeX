@@ -11,14 +11,15 @@ namespace Swift_Blade.Feeling
     {
         private const float DEFAULT_CAMERA_FOV = 60f; //기본 FOV
 
-        [Header("포커스 할 카메라")] [SerializeField] private CinemachineCamera _camera;
-
+        [Header("포커스 할 카메라")]
+        [SerializeField] private CinemachineCamera _camera;
+        private CinemachineCamera _targetCamera;
+        
+        [Header("코루틴 변수들")]
+        private Coroutine _focusRoutine;
         private readonly WaitForEndOfFrame _waitFrame = new(); //코루틴 최적화 변수
 
-        [Header("코루틴 변수들")] private Coroutine _focusRoutine;
-
         private Action _onCompleteEvent;
-        private CinemachineCamera _targetCamera;
 
         private void Start()
         {
@@ -126,17 +127,17 @@ namespace Swift_Blade.Feeling
             InvokeCompleteEvent();
         }
 
-        private void InvokeCompleteEvent()
-        {
-            _onCompleteEvent?.Invoke();
-            _onCompleteEvent = null;
-        }
-
         public void OnComplete(Action onComplete)
         {
             _onCompleteEvent = null;
 
             _onCompleteEvent = onComplete;
+        }
+        
+        private void InvokeCompleteEvent()
+        {
+            _onCompleteEvent?.Invoke();
+            _onCompleteEvent = null;
         }
     }
 }

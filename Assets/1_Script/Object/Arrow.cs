@@ -24,7 +24,7 @@ namespace Swift_Blade.Object
 
             if (collision.gameObject.TryGetComponent(out PlayerHealth playerHealth))
             {
-                playerHealth.TakeDamage(new ActionData() { attackType = AttackType.Melee, damageAmount = 1, stun = false });
+                playerHealth.TakeDamage(new ActionData() { damageAmount = 1, stun = false });
             }
         }
 

@@ -55,7 +55,7 @@ namespace Swift_Blade
             if (!isActive) return;
             if (other.TryGetComponent(out PlayerHealth playerHealth))
             {
-                playerHealth.TakeDamage(new ActionData { damageAmount = 1, attackType = AttackType.Melee, stun = true });
+                playerHealth.TakeDamage(new ActionData { damageAmount = 1, stun = true });
             }
         }
         //IEnumerator ActiveCoroutine()

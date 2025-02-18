@@ -32,10 +32,7 @@ namespace Swift_Blade.Combat.Feedbck
         {
             if (volume == null)
             {
-                Debug.LogError("JYD씬에 가서 Global Volume을 복사해서 들고 오셈.");
-                Debug.LogError("JYD씬에 가서 Global Volume을 복사해서 들고 오셈.");
-                Debug.LogError("JYD씬에 가서 Global Volume을 복사해서 들고 오셈.");
-                Debug.LogError("JYD씬에 가서 Global Volume을 복사해서 들고 오셈.");
+                volume = FindObjectOfType<Volume>();
             }
             
             volume.profile.TryGet(out vignette);

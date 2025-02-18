@@ -1139,9 +1139,16 @@ MonoBehaviour:
   OnCastDamageEvent:
     m_PersistentCalls:
       m_Calls: []
+  OnCastEvent:
+    m_PersistentCalls:
+      m_Calls: []
   _casterRadius: 3.75
   _casterInterpolation: 1.53
   _castingRange: 5.79
+  CanCurrentAttackParry: 1
+  parryEvents:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &763201424
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1276,37 +1283,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   root: {fileID: 4761846310622532}
   flashDuration: 0.1
+  flashCount: 0
   _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
   _meshRenderers: []
---- !u!1 &1174540063 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 430990643541604582, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-  m_PrefabInstance: {fileID: 1704071304}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1174540066 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4326774967714138155, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-  m_PrefabInstance: {fileID: 1704071304}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1174540063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 381b60ed06d463a43ac10235f2e1c823, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1174540068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1174540063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a861d1e6a4fbaef4fafdada55decfbc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shakeType: 0
 --- !u!1001 &1601054912
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1501,11 +1480,11 @@ PrefabInstance:
     - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1174540066}
+      objectReference: {fileID: 0}
     - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1174540068}
+      objectReference: {fileID: 0}
     - target: {fileID: 8332071332477179229, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: OnCastDamageEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -1545,9 +1524,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2830836079372413566, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       insertIndex: -1
       addedObject: {fileID: 891924422}
-    - targetCorrespondingSourceObject: {fileID: 430990643541604582, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1174540068}
   m_SourcePrefab: {fileID: 100100000, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
 --- !u!1 &2113276895
 GameObject:
@@ -29202,12 +29178,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 305192454}
   cameraShakeType: 0
-  jumpAttackRadius: 15.3
-  whatIsTarget:
+  rotateSpeed: 0
+  stopDistance: 0
+  checkForward: {fileID: 0}
+  whatIsWall:
     serializedVersion: 2
-    m_Bits: 64
-  collider: {fileID: 763201424}
-  shakeType: 4
+    m_Bits: 0
+  maxDistance: 0
+  showGizmo: 0
 --- !u!114 &95032059225202455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29227,9 +29205,6 @@ MonoBehaviour:
   - rid: 2640862034972902091
   - rid: 2640862034972902092
   - rid: 2640862034972902093
-  - rid: 2640862034972902094
-  - rid: 2640862034972902095
-  - rid: 2640862035359039971
   references:
     version: 2
     RefIds:
@@ -29273,30 +29248,6 @@ MonoBehaviour:
           m_Value1: 8025144667599098049
         Name: Animator
         m_Value: {fileID: 95032059225202450}
-    - rid: 2640862034972902094
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Boss.BossAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15547141081581643986
-          m_Value1: 14044624205978326227
-        Name: BossAnimator
-        m_Value: {fileID: 95032059225202453}
-    - rid: 2640862034972902095
-      type: {class: 'BlackboardVariable`1[[ChangeBossState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 11937102824706042065
-          m_Value1: 10486772480902912100
-        Name: ChangeBossState
-        m_Value: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
-    - rid: 2640862035359039971
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15450045059901313231
-          m_Value1: 15826921796212577334
-        Name: MoveSpeed
-        m_Value: 1.5
 --- !u!114 &95032059225202456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29324,9 +29275,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnParryHitEvent:
-    m_PersistentCalls:
-      m_Calls: []
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls:
