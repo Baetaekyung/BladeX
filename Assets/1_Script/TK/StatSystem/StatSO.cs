@@ -10,7 +10,8 @@ namespace Swift_Blade
         HEALTH,
         DAMAGE,
         AGILITY,
-        DASH_INVINCIBLE_TIME
+        DASH_INVINCIBLE_TIME,
+        PARRY_CHANCE
     }
     
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]
