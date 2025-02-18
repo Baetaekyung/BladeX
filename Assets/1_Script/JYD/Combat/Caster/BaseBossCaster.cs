@@ -1,5 +1,4 @@
-﻿using Swift_Blade.Combat.Caster;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace Swift_Blade.Combat.Caster
