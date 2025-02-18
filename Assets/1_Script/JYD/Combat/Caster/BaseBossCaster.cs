@@ -35,7 +35,7 @@ namespace Swift_Blade.Combat.Caster
                     if (parryController.CanParry())
                     {
                         parryEvents?.Invoke();//적 쪽
-                        parryController.ParryEvents?.Invoke();//플레이어쪽
+                        parryController.ParryEvents?.Invoke(actionData);//플레이어쪽
                     }
                     else
                     {

@@ -11,7 +11,7 @@ namespace Swift_Blade.Combat
         [Range(0.01f, 1.5f)] [SerializeField] private float parryTime;
         public float ParryTime => parryTime;
 
-        public UnityEvent ParryEvents;
+        public UnityEvent<ActionData> ParryEvents;
         
         public void EntityComponentAwake(Entity entity)
         {

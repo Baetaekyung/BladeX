@@ -10892,7 +10892,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2889313541361825741}
   - component: {fileID: 8332071332477179229}
-  - component: {fileID: 4459300614775822468}
   m_Layer: 0
   m_Name: DamageCaster
   m_TagString: Untagged
@@ -10909,7 +10908,7 @@ Transform:
   m_GameObject: {fileID: 2376712662176941158}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1, z: 0}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10971,9 +10970,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 4459300614775822468}
+      - m_Target: {fileID: 478187616852031256}
         m_TargetAssemblyTypeName: Swift_Blade.PlayerVFXPlayer, Assembly-CSharp
-        m_MethodName: PlayHitEffect
+        m_MethodName: PlayDamageEffect
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10991,20 +10990,7 @@ MonoBehaviour:
   _castingRange: 2.7
   _visualTrm: {fileID: 4103815729079207692}
   _playerMovement: {fileID: 8177067181426564885}
---- !u!114 &4459300614775822468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2376712662176941158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f799d164b4993f4f8b3f7dd0a3b272e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dustEffect: {fileID: 11400000, guid: 9948a7b5594f97746b8a52465d6ba870, type: 2}
-  hitSlashEffect: {fileID: 11400000, guid: 78344e406fd969349aecc415910520cd, type: 2}
+  damageStat: {fileID: 11400000, guid: addd3b36185f6454791024df16a78c27, type: 2}
 --- !u!1 &2397190681358233135
 GameObject:
   m_ObjectHideFlags: 0
@@ -12900,6 +12886,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 27.737534, y: 3.1170645, z: -8.240892}
     m_Extent: {x: 18.442848, y: 7.4541817, z: 14.2320385}
   m_DirtyAABB: 0
+--- !u!1 &2720674784515747054
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8632028477375930125}
+  m_Layer: 0
+  m_Name: ParryEffectTrm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8632028477375930125
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2720674784515747054}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.54, y: 1.606, z: 0.467}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1547652066911575172}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2727319010544024092
 GameObject:
   m_ObjectHideFlags: 0
@@ -13030,6 +13047,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5704459122665910530}
   - component: {fileID: 5558562310119497924}
+  - component: {fileID: 478187616852031256}
   m_Layer: 0
   m_Name: PlayerCategory
   m_TagString: Untagged
@@ -13085,6 +13103,22 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 17dd804bc9c6ce449bc687517d92b775, type: 2}
   - {fileID: 11400000, guid: bfad413941b53a5499e68816bf132bda, type: 2}
   dbg_comboHistory: 02000000
+--- !u!114 &478187616852031256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2777080882551110989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f799d164b4993f4f8b3f7dd0a3b272e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dustEffect: {fileID: 11400000, guid: 9948a7b5594f97746b8a52465d6ba870, type: 2}
+  hitSlashEffect: {fileID: 11400000, guid: 78344e406fd969349aecc415910520cd, type: 2}
+  parryEffect: {fileID: 11400000, guid: d40b8b3b53d73dc4f839d65878943be2, type: 2}
+  parryParticleTrm: {fileID: 8632028477375930125}
 --- !u!1 &2777974626546988096
 GameObject:
   m_ObjectHideFlags: 0
@@ -37243,9 +37277,9 @@ GameObject:
   - component: {fileID: 4253624694102172301}
   - component: {fileID: 8177067181426564885}
   - component: {fileID: 1249726565225635276}
+  - component: {fileID: 814462047537304845}
   - component: {fileID: 8928013613842272787}
   - component: {fileID: 2072265066507459340}
-  - component: {fileID: 814462047537304845}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -37269,6 +37303,7 @@ Transform:
   - {fileID: 4103815729079207692}
   - {fileID: 2889313541361825741}
   - {fileID: 2146183822903394731}
+  - {fileID: 8632028477375930125}
   m_Father: {fileID: 5704459122665910530}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4863692531285898503
@@ -37513,6 +37548,44 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 478187616852031256}
+        m_TargetAssemblyTypeName: Swift_Blade.PlayerVFXPlayer, Assembly-CSharp
+        m_MethodName: PlayParryEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &814462047537304845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7389977111463853842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 134b36a4e4cc1b341b4dfe8749982afa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _statOverrides:
+  - _stat: {fileID: 11400000, guid: 62e0b58eb0b17624eada6e77313bb27e, type: 2}
+    _isUseOverride: 1
+    _overrideValue: 300
+  - _stat: {fileID: 11400000, guid: a8b230152c0f47445936c1bc790e3a7d, type: 2}
+    _isUseOverride: 1
+    _overrideValue: 5
+  - _stat: {fileID: 11400000, guid: addd3b36185f6454791024df16a78c27, type: 2}
+    _isUseOverride: 1
+    _overrideValue: 5
+  - _stat: {fileID: 11400000, guid: 767e668fa576b314f8585eb576607da2, type: 2}
+    _isUseOverride: 1
+    _overrideValue: 0.2
+  styleMeter: {fileID: 11400000, guid: fd2fecfb682b5984f93729859182a0ab, type: 2}
 --- !u!54 &8928013613842272787
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -37563,32 +37636,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &814462047537304845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7389977111463853842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 134b36a4e4cc1b341b4dfe8749982afa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _statOverrides:
-  - _stat: {fileID: 11400000, guid: 62e0b58eb0b17624eada6e77313bb27e, type: 2}
-    _isUseOverride: 1
-    _overrideValue: 300
-  - _stat: {fileID: 11400000, guid: a8b230152c0f47445936c1bc790e3a7d, type: 2}
-    _isUseOverride: 1
-    _overrideValue: 5
-  - _stat: {fileID: 11400000, guid: addd3b36185f6454791024df16a78c27, type: 2}
-    _isUseOverride: 1
-    _overrideValue: 5
-  - _stat: {fileID: 11400000, guid: 767e668fa576b314f8585eb576607da2, type: 2}
-    _isUseOverride: 1
-    _overrideValue: 0.2
-  styleMeter: {fileID: 11400000, guid: fd2fecfb682b5984f93729859182a0ab, type: 2}
 --- !u!1 &7396908040629326032
 GameObject:
   m_ObjectHideFlags: 0
@@ -45580,7 +45627,7 @@ Transform:
   m_GameObject: {fileID: 8769104566819483706}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.0000010115244, y: 0.0000009127682, z: -0.00000043593104}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

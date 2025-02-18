@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Combat.Caster
 {
-    public class PlayerDamageCaster : LayerCaster, IEntityComponent
+    public class PlayerDamageCaster : LayerCaster, IEntityComponent,IEntityComponentStart
     {
         [SerializeField][Range(0.5f, 10f)] private float _casterRadius = 1f;
         [SerializeField][Range(0f, 10f)] private float _casterInterpolation = 0.5f;
@@ -10,12 +10,20 @@ namespace Swift_Blade.Combat.Caster
         
         [SerializeField] private Transform _visualTrm;
         [SerializeField] private PlayerMovement _playerMovement;
+
+        [SerializeField] private StatSO damageStat;
         
         private Player _player;
+        private PlayerStatCompo _statCompo;
         
         public void EntityComponentAwake(Entity entity)
         {
             _player = entity as Player;
+        }
+        
+        public void EntityComponentStart(Entity entity)
+        {
+            _statCompo = entity.GetEntityComponent<PlayerStatCompo>();
         }
         
         public override bool CastDamage()
@@ -33,10 +41,10 @@ namespace Swift_Blade.Combat.Caster
             {
                 if(hit.collider.TryGetComponent(out IDamageble health))
                 {
-                    ActionData actionData = new ActionData(hit.point, hit.normal, 10, transform , true);
-                                    
-                    OnCastDamageEvent?.Invoke(actionData);
+                    float damageAmount = _statCompo.GetStat(damageStat).Value;
+                    ActionData actionData = new ActionData(hit.point, hit.normal, damageAmount ,transform , true);
                     
+                    OnCastDamageEvent?.Invoke(actionData);
                     health.TakeDamage(actionData);
                 }
             }
@@ -60,5 +68,7 @@ namespace Swift_Blade.Combat.Caster
             Gizmos.DrawWireSphere(GetStartPosition() + _visualTrm.forward * _castingRange, _casterRadius);
             Gizmos.color = Color.white;
         }
+
+        
     }
 }
