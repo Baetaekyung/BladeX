@@ -13,14 +13,10 @@ namespace Swift_Blade.Enemy.Goblin
         protected override void Start()
         {
             base.Start();
-            btAgent.enabled = false;
-
-            if (target == null)
-            {
-                target = GameObject.Find("Player").transform;
-                btAgent.BlackboardReference.SetVariableValue("Target", target);
-                btAgent.enabled = true;
-            }
+           
+            
+            var animationSpeed = Random.Range(minAnimationSpeed, maxAnimationSpeed);
+            goblinAnimator.SetAnimationSpeed(animationSpeed);
         }
 
         protected override void Update()
@@ -53,9 +49,6 @@ namespace Swift_Blade.Enemy.Goblin
         public void Init(GoblinBoss boss)
         {
             parent = boss;
-
-            var animationSpeed = Random.Range(minAnimationSpeed, maxAnimationSpeed);
-            goblinAnimator.SetAnimationSpeed(animationSpeed);
         }
 
         public override void SetDead()
