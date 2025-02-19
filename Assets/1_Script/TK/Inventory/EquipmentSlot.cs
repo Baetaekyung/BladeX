@@ -39,7 +39,8 @@ namespace Swift_Blade
             
             inventoryManager.UpdateEquipInfoUI();
             
-            _itemDataSO.equipmentObject.OnEquipment();
+            BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
+            baseEquip?.OnEquipment();
             
             inventoryManager.UpdateAllSlots();
             inventoryManager.DeselectItem();
@@ -53,7 +54,8 @@ namespace Swift_Blade
                 {
                     if (inventoryManager.Inventory.currentEquipment.Contains(_itemDataSO.equipmentData))
                     {
-                        _itemDataSO.equipmentObject.OffEquipment();
+                        BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
+                        baseEquip?.OffEquipment();
                         
                         inventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);
                         inventoryManager.UpdateEquipInfoUI();
@@ -86,7 +88,8 @@ namespace Swift_Blade
                 return; //중복 장착 방지
             }
             
-            _itemDataSO.equipmentObject.OffEquipment();
+            BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
+            baseEquip?.OffEquipment();
             
             inventoryManager.isSlotChanged = false;
             inventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);

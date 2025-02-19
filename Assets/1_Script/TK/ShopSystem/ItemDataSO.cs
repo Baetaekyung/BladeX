@@ -16,13 +16,14 @@ namespace Swift_Blade
         
         private ItemSlot _itemSlot;
         public ItemSlot GetItemSlot => _itemSlot;
+        
+        public ItemObject itemObject;
 
         [FormerlySerializedAs("data")]
         [FormerlySerializedAs("statData")]
         [Header("장비일 때 필요한 변수들")]
         [Space]
         public EquipmentData equipmentData; //장비일 때만 넣어주기
-        public BaseEquipment equipmentObject;
         
         public bool IsEquipment() => itemType == ItemType.EQUIPMENT;
     }

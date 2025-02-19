@@ -2,15 +2,11 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class ItemTest : BaseEquipment
+    public class TestItemObject : ItemObject
     {
         public override void ItemEffect()
         {
-
-        }
-        public override void Interact()
-        {
-
+            Debug.Log("Item을 사용 하였다.");
         }
     }
 }
