@@ -11,7 +11,7 @@ namespace Swift_Blade
             base.OnEquipment();
             cnt = 0;
         }
-        public override void EquipmentEffect()
+        public override void ItemEffect()
         {
             cnt++;
             if (cnt >= 3)

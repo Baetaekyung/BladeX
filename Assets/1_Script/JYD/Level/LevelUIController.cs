@@ -2,7 +2,6 @@ using System;
 using System.Text;
 using DG.Tweening;
 using TMPro;
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -34,15 +33,17 @@ namespace Swift_Blade.Level
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
-
+            
             levelEvent.SceneMoveEvent += StartFade;
             levelEvent.LevelClearEvent += SetActiveClearPanel;
+            levelEvent.SceneChangeEvent += NextOtherScene;
         }
 
         private void OnDestroy()
         {
             levelEvent.SceneMoveEvent -= StartFade;
             levelEvent.LevelClearEvent -= SetActiveClearPanel;
+            levelEvent.SceneChangeEvent -= NextOtherScene;
         }
 
         private void StartFade(string sceneName,Action onComplete)
@@ -55,8 +56,17 @@ namespace Swift_Blade.Level
             isFading = true;
             fadeImage.DOFade(1, fadeInTime).OnComplete(() =>
             {
-                SceneManager.LoadScene(sceneName);
-                FadeOut(onComplete);
+                if (IsVailedScene(sceneName))
+                {
+                    SceneManager.LoadScene(sceneName);
+                    FadeOut(onComplete);
+                }
+                else
+                {
+                    SceneManager.LoadScene("LevelMenu");
+                    FadeOut(onComplete);
+                }
+                
             });
         }
         private void FadeOut(Action onComplete)
@@ -107,9 +117,30 @@ namespace Swift_Blade.Level
                 currentSceneName.Remove(currentSceneName.Length - 1, 1).Append(lastNumber);
             }
             
-            StartFade(currentSceneName.ToString() , null);
+            StartFade(currentSceneName.ToString() , () => { });
             
         }
+        
+        private void NextOtherScene(string sceneName)
+        {
+            StartFade(sceneName, () => {}); 
+        }
 
+        private bool IsVailedScene(string sceneName)
+        {
+            if (string.IsNullOrEmpty(sceneName))
+                return false;
+            
+            for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+            {
+                string path = SceneUtility.GetScenePathByBuildIndex(i);
+                string scenePath = System.IO.Path.GetFileNameWithoutExtension(path);
+                if (scenePath == sceneName)
+                    return true;
+            }
+            
+            return false;
+        }
+        
     }
 }

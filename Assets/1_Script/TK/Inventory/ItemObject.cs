@@ -2,9 +2,8 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class ItemObject : MonoBehaviour //Prefab
+    public abstract class ItemObject : MonoBehaviour
     {
-        [SerializeField] private ItemDataSO itemData;
-        public ItemDataSO GetItemData => itemData;
+        public abstract void ItemEffect(); //아이템 효과
     }
 }

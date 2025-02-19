@@ -23,7 +23,7 @@ namespace Swift_Blade.Enemy.Goblin
         public void SetAnimationSpeed(float _speed)
         {
             if (Animator == null) Animator = GetComponent<Animator>();
-
+            
             Animator.SetFloat("AnimationSpeed", _speed);
         }
 

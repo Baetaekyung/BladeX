@@ -12,6 +12,8 @@ namespace Swift_Blade
         [SerializeField] protected Sprite emptySprite;
         protected ItemDataSO _itemDataSO;
         protected InventoryManager inventoryManager => InventoryManager.Instance;
+
+        protected bool _useItem = false;
         
         public virtual void OnPointerDown(PointerEventData eventData)
         {
@@ -19,11 +21,32 @@ namespace Swift_Blade
             if (inventoryManager.IsDragging) return; 
             //빈 슬롯인 경우에 클릭해도 의미가 없기 때문에 return
             if (IsEmptySlot()) return;
+
+            if (eventData.button == PointerEventData.InputButton.Right) //우클릭으로 사용
+            {
+                if (_itemDataSO.itemType == ItemType.EQUIPMENT)
+                {
+                    _useItem = true;
+                    return; //일회용 아이템이 아니기 때문에 return
+                }
+                
+                _itemDataSO.itemObject.ItemEffect();
+                inventoryManager.Inventory.itemInventory.Remove(_itemDataSO);
+
+                _itemDataSO = null;
+                itemImage.sprite = emptySprite;
+                
+                inventoryManager.UpdateAllSlots();
+
+                _useItem = true;
+                return;
+            }
+            
+            inventoryManager.CreateUIObject(_itemDataSO); //커서에 UI 생성
             
             inventoryManager.IsDragging = true; //드래그 중이라고 표시하기
             inventoryManager.SelectedItem = _itemDataSO; //현재 선택된 아이템은 이 슬롯의 아이템
             
-            inventoryManager.CreateUIObject(_itemDataSO); //커서에 UI 생성
             _itemDataSO = null; //이 슬롯 비워주기
             itemImage.sprite = emptySprite; //슬롯 UI 비워주기
             
@@ -38,7 +61,7 @@ namespace Swift_Blade
                 inventoryManager.isSlotChanged = false;
                 return;
             }
-
+            
             inventoryManager.isSlotChanged = true; //슬롯에 변경이 일어남
             
             SetItemData(inventoryManager.SelectedItem); //이 슬롯의 Data를 선택된 ItemData로 변경
@@ -58,6 +81,12 @@ namespace Swift_Blade
         {
             if (inventoryManager.SelectedItem == null && IsEmptySlot())
                 return;
+            
+            if (_useItem)
+            {
+                _useItem = false;
+                return;
+            }
             
             if (inventoryManager.isSlotChanged == false)
                 ResetItems();

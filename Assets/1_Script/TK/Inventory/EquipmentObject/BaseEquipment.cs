@@ -4,19 +4,17 @@ using UnityEngine;
 namespace Swift_Blade
 {
     //Object로 씬에 존재하는 Equipment
-    public abstract class BaseEquipment : MonoBehaviour, IInteractable
+    public abstract class BaseEquipment : ItemObject, IInteractable
     {
         [SerializeField] protected EquipmentData equipData;
         protected PlayerStatCompo _playerStat;
         protected PlayerInventory Inventory => InventoryManager.Instance.Inventory;
-
-        public abstract void EquipmentEffect(); //아이템 효과
-
+        
         //아이템 장착시 효과
         public virtual void OnEquipment()
         {
             HandleStatAdder();
-            equipData.EventChannel.SubscribeEvent(EquipmentEffect);
+            equipData.EventChannel.SubscribeEvent(ItemEffect);
             
             Debug.Log(equipData.name + " 아이템 장착");
         }
@@ -25,7 +23,7 @@ namespace Swift_Blade
         public virtual void OffEquipment()
         {
             HandleStatRemover();
-            equipData.EventChannel.RemoveEvent(EquipmentEffect);
+            equipData.EventChannel.RemoveEvent(ItemEffect);
             
             Debug.Log(equipData.name + " 아이템 해제");
         }
