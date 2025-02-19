@@ -5,7 +5,7 @@ namespace Swift_Blade
 {
     public class TestEquipment : BaseEquipment
     {
-        public override void EquipmentEffect()
+        public override void ItemEffect()
         {
             Debug.Log("Item 효과 발동");
         }
