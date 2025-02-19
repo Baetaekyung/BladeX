@@ -25,9 +25,11 @@ namespace Swift_Blade
         {
             Dust dust = MonoGenericPool<Dust>.Pop();
             dust.transform.position = actionData.hitPoint;
+            dust.transform.rotation = Quaternion.LookRotation(-actionData.hitNormal);
             
             HitSlash hitSlash = MonoGenericPool<HitSlash>.Pop();
             hitSlash.transform.position = actionData.hitPoint;
+            hitSlash.transform.rotation = Quaternion.LookRotation(-actionData.hitNormal);
         }
         
         public void PlayParryEffect()

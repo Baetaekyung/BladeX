@@ -27,7 +27,7 @@ namespace Swift_Blade.Combat.Caster
             
             if (isHit && hit.collider.TryGetComponent(out IDamageble health))
             {
-                ActionData actionData = new ActionData(hit.point, hit.normal, 10, transform , true);
+                ActionData actionData = new ActionData(hit.point, hit.normal, 1,transform , true);
                 
                 if (CanCurrentAttackParry && hit.collider.TryGetComponent(out PlayerParryController parryController))
                 {
