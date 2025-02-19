@@ -8,6 +8,7 @@ namespace Swift_Blade
     {
         public Action LevelClearEvent;
         public Action<string,Action> SceneMoveEvent;
-
+        
+        public Action<string> SceneChangeEvent;
     }
 }

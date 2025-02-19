@@ -37,12 +37,14 @@ namespace Swift_Blade.Level
 
             levelEvent.SceneMoveEvent += StartFade;
             levelEvent.LevelClearEvent += SetActiveClearPanel;
+            levelEvent.SceneChangeEvent += NextOtherScene;
         }
 
         private void OnDestroy()
         {
             levelEvent.SceneMoveEvent -= StartFade;
             levelEvent.LevelClearEvent -= SetActiveClearPanel;
+            levelEvent.SceneChangeEvent -= NextOtherScene;
         }
 
         private void StartFade(string sceneName,Action onComplete)
@@ -107,9 +109,13 @@ namespace Swift_Blade.Level
                 currentSceneName.Remove(currentSceneName.Length - 1, 1).Append(lastNumber);
             }
             
-            StartFade(currentSceneName.ToString() , null);
+            StartFade(currentSceneName.ToString() , () => { });
             
         }
-
+        
+        public void NextOtherScene(string sceneName)
+        {
+            StartFade(sceneName, () => {}); 
+        }
     }
 }

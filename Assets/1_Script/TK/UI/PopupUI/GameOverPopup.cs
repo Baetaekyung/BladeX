@@ -1,7 +1,9 @@
+using System;
 using DG.Tweening;
 using DG.Tweening.Core.Easing;
 using Swift_Blade.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -13,6 +15,8 @@ namespace Swift_Blade
         [SerializeField] private float fadeInTime;
         [SerializeField] private float fadeOutTime;
         private GraphicRaycaster _raycaster;
+        
+        [SerializeField] private LevelClearEventSO levelClearEvent;
         
         private void Awake()
         {
@@ -34,5 +38,17 @@ namespace Swift_Blade
             cG.DOFade(0, fadeOutTime)
                 .SetEase(Ease.OutSine);
         }
+
+        public void GoToTitle()
+        {
+            levelClearEvent.SceneChangeEvent.Invoke("LevelMenu");
+        }
+
+        public void Resume()
+        {
+            string curScene = SceneManager.GetActiveScene().name;
+            levelClearEvent.SceneChangeEvent.Invoke(curScene);
+        }
+        
     }
 }

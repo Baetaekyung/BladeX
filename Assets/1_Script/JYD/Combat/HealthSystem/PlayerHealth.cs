@@ -1,3 +1,4 @@
+using Swift_Blade.UI;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -62,7 +63,10 @@ namespace Swift_Blade
         {
             OnDeadEvent?.Invoke();
             isDead = true;
-            //Debug.Log("플레이어 죽었슴");
+            
+            
+            PopupManager.Instance.PopUp(PopupType.GameOver);
+            
         }
     }
 }
