@@ -30,6 +30,12 @@ namespace Swift_Blade
         public List<TargetStatTypes> TargetStatTypes = new List<TargetStatTypes>();
         public PlayerStatCompo PlayerStat;
 
+        private void OnEnable()
+        {
+            appliedMultiplier = 1f;
+            _addedMultiplier = 0f;
+        }
+
         public void SuccessHit()
         {
             IncreaseMultiplier(0.01f); //Stat에서 증가량 받아서 Increase시키기
