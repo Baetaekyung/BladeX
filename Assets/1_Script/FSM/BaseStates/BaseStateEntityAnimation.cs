@@ -75,30 +75,27 @@ namespace Swift_Blade.FSM.States
         protected virtual void PlayAnimationOnEnter()
         {
             PlayAnimationRebind(baseAnimParam.GetAnimationHash, -1);
-            //ownerAnimator.Play(baseAnimParam.GetAnimationHash, -1);
         }
         protected void PlayAnimation(AnimationParameterSO param, int layer = -1)
         {
             Debug.Assert(param != null, "parameterSO is null");
             ownerAnimator.Play(param.GetAnimationHash, layer);
         }
-
-        protected void PlayAnimation(int hash, float normalizedTime = 0)
+        protected void PlayAnimation(int hash, int layer = -1)
         {
-            ownerAnimator.Play(hash, -1, normalizedTime);
+            ownerAnimator.Play(hash, layer);
         }
         protected void PlayAnimationRebind(AnimationParameterSO param, int layer = -1)
         {
             Debug.Assert(param != null, "parameterSO is null");
             int hash = param.GetAnimationHash;
-            ownerAnimator.Rebind();
-            ownerAnimator.Play(param.GetAnimationHash, layer);
+            //ownerAnimator.Rebind();
+            ownerAnimator.Play(hash, layer);
             //ownerAnimator.CrossFadeInFixedTime(hash, 0.05f, layer);
         }
         protected void PlayAnimationRebind(int hash, int layer = -1)
         {
-            //Debug.Log("dd");
-            ownerAnimator.Rebind();
+            //ownerAnimator.Rebind();
             ownerAnimator.Play(hash, layer);
             //ownerAnimator.CrossFadeInFixedTime(hash, 0.05f, layer, 0, 0.2f);
         }

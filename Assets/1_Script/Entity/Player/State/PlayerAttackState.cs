@@ -115,10 +115,6 @@ namespace Swift_Blade.FSM.States
                 inputBuffer = true;
             }
         }
-        protected override void PlayAnimationOnEnter()
-        {
-            PlayAnimationRebind(baseAnimParam);
-        }
         protected override void OnAnimationEndTriggerListen() => allowListening = true;
         protected override void OnAnimationEndableTrigger() => isCurrentAnimationEndable = true;
         protected override void OnForceEventTrigger(float force)
