@@ -22,37 +22,7 @@ namespace Swift_Blade.Enemy.Goblin
         {
             parent = boss;
         }
-
-        protected override void Update()
-        {
-            if(baseHealth.isDead)return;
-            
-            if (baseAnimationController.isManualRotate) 
-                FactToTarget(target.position);
-            
-            if (baseAnimationController.isManualMove)
-            {
-                var distance = Vector3.Distance(transform.position, target.position);
-
-                if (distance > stopDistance)
-                {
-                    attackDestination = transform.position + transform.forward;
-
-                    transform.position = Vector3.MoveTowards(transform.position, attackDestination,
-                        baseAnimationController.AttackMoveSpeed * Time.deltaTime);
-                }
-            }
-
-            if (goblinAnimator.isManualKnockback)
-            {
-                attackDestination = transform.position + -transform.forward;
-
-                transform.position = Vector3.MoveTowards(transform.position, attackDestination,
-                    goblinAnimator.knockbackSpeed * Time.deltaTime);
-            }
-            
-        }
-        
+                
         public override void DeadEvent()
         {
             base.DeadEvent();

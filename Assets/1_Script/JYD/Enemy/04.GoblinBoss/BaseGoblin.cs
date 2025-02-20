@@ -34,7 +34,7 @@ namespace Swift_Blade.Enemy.Goblin
                 }
             }
 
-            if (goblinAnimator.isManualKnockback)
+            if (goblinAnimator.isManualKnockback && !DetectBackwardObstacle())
             {
                 attackDestination = transform.position + -transform.forward;
                 
@@ -42,6 +42,15 @@ namespace Swift_Blade.Enemy.Goblin
                     goblinAnimator.knockbackSpeed * Time.deltaTime);
             }
         }
+        
+        protected bool DetectBackwardObstacle()
+        {
+            var ray = new Ray(checkForward.position, -checkForward.forward);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, whatIsWall)) return true;
+            return false;
+        }
+        
+        
     }
-    
 }
