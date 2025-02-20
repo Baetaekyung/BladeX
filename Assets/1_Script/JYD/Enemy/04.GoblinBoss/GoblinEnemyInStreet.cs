@@ -5,32 +5,40 @@ namespace Swift_Blade.Enemy.Goblin
     public class GoblinEnemyInStreet : BaseGoblin
     {
         [SerializeField] private LayerMask whatIsTarget;
-        [Range(1, 10)] [SerializeField] private float checkTargetRadius;
+        [Range(1, 20)] [SerializeField] private float checkTargetRadius;
+        
         private Collider[] targets;
-
+        
         protected override void Start()
         {
             base.Start();
-
+            
             btAgent.enabled = false;
-            targets = new Collider[10];
+            targets = new Collider[1];
         }
-
+        
         protected override void Update()
         {
-            var findTarget = FindNearTarget();
-            if (findTarget != null)
+            if (target == null)
             {
-                var isIsLine = CanSeeTarget(findTarget);
-
-                if (isIsLine)
+                var findTarget = FindNearTarget();
+                if (findTarget != null)
                 {
                     target = findTarget;
                     btAgent.BlackboardReference.SetVariableValue("Target", target);
                     btAgent.enabled = true;
+                    
+                    /*var isIsLine = CanSeeTarget(findTarget);
+
+                    if (isIsLine)
+                    {
+                        target = findTarget;
+                        btAgent.BlackboardReference.SetVariableValue("Target", target);
+                        btAgent.enabled = true;
+                    }*/
                 }
             }
-
+            
             base.Update();
         }
 
@@ -49,14 +57,16 @@ namespace Swift_Blade.Enemy.Goblin
             return null;
         }
 
-        private bool CanSeeTarget(Transform target)
+        /*private bool CanSeeTarget(Transform target)
         {
             var directionToTarget = (target.position - transform.position).normalized;
             var distanceToTarget = Vector3.Distance(transform.position, target.position);
 
             if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, ~whatIsTarget)) return true;
-
+            
             return false;
-        }
+        }*/
+        
+        
     }
 }

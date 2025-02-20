@@ -13,16 +13,23 @@ namespace Swift_Blade.Enemy.Goblin
         protected override void Start()
         {
             base.Start();
-           
-            
+                        
             var animationSpeed = Random.Range(minAnimationSpeed, maxAnimationSpeed);
             goblinAnimator.SetAnimationSpeed(animationSpeed);
+        }
+        
+        public void Init(GoblinBoss boss)
+        {
+            parent = boss;
         }
 
         protected override void Update()
         {
-            if (baseAnimationController.isManualRotate) FactToTarget(target.position);
-
+            if(baseHealth.isDead)return;
+            
+            if (baseAnimationController.isManualRotate) 
+                FactToTarget(target.position);
+            
             if (baseAnimationController.isManualMove)
             {
                 var distance = Vector3.Distance(transform.position, target.position);
@@ -36,24 +43,19 @@ namespace Swift_Blade.Enemy.Goblin
                 }
             }
 
-            if (baseAnimationController is GoblinBossAnimatorController goblinAnimatorController)
-                if (goblinAnimatorController.isManualKnockback)
-                {
-                    attackDestination = transform.position + -transform.forward;
+            if (goblinAnimator.isManualKnockback)
+            {
+                attackDestination = transform.position + -transform.forward;
 
-                    transform.position = Vector3.MoveTowards(transform.position, attackDestination,
-                        goblinAnimatorController.knockbackSpeed * Time.deltaTime);
-                }
+                transform.position = Vector3.MoveTowards(transform.position, attackDestination,
+                    goblinAnimator.knockbackSpeed * Time.deltaTime);
+            }
+            
         }
-
-        public void Init(GoblinBoss boss)
+        
+        public override void DeadEvent()
         {
-            parent = boss;
-        }
-
-        public override void SetDead()
-        {
-            base.SetDead();
+            base.DeadEvent();
             parent.RemoveInSummonList(this);
         }
     }

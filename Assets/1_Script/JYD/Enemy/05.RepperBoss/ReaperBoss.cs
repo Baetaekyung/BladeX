@@ -14,7 +14,7 @@ namespace Swift_Blade.Enemy.Boss.Reaper
         protected override void Start()
         {
             base.Start();
-            _collider = GetComponent<Collider>();
+            collider = GetComponent<Collider>();
             _reaperAnimatorController = baseAnimationController as ReaperBossAnimatorController;;
         }
 
@@ -62,9 +62,9 @@ namespace Swift_Blade.Enemy.Boss.Reaper
             knockbackCollider.enabled = _isActive;
         }
         
-        public override void SetDead()
+        public override void DeadEvent()
         {
-            base.SetDead();
+            base.DeadEvent();
             weapon.AddComponent<EnemyWeapon>();
         }
     }

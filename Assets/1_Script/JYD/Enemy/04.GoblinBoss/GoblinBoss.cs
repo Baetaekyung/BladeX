@@ -1,19 +1,20 @@
+using UnityEngine;
 using System.Collections.Generic;
 using Swift_Blade.Enemy.Goblin;
-using UnityEngine;
 
 namespace Swift_Blade.Enemy.Boss.Goblin
 {
     public class GoblinBoss : BaseGoblin
     {
-        [Space] [Header("Summon info")] [SerializeField]
-        private GoblinEnemyInBoss summonPrefab;
-
+        [Space] 
+        [Header("Summon info")] 
+        [SerializeField] private GoblinEnemyInBoss summonPrefab;
+        
         [SerializeField] private int maxSummonCount;
         [SerializeField] private int minSummonCount;
         [SerializeField] private float summonRadius;
         private List<GoblinEnemyInBoss> summons;
-
+        
         protected override void Start()
         {
             base.Start();
@@ -41,19 +42,13 @@ namespace Swift_Blade.Enemy.Boss.Goblin
         {
             return summons.Count <= 0;
         }
-
+        
         public void RemoveInSummonList(GoblinEnemyInBoss _goblin)
         {
             summons.Remove(_goblin);
             if (summons.Count == 0)
                 summons.Clear();
         }
-
-        public override void SetDead()
-        {
-            base.SetDead();
-
-            goblinAnimator.StopAllAnimationEvents();
-        }
+                
     }
 }

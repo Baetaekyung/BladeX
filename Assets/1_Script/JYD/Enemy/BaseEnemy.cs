@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Swift_Blade.Combat.Health;
-using Swift_Blade.Feeling;
 using Swift_Blade.Level;
 using Unity.Behavior;
 using UnityEngine;
@@ -11,50 +10,80 @@ namespace Swift_Blade.Enemy
     public class BaseEnemy : MonoBehaviour
     {
         public Transform target;
-
-        [SerializeField] protected CameraShakeType cameraShakeType;
-        [SerializeField] protected float rotateSpeed;
+        
+        [Header("Movement Info")]
+        [Range(0,30)][SerializeField] protected float moveSpeed;
+        [Range(0,20)][SerializeField] protected float rotateSpeed;
         [Range(0, 5)] [SerializeField] protected float stopDistance;
-
-        [Header("Detect Forward")] public Transform checkForward;
-
+        
+        [Header("Detect Forward Info")]
+        public Transform checkForward;
         public LayerMask whatIsWall;
         public float maxDistance;
         public bool showGizmo;
-        protected Collider _collider;
+        
         protected Vector3 attackDestination;
+        private Vector3 nextPathPoint;
+        protected Collider collider;
+        protected BehaviorGraphAgent btAgent;
+        protected NavMeshAgent NavmeshAgent;
+        
         protected BaseEnemyAnimationController baseAnimationController;
         protected BaseEnemyHealth baseHealth;
-        protected BehaviorGraphAgent btAgent;
 
-        protected NavMeshAgent NavmeshAgent;
-
-        protected Vector3 nextPathPoint;
-
-        protected EnemySpawner owner;
+        private EnemySpawner owner;
+        
 
         protected virtual void Start()
         {
             btAgent = GetComponent<BehaviorGraphAgent>();
-            baseAnimationController = GetComponentInChildren<BaseEnemyAnimationController>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
             baseHealth = GetComponent<BaseEnemyHealth>();
-            _collider = GetComponent<Collider>();
+            collider = GetComponent<Collider>();
+            baseAnimationController = GetComponentInChildren<BaseEnemyAnimationController>();
 
-            InitTarget();
+            InitBtAgent();
         }
-
+        
+        private void InitBtAgent()
+        {
+            btAgent.enabled = false;
+            
+            if (target == null)
+            {
+                var player = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None).FirstOrDefault();
+                if (player != null)
+                    target = player.transform;
+            }
+            
+            if (target == null) return;
+            
+            btAgent.SetVariableValue("Target", target);
+            btAgent.SetVariableValue("MoveSpeed", moveSpeed);
+                            
+            btAgent.enabled = true;
+        }
+        
+        public void SetOwner(EnemySpawner _owner)
+        {
+            owner = _owner;
+        }
+        
         protected virtual void Update()
         {
-            if (baseHealth.isDead) return;
-
-            if (baseAnimationController.isManualRotate) FactToTarget(target.position);
-
-            if (baseAnimationController.isManualMove)
+            if (baseHealth.isDead) 
+                return;
+            
+            if (baseAnimationController.isManualRotate)
+            {
+                FactToTarget(target.position);
+            }
+                        
+            if (baseAnimationController.isManualMove && !DetectForwardObstacle())
             {
                 var directionToTarget = (target.position - transform.position).normalized;
                 attackDestination = target.position - directionToTarget * 1f;
-
+                
                 var distance = Vector3.Distance(transform.position, target.position);
 
                 if (distance > stopDistance)
@@ -66,29 +95,7 @@ namespace Swift_Blade.Enemy
                 }
             }
         }
-
-        protected virtual void OnDrawGizmos()
-        {
-            if (showGizmo == false) return;
-
-            Gizmos.DrawRay(checkForward.position, checkForward.forward * maxDistance);
-        }
-
-        private void InitTarget()
-        {
-            btAgent.enabled = false;
-            if (target == null)
-            {
-                var player = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None).FirstOrDefault();
-                if (player != null)
-                    target = player.transform;
-            }
-
-            if (target == null) return;
-            btAgent.SetVariableValue("Target", target);
-            btAgent.enabled = true;
-        }
-
+        
         public void FactToTarget(Vector3 target)
         {
             var targetRot = Quaternion.LookRotation(target - transform.position);
@@ -98,10 +105,10 @@ namespace Swift_Blade.Enemy
             transform.rotation = Quaternion.Euler(currentEulerAngle.x, yRotation, currentEulerAngle.z);
         }
 
-        protected void StopImmediately()
+        private void StopImmediately()
         {
             if (NavmeshAgent.enabled == false) return;
-
+            
             NavmeshAgent.isStopped = true;
             NavmeshAgent.velocity = Vector3.zero;
         }
@@ -126,28 +133,27 @@ namespace Swift_Blade.Enemy
             return nextPathPoint;
         }
 
-        public virtual void SetDead()
+        public virtual void DeadEvent()
         {
-            owner?.CheckSpawn();
-
-            _collider.enabled = false;
-
+            owner?.TryNextEnemyCanSpawn();
+                        
             StopImmediately();
-            baseAnimationController.StopAllAnimationEvents();
+            collider.enabled = false;
         }
-
-        public void SetOwner(EnemySpawner _owner)
-        {
-            owner = _owner;
-        }
-
-        public bool DetectForwardObstacle()
+        
+        protected bool DetectForwardObstacle()
         {
             var ray = new Ray(checkForward.position, checkForward.forward);
-            RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, maxDistance, whatIsWall)) return true;
+            if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, whatIsWall)) return true;
             return false;
+        }
+        
+        protected virtual void OnDrawGizmos()
+        {
+            if (showGizmo == false) return;
+            
+            Gizmos.DrawRay(checkForward.position, checkForward.forward * maxDistance);
         }
     }
 }

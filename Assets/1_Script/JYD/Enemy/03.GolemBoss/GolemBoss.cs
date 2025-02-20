@@ -1,22 +1,23 @@
-using Swift_Blade.Feeling;
 using UnityEngine;
 
 namespace Swift_Blade.Enemy.Boss.Golem
 {
     public class GolemBoss : BaseEnemy
     {
-        private GolemAnimatorController _golemAnimatorController;
+        private GolemAnimatorController golemAnimatorController;
+                
         protected override void Start()
         {
             base.Start();
             
-            _golemAnimatorController =  (baseAnimationController as GolemAnimatorController);
-            _golemAnimatorController .target = target;
-            
+            golemAnimatorController =  (baseAnimationController as GolemAnimatorController);
+            golemAnimatorController.target = target;
         }
         
         protected override void Update()
         {
+            if(baseHealth.isDead)return;
+                        
             if (baseAnimationController.isManualRotate)
             {
                 FactToTarget(target.position);
@@ -30,18 +31,13 @@ namespace Swift_Blade.Enemy.Boss.Golem
                     baseAnimationController.AttackMoveSpeed * Time.deltaTime);
             }
         }
-
-        public override void SetDead()
+        
+        public override void DeadEvent()
         {
-            base.SetDead();
-            
-            _golemAnimatorController.SetStone(null);
-            
+            base.DeadEvent();
+                        
+            golemAnimatorController.SetStone(null);
         }
-
-        private void ShakeCam()
-        {
-            CameraShakeManager.Instance.DoShake(cameraShakeType);
-        }
+        
     }
 }
