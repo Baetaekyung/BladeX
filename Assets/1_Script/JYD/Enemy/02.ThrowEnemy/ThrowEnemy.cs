@@ -16,6 +16,8 @@ namespace Swift_Blade.Enemy.Throw
 
         protected override void Update()
         {
+            if(baseHealth.isDead)return;
+            
             if (baseAnimationController.isManualRotate)
             {
                 FactToTarget(target.position);
@@ -29,11 +31,12 @@ namespace Swift_Blade.Enemy.Throw
                     baseAnimationController.AttackMoveSpeed * Time.deltaTime);
             }
         }
-
-        public override void SetDead()
+        
+        public override void DeadEvent()
         {
-            base.SetDead();
+            base.DeadEvent();
             _throwEnemyAnimationController.SetStone(null);
-        }                
+        }       
+        
     }
 }

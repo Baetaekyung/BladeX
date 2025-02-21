@@ -32,7 +32,7 @@ namespace Swift_Blade.Enemy.Sword
             
             SetRandomSword();
         }
-
+        
         private void SetRandomSword()
         {
             foreach (var sword in swords)
@@ -60,10 +60,8 @@ namespace Swift_Blade.Enemy.Sword
             int randIndex = UnityEngine.Random.Range(0, parts.Length);
             parts[randIndex].SetActive(true);
         }
-        
         private void SetRandomPart(GameObject[] parts1,GameObject[] parts2)
         {
-
             foreach (var part in parts1)
             {
                 part.SetActive(false);
@@ -78,5 +76,7 @@ namespace Swift_Blade.Enemy.Sword
             parts1[randIndex].SetActive(true);
             parts2[randIndex].SetActive(true);
         }
+                
+        
     }
 }

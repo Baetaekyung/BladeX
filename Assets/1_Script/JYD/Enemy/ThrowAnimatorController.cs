@@ -1,8 +1,7 @@
 using Swift_Blade.Combat.Projectile;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 
-namespace Swift_Blade.Enemy
+namespace Swift_Blade.Enemy.Throw
 {
     public class ThrowAnimatorController : BaseEnemyAnimationController 
     {
@@ -46,5 +45,7 @@ namespace Swift_Blade.Enemy
         {
             bodyCollider.enabled = false;
         }
+        
+        
     }
 }

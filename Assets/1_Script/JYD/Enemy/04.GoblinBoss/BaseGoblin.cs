@@ -9,15 +9,17 @@ namespace Swift_Blade.Enemy.Goblin
         protected override void Start()
         {
             base.Start();
-
+            
             goblinAnimator = baseAnimationController as GoblinAnimator;
         }
 
         protected override void Update()
         {
-            if (baseHealth.isDead) return;
+            if (baseHealth.isDead)
+                return;
 
-            if (baseAnimationController.isManualRotate) FactToTarget(target.position);
+            if (baseAnimationController.isManualRotate) 
+                FactToTarget(target.position);
 
             if (baseAnimationController.isManualMove && !DetectForwardObstacle())
             {
@@ -32,13 +34,21 @@ namespace Swift_Blade.Enemy.Goblin
                 }
             }
 
-            if (goblinAnimator.isManualKnockback)
+            if (goblinAnimator.isManualKnockback && !DetectBackwardObstacle())
             {
                 attackDestination = transform.position + -transform.forward;
-
+                
                 transform.position = Vector3.MoveTowards(transform.position, attackDestination,
                     goblinAnimator.knockbackSpeed * Time.deltaTime);
             }
+        }
+        
+        protected bool DetectBackwardObstacle()
+        {
+            var ray = new Ray(checkForward.position, -checkForward.forward);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, whatIsWall)) return true;
+            return false;
         }
         
         

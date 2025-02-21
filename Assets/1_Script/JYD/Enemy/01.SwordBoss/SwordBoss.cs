@@ -1,9 +1,4 @@
-
-using System;
-using DG.Tweening;
-using Swift_Blade.Enemy;
 using UnityEngine;
-using UnityEngineInternal;
 
 namespace Swift_Blade.Enemy.Boss.Sword
 {
@@ -11,10 +6,10 @@ namespace Swift_Blade.Enemy.Boss.Sword
     {
         public GameObject sword;
 
-        public override void SetDead()
+        public override void DeadEvent()
         {
-            base.SetDead();
-                
+            base.DeadEvent();
+            
             sword.AddComponent<EnemyWeapon>();
         }
         
