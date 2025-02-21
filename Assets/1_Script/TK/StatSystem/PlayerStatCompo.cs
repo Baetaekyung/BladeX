@@ -8,6 +8,7 @@ namespace Swift_Blade
     public class PlayerStatCompo : StatComponent, IEntityComponent
     {
         [SerializeField] private StyleMeter styleMeter;
+        //todo why ref here?
         public StyleMeter GetStyleMeter => styleMeter;
         // private void Update()
         // {

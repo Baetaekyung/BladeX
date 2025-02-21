@@ -7,6 +7,7 @@ namespace Swift_Blade.UI
 {
     public class HelpPopup : PopupUI
     {
+        //todo : Áßº¹µÅ´Â°Å¤±¤±
         [SerializeField] private CanvasGroup _cG;
         [SerializeField] private float _fadeTime;
         private GraphicRaycaster _raycaster;

@@ -20,7 +20,9 @@ namespace Swift_Blade
 
         public void ShowDialog(Action callback) //콜백 있음
         {
-            canvasGroup.DOFade(1, 0.2f).OnComplete(() => callback?.Invoke());
+            //어써트 넣기
+            //Debug.Assert(callback != null)
+            canvasGroup.DOFade(1, 0.2f).OnComplete(() => callback.Invoke());
         }
 
         public void UnShowDialog()

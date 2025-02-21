@@ -7,11 +7,12 @@ namespace Swift_Blade
     {
         [SerializeField] protected DialogueDataSO dialogueData;
         
-        protected bool  _isAlreadyRead = false;
+        protected bool  _isAlreadyRead = false; //todo : name reward/?
 
         [Header("Dialogue end Event")] 
         public UnityEvent OnDialogueEndEvent;
-        
+
+        // todo : 똑같은 로직 없애기 ShopNPC
         public virtual void Interact()
         {
             if (_isAlreadyRead) //이미 보상을 받았음

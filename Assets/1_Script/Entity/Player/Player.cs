@@ -82,7 +82,7 @@ namespace Swift_Blade
             playerRollState.OnRollEnd += () =>
             {
                 GetPlayerHealth.IsPlayerInvincible = true;
-                StatSO dashInvincibleTimeStat = GetEntityComponent<PlayerStatCompo>().GetStatByType(StatType.DASH_INVINCIBLE_TIME);
+                StatSO dashInvincibleTimeStat = GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DASH_INVINCIBLE_TIME);
                 float delay = dashInvincibleTimeStat.Value;
                 playerInvincibleTween = DOVirtual.DelayedCall(delay, () =>
                 {

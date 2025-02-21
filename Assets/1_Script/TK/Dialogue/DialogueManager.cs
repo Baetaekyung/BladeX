@@ -16,7 +16,7 @@ namespace Swift_Blade
 
         private Coroutine _dialogRoutine;
         private WaitForSeconds _waitForSeconds;
-        private StringBuilder _sb = new StringBuilder();
+        private StringBuilder _sb = new StringBuilder(); // todo : constructor
 
         #endregion
         
@@ -43,6 +43,7 @@ namespace Swift_Blade
             _isForcedCancel = false;
             _isForcedMessageSkip = false;
             
+            //todo : local func
             void StartDialogRoutine()
             {
                 if(_dialogRoutine != null)
@@ -123,6 +124,8 @@ namespace Swift_Blade
             {
                 if (@event is D_ContinueDialogue continueEvent)
                 {
+                    //todo : 런타임 null 체크안 하기 D_ContinueDialogue 에서하기
+
                     if (continueEvent.nextDialogue is null)
                     {
                         Debug.Log("다이얼로그 이벤트에 다음 다이얼로그가 설정되어있지 않음.");

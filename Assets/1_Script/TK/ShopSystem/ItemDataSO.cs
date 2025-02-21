@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
+    //todo : 함수 필드, 프로퍼티 정렬
     [Serializable] [CreateAssetMenu(fileName = "ItemData_", menuName = "SO/Item/ItemData")]
     public class ItemDataSO : ScriptableObject
     {

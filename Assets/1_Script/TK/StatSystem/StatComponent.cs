@@ -18,11 +18,12 @@ namespace Swift_Blade
         public StatSO GetStat(StatSO stat)
         {
             StatSO findStat = _stats.FirstOrDefault(x => x.statName == stat.statName);
+            //todo : assert null check
 
             return findStat;
         }
 
-        public StatSO GetStatByType(StatType statType)
+        public StatSO GetStat(StatType statType)
         {
             StatSO findStat = _stats.FirstOrDefault(x => x.statType == statType);
 
@@ -42,13 +43,13 @@ namespace Swift_Blade
             => GetStat(stat).AddModifier(key, value);
 
         public void AddModifier(StatType statType, object key, float value)
-            => GetStatByType(statType).AddModifier(key, value);
+            => GetStat(statType).AddModifier(key, value);
 
         public void RemoveModifier(StatSO stat, object key)
             => GetStat(stat).RemoveModifier(key);
 
         public void RemoveModifier(StatType statType, object key)
-            => GetStatByType(statType).RemoveModifier(key);
+            => GetStat(statType).RemoveModifier(key);
 
         public void ClearAllModifiers()
         {

@@ -36,8 +36,6 @@ namespace Swift_Blade.Feeling
             SceneManager.sceneLoaded -= FindCamera;
         }
 
-//인스펙터 변수 확인
-#if UNITY_EDITOR
 
         private void OnValidate()
         {
@@ -45,7 +43,6 @@ namespace Swift_Blade.Feeling
                 Debug.LogWarning($"인스펙터에서 카메라 바인드 하기 from : {gameObject.name}");
         }
 
-#endif
 
         private void FindCamera(Scene scene, LoadSceneMode mode)
         {
@@ -129,8 +126,7 @@ namespace Swift_Blade.Feeling
 
         public void OnComplete(Action onComplete)
         {
-            _onCompleteEvent = null;
-
+            //_onCompleteEvent = null;
             _onCompleteEvent = onComplete;
         }
         

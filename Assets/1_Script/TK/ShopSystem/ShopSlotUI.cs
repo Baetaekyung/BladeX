@@ -28,6 +28,7 @@ namespace Swift_Blade
             _currentItem = newItem;
             _itemCount = count;
             
+            //todo : init awake 
             _buttonText = buyButton.GetComponentInChildren<TextMeshProUGUI>();
             _buttonText.text = $"Buy - {_itemCost.ToString()}$";
             
@@ -37,6 +38,7 @@ namespace Swift_Blade
             itemDescriptionText.text = newItem.description;
         }
 
+        //todo : Buy 함수랑 로직이 곂침
         private void GiveItemToPlayer()
         {
             if (_itemCount <= 0)

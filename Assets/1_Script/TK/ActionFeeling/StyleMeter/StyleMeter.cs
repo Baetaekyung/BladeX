@@ -56,7 +56,7 @@ namespace Swift_Blade
 
             foreach (var targetStatType in TargetStatTypes[Mathf.FloorToInt(appliedMultiplier - 1f)].targetStats)
             {
-                Debug.Log($"{targetStatType.ToString()} : {PlayerStat.GetStatByType(targetStatType).Value}");
+                Debug.Log($"{targetStatType.ToString()} : {PlayerStat.GetStat(targetStatType).Value}");
             }
             
             ApplyMultiplier();
@@ -68,7 +68,7 @@ namespace Swift_Blade
             
             foreach (var targetStatType in TargetStatTypes[Mathf.FloorToInt(appliedMultiplier - 1f)].targetStats)
             {
-                Debug.Log($"{targetStatType.ToString()} : {PlayerStat.GetStatByType(targetStatType).Value}");
+                Debug.Log($"{targetStatType.ToString()} : {PlayerStat.GetStat(targetStatType).Value}");
             }
             
             ApplyMultiplier();

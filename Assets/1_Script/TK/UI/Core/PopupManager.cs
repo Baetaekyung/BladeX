@@ -94,8 +94,8 @@ namespace Swift_Blade
         {
             if (_popupList.Count > 0)
             {
-                PopupUI popup = _popupList.First();
-                _popupList.Remove(popup);
+                PopupUI popup = _popupList.First();//last
+                _popupList.Remove(popup);//remove at 
                 popup.PopDown();
             }
             else
@@ -110,7 +110,7 @@ namespace Swift_Blade
             {
                 PopupUI popup = 
                     _popupList.FirstOrDefault(x => x.popupType == popupType);
-                _popupList.Remove(popup);
+                _popupList.Remove(popup);//remove at
 
                 popup.PopDown();
             }
@@ -131,6 +131,7 @@ namespace Swift_Blade
             return popups[type];
         }
 
+        //for 문2번
         public PopupUI GetRemainPopup(PopupType type)
         {
             if (_popupList.Contains(popups[type]))

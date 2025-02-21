@@ -8,6 +8,11 @@ namespace Swift_Blade
     {
         [FormerlySerializedAs("nextDialog")] public DialogueDataSO nextDialogue;
 
+        //todo : 여기서 null 체크하기
+        private void OnValidate()
+        {
+            
+        }
         public override void DoEvent()
         {
             DialogueManager.Instance.DoDialog(nextDialogue);

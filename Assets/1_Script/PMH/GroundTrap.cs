@@ -8,7 +8,7 @@ namespace Swift_Blade
 
         [Header("General")]
         [SerializeField] private Transform trapSpears;
-        [SerializeField] private float delay = 1;
+        [SerializeField, Range(0.6f, 2)] private float delay = 1;// note this must be longer than tween duration
         [SerializeField] private MeshRenderer meshRenderer;
 
         [Header("Active/Inactive")]

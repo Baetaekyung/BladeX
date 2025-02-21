@@ -7,6 +7,7 @@ namespace Swift_Blade
 {
     public class Shop : MonoBehaviour
     {
+        //todo : consturctor
         public static List<ShopSlotUI> ShopSlots = new List<ShopSlotUI>();
         [SerializeField] private ShopSlotUI shopSlotPrefab;
         [SerializeField] private Transform parent;

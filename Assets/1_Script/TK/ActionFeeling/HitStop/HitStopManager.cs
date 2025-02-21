@@ -33,15 +33,11 @@ namespace Swift_Blade.Feeling
                 {
                     StopCoroutine(_hitStopCoroutine);
 
-                    _hitStopCoroutine = StartCoroutine(HitStopCoroutine(hitStopData));
-                    _currentPriority = hitStopData.hitStopPriority;
+
                 }
             }
-            else
-            {
-                _hitStopCoroutine = StartCoroutine(HitStopCoroutine(hitStopData));
-                _currentPriority = hitStopData.hitStopPriority;
-            }
+            _hitStopCoroutine = StartCoroutine(HitStopCoroutine(hitStopData));
+            _currentPriority = hitStopData.hitStopPriority;
 
             return this;
         }
@@ -67,9 +63,11 @@ namespace Swift_Blade.Feeling
             {
                 float smoothValue = 0;
                 
+
+                //todo : for문 함수로빼기
                 for (int i = 0; i < 10; i++) //10프레임동안 변환 (내마음대로정함)
                 {
-                    smoothValue += 0.1f;
+                    smoothValue += 0.1f;// 1/10
                     float tempTimeScale = Mathf.Lerp(CurrentTimeScale, hitStopData.timeScale, smoothValue);
                     Time.timeScale = tempTimeScale;
                     yield return _waitForEndOfFrame;

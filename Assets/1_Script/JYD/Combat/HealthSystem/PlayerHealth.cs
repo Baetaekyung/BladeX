@@ -19,7 +19,7 @@ namespace Swift_Blade
         public float GetCurrentHealth => _currentHealth;
         public StatSO GetHealthStat => _healthStat;
         
-        private const float DamageInterval = 0.2f;
+        private const float DamageInterval = 0.72f;
         private float lastDamageTime;
         //private float _maxHealth;
         private bool isDead;
@@ -31,8 +31,8 @@ namespace Swift_Blade
         
         public void EntityComponentStart(Entity entity)
         {
-            _maxHealth = _statCompo.GetStatByType(StatType.HEALTH).Value;
-            _currentHealth = _statCompo.GetStatByType(StatType.HEALTH).Value;
+            _maxHealth = _statCompo.GetStat(StatType.HEALTH).Value;
+            _currentHealth = _statCompo.GetStat(StatType.HEALTH).Value;
         }
 
         public void TakeDamage(ActionData actionData)

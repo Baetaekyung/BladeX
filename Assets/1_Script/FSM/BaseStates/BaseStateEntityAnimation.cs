@@ -89,13 +89,13 @@ namespace Swift_Blade.FSM.States
         {
             Debug.Assert(param != null, "parameterSO is null");
             int hash = param.GetAnimationHash;
-            //ownerAnimator.Rebind();
+            ownerAnimator.Rebind();
             ownerAnimator.Play(hash, layer);
             //ownerAnimator.CrossFadeInFixedTime(hash, 0.05f, layer);
         }
         protected void PlayAnimationRebind(int hash, int layer = -1)
         {
-            //ownerAnimator.Rebind();
+            ownerAnimator.Rebind();
             ownerAnimator.Play(hash, layer);
             //ownerAnimator.CrossFadeInFixedTime(hash, 0.05f, layer, 0, 0.2f);
         }
