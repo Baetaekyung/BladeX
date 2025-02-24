@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
-    public class DialogUI : MonoBehaviour
+    public class DialogueUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI dialogMessageText;
         [SerializeField] private TextMeshProUGUI talkerText;

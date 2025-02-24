@@ -6,7 +6,7 @@ namespace Swift_Blade
     [Serializable]
     public class StatOverride
     {
-        //todo : remove sf 
+        //»ç¿ë X
         [SerializeField] private StatSO _stat;
         [SerializeField] private bool _isUseOverride;
         [SerializeField] private float _overrideValue;

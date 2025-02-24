@@ -1,41 +1,41 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Swift_Blade
 {
-    //Object·Î ¾À¿¡ Á¸ÀçÇÏ´Â Equipment
+    //Objectï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Equipment
     public abstract class BaseEquipment : ItemObject, IInteractable
     {
         [SerializeField] protected EquipmentData equipData;
         protected PlayerStatCompo _playerStat;
         protected PlayerInventory Inventory => InventoryManager.Instance.Inventory;
         
-        //¾ÆÀÌÅÛ ÀåÂø½Ã È¿°ú
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½
         public virtual void OnEquipment()
         {
             HandleStatAdder();
             EquipmentChannelSO channel = equipData.EventChannel;
             if(channel != null)
-                channel.SubscribeEvent(ItemEffect);
+                channel.OnEquipped += ItemEffect;
             
-            Debug.Log(equipData.name + " ¾ÆÀÌÅÛ ÀåÂø");
+            Debug.Log(equipData.name + " ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
         
-        //¾ÆÀÌÅÛ ÇØÁ¦½Ã È¿°ú
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½
         public virtual void OffEquipment()
         {
             HandleStatRemover();
             EquipmentChannelSO channel = equipData.EventChannel;
             if (channel != null)
-                channel.RemoveEvent(ItemEffect);
+                channel.OnEquipped -= ItemEffect;
 
-            Debug.Log(equipData.name + " ¾ÆÀÌÅÛ ÇØÁ¦");
+            Debug.Log(equipData.name + " ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
         
         public void HandleStatAdder()
         {
-            //ÀÌ°Å ¿Ö Ä³½ÌÇØ¼­ ¾²¸é ÀÚ²Ù nullÀÌ µÇ´Â °ÅÁö;;
-            //³ªÁß¿¡ ÇÃ·¹ÀÌ¾î ¸Å´ÏÀú ÀÖÀ¸¸é °Å±â¼­ ½ºÅÝ °¡Á®¿À´Â°Ô ÁÁÀ» µíÇÔ..
+            //ï¿½Ì°ï¿½ ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú²ï¿½ nullï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½;;
             _playerStat = FindFirstObjectByType<PlayerStatCompo>();
             
             if (_playerStat == null)
@@ -50,18 +50,17 @@ namespace Swift_Blade
             
             foreach (var stat in equipData.statModifier)
             {
-                //Key´Â StatType, Value´Â ModifyValue
+                //Keyï¿½ï¿½ StatType, Valueï¿½ï¿½ ModifyValue
                 _playerStat.AddModifier(stat.Key, equipData.itemSerialCode, stat.Value);
                 
-                Debug.Log($"{stat.Key.ToString()}ÀÌ {stat.Value}¸¸Å­ Áõ°¡ÇÏ¿´´Ù! " +
+                Debug.Log($"{stat.Key.ToString()}ï¿½ï¿½ {stat.Value}ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½! " +
                           $"SerialNum: {equipData.itemSerialCode}");
             }
         }
 
         public void HandleStatRemover()
         {
-            //ÀÌ°Å ¿Ö Ä³½ÌÇØ¼­ ¾²¸é ÀÚ²Ù nullÀÌ µÇ´Â °ÅÁö;;
-            //³ªÁß¿¡ ÇÃ·¹ÀÌ¾î ¸Å´ÏÀú ÀÖÀ¸¸é °Å±â¼­ ½ºÅÝ °¡Á®¿À´Â°Ô ÁÁÀ» µíÇÔ..
+            //ï¿½Ì°ï¿½ ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú²ï¿½ nullï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½;;
             _playerStat = FindFirstObjectByType<PlayerStatCompo>();
             
             if (_playerStat == null)
@@ -76,14 +75,14 @@ namespace Swift_Blade
             
             foreach (var stat in equipData.statModifier)
             {
-                //Key´Â StatType
+                //Keyï¿½ï¿½ StatType
                 _playerStat.RemoveModifier(stat.Key, equipData.itemSerialCode);
                 
-                Debug.Log($"{stat.Key.ToString()}ÀÌ {stat.Value}¸¸Å­ °¨¼ÒÇÏ¿´´Ù! " +
+                Debug.Log($"{stat.Key.ToString()}ï¿½ï¿½ {stat.Value}ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½! " +
                           $"SerialNum: {equipData.itemSerialCode}");
             }
         }
         
-        public abstract void Interact(); //¾ÆÀÌÅÛ°úÀÇ »óÈ£ÀÛ¿ë
+        public abstract void Interact(); //ï¿½ï¿½ï¿½ï¿½ï¿½Û°ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½
     }
 }

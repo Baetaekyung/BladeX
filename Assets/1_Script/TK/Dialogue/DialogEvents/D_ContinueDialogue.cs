@@ -6,16 +6,16 @@ namespace Swift_Blade
     [CreateAssetMenu(fileName = "Continue_Dialog", menuName = "SO/Dialog/Events/Continue Dialog Event")]
     public class D_ContinueDialogue : DialogueEventSO
     {
-        [FormerlySerializedAs("nextDialog")] public DialogueDataSO nextDialogue;
+        public DialogueDataSO nextDialogue;
 
-        //todo : 여기서 null 체크하기
         private void OnValidate()
         {
-            
+            Debug.Assert(nextDialogue != null, "다음 다이얼로그를 등록해 주세요");
         }
-        public override void DoEvent()
+        
+        public override void InvokeEvent()
         {
-            DialogueManager.Instance.DoDialog(nextDialogue);
+            DialogueManager.Instance.DoDialogue(nextDialogue);
         }
     }
 }

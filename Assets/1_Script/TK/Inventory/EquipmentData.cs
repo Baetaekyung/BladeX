@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
-    [Serializable] [CreateAssetMenu(fileName = "EquipmentData", menuName = "SO/Equipment/EquipmentData")]
+    [CreateAssetMenu(fileName = "EquipmentData", menuName = "SO/Equipment/EquipmentData")]
     public class EquipmentData : ScriptableObject
     {
         public SerializableDictionary<StatType, float> statModifier

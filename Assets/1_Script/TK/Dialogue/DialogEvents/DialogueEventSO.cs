@@ -4,6 +4,6 @@ namespace Swift_Blade
 {
     public abstract class DialogueEventSO : ScriptableObject
     {
-        public abstract void DoEvent();
+        public abstract void InvokeEvent();
     }
 }

@@ -18,7 +18,7 @@ namespace Swift_Blade
     }
     
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]
-    public class StatSO : ScriptableObject, ICloneable
+    public class StatSO : ScriptableObject
     {
         public delegate void ValueChangeHandler(StatSO stat, float current, float prev);
         public ValueChangeHandler OnValueChange;
@@ -98,6 +98,6 @@ namespace Swift_Blade
             _modifiedValue = 0;
         }
         
-        public object Clone() => Instantiate(this);
+        public StatSO Clone() => Instantiate(this);
     }
 }

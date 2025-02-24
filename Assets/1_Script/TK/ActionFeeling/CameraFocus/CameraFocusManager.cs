@@ -39,8 +39,7 @@ namespace Swift_Blade.Feeling
 
         private void OnValidate()
         {
-            if (_camera is null)
-                Debug.LogWarning($"인스펙터에서 카메라 바인드 하기 from : {gameObject.name}");
+            Debug.Assert(_camera != null, "Camera 인스펙터에서 넣어주기");
         }
 
 
@@ -60,7 +59,7 @@ namespace Swift_Blade.Feeling
         //포커스 실행
         public CameraFocusManager DoFocus(CameraFocusSO focusData)
         {
-            if (_focusRoutine is not null) //코루틴이 현재 실행중이면
+            if (_focusRoutine != null) //코루틴이 현재 실행중이면
             {
                 StopCoroutine(_focusRoutine); //코루틴 중지하고
                 _targetCamera.Lens.FieldOfView = DEFAULT_CAMERA_FOV; //기본 FOV로 변경
@@ -73,7 +72,7 @@ namespace Swift_Blade.Feeling
 
         private IEnumerator FocusRoutine(CameraFocusSO focusData)
         {
-            if (_targetCamera is null)
+            if (_targetCamera == null)
             {
                 Debug.LogWarning("타겟 카메라가 존재하지 않음, SetTargetCamera를 호출하여 카메라 설정하기.");
                 yield break;
@@ -126,7 +125,6 @@ namespace Swift_Blade.Feeling
 
         public void OnComplete(Action onComplete)
         {
-            //_onCompleteEvent = null;
             _onCompleteEvent = onComplete;
         }
         

@@ -6,19 +6,17 @@ namespace Swift_Blade
 {
     public abstract class StatComponent : MonoBehaviour
     {
-        [SerializeField] private StatOverride[] _statOverrides;
-
-        protected StatSO[] _stats;
+        [SerializeField] protected StatSO[] _stats;
         
         protected virtual void Initialize()
         {
-            _stats = _statOverrides.Select(x => x.CreateStat()).ToArray();
+            //after save system, load saved stats
         }
 
         public StatSO GetStat(StatSO stat)
         {
             StatSO findStat = _stats.FirstOrDefault(x => x.statName == stat.statName);
-            //todo : assert null check
+            Debug.Assert(findStat != null, "stat can't find");
 
             return findStat;
         }
@@ -26,7 +24,8 @@ namespace Swift_Blade
         public StatSO GetStat(StatType statType)
         {
             StatSO findStat = _stats.FirstOrDefault(x => x.statType == statType);
-
+            Debug.Assert(findStat != null, "stat can't find");
+            
             return findStat;
         }
 
