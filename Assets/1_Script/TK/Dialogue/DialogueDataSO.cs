@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Behavior;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
@@ -9,11 +10,11 @@ namespace Swift_Blade
     {
         [Tooltip("말하는 사람")]
         public string talker;
-        [TextArea] 
-        public List<string> dialogMessage = new();
+        [TextArea]
+        public List<string> dialogueMessage = new();
         [Tooltip("글자가 나타나는 속도")] 
-        public float dialogSpeed;
+        public float dialogueSpeed;
 
-        public List<DialogueEventSO> dialogEvent = new();
+        public List<DialogueEventSO> dialogueEvent = new();
     }
 }

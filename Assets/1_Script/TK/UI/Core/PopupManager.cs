@@ -45,7 +45,7 @@ namespace Swift_Blade
         private void EscapeKeyInput()
         {
             if (Keyboard.current.escapeKey.wasPressedThisFrame 
-                && !DialogueManager.Instance.IsDialogOpen)
+                && !DialogueManager.Instance.IsDialogueOpen)
             {
                 PopDown();
             }

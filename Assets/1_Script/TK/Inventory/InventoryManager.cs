@@ -12,45 +12,31 @@ namespace Swift_Blade
         EQUIPMENT
     }
     
-    [DefaultExecutionOrder(201)]
     public class InventoryManager : MonoSingleton<InventoryManager>
     {
-        [SerializeField] private ItemDataSO testData;
-        
         [Header("UI 부분")]
-        [HideInInspector] public ItemDataSO SelectedItem;
         [SerializeField] private RectTransform canvasTrm;
         [SerializeField] private RectTransform cursorTrm;
         [SerializeField] private SelectItem_UI selectedItemImage;
         [SerializeField] private List<EquipInfoUI> equipInfoUIs = new(4);
-        
         private SelectItem_UI _createdItemUI;
         
-        [HideInInspector] private bool isDragging = false;
-        public bool IsDragging { get => isDragging; set => isDragging = value; }
-        
         [HideInInspector] public bool isSlotChanged = false; 
+        private bool _isDragging = false;
         private bool _isExistUIObject = false;
 
         [SerializeField] private PlayerInventory playerInventory;
-        public PlayerInventory Inventory => playerInventory;
-        
         [SerializeField] private List<ItemSlot> itemSlots = new List<ItemSlot>();
         
-        public bool isTestMode = true;
+        public bool IsDragging { get => _isDragging; set => _isDragging = value; }
+        public ItemDataSO SelectedItem { get; set; }
+        public PlayerInventory Inventory => playerInventory;
         
         protected override void Awake()
         {
             base.Awake();
-            InitializeSlots();
             
-            if (isTestMode)
-            {
-                AddItemToEmptySlot(testData);
-                AddItemToEmptySlot(testData);
-                Inventory.currentInventoryCapacity++;
-                Inventory.currentInventoryCapacity++;
-            }
+            InitializeSlots();
         }
 
         private void InitializeSlots()
@@ -72,8 +58,6 @@ namespace Swift_Blade
         
         private void Update()
         {
-            if (SelectedItem == null || isDragging == false) return;
-            
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 canvasTrm, //RectTransform Object에 부착되어 있어야 작동한다. 
                 Input.mousePosition,
@@ -98,26 +82,27 @@ namespace Swift_Blade
         }
 
         //아이템을 클릭했을 때 커서에 표시되는 UI
-        public void CreateUIObject(ItemDataSO itemData) 
+        public void UpdateCursorUI(ItemDataSO itemData) 
         {
-            if (_isExistUIObject)
+            void SetCursorUI()
             {
                 _createdItemUI.iconImage.sprite = itemData.itemImage;
-                _createdItemUI.gameObject.SetActive(true);
                 _createdItemUI.SetUI(
                     itemData.itemName,
                     itemData.itemType.ToString(),
                     itemData.description);
-                
+                _createdItemUI.gameObject.SetActive(true);
+            }
+            
+            if (_isExistUIObject)
+            {
+                SetCursorUI();
                 return;
             }
             _isExistUIObject = true;
             _createdItemUI = Instantiate(selectedItemImage, cursorTrm);
-            _createdItemUI.iconImage.sprite = itemData.itemImage;
-            _createdItemUI.SetUI(
-                itemData.itemName, 
-                itemData.itemType.ToString(),
-                itemData.description);
+            
+            SetCursorUI();
             _createdItemUI.transform.position = cursorTrm.position;
         }
 
@@ -127,7 +112,7 @@ namespace Swift_Blade
             _createdItemUI.gameObject.SetActive(false);
 
             SelectedItem = null;
-            isDragging = false;
+            _isDragging = false;
             isSlotChanged = false;
         }
 

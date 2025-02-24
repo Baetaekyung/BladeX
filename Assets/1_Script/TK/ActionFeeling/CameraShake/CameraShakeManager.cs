@@ -15,27 +15,20 @@ namespace Swift_Blade.Feeling
 
         private Action _onCompleteEvent = null;
         
-        
         public CameraShakeManager DoShake(CameraShakeType shakeType, CameraShakePriority priority = CameraShakePriority.NONE)
         {
-            if (_cameraShakeCoroutine is not null)
+            if (_cameraShakeCoroutine != null)
             {
                 //같은 우선순위면 흔들림 덮어 씌우기
                 if ((int)priority <= (int)_currentPriority)
-                {
                     StopCoroutine(_cameraShakeCoroutine);
-                    
-                    _cameraShakeCoroutine = StartCoroutine(GenerateImpulseRoutine(shakeType, priority));
-                }
             }
-            else
-                _cameraShakeCoroutine = StartCoroutine(GenerateImpulseRoutine(shakeType, priority));
+            
+            _cameraShakeCoroutine = StartCoroutine(GenerateImpulseRoutine(shakeType, priority));
 
             return this;
         }
         
-        /// <param name="shakeType">카메라 셰이크 타입</param>
-        /// <param name="priority">기본은 NONE, 우선순위가 낮을 수록 먼저 실행된다.</param>
         private IEnumerator GenerateImpulseRoutine(CameraShakeType shakeType, CameraShakePriority priority = CameraShakePriority.NONE)
         {
             CinemachineImpulseManager.Instance.Clear(); //모든 흔들림을 초기화
@@ -61,8 +54,6 @@ namespace Swift_Blade.Feeling
 
         public void OnComplete(Action onComplete)
         {
-            _onCompleteEvent = null;
-
             _onCompleteEvent = onComplete;
         }
     }

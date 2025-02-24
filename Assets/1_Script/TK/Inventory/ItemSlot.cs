@@ -42,7 +42,7 @@ namespace Swift_Blade
                 return;
             }
             
-            inventoryManager.CreateUIObject(_itemDataSO); //커서에 UI 생성
+            inventoryManager.UpdateCursorUI(_itemDataSO); //커서에 UI 생성
             
             inventoryManager.IsDragging = true; //드래그 중이라고 표시하기
             inventoryManager.SelectedItem = _itemDataSO; //현재 선택된 아이템은 이 슬롯의 아이템

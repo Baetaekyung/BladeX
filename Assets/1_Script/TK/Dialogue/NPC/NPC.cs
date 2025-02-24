@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,27 +8,36 @@ namespace Swift_Blade
     {
         [SerializeField] protected DialogueDataSO dialogueData;
         
-        protected bool  _isAlreadyRead = false; //todo : name reward/?
+        protected bool _isRewarded = false;
 
         [Header("Dialogue end Event")] 
         public UnityEvent OnDialogueEndEvent;
 
-        // todo : 똑같은 로직 없애기 ShopNPC
         public virtual void Interact()
         {
-            if (_isAlreadyRead) //이미 보상을 받았음
+            TalkWithNPC();
+        }
+
+        protected void TalkWithNPC(Action dialogueEndEvent = null)
+        {
+            if (_isRewarded) //이미 보상을 받았음
             {
                 //이벤트 없이 다이얼로그만 진행
-                DialogueManager.Instance.DoDialog(dialogueData);
+                DialogueManager.Instance.DoDialogue(dialogueData).OnComplete(dialogueEndEvent);
                 return;
             }
-            
-            DialogueManager.Instance.DoDialog(dialogueData).OnComplete(HandleEndEventRegister);
+
+            DialogueManager.Instance.DoDialogue(dialogueData)
+                .OnComplete(() =>
+                {
+                    dialogueEndEvent?.Invoke();
+                    HandleEndEventRegister();
+                });
         }
 
         protected void HandleEndEventRegister()
         {
-            _isAlreadyRead = true;
+            _isRewarded = true;
             OnDialogueEndEvent?.Invoke();
         }
     }

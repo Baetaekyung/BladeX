@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -14,7 +15,7 @@ namespace Swift_Blade
         public virtual void OnEquipment()
         {
             HandleStatAdder();
-            equipData.EventChannel.SubscribeEvent(ItemEffect);
+            equipData.EventChannel.OnEquipped += ItemEffect;
             
             Debug.Log(equipData.name + " 아이템 장착");
         }
@@ -23,7 +24,7 @@ namespace Swift_Blade
         public virtual void OffEquipment()
         {
             HandleStatRemover();
-            equipData.EventChannel.RemoveEvent(ItemEffect);
+            equipData.EventChannel.OnEquipped -= ItemEffect;
             
             Debug.Log(equipData.name + " 아이템 해제");
         }
@@ -31,7 +32,6 @@ namespace Swift_Blade
         public void HandleStatAdder()
         {
             //이거 왜 캐싱해서 쓰면 자꾸 null이 되는 거지;;
-            //나중에 플레이어 매니저 있으면 거기서 스텟 가져오는게 좋을 듯함..
             _playerStat = FindFirstObjectByType<PlayerStatCompo>();
             
             if (_playerStat == null)
@@ -57,7 +57,6 @@ namespace Swift_Blade
         public void HandleStatRemover()
         {
             //이거 왜 캐싱해서 쓰면 자꾸 null이 되는 거지;;
-            //나중에 플레이어 매니저 있으면 거기서 스텟 가져오는게 좋을 듯함..
             _playerStat = FindFirstObjectByType<PlayerStatCompo>();
             
             if (_playerStat == null)

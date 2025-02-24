@@ -30,5 +30,7 @@ namespace Swift_Blade.Feeling
         
         [Tooltip("우선순위 낮을 수록 우선적으로 판단함.")]
         public HitStopPriority hitStopPriority;
+
+        public int smoothStep = 20;
     }
 }
