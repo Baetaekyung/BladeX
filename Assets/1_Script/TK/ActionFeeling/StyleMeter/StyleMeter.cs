@@ -38,14 +38,18 @@ namespace Swift_Blade
 
         public void SuccessHit()
         {
-            IncreaseMultiplier(0.01f); //Stat에서 증가량 받아서 Increase시키기
+            const float initialValue = 0.1f;
+            float amount = initialValue + PlayerStat.GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).BaseValue;
+            IncreaseMultiplier(amount); //Stat에서 증가량 받아서 Increase시키기
             
             OnSuccessHitEvent?.Invoke();
         }
 
         public void TakeDamage()
         {
-            DecreaseMultiplier(0.01f); //Stat에서 감소량 받아서 Decrease시키기
+            const float initialValue = 0.1f;
+            float amount = initialValue + PlayerStat.GetStat(StatType.STYLE_METER_DECREASE_DECREMENT).BaseValue;
+            DecreaseMultiplier(amount); //Stat에서 감소량 받아서 Decrease시키기
 
             OnDamagedEvent?.Invoke();
         }

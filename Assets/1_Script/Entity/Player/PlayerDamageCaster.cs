@@ -15,7 +15,7 @@ namespace Swift_Blade.Combat.Caster
         
         private Player _player;
         private PlayerStatCompo _statCompo;
-        
+
         public void EntityComponentAwake(Entity entity)
         {
             _player = entity as Player;

@@ -20,6 +20,11 @@ namespace Swift_Blade
     }
     public class Player : Entity
     {
+        public static Entity Instance { get; private set; }
+
+        [Header("EventChannels")]
+        [SerializeField] private EquipmentChannelSO onHitChannel;
+
         [Header("Debug_Params")]
         [SerializeField] private AnimationTriggers animEndTrigger;
         [SerializeField, Space(10)] private AnimationParameterSO anim_idle;
@@ -36,6 +41,7 @@ namespace Swift_Blade
         [SerializeField] protected AttackComboSO[] comboList;
         public EComboState[] dbg_comboHistory;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
+
 
         //[SerializeField] private AnimationParameterSO[] comboParamHash;
         //[SerializeField] private Vector3[] comboForceList;
@@ -61,6 +67,12 @@ namespace Swift_Blade
         private PlayerAttackState playerAttackState;
 
         private Tween playerInvincibleTween;
+        protected override void Awake()
+        {
+            base.Awake();
+            if (Instance == null) 
+                Instance = this;
+        }
         protected override void Start()
         {
             base.Start();
@@ -107,6 +119,11 @@ namespace Swift_Blade
                     playerInvincibleTween?.Kill();
                 }
             };
+            GetEntityComponent<PlayerDamageCaster>().OnCastDamageEvent.AddListener(
+                (action) =>
+                {
+                    onHitChannel.RaiseEvent();
+                });
         }
         private void Update()
         {

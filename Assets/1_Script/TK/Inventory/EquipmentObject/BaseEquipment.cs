@@ -14,7 +14,9 @@ namespace Swift_Blade
         public virtual void OnEquipment()
         {
             HandleStatAdder();
-            equipData.EventChannel.SubscribeEvent(ItemEffect);
+            EquipmentChannelSO channel = equipData.EventChannel;
+            if(channel != null)
+                channel.SubscribeEvent(ItemEffect);
             
             Debug.Log(equipData.name + " 아이템 장착");
         }
@@ -23,8 +25,10 @@ namespace Swift_Blade
         public virtual void OffEquipment()
         {
             HandleStatRemover();
-            equipData.EventChannel.RemoveEvent(ItemEffect);
-            
+            EquipmentChannelSO channel = equipData.EventChannel;
+            if (channel != null)
+                channel.RemoveEvent(ItemEffect);
+
             Debug.Log(equipData.name + " 아이템 해제");
         }
         
