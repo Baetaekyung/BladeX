@@ -19,7 +19,7 @@ namespace Swift_Blade
             if(channel != null)
                 channel.OnEquipped += ItemEffect;
             
-            Debug.Log(equipData.name + " ������ ����");
+            Debug.Log(equipData.name);
         }
         
         //������ ������ ȿ��
@@ -30,7 +30,7 @@ namespace Swift_Blade
             if (channel != null)
                 channel.OnEquipped -= ItemEffect;
 
-            Debug.Log(equipData.name + " ������ ����");
+            Debug.Log(equipData.name);
         }
         
         public void HandleStatAdder()
