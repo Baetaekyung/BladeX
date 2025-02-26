@@ -36,7 +36,7 @@ namespace Swift_Blade
         private float _addedMultiplier = 0f; //공격 성공시 올려주는 multiplier 
         private StyleMeterState _styleMeterState = StyleMeterState.First;
         
-        [SerializeField] private SerializableDictionary<StyleMeterState,TargetStatTypes> targetStatTypes = new();
+        [SerializeField] private List<TargetStatTypes> targetStatTypes = new();
         public PlayerStatCompo PlayerStat;
 
         private void OnEnable()
@@ -48,7 +48,7 @@ namespace Swift_Blade
         public void SuccessHit()
         {
             const float initialValue = 0.1f;
-            float amount = initialValue + PlayerStat.GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).BaseValue;
+            float amount = initialValue + PlayerStat.GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).Value;
             IncreaseMultiplier(amount); //Stat에서 증가량 받아서 Increase시키기
             
             OnSuccessHitEvent?.Invoke();
@@ -57,7 +57,7 @@ namespace Swift_Blade
         public void TakeDamage()
         {
             const float initialValue = 0.1f;
-            float amount = initialValue + PlayerStat.GetStat(StatType.STYLE_METER_DECREASE_DECREMENT).BaseValue;
+            float amount = initialValue + PlayerStat.GetStat(StatType.STYLE_METER_DECREASE_DECREMENT).Value;
             DecreaseMultiplier(amount); //Stat에서 감소량 받아서 Decrease시키기
 
             OnDamagedEvent?.Invoke();
@@ -65,7 +65,17 @@ namespace Swift_Blade
 
         public List<StatType> GetTargetStats()
         {
-            return targetStatTypes[_styleMeterState].targetStats;
+            switch (_styleMeterState)
+            {
+                case StyleMeterState.First:
+                    return targetStatTypes[0].targetStats;
+                case StyleMeterState.Second:
+                    return targetStatTypes[1].targetStats;
+                case StyleMeterState.Third:
+                    return targetStatTypes[2].targetStats;
+            }
+
+            return default;
         }
         
         private void IncreaseMultiplier(float increaseAmount)
