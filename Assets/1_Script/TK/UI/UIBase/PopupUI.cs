@@ -1,17 +1,38 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Swift_Blade.UI
 {
     [Serializable]
     public abstract class PopupUI : MonoBehaviour
     {
+        [SerializeField] protected CanvasGroup cG;
+        protected GraphicRaycaster _raycaster;
+        [SerializeField] protected float _fadeTime;
+        
         protected Coroutine _delayRoutine;
         public PopupType popupType;
-        
-        public abstract void Popup();
-        public abstract void PopDown();
+
+        private void Awake()
+        {
+            _raycaster = GetComponent<GraphicRaycaster>();
+        }
+
+        public virtual void Popup()
+        {
+            cG.DOFade(1, _fadeTime)
+                .SetEase(Ease.OutCirc);
+            _raycaster.enabled = true;
+        }
+
+        public virtual void PopDown()
+        {
+            _raycaster.enabled = false;
+            cG.DOFade(0, _fadeTime).SetEase(Ease.OutCirc);
+        }
 
         //팝업하고 딜레이 이후 팝업 닫기
         #region Delay Popup

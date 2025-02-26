@@ -50,9 +50,7 @@ namespace Swift_Blade
         {
             get
             {
-                bool isStyleMeterTargetStat =
-                    styleMeter.TargetStatTypes[Mathf.FloorToInt(styleMeter.appliedMultiplier - 1f)]
-                        .targetStats.Contains(statType);
+                bool isStyleMeterTargetStat = styleMeter.GetTargetStats().Contains(statType);
 
                 if (isStyleMeterTargetStat)
                 {

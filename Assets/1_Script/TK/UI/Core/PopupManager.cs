@@ -28,8 +28,8 @@ namespace Swift_Blade
 
         private void Update()
         {
-            IKeyInput();
-            EscapeKeyInput();
+            OpenCloseInventory();
+            PopDownInput();
 
             // if (Keyboard.current.tKey.wasPressedThisFrame
             //     && !DialogueManager.Instance.IsDialogOpen)
@@ -42,7 +42,7 @@ namespace Swift_Blade
             // }
         }
 
-        private void EscapeKeyInput()
+        private void PopDownInput()
         {
             if (Keyboard.current.escapeKey.wasPressedThisFrame 
                 && !DialogueManager.Instance.IsDialogueOpen)
@@ -51,7 +51,7 @@ namespace Swift_Blade
             }
         }
 
-        private void IKeyInput()
+        private void OpenCloseInventory()
         {
             if (Keyboard.current.iKey.wasPressedThisFrame)
             {
@@ -94,8 +94,8 @@ namespace Swift_Blade
         {
             if (_popupList.Count > 0)
             {
-                PopupUI popup = _popupList.First();//last
-                _popupList.Remove(popup);//remove at 
+                PopupUI popup = _popupList.Last();
+                _popupList.RemoveAt(_popupList.Count - 1); 
                 popup.PopDown();
             }
             else
@@ -106,13 +106,26 @@ namespace Swift_Blade
 
         public void PopDown(PopupType popupType)
         {
+            PopupUI popup = null;
+            int index = 0;
+            
             if (_popupList.Count > 0)
             {
-                PopupUI popup = 
-                    _popupList.FirstOrDefault(x => x.popupType == popupType);
-                _popupList.Remove(popup);//remove at
+                for (int i = 0; i < _popupList.Count; i++)
+                {
+                    if (_popupList[i].popupType == popupType)
+                    {
+                        index = i;
+                        popup = _popupList[i];
+                        break;
+                    }
+                }
 
-                popup.PopDown();
+                if (popup != null)
+                {
+                    _popupList.RemoveAt(index);
+                    popup.PopDown();
+                }
             }
             else
             {
@@ -122,24 +135,19 @@ namespace Swift_Blade
 
         public PopupUI GetPopupUI(PopupType type)
         {
-            if (popups.ContainsKey(type) is false)
+            if (popups.TryGetValue(type, out var popup) == false)
             {
                 Debug.Log($"{type}의 팝업이 존재하지 않음.");
                 return null;
             }
             
-            return popups[type];
+            return popup;
         }
 
         //for 문2번
         public PopupUI GetRemainPopup(PopupType type)
         {
-            if (_popupList.Contains(popups[type]))
-            {
-                return _popupList.Find(x => x.popupType == type);
-            }
-
-            return null;
+            return _popupList.Find(x => x.popupType == type);
         }
 
         public void OpenSettingPopup() => PopUp(PopupType.Setting);

@@ -10,8 +10,10 @@ namespace Swift_Blade
     {
         [field: SerializeField] public CanvasGroup BossHealthBarUI { get; private set; }
 
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
+            
             EnableBossUIs(FindFirstObjectByType<BaseEnemy>() != null);
         }
 

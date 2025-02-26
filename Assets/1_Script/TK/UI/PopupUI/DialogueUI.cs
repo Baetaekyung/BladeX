@@ -3,7 +3,6 @@ using DG.Tweening;
 using Swift_Blade.UI;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
@@ -11,7 +10,7 @@ namespace Swift_Blade
     {
         [SerializeField] private TextMeshProUGUI dialogMessageText;
         [SerializeField] private TextMeshProUGUI talkerText;
-        public CanvasGroup canvasGroup;
+        [SerializeField] private CanvasGroup canvasGroup;
 
         public void ShowDialog() //콜백 없음
         {
@@ -22,6 +21,7 @@ namespace Swift_Blade
         {
             //어써트 넣기
             //Debug.Assert(callback != null)
+            Debug.Assert(callback != null, "Callback is null");
             canvasGroup.DOFade(1, 0.2f).OnComplete(() => callback.Invoke());
         }
 
