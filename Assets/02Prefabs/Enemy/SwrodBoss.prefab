@@ -16289,7 +16289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1882639443864621935}
   m_Layer: 7
-  m_Name: CheckBehindTrm
+  m_Name: CheckForwardTrm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45376,9 +45376,9 @@ GameObject:
   - component: {fileID: 5451205732123913698}
   - component: {fileID: 8161863624544920820}
   - component: {fileID: 1908999335113879507}
-  - component: {fileID: 1344055792727759508}
   - component: {fileID: 4092488040254543117}
   - component: {fileID: 2646160260723031557}
+  - component: {fileID: 1344055792727759508}
   m_Layer: 7
   m_Name: SwrodBoss
   m_TagString: Untagged
@@ -45598,29 +45598,6 @@ MonoBehaviour:
           m_Value1: 6349385616022663559
         Name: MoveSpeed
         m_Value: 6.5
---- !u!114 &1344055792727759508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5782296022825403814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58651a8d9c291a24ebe392862daf6ef0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  cameraShakeType: 0
-  rotateSpeed: 30
-  stopDistance: 2.05
-  checkForward: {fileID: 0}
-  whatIsWall:
-    serializedVersion: 2
-    m_Bits: 0
-  maxDistance: 0
-  showGizmo: 0
-  sword: {fileID: 7307799705064874111}
 --- !u!114 &4092488040254543117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45684,6 +45661,29 @@ MonoBehaviour:
   isDead: 0
   BehaviorGraphAgent: {fileID: 1908999335113879507}
   changeBossState: {fileID: 0}
+--- !u!114 &1344055792727759508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5782296022825403814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58651a8d9c291a24ebe392862daf6ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  moveSpeed: 6.8
+  rotateSpeed: 20
+  stopDistance: 2.05
+  checkForward: {fileID: 1882639443864621935}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 2048
+  maxDistance: 3.13
+  showGizmo: 0
+  sword: {fileID: 7307799705064874111}
 --- !u!1 &5783172332564757590
 GameObject:
   m_ObjectHideFlags: 0
