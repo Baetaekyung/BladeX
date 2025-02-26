@@ -48,7 +48,7 @@ namespace Swift_Blade
         public void SuccessHit()
         {
             const float initialValue = 0.1f;
-            float amount = initialValue + PlayerStat.GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).BaseValue;
+            float amount = initialValue + PlayerStat.GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).Value;
             IncreaseMultiplier(amount); //Stat에서 증가량 받아서 Increase시키기
             
             OnSuccessHitEvent?.Invoke();
@@ -57,7 +57,7 @@ namespace Swift_Blade
         public void TakeDamage()
         {
             const float initialValue = 0.1f;
-            float amount = initialValue + PlayerStat.GetStat(StatType.STYLE_METER_DECREASE_DECREMENT).BaseValue;
+            float amount = initialValue + PlayerStat.GetStat(StatType.STYLE_METER_DECREASE_DECREMENT).Value;
             DecreaseMultiplier(amount); //Stat에서 감소량 받아서 Decrease시키기
 
             OnDamagedEvent?.Invoke();
@@ -94,7 +94,7 @@ namespace Swift_Blade
         {
             _addedMultiplier = Mathf.Clamp(_addedMultiplier, 0f, maxMultiplier);
             appliedMultiplier = Mathf.Clamp(StatMultiplier + _addedMultiplier, 1f, maxMultiplier + 1f);
-            
+
             _styleMeterState = _addedMultiplier switch
             {
                 < 1f => StyleMeterState.First,
