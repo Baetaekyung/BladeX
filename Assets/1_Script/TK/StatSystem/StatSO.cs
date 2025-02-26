@@ -13,7 +13,8 @@ namespace Swift_Blade
         AGILITY,
         DASH_INVINCIBLE_TIME,
         PARRY_CHANCE,
-        ADDITINAL_STYLE_METER
+        STYLE_METER_INCREASE_INCREMENT,
+        STYLE_METER_DECREASE_DECREMENT
     }
     
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]

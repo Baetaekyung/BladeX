@@ -17,7 +17,7 @@ namespace Swift_Blade
             if (cnt >= 3)
             {
                 cnt = 0;
-                PlayerHealth playerHealth = default;
+                PlayerHealth playerHealth = Player.Instance.GetEntityComponent<PlayerHealth>();
                 playerHealth.TakeHeal(healAmount);
             }
         }
