@@ -36,7 +36,7 @@ namespace Swift_Blade
         private float _addedMultiplier = 0f; //공격 성공시 올려주는 multiplier 
         private StyleMeterState _styleMeterState = StyleMeterState.First;
         
-        [SerializeField] private SerializableDictionary<StyleMeterState,TargetStatTypes> targetStatTypes = new();
+        [SerializeField] private List<TargetStatTypes> targetStatTypes = new();
         public PlayerStatCompo PlayerStat;
 
         private void OnEnable()
@@ -65,7 +65,17 @@ namespace Swift_Blade
 
         public List<StatType> GetTargetStats()
         {
-            return targetStatTypes[_styleMeterState].targetStats;
+            switch (_styleMeterState)
+            {
+                case StyleMeterState.First:
+                    return targetStatTypes[0].targetStats;
+                case StyleMeterState.Second:
+                    return targetStatTypes[1].targetStats;
+                case StyleMeterState.Third:
+                    return targetStatTypes[2].targetStats;
+            }
+
+            return default;
         }
         
         private void IncreaseMultiplier(float increaseAmount)
@@ -84,7 +94,7 @@ namespace Swift_Blade
         {
             _addedMultiplier = Mathf.Clamp(_addedMultiplier, 0f, maxMultiplier);
             appliedMultiplier = Mathf.Clamp(StatMultiplier + _addedMultiplier, 1f, maxMultiplier + 1f);
-
+            
             _styleMeterState = _addedMultiplier switch
             {
                 < 1f => StyleMeterState.First,
