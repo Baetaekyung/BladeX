@@ -70,7 +70,7 @@ namespace Swift_Blade
         protected override void Awake()
         {
             base.Awake();
-            if (Instance == null) 
+            if (Instance == null)
                 Instance = this;
         }
         protected override void Start()
@@ -130,6 +130,9 @@ namespace Swift_Blade
             playerStateMachine.UpdateState();
 
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
+            UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
+            UI_DebugPlayer.DebugText(2, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DAMAGE).Value, "atkBase");
+            UI_DebugPlayer.DebugText(3, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).Value, "dec");
 
             Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))
