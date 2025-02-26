@@ -1,8 +1,10 @@
 using System;
 using Swift_Blade.Combat.Caster;
+using Swift_Blade.Feeling;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 
 namespace Swift_Blade.Enemy
 {
@@ -16,7 +18,7 @@ namespace Swift_Blade.Enemy
 
         [SerializeField] [Range(1,60)] private float defaultAttackMoveSpeed;
         private float attackMoveSpeed;
-        
+                
         public float AttackMoveSpeed => attackMoveSpeed;
         
         [Space]

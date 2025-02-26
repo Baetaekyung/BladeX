@@ -1,12 +1,9 @@
 
 
-namespace Swift_Blade.Pool.GroundCrack
+namespace Swift_Blade.Pool
 {
-    public class GroundCrack : ParticlePoolAble
+    public class GroundCrack : ParticlePoolAble<GroundCrack>
     {
-        protected override void Push()
-        {
-            MonoGenericPool<GroundCrack>.Push(this);
-        }
+        
     }
 }

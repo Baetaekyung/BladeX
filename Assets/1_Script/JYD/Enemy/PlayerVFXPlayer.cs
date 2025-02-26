@@ -1,7 +1,4 @@
 using Swift_Blade.Pool;
-using Swift_Blade.Pool.Dust;
-using Swift_Blade.Pool.HitSlash;
-using Swift_Blade.Pool.ParryParticle;
 using UnityEngine;
 
 namespace Swift_Blade
