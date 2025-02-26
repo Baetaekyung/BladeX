@@ -12,24 +12,13 @@ namespace Swift_Blade
         
         private void Awake()
         {
-            _shop = FindFirstObjectByType<Shop>(FindObjectsInactive.Include);
+            _shop = FindFirstObjectByType<Shop>(FindObjectsInactive.Include);//todo : change this
         }
 
         [ContextMenu("Interact")]
         public override void Interact()
         {
-            if (_isAlreadyRead) //이미 보상을 받았음
-            {
-                //이벤트 없이 다이얼로그만 진행
-                DialogueManager.Instance.DoDialog(dialogueData).OnComplete(HandleOpenShop);
-                return;
-            }
-            
-            DialogueManager.Instance.DoDialog(dialogueData).OnComplete(() =>
-            {
-                HandleOpenShop();
-                HandleEndEventRegister();
-            });
+            TalkWithNPC(HandleOpenShop);
         }
 
         private void HandleOpenShop()

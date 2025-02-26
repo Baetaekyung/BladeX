@@ -8,102 +8,100 @@ using UnityEngine.Serialization;
 namespace Swift_Blade
 {
     public class DialogueManager : MonoSingleton<DialogueManager>
-    {
-        [SerializeField] 
-        private DialogUI _dialogUI;
+    { 
+        [SerializeField] private DialogueUI _dialogueUI;
         
         #region For Optimization
 
-        private Coroutine _dialogRoutine;
+        private Coroutine _dialogueRoutine;
         private WaitForSeconds _waitForSeconds;
-        private StringBuilder _sb = new StringBuilder();
+        private StringBuilder _sb = new StringBuilder(2);
 
         #endregion
         
-        [FormerlySerializedAs("_testDialog")] [SerializeField] private DialogueDataSO testDialogue;
+        [SerializeField] private DialogueDataSO testDialogue;
 
-        private bool _isDialogOpen = false;
-        public bool IsDialogOpen => _isDialogOpen; //다이얼 로그 열려있으면 Esc눌러도 설정창 안나오게
-        
+        private bool _isDialogueOpen = false;
         private bool _isForcedCancel = false; //Esc로 다이얼로그를 중단하였는가?
         private bool _isForcedMessageSkip = false; //Enter를 눌러 내용을 한번에 출력하였는가?
 
-        private string _currentDialogMessage;
-
+        private string _currentDialogueMessage;
+        
         private Action _onCompleteEvent = null;
+
+        public bool IsDialogueOpen => _isDialogueOpen; //다이얼 로그 열려있으면 Esc눌러도 설정창 안나오게
         
         private void Update()
         {
-            CancelByEscapeKey();
-            SkipByEnterKey();
+            CancelDialogue();
+            SkipDialogueMessage();
         }
 
-        public DialogueManager DoDialog(DialogueDataSO dialogueData)
+        public DialogueManager DoDialogue(DialogueDataSO dialogueData)
         {
-            _isForcedCancel = false;
-            _isForcedMessageSkip = false;
-            
-            void StartDialogRoutine()
-            {
-                if(_dialogRoutine != null)
-                    StopCoroutine(_dialogRoutine);
-                
-                _dialogRoutine = StartCoroutine(DialogRoutine(dialogueData));
-            }
+            ResetDialogue();
 
-            _dialogUI.ShowDialog(() =>
-            {
-                _dialogUI.ClearMessageBox();
-                _sb.Clear();
-                
-                StartDialogRoutine();
-            });
+            _dialogueUI.ShowDialog(() => { StartNewDialogue(dialogueData); });
 
             return this;
         }
 
-        public void StopDialog()
+        private void ResetDialogue()
         {
-            _isDialogOpen = false;
-            
             _isForcedCancel = false;
             _isForcedMessageSkip = false;
-
-            _onCompleteEvent = null;
-
-            _dialogUI.UnShowDialog();
         }
 
-        private IEnumerator DialogRoutine(DialogueDataSO dialogueData)
+        private void StartNewDialogue(DialogueDataSO dialogueData)
         {
-            _isDialogOpen = true;
+            _dialogueUI.ClearMessageBox();
+            _sb.Clear();
+                
+            if(_dialogueRoutine != null)
+                StopCoroutine(_dialogueRoutine);
+                
+            _dialogueRoutine = StartCoroutine(DialogueRoutine(dialogueData));
+        }
+
+        public void StopDialogue()
+        {
+            ResetDialogue();
+            _isDialogueOpen = false;
+
+            _onCompleteEvent = null;
+            _dialogueUI.UnShowDialog();
+        }
+
+        private IEnumerator DialogueRoutine(DialogueDataSO dialogueData)
+        {
+            _isDialogueOpen = true;
             
-            _dialogUI.SetTalker(dialogueData.talker);
+            _dialogueUI.SetTalker(dialogueData.talker);
 
-            _waitForSeconds = new WaitForSeconds(dialogueData.dialogSpeed);
+            _waitForSeconds = new WaitForSeconds(dialogueData.dialogueSpeed);
 
-            var messageLength = dialogueData.dialogMessage.Count;
+            var messageLength = dialogueData.dialogueMessage.Count;
             var dialogProcess = 0;
 
             while (!_isForcedCancel && dialogProcess < messageLength)
             {
-                _dialogUI.ClearMessageBox(); //기존 메세지 지워주기
+                _dialogueUI.ClearMessageBox(); //기존 메세지 지워주기
                 _sb.Clear(); //기존 스트링 빌더 내용 지우기
 
-                _currentDialogMessage = dialogueData.dialogMessage[dialogProcess];
+                _currentDialogueMessage = dialogueData.dialogueMessage[dialogProcess];
                 
                 _isForcedMessageSkip = false;
                 
-                var maxMessageProcess = dialogueData.dialogMessage[dialogProcess].Length;
+                var maxMessageProcess = dialogueData.dialogueMessage[dialogProcess].Length;
                 var messageProcess = 0;
                 
                 while (!_isForcedMessageSkip && messageProcess < maxMessageProcess) //문자 하나씩 출력 (dialogSpeed 기반)
                 {
-                    _sb.Append(dialogueData.dialogMessage[dialogProcess][messageProcess]);
+                    _sb.Append(dialogueData.dialogueMessage[dialogProcess][messageProcess]);
                     
                     messageProcess++; //문자열 출력 진행상황 업데이트.
                 
-                    _dialogUI.SetMessage(_sb.ToString());
+                    _dialogueUI.SetMessage(_sb.ToString());
 
                     yield return _waitForSeconds;
                 }
@@ -116,21 +114,12 @@ namespace Swift_Blade
             InvokeCompleteEvent();
 
             //이벤트 없거나 다이얼로그 강제 종료하면 끝.
-            if (_isForcedCancel || dialogueData.dialogEvent == null) yield break; 
+            if (_isForcedCancel || dialogueData.dialogueEvent == null) yield break; 
             
             //이벤트들 실행
-            foreach (DialogueEventSO @event in dialogueData.dialogEvent)
+            foreach (DialogueEventSO dialogueEvent in dialogueData.dialogueEvent)
             {
-                if (@event is D_ContinueDialogue continueEvent)
-                {
-                    if (continueEvent.nextDialogue is null)
-                    {
-                        Debug.Log("다이얼로그 이벤트에 다음 다이얼로그가 설정되어있지 않음.");
-                        continue;
-                    }
-                }
-                
-                @event?.DoEvent();
+                dialogueEvent?.InvokeEvent();
             }
         }
 
@@ -140,29 +129,30 @@ namespace Swift_Blade
             _onCompleteEvent = null;
         }
 
-        private void CancelByEscapeKey()
+        private void CancelDialogue()
         {
             if (!Input.GetKeyDown(KeyCode.Escape)) return;
                 
-            _dialogUI.ClearMessageBox();
+            _dialogueUI.ClearMessageBox();
             _sb.Clear();
                     
-            StopDialog();
+            StopDialogue();
                     
             _isForcedCancel = true; //강제 종료
         }
 
-        private void SkipByEnterKey()
+        private void SkipDialogueMessage()
         {
             if(!Input.GetKeyDown(KeyCode.Return)) return;
             
             _isForcedMessageSkip = true; //강제 메세지 스킵
-            _dialogUI.SetMessage(_currentDialogMessage); //강제로 완성된 문자열 대입
+            _dialogueUI.SetMessage(_currentDialogueMessage); //강제로 완성된 문자열 대입
         }
 
         public void OnComplete(Action onComplete)
         {
-            _onCompleteEvent = null;
+            if (onComplete == null)
+                return;
             
             _onCompleteEvent = onComplete;
         }

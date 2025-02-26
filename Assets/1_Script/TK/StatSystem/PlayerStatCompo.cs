@@ -8,15 +8,8 @@ namespace Swift_Blade
     public class PlayerStatCompo : StatComponent, IEntityComponent
     {
         [SerializeField] private StyleMeter styleMeter;
+        //todo why ref here? 어디서 쓰고 있어서 일단 놔둠;;
         public StyleMeter GetStyleMeter => styleMeter;
-        // private void Update()
-        // {
-        //     if (Input.GetKeyDown(KeyCode.K))
-        //     {
-        //         styleMeter.SuccessHit();
-        //         Debug.Log(GetStatValue(StatType.DAMAGE));
-        //     }
-        // }
 
         [ContextMenu("Init")]
         public void TestInit()

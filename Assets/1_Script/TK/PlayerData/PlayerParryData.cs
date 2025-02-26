@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
+    //¾È¾¸
     public class PlayerParryData : MonoBehaviour
     {
         [FormerlySerializedAs("_hitStopData")] public HitStopSO hitStopData;

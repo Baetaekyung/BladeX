@@ -13,11 +13,12 @@ namespace Swift_Blade
         AGILITY,
         DASH_INVINCIBLE_TIME,
         PARRY_CHANCE,
-        ADDITINAL_STYLE_METER
+        STYLE_METER_INCREASE_INCREMENT,
+        STYLE_METER_DECREASE_DECREMENT
     }
     
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]
-    public class StatSO : ScriptableObject, ICloneable
+    public class StatSO : ScriptableObject
     {
         public delegate void ValueChangeHandler(StatSO stat, float current, float prev);
         public ValueChangeHandler OnValueChange;
@@ -50,9 +51,7 @@ namespace Swift_Blade
         {
             get
             {
-                bool isStyleMeterTargetStat =
-                    styleMeter.TargetStatTypes[Mathf.FloorToInt(styleMeter.appliedMultiplier - 1f)]
-                        .targetStats.Contains(statType);
+                bool isStyleMeterTargetStat = styleMeter.GetTargetStats().Contains(statType);
 
                 if (isStyleMeterTargetStat)
                 {
@@ -97,6 +96,6 @@ namespace Swift_Blade
             _modifiedValue = 0;
         }
         
-        public object Clone() => Instantiate(this);
+        public StatSO Clone() => Instantiate(this);
     }
 }

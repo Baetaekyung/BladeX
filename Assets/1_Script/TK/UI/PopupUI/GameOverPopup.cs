@@ -1,27 +1,17 @@
-using System;
 using DG.Tweening;
-using DG.Tweening.Core.Easing;
 using Swift_Blade.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Swift_Blade
 {
     public class GameOverPopup : PopupUI
     {
-        [SerializeField] private CanvasGroup cG;
         [SerializeField] private float fadeInTime;
         [SerializeField] private float fadeOutTime;
-        private GraphicRaycaster _raycaster;
-        
         [SerializeField] private LevelClearEventSO levelClearEvent;
         
-        private void Awake()
-        {
-            _raycaster = GetComponent<GraphicRaycaster>();
-        }
         
         [ContextMenu("Popup")]
         public override void Popup()

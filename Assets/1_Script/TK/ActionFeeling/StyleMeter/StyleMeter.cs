@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,6 +10,13 @@ using UnityEngine.UI;
 
 namespace Swift_Blade
 {
+    public enum StyleMeterState 
+    {
+        First, //이름 뭐라 해야할 지 모르겠음;;
+        Second,
+        Third
+    }
+    
     [Serializable]
     public struct TargetStatTypes
     {
@@ -26,8 +34,9 @@ namespace Swift_Blade
         public float appliedMultiplier;
         private const float StatMultiplier = 1f;
         private float _addedMultiplier = 0f; //공격 성공시 올려주는 multiplier 
-
-        public List<TargetStatTypes> TargetStatTypes = new List<TargetStatTypes>();
+        private StyleMeterState _styleMeterState = StyleMeterState.First;
+        
+        [SerializeField] private SerializableDictionary<StyleMeterState,TargetStatTypes> targetStatTypes = new();
         public PlayerStatCompo PlayerStat;
 
         private void OnEnable()
@@ -38,39 +47,36 @@ namespace Swift_Blade
 
         public void SuccessHit()
         {
-            IncreaseMultiplier(0.01f); //Stat에서 증가량 받아서 Increase시키기
+            const float initialValue = 0.1f;
+            float amount = initialValue + PlayerStat.GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).BaseValue;
+            IncreaseMultiplier(amount); //Stat에서 증가량 받아서 Increase시키기
             
             OnSuccessHitEvent?.Invoke();
         }
 
         public void TakeDamage()
         {
-            DecreaseMultiplier(0.01f); //Stat에서 감소량 받아서 Decrease시키기
+            const float initialValue = 0.1f;
+            float amount = initialValue + PlayerStat.GetStat(StatType.STYLE_METER_DECREASE_DECREMENT).BaseValue;
+            DecreaseMultiplier(amount); //Stat에서 감소량 받아서 Decrease시키기
 
             OnDamagedEvent?.Invoke();
         }
 
+        public List<StatType> GetTargetStats()
+        {
+            return targetStatTypes[_styleMeterState].targetStats;
+        }
+        
         private void IncreaseMultiplier(float increaseAmount)
         {
             _addedMultiplier += increaseAmount;
-
-            foreach (var targetStatType in TargetStatTypes[Mathf.FloorToInt(appliedMultiplier - 1f)].targetStats)
-            {
-                Debug.Log($"{targetStatType.ToString()} : {PlayerStat.GetStatByType(targetStatType).Value}");
-            }
-            
             ApplyMultiplier();
         }
 
         private void DecreaseMultiplier(float decreaseAmount)
         {
             _addedMultiplier -= decreaseAmount;
-            
-            foreach (var targetStatType in TargetStatTypes[Mathf.FloorToInt(appliedMultiplier - 1f)].targetStats)
-            {
-                Debug.Log($"{targetStatType.ToString()} : {PlayerStat.GetStatByType(targetStatType).Value}");
-            }
-            
             ApplyMultiplier();
         }
         
@@ -78,6 +84,14 @@ namespace Swift_Blade
         {
             _addedMultiplier = Mathf.Clamp(_addedMultiplier, 0f, maxMultiplier);
             appliedMultiplier = Mathf.Clamp(StatMultiplier + _addedMultiplier, 1f, maxMultiplier + 1f);
+
+            _styleMeterState = _addedMultiplier switch
+            {
+                < 1f => StyleMeterState.First,
+                >= 1f and < 2f => StyleMeterState.Second,
+                >= 2f => StyleMeterState.Third,
+                _ => _styleMeterState
+            };
         }
     }
 }

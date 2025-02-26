@@ -6,26 +6,26 @@ namespace Swift_Blade
 {
     public abstract class StatComponent : MonoBehaviour
     {
-        [SerializeField] private StatOverride[] _statOverrides;
-
-        protected StatSO[] _stats;
+        [SerializeField] protected StatSO[] _stats;
         
         protected virtual void Initialize()
         {
-            _stats = _statOverrides.Select(x => x.CreateStat()).ToArray();
+            //after save system, load saved stats
         }
 
         public StatSO GetStat(StatSO stat)
         {
             StatSO findStat = _stats.FirstOrDefault(x => x.statName == stat.statName);
+            Debug.Assert(findStat != null, "stat can't find");
 
             return findStat;
         }
 
-        public StatSO GetStatByType(StatType statType)
+        public StatSO GetStat(StatType statType)
         {
             StatSO findStat = _stats.FirstOrDefault(x => x.statType == statType);
-
+            Debug.Assert(findStat != null, "stat can't find");
+            
             return findStat;
         }
 
@@ -42,13 +42,13 @@ namespace Swift_Blade
             => GetStat(stat).AddModifier(key, value);
 
         public void AddModifier(StatType statType, object key, float value)
-            => GetStatByType(statType).AddModifier(key, value);
+            => GetStat(statType).AddModifier(key, value);
 
         public void RemoveModifier(StatSO stat, object key)
             => GetStat(stat).RemoveModifier(key);
 
         public void RemoveModifier(StatType statType, object key)
-            => GetStatByType(statType).RemoveModifier(key);
+            => GetStat(statType).RemoveModifier(key);
 
         public void ClearAllModifiers()
         {

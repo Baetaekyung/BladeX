@@ -3,15 +3,14 @@ using DG.Tweening;
 using Swift_Blade.UI;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
-    public class DialogUI : MonoBehaviour
+    public class DialogueUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI dialogMessageText;
         [SerializeField] private TextMeshProUGUI talkerText;
-        public CanvasGroup canvasGroup;
+        [SerializeField] private CanvasGroup canvasGroup;
 
         public void ShowDialog() //콜백 없음
         {
@@ -20,7 +19,10 @@ namespace Swift_Blade
 
         public void ShowDialog(Action callback) //콜백 있음
         {
-            canvasGroup.DOFade(1, 0.2f).OnComplete(() => callback?.Invoke());
+            //어써트 넣기
+            //Debug.Assert(callback != null)
+            Debug.Assert(callback != null, "Callback is null");
+            canvasGroup.DOFade(1, 0.2f).OnComplete(() => callback.Invoke());
         }
 
         public void UnShowDialog()

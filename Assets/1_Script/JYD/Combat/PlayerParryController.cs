@@ -30,7 +30,7 @@ namespace Swift_Blade.Combat
         }
         private bool ParryProbability()
         {
-            float additinoalParryChance = playerStatCompo.GetStatByType(StatType.PARRY_CHANCE).Value;
+            float additinoalParryChance = playerStatCompo.GetStat(StatType.PARRY_CHANCE).Value;
             const float defaultParryChance = 0.5f;
             float parryChance = defaultParryChance + additinoalParryChance;
             return parryChance > Random.value;

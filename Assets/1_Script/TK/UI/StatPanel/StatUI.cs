@@ -61,9 +61,9 @@ namespace Swift_Blade
 
         private void UpdateStatUI() //모든 스텟 세팅
         {
-            SetStatUI(_targetStat.GetStatByType(StatType.HEALTH), _healthText);
-            SetStatUI(_targetStat.GetStatByType(StatType.DAMAGE), _strengthText);
-            SetStatUI(_targetStat.GetStatByType(StatType.AGILITY), _agilityText);
+            SetStatUI(_targetStat.GetStat(StatType.HEALTH), _healthText);
+            SetStatUI(_targetStat.GetStat(StatType.DAMAGE), _strengthText);
+            SetStatUI(_targetStat.GetStat(StatType.AGILITY), _agilityText);
         }
 
         private void SetStatUI(StatSO stat, TextMeshProUGUI targetText, bool isPercent = false) //스텟 세팅

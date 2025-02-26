@@ -15,7 +15,8 @@ namespace Swift_Blade.Feeling
         
         [Header("코루틴 관련 변수들")]
         private Coroutine _hitStopCoroutine;
-        private readonly WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame(); //코루틴 최적화
+        private readonly WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
+        private float _smoothValue;
 
         private Action _onCompleteEvent = null;
         
@@ -27,27 +28,20 @@ namespace Swift_Blade.Feeling
 
         public HitStopManager DoHitStop(HitStopSO hitStopData)
         {
-            if (_hitStopCoroutine is not null)
+            if (_hitStopCoroutine != null)
             {
                 if ((int)hitStopData.hitStopPriority <= (int)_currentPriority)
-                {
                     StopCoroutine(_hitStopCoroutine);
-
-                    _hitStopCoroutine = StartCoroutine(HitStopCoroutine(hitStopData));
-                    _currentPriority = hitStopData.hitStopPriority;
-                }
             }
-            else
-            {
-                _hitStopCoroutine = StartCoroutine(HitStopCoroutine(hitStopData));
-                _currentPriority = hitStopData.hitStopPriority;
-            }
+            
+            _hitStopCoroutine = StartCoroutine(HitStopCoroutine(hitStopData));
+            _currentPriority = hitStopData.hitStopPriority;
 
             return this;
         }
         
         //타임 스케일 원래대로 돌리는 함수
-        public HitStopManager StopHitStop() 
+        public HitStopManager EndHitStop() 
         {
             if (_hitStopCoroutine is not null)
             {
@@ -65,27 +59,11 @@ namespace Swift_Blade.Feeling
         {
             if (hitStopData.hitStopType == HitStopType.SMOOTH) //타임스케일 부드럽게 변환
             {
-                float smoothValue = 0;
+                yield return StartCoroutine(ChangeTimeScale(hitStopData.smoothStep, hitStopData.timeScale));
                 
-                for (int i = 0; i < 10; i++) //10프레임동안 변환 (내마음대로정함)
-                {
-                    smoothValue += 0.1f;
-                    float tempTimeScale = Mathf.Lerp(CurrentTimeScale, hitStopData.timeScale, smoothValue);
-                    Time.timeScale = tempTimeScale;
-                    yield return _waitForEndOfFrame;
-                }
+                yield return new WaitForSecondsRealtime(hitStopData.duration);
 
-                smoothValue = 0;
-                //타임 스케일과 무관하게 리얼타임으로
-                yield return new WaitForSecondsRealtime(hitStopData.duration); 
-                
-                for (int i = 0; i < 10; i++)
-                {
-                    smoothValue += 0.1f;
-                    float tempTimeScale = Mathf.Lerp(CurrentTimeScale, DEFAULT_TIMESCALE, smoothValue);
-                    Time.timeScale = tempTimeScale;
-                    yield return _waitForEndOfFrame;
-                }
+                yield return StartCoroutine(ChangeTimeScale(hitStopData.smoothStep, DEFAULT_TIMESCALE));
                 
                 Time.timeScale = DEFAULT_TIMESCALE;
             }
@@ -100,6 +78,22 @@ namespace Swift_Blade.Feeling
             InvokeCompleteEvent();
         }
 
+        private IEnumerator ChangeTimeScale(int smoothStep, float targetScale)
+        {
+            _smoothValue = 0;
+            float smoothTime = 1f / smoothStep;
+            
+            for (int i = 0; i < smoothStep; i++)
+            {
+                _smoothValue += smoothTime;
+                CurrentTimeScale = Mathf.Lerp(CurrentTimeScale, targetScale, _smoothValue);
+                
+                Time.timeScale = CurrentTimeScale;
+                
+                yield return _waitForEndOfFrame;
+            }
+        }
+        
         private void InvokeCompleteEvent()
         {
             _onCompleteEvent?.Invoke();
@@ -108,8 +102,6 @@ namespace Swift_Blade.Feeling
         
         public void OnComplete(Action onComplete)
         {
-            _onCompleteEvent = null;
-            
             _onCompleteEvent = onComplete;
         }
     }

@@ -9,9 +9,7 @@ namespace Swift_Blade.UI
     public class TextPopup : PopupUI
     {
         [SerializeField] private TextMeshProUGUI _text;
-        [SerializeField] private CanvasGroup _cG;
-        [SerializeField] private float _fadeTime;
-
+        
         public void SetText(string text)
         {
             _text.text = text;
