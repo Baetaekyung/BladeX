@@ -43,7 +43,6 @@ public abstract class UI_DebugBase<T> : MonoSingleton<T> where T : UI_DebugBase<
     }
     public static void DebugText(int index, string stringValue, string prefix = "", int key = 0) => SetDebug(index, stringValue, prefix, key);
     public static void DebugText<VT>(int index, VT valueType, string prefix = "", int key = 0)
-        where VT : struct
     {
         SetDebug(index, valueType.ToString(), prefix, key);
     }

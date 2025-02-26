@@ -1,12 +1,9 @@
 using UnityEngine;
 
-namespace Swift_Blade.Pool.HitSlash
+namespace Swift_Blade.Pool
 {
-    public class HitSlash : ParticlePoolAble
+    public class HitSlash : ParticlePoolAble<HitSlash>
     {
-        protected override void Push()
-        {
-            MonoGenericPool<HitSlash>.Push(this);
-        }
+       
     }
 }

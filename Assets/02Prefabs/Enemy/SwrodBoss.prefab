@@ -16289,7 +16289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1882639443864621935}
   m_Layer: 7
-  m_Name: CheckForwardTrm
+  m_Name: CheckForward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26024,6 +26024,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.32813507, y: 0.027538769, z: 0.00070878863}
     m_Extent: {x: 0.36660576, y: 0.22605634, z: 0.30476323}
   m_DirtyAABB: 0
+--- !u!1 &3294264473720803105
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6666297108255584503}
+  m_Layer: 7
+  m_Name: PrickTrm_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6666297108255584503
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3294264473720803105}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.9994198, z: -0, w: -0.034060463}
+  m_LocalPosition: {x: -0.1162, y: 0.9645, z: 2.3436}
+  m_LocalScale: {x: 0.39999995, y: 0.4, z: 0.39999995}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6679206513978228259}
+  m_LocalEulerAnglesHint: {x: 0, y: -183.904, z: 0}
 --- !u!1 &3301509819647849385
 GameObject:
   m_ObjectHideFlags: 0
@@ -29100,6 +29131,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.17864355, y: 0.00042811036, z: 0}
     m_Extent: {x: 0.18130288, y: 0.15082178, z: 0.13306488}
   m_DirtyAABB: 0
+--- !u!1 &3810751469906882493
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1270476491769084413}
+  m_Layer: 7
+  m_Name: DustUpTrm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1270476491769084413
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3810751469906882493}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.12, y: 0.251, z: 1.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6679206513978228259}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3810979994693996746
 GameObject:
   m_ObjectHideFlags: 0
@@ -45376,9 +45438,10 @@ GameObject:
   - component: {fileID: 5451205732123913698}
   - component: {fileID: 8161863624544920820}
   - component: {fileID: 1908999335113879507}
-  - component: {fileID: 4092488040254543117}
-  - component: {fileID: 2646160260723031557}
+  - component: {fileID: 3575926326915301583}
   - component: {fileID: 1344055792727759508}
+  - component: {fileID: 2646160260723031557}
+  - component: {fileID: 5492742793706994907}
   m_Layer: 7
   m_Name: SwrodBoss
   m_TagString: Untagged
@@ -45404,6 +45467,9 @@ Transform:
   - {fileID: 3614491235600334836}
   - {fileID: 2554563772665744601}
   - {fileID: 1882639443864621935}
+  - {fileID: 1270476491769084413}
+  - {fileID: 6666297108255584503}
+  - {fileID: 882628041340589753}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1837816403407871595
@@ -45541,7 +45607,7 @@ MonoBehaviour:
           m_Value0: 16842789263302442139
           m_Value1: 15124673902740489662
         Name: AttackDistance
-        m_Value: 13
+        m_Value: 8.93
     - rid: 1607273058493268003
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -45549,7 +45615,7 @@ MonoBehaviour:
           m_Value0: 8799685740808257774
           m_Value1: 11337077293980532446
         Name: MeleeDistance
-        m_Value: 6
+        m_Value: 3.1
     - rid: 1607273377352123009
       type: {class: 'BlackboardVariable`1[[ChangeBossState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -45589,7 +45655,7 @@ MonoBehaviour:
           m_Value0: 17003141457256015539
           m_Value1: 18031931821477734673
         Name: AnimatorController
-        m_Value: {fileID: 4092488040254543117}
+        m_Value: {fileID: 3575926326915301583}
     - rid: 2781718363940586417
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -45598,7 +45664,7 @@ MonoBehaviour:
           m_Value1: 6349385616022663559
         Name: MoveSpeed
         m_Value: 6.5
---- !u!114 &4092488040254543117
+--- !u!114 &3575926326915301583
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45607,13 +45673,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 5782296022825403814}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c119b932384cc3749ba253393b204855, type: 3}
+  m_Script: {fileID: 11500000, guid: 79317d4d595944f46928eb65832b8433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultAttackMoveSpeed: 39.7
+  defaultAttackMoveSpeed: 39.6
   animationEnd: 0
   isManualRotate: 0
   isManualMove: 0
+  cameraShakeType: 3
+--- !u!114 &1344055792727759508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5782296022825403814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58651a8d9c291a24ebe392862daf6ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  moveSpeed: 6.8
+  rotateSpeed: 19.7
+  stopDistance: 2.05
+  checkForward: {fileID: 1882639443864621935}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 2048
+  maxDistance: 1.27
+  showGizmo: 1
+  sword: {fileID: 7307799705064874111}
 --- !u!114 &2646160260723031557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45661,7 +45751,7 @@ MonoBehaviour:
   isDead: 0
   BehaviorGraphAgent: {fileID: 1908999335113879507}
   changeBossState: {fileID: 0}
---- !u!114 &1344055792727759508
+--- !u!114 &5492742793706994907
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45670,20 +45760,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 5782296022825403814}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58651a8d9c291a24ebe392862daf6ef0, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a6e3904829965a46912566e01476f9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  moveSpeed: 6.8
-  rotateSpeed: 20
-  stopDistance: 2.05
-  checkForward: {fileID: 1882639443864621935}
-  whatIsWall:
+  dustUpEffect: {fileID: 11400000, guid: 042d27d52db812f4786d6a0d1b862039, type: 2}
+  dustUpTransform: {fileID: 1270476491769084413}
+  groundLayer:
     serializedVersion: 2
-    m_Bits: 2048
-  maxDistance: 3.13
-  showGizmo: 0
-  sword: {fileID: 7307799705064874111}
+    m_Bits: 256
+  groundEffect: {fileID: 11400000, guid: ad129cfd44d58a54ea0cfe172c4d1734, type: 2}
+  prickEffect: {fileID: 11400000, guid: 448e4fac51f97074d8eb268a9334c66c, type: 2}
+  prickTrm1: {fileID: 6666297108255584503}
+  prickTrm2: {fileID: 882628041340589753}
 --- !u!1 &5783172332564757590
 GameObject:
   m_ObjectHideFlags: 0
@@ -68750,6 +68838,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.28218612, y: 0.033141144, z: -0.0728264}
     m_Extent: {x: 0.1966013, y: 0.07735975, z: 0.1655631}
   m_DirtyAABB: 0
+--- !u!1 &8824413546897703916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 882628041340589753}
+  m_Layer: 7
+  m_Name: PrickTrm_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &882628041340589753
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8824413546897703916}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0018830555, y: -0.9970557, z: 0.027275857, w: 0.07164091}
+  m_LocalPosition: {x: 0.392, y: 0.953, z: 2.503}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6679206513978228259}
+  m_LocalEulerAnglesHint: {x: 3.133, y: -171.78, z: 0.009}
 --- !u!1 &8829177641898723308
 GameObject:
   m_ObjectHideFlags: 0

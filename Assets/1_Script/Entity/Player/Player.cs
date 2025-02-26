@@ -6,6 +6,7 @@ using Swift_Blade.Combat;
 using Swift_Blade.Combat.Caster;
 using UnityEngine;
 using DG.Tweening;
+using Swift_Blade.Combat.Health;
 
 namespace Swift_Blade
 {
@@ -42,6 +43,34 @@ namespace Swift_Blade
         public EComboState[] dbg_comboHistory;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
 
+        public class LevelStat
+        {
+            public static event Action<LevelStat> OnLevelUp;
+
+            public int Experience { get; private set; }
+            public int Level { get; private set; }
+            public int StatPoint { get; private set; }
+            public LevelStat()
+            {
+                BaseEnemyHealth.OnAnyEnemyDead += OnEnemyDead;
+            }
+            ~LevelStat()
+            {
+                BaseEnemyHealth.OnAnyEnemyDead -= OnEnemyDead;
+            }
+            private void OnEnemyDead()
+            {
+                Experience++;
+                const int maxRequiredExperience = 2;
+                if (Experience >= maxRequiredExperience)
+                {
+                    Experience = Experience - maxRequiredExperience;
+                    Level++;
+                    StatPoint += Level;
+                    OnLevelUp?.Invoke(this);
+                }
+            }
+        }
 
         //[SerializeField] private AnimationParameterSO[] comboParamHash;
         //[SerializeField] private Vector3[] comboForceList;
@@ -66,11 +95,14 @@ namespace Swift_Blade
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
         private PlayerAttackState playerAttackState;
 
+        public static LevelStat level = new LevelStat();
+
         private Tween playerInvincibleTween;
         protected override void Awake()
         {
             base.Awake();
-            if (Instance == null) 
+
+            if (Instance == null)
                 Instance = this;
         }
         protected override void Start()
@@ -130,6 +162,9 @@ namespace Swift_Blade
             playerStateMachine.UpdateState();
 
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
+            UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
+            UI_DebugPlayer.DebugText(2, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DAMAGE).Value, "atkBase");
+            UI_DebugPlayer.DebugText(3, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).Value, "dec");
 
             Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))

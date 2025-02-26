@@ -14,14 +14,16 @@ namespace Swift_Blade
         [ContextMenu("Init")]
         public void TestInit()
         {
-            Initialize();
+            Initialize();   
         }
-        
+        private void Awake()
+        {
+            styleMeter.PlayerStat = this;
+        }
         public void EntityComponentAwake(Entity entity)
         {
             Initialize();
 
-            styleMeter.PlayerStat = this;
         }
     }
 }

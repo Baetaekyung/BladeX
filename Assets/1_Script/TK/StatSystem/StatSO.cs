@@ -14,7 +14,8 @@ namespace Swift_Blade
         DASH_INVINCIBLE_TIME,
         PARRY_CHANCE,
         STYLE_METER_INCREASE_INCREMENT,
-        STYLE_METER_DECREASE_DECREMENT
+        STYLE_METER_DECREASE_DECREMENT,
+        STYLE_METER_ADDITIONAL_BUFF
     }
     
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]
@@ -56,8 +57,8 @@ namespace Swift_Blade
                 if (isStyleMeterTargetStat)
                 {
                     //현재 스타일 미터 계수에 따라서 적용되는 스텟 다르게 하기
-                    return Mathf.Clamp((_baseValue + _modifiedValue) *
-                                       styleMeter.appliedMultiplier , MinValue, MaxValue);
+                    float val = _baseValue + _modifiedValue;// + styleMeter.PlayerStat.GetStat(StatType.STYLE_METER_ADDITIONAL_BUFF).Value;
+                    return Mathf.Clamp(val * styleMeter.appliedMultiplier , MinValue, MaxValue);
                 }
                 
                 return Mathf.Clamp((_baseValue + _modifiedValue), MinValue, MaxValue);

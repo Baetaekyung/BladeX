@@ -1,15 +1,9 @@
-using System;
-using Swift_Blade.Pool;
-using UnityEngine;
 
-namespace Swift_Blade.Pool.Explosion
+
+namespace Swift_Blade.Pool
 {
-    public class Explosion : ParticlePoolAble
+    public class Explosion : ParticlePoolAble<Explosion>
     {
-        protected override void Push()
-        {
-            MonoGenericPool<Explosion>.Push(this);
-        }
         
     }
 }
