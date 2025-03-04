@@ -1,13 +1,10 @@
 using Swift_Blade.Pool;
 using UnityEngine;
 
-namespace Swift_Blade.Pool.Dust
+namespace Swift_Blade.Pool
 {
-    public class Dust : ParticlePoolAble
+    public class Dust : ParticlePoolAble<Dust>
     {
-        protected override void Push()
-        {
-            MonoGenericPool<Dust>.Push(this);
-        }
+      
     }
 }

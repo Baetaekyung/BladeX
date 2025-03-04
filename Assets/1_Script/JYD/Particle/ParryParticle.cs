@@ -1,12 +1,9 @@
 
 
-namespace Swift_Blade.Pool.ParryParticle
+namespace Swift_Blade.Pool
 {
-    public class ParryParticle : ParticlePoolAble
+    public class ParryParticle : ParticlePoolAble<ParryParticle>
     {
-        protected override void Push()
-        {
-            MonoGenericPool<ParryParticle>.Push(this);
-        }
+       
     }
 }
