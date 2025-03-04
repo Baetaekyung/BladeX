@@ -6,10 +6,10 @@ namespace Swift_Blade.Pool
     public static class GameObjectPoolManager
     {
         private readonly static Dictionary<int, GameObjectPool> gameObjectPoolDictionary;
-        private const int DictionaryCapacity = 10;//todo : get prefab count from so
+        private const int DICTIONARY_CAPACITIY = 10;//todo : get prefab count from so
         static GameObjectPoolManager()
         {
-            gameObjectPoolDictionary = new Dictionary<int, GameObjectPool>(DictionaryCapacity);
+            gameObjectPoolDictionary = new Dictionary<int, GameObjectPool>(DICTIONARY_CAPACITIY);
         }
         private static GameObjectPool CreateDictionary(PoolPrefabGameObjectSO prefabSO)
         {

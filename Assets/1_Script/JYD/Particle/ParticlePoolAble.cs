@@ -31,6 +31,10 @@ namespace Swift_Blade.Pool
         {
             MonoGenericPool<T>.Push((this as T));
         }
-        
+
+        void IPoolable.OnCreate()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

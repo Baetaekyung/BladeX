@@ -19,9 +19,24 @@ namespace Swift_Blade.Audio
 
         private AudioSource audioSource;
         private AudioSO currentAudioSO;
+        private bool isKilled;
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
+        }
+        public void OnPopInitialize()
+        {
+
+        }
+        void IPoolable.OnCreate()
+        {
+            isKilled = true;
+        }
+        void IPoolable.OnPopInitialize()
+        {
+            OnEndCallback = null;
+            currentAudioSO = null;
+            isKilled = false;
         }
         public static void Dbg(AudioSO audioSO)
         {
@@ -45,15 +60,9 @@ namespace Swift_Blade.Audio
 
             AudioClip currentClip = audioSO.clip;
             int hash = currentClip.GetHashCode();
-            int result = audioDictionary[hash]--;
-            Debug.Assert(result >= 0, "there is no way this can happen, right? otherwise contact me. -ojy");
+            int result = --audioDictionary[hash];
+            Debug.Assert(result >= 0, "there is no way this can happen. otherwise yell at me");
         }
-        public void OnPopInitialize()
-        {
-            OnEndCallback = null;
-            currentAudioSO = null;
-        }
-
         public void Play(bool destroyOnEnd = false)
         {
             bool flag = currentAudioSO != null;
@@ -128,8 +137,15 @@ namespace Swift_Blade.Audio
         }
         public void KillAudio()
         {
+            if (isKilled)
+            {
+                Debug.LogWarning("audio emitter is already killed.");
+                return;
+            }
+
             StopAudio();
             MonoGenericPool<AudioEmitter>.Push(this);   //deactivate gameObject, auto cancel Coroutine.
+            isKilled = true;
         }
         public void Initialize(AudioSO audioSO)
         {
@@ -161,6 +177,12 @@ namespace Swift_Blade.Audio
             audioSource.maxDistance = audioSO.maxDistance;
             if (audioSO.audioRolloffMode == AudioRolloffMode.Custom)
                 audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioSO.curve);
+        }
+
+        private void OnDestroy()
+        {
+            if (!isKilled)
+                print("awdad");
         }
     }
 }

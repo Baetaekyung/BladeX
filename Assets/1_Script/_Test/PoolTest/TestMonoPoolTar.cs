@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class TestMonoPoolTar : MonoBehaviour, IPoolable
+    public class TestMonoPoolTar : MonoBehaviour
     {
         [SerializeField] private int a = 0;
         private float timer = 0;
