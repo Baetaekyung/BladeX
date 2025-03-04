@@ -15,8 +15,11 @@ namespace Swift_Blade.Enemy.Throw
         {
             if (stone == null)
                 if (_throw != null)
+                {
                     _throw.transform.SetParent(null);
-            
+                    _throw.SetPhysicsState(false);
+                }
+                        
             _throw = stone;
         }
 

@@ -46,7 +46,7 @@ namespace Swift_Blade
 
         [Header("Cache")]
         private readonly List<ContactPoint> contactPointList = new();
-
+        
         public float GetMaxStamina => initialRollStamina;
         public float SpeedMultiplierDefault { get; set; } = 1;
         //public float SpeedMultiplierForward { get; set; } = 1;

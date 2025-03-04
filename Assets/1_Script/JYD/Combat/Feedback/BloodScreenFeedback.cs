@@ -12,12 +12,11 @@ public struct VignetteInfo
     public float smoothness;
 }
 
-namespace Swift_Blade.Combat.Feedbck
+namespace Swift_Blade.Combat.Feedback
 {
     public class BloodScreenFeedback : Feedback
     {
-        public Volume volume;
-
+        public VolumeProfile profile;
         public VignetteInfo origin;
         public VignetteInfo bloodScreen;
         
@@ -30,16 +29,10 @@ namespace Swift_Blade.Combat.Feedbck
         
         private void Start()
         {
-            if (volume == null)
-            {
-                volume = FindObjectOfType<Volume>();
-            }
-            
-            volume.profile.TryGet(out vignette);
+            profile.TryGet(out vignette);
             ApplyVignetteInfo(origin);
-            
         }
-
+        
         private void ApplyVignetteInfo(VignetteInfo info)
         {
             vignette.color.value = info.color;

@@ -27,17 +27,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
 
             MonoGenericPool<GroundCrack>.Initialize(groundCrackSO);
         }
-
-        public void StartManualCollider()
-        {
-            bodyCollider.enabled = true;
-        }
-
-        public void StopManualCollider()
-        {
-            bodyCollider.enabled = false;
-        }
-
+        
         public void JumpAttackCast()
         {
             damageCaster.JumpAttackCast();

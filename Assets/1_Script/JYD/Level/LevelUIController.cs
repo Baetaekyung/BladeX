@@ -94,10 +94,15 @@ namespace Swift_Blade.Level
         private void ResetClearPanel()
         {
             header.gameObject.SetActive(false);
-            header.DOFade(0, 0);
+            var headerColor = header.color;
+            headerColor.a = 0;
+            header.color = headerColor;
+            
             header.rectTransform.sizeDelta = new Vector2(1920, 4);
 
-            clearText.DOFade(0, 0);
+            var color = clearText.color;
+            color.a = 0;
+            clearText.color = color;
     
             nextLevelButton.gameObject.SetActive(false);
             nextLevelButton.transform.localScale = new Vector3(1, 0, 1);
