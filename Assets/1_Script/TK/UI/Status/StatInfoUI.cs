@@ -28,7 +28,10 @@ namespace Swift_Blade
 
         private void UpgradeStat()
         {
-            stat.BaseValue += 1f; //todo: statSo에 변수로 오르는 양 가져오기
+            if (Player.level.StatPoint <= 0)
+                return;
+
+            stat.BaseValue += stat.increaseAmount;
             
             SetStatInfoUI();
         }
@@ -37,7 +40,6 @@ namespace Swift_Blade
         public void SetStatInfoUI()
         {
             //statIcon.sprite = stat.statIcon;
-            
             _sb.Clear();
 
             _sb.Append(stat.displayName);

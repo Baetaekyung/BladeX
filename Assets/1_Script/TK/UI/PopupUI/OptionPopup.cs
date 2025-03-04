@@ -7,6 +7,17 @@ namespace Swift_Blade
 {
     public class OptionPopup : PopupUI
     {
-        
+        public override void Popup()
+        {
+            cG.alpha = 1f;
+            cG.transform.DOScaleY(1, _fadeTime).SetEase(Ease.OutCirc);
+            _raycaster.enabled = true;
+        }
+
+        public override void PopDown()
+        {
+            cG.transform.DOScaleY(0, _fadeTime);
+            _raycaster.enabled = false;
+        }
     }
 }

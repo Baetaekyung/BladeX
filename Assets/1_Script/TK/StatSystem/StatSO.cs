@@ -31,6 +31,7 @@ namespace Swift_Blade
         [TextArea(4, 5)] public string description;
         public string displayName;
         [SerializeField] private float _baseValue, _minValue, _maxValue;
+        public float increaseAmount;
         
         private readonly Dictionary<object, float> _modifyValueByKeys = new Dictionary<object, float>();
         
