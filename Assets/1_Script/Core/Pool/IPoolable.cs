@@ -2,6 +2,10 @@ namespace Swift_Blade.Pool
 {
     public interface IPoolable
     {
-        public void OnPopInitialize();
+        /// <summary>
+        /// set object state created inside pool
+        /// </summary>
+        void OnCreate();
+        void OnPopInitialize();
     }
 }

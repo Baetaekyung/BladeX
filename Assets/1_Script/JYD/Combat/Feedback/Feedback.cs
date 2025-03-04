@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Swift_Blade.Combat.Feedbck
+namespace Swift_Blade.Combat.Feedback
 {
     public abstract class Feedback : MonoBehaviour
     {

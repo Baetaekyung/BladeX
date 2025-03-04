@@ -1787,9 +1787,9 @@ GameObject:
   - component: {fileID: 1345906694638014179}
   - component: {fileID: 7925636756258443965}
   - component: {fileID: 3295370776352808448}
-  - component: {fileID: 7993616426684101907}
   - component: {fileID: 5648526737877272758}
   - component: {fileID: 414072090729032406}
+  - component: {fileID: 7993616426684101907}
   m_Layer: 7
   m_Name: ThrowEnemy
   m_TagString: Untagged
@@ -1919,7 +1919,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7635556846246885292}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
@@ -2001,28 +2001,6 @@ MonoBehaviour:
           m_Value1: 15826921796212577334
         Name: MoveSpeed
         m_Value: 1.5
---- !u!114 &7993616426684101907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7635556846246885292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b67312a593d64bfabc291621dec30727, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  cameraShakeType: 0
-  rotateSpeed: 7
-  stopDistance: 1.4
-  checkForward: {fileID: 5283008461669598587}
-  whatIsWall:
-    serializedVersion: 2
-    m_Bits: 256
-  maxDistance: 1.6
-  showGizmo: 0
 --- !u!114 &5648526737877272758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2084,11 +2062,33 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  maxHealth: 5
+  maxHealth: 1
   currentHealth: 0
   isDead: 0
   BehaviorGraphAgent: {fileID: 3295370776352808448}
   changeBossState: {fileID: 0}
+--- !u!114 &7993616426684101907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7635556846246885292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b67312a593d64bfabc291621dec30727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  moveSpeed: 1.3
+  rotateSpeed: 7
+  stopDistance: 1.4
+  checkForward: {fileID: 5283008461669598587}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 2048
+  maxDistance: 1.6
+  showGizmo: 0
 --- !u!1 &7772009172095154921
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ using Swift_Blade.Combat.Caster;
 using UnityEngine;
 using DG.Tweening;
 using Swift_Blade.Combat.Health;
+using Swift_Blade.Audio;
 
 namespace Swift_Blade
 {
@@ -25,6 +26,9 @@ namespace Swift_Blade
 
         [Header("EventChannels")]
         [SerializeField] private EquipmentChannelSO onHitChannel;
+
+        [Header("Audio")]
+        [SerializeField] private AudioSO aud_dead;
 
         [Header("Debug_Params")]
         [SerializeField] private AnimationTriggers animEndTrigger;
@@ -143,7 +147,12 @@ namespace Swift_Blade
                 if (isHitStun)
                     playerStateMachine.ChangeState(PlayerStateEnum.HitStun);
             });
-            playerHealth.OnDeadEvent.AddListener(() => { playerStateMachine.ChangeState(PlayerStateEnum.Dead); });
+            playerHealth.OnDeadEvent.AddListener(
+                () =>
+                {
+                    playerStateMachine.ChangeState(PlayerStateEnum.Dead);
+                    AudioManager.PlayWithInit(aud_dead, true);
+                });
             playerStateMachine.OnChangeState += (type) =>
             {
                 if (type == PlayerStateEnum.Roll || type == PlayerStateEnum.HitStun)
@@ -160,6 +169,15 @@ namespace Swift_Blade
         private void Update()
         {
             playerStateMachine.UpdateState();
+
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                AudioManager.PlayWithInit(aud_dead, true);
+            }
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                AudioEmitter.Dbg(aud_dead);
+            }
 
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");

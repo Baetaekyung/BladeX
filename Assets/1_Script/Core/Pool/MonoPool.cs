@@ -18,6 +18,7 @@ namespace Swift_Blade.Pool
         protected override T Create()
         {
             T result = Object.Instantiate(prefab, Vector3.zero, Quaternion.identity);
+            result.OnCreate();
             result.gameObject.hideFlags = HideFlags.HideInHierarchy;
             result.gameObject.SetActive(false);
             return result;

@@ -22,7 +22,7 @@ namespace Swift_Blade.Combat.Projectile
         public virtual void SetPhysicsState(bool isActive)
         {
             //obstacle.enabled = false;
-
+            
             Rigidbody.useGravity = !isActive;
             Rigidbody.isKinematic = isActive;
         }

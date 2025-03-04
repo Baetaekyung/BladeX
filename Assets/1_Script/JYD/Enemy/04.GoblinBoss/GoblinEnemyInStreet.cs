@@ -13,7 +13,7 @@ namespace Swift_Blade.Enemy.Goblin
         {
             base.Start();
             
-            btAgent.enabled = false;
+            btAgent.enabled = true;
             targets = new Collider[1];
         }
         
