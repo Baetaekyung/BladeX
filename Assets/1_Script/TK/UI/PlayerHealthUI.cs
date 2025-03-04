@@ -14,10 +14,12 @@ namespace Swift_Blade.UI
         [SerializeField] private GameObject fullHealthPrefab;
         [SerializeField] private GameObject burnHealthPrefab;
 
-        private List<GameObject> _healthIcons = new List<GameObject>();
+        private List<GameObject> _healthIcons;
 
         private void Start()
         {
+            _healthIcons = new List<GameObject>();
+            
             _playerHealth = FindFirstObjectByType<PlayerHealth>();
 
             if (_playerHealth != null)
@@ -60,8 +62,6 @@ namespace Swift_Blade.UI
                 _healthIcons.ForEach(icon => Destroy(icon.gameObject));
                 _healthIcons.Clear();
             }
-            
-            healthUI.sizeDelta = new Vector2(75 * maxHealth, 100f);
             
             float emptyHealth = maxHealth - currentHealth;
 
