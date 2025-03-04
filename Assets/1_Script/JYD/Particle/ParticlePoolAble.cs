@@ -34,7 +34,6 @@ namespace Swift_Blade.Pool
 
         void IPoolable.OnCreate()
         {
-            throw new System.NotImplementedException();
         }
     }
 }
