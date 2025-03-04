@@ -10,6 +10,7 @@ namespace Swift_Blade.Audio
     /// please only use AudioEmitter as runtime audio player.
     /// AudioEmitter can be preplaced though.
     /// </summary>
+    [RequireComponent(typeof(AudioSource))]
     public class AudioEmitter : MonoBehaviour, IPoolable
     {
         public event Action OnEndCallback;
@@ -182,7 +183,7 @@ namespace Swift_Blade.Audio
         private void OnDestroy()
         {
             if (!isKilled)
-                print("awdad");
+                KillAudio();
         }
     }
 }
