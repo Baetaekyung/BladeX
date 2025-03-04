@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -51,6 +52,12 @@ namespace Swift_Blade
 
         private void HandleMultiplierChanged()
         {
+            statMultiplierText.DOKill();
+            
+            //Animation
+            statMultiplierText.transform.DOScale(Vector3.one * 1.1f, 0.1f).OnComplete(
+                () => statMultiplierText.transform.DOScale(Vector3.one, 0.15f));
+            
             statMultiplierText.text = styleMeter.appliedMultiplier.ToString("0.00");
             // StyleMeterEffectChanged();
         }
