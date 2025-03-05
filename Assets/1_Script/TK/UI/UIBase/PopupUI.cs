@@ -16,7 +16,7 @@ namespace Swift_Blade.UI
         protected Coroutine _delayRoutine;
         public PopupType popupType;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _raycaster = GetComponent<GraphicRaycaster>();
         }

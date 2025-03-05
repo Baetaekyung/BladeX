@@ -1,7 +1,7 @@
 using Swift_Blade.Feeling;
 using UnityEngine;
 
-namespace Swift_Blade.Combat.Feedbck
+namespace Swift_Blade.Combat.Feedback
 {
     public class CameraShakeFeedback : Feedback
     {
