@@ -55,6 +55,5 @@ namespace Swift_Blade
             LegacyInput();
         }
 
-
     }
 }

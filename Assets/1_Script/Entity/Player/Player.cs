@@ -24,6 +24,9 @@ namespace Swift_Blade
     {
         public static Entity Instance { get; private set; }
 
+        [Header("Audio")]
+        [SerializeField] private AudioCollection audioCollection;
+
         [Header("EventChannels")]
         [SerializeField] private EquipmentChannelSO onHitChannel;
 
@@ -141,6 +144,7 @@ namespace Swift_Blade
             {
                 if (IsPlayerDead) return;
                 bool isHitStun = data.stun;
+                AudioManager.PlayWithInit(audioCollection.GetRandomAudio, true);
                 if (isHitStun)
                     playerStateMachine.ChangeState(PlayerStateEnum.HitStun);
             });
