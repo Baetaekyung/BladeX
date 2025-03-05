@@ -26,10 +26,10 @@ namespace Swift_Blade
             {
                 //Vector3 pos = transform.Find("Player").position;
                 int n = Random.Range(0, shootPosList.Count);
-                BaseThrow throwRock = Instantiate(rock5, shootPosList[n].position, Quaternion.identity);
+                GameObject throwRock = Instantiate(rock5.gameObject, shootPosList[n].position, Quaternion.identity);
 
                 //throwRock.SetPhysicsState(false);
-                throwRock.SetDirection(Vector3.up);
+                //throwRock.GetComponent<BaseThrow>().SetDirection(Vector3.up);
                 Debug.Log("นึ");
                 yield return new WaitForSeconds(1);
             }
