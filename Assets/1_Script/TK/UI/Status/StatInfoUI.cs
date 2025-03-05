@@ -10,20 +10,20 @@ namespace Swift_Blade
         [SerializeField] private StatSO stat;
 
         [Space(10)] 
-        [SerializeField] private Image statIcon;
         [SerializeField] private TextMeshProUGUI statInfoText;
         [SerializeField] private Button upgradeButton;
         
-        private readonly StringBuilder _sb = new StringBuilder(1);
+        private readonly StringBuilder _sb = new(1);
 
         private void OnEnable()
         {
             upgradeButton.onClick.AddListener(UpgradeStat);
+            SetStatInfoUI();
         }
 
         private void OnDisable()
         {
-            upgradeButton.onClick.RemoveListener(UpgradeStat);
+            upgradeButton.onClick.RemoveAllListeners();
         }
 
         private void UpgradeStat()
@@ -31,6 +31,7 @@ namespace Swift_Blade
             if (Player.level.StatPoint <= 0)
                 return;
 
+            //Player.level.StatPoint -= 1; set 할 수 없는..
             stat.BaseValue += stat.increaseAmount;
             
             SetStatInfoUI();
@@ -38,8 +39,7 @@ namespace Swift_Blade
         
         [ContextMenu("set")]
         public void SetStatInfoUI()
-        {
-            //statIcon.sprite = stat.statIcon;
+        { 
             _sb.Clear();
 
             _sb.Append(stat.displayName);
