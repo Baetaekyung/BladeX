@@ -1558,6 +1558,7 @@ MonoBehaviour:
   useDistanceAdjustment: 0
   moveSpeed: 10
   rotateSpeed: 0.5
+  isMoving: 0
 --- !u!4 &1764331160
 Transform:
   m_ObjectHideFlags: 0
@@ -2225,6 +2226,51 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!1 &2130561563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2130561565}
+  - component: {fileID: 2130561564}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2130561564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130561563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b48bb635a225eb439cd0bca7e030228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolPrefabMonoBehaviourSO: {fileID: 11400000, guid: 260cd820b21910e4489b792c519438bd, type: 2}
+--- !u!4 &2130561565
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130561563}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &14768072548492689
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13893,3 +13939,4 @@ SceneRoots:
   - {fileID: 689752642}
   - {fileID: 1523449256}
   - {fileID: 472514163}
+  - {fileID: 2130561565}
