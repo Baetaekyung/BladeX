@@ -1,3 +1,6 @@
+using System;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,10 +9,21 @@ namespace Swift_Blade
     public class ExpBar : MonoBehaviour
     {
         [SerializeField] private Image gauge;
+        [SerializeField] private TextMeshProUGUI infoText;
 
-        public void SetGauge(float percent)
+        private float _currentGauge;
+
+        private void OnEnable()
         {
-            gauge.fillAmount = percent % 100f;
+            _currentGauge = Player.level.Experience % 2f;
+            gauge.fillAmount = Player.level.Experience / 2f;
+        }
+
+        private void Update()
+        {
+            infoText.text = $"{Player.level.Experience} / 2";
+            _currentGauge = Mathf.Lerp(_currentGauge, Player.level.Experience / 2f, Time.deltaTime * 4f);
+            gauge.fillAmount = _currentGauge;
         }
     }
 }

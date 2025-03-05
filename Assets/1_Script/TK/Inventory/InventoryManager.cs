@@ -82,8 +82,14 @@ namespace Swift_Blade
         }
 
         //아이템을 클릭했을 때 커서에 표시되는 UI
-        public void UpdateCursorUI(ItemDataSO itemData) 
+        public void UpdateCursorUI(ItemDataSO itemData)
         {
+            if (itemData == null)
+            {
+                DisableCursor();
+                return;
+            }
+            
             void SetCursorUI()
             {
                 _createdItemUI.iconImage.sprite = itemData.itemImage;
@@ -104,6 +110,11 @@ namespace Swift_Blade
             
             SetCursorUI();
             _createdItemUI.transform.position = cursorTrm.position;
+        }
+
+        public void DisableCursor()
+        {
+            _createdItemUI.gameObject?.SetActive(false);
         }
 
         //Mouse Up을 했을 때 발생

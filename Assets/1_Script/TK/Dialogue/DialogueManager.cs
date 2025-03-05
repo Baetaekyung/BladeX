@@ -131,7 +131,11 @@ namespace Swift_Blade
 
         private void CancelDialogue()
         {
-            if (!Input.GetKeyDown(KeyCode.Escape)) return;
+            if (_isDialogueOpen == false)
+                return;
+            
+            if (!Input.GetKeyDown(KeyCode.Escape)) 
+                return;
                 
             _dialogueUI.ClearMessageBox();
             _sb.Clear();
@@ -143,6 +147,9 @@ namespace Swift_Blade
 
         private void SkipDialogueMessage()
         {
+            if (_isDialogueOpen == false)
+                return;
+            
             if(!Input.GetKeyDown(KeyCode.Return)) return;
             
             _isForcedMessageSkip = true; //강제 메세지 스킵

@@ -1,8 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+
+
 public static class DBG_UI_KEYS
 {
     #region Keys
@@ -42,10 +43,6 @@ public abstract class UI_DebugBase<T> : MonoSingleton<T> where T : UI_DebugBase<
         instance.list[index].text = instance.stringBuilder.ToString();
     }
     public static void DebugText(int index, string stringValue, string prefix = "", int key = 0) => SetDebug(index, stringValue, prefix, key);
-    public static void DebugText<VT>(int index, VT valueType, string prefix = "", int key = 0)
-    {
-        SetDebug(index, valueType.ToString(), prefix, key);
-    }
-
+    public static void DebugText<VT>(int index, VT valueType, string prefix = "", int key = 0) => SetDebug(index, valueType.ToString(), prefix, key);
 
 }

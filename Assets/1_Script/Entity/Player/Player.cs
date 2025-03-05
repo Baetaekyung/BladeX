@@ -23,6 +23,10 @@ namespace Swift_Blade
     public class Player : Entity
     {
         public static Entity Instance { get; private set; }
+        [Header("General")]
+        [SerializeField] private Transform playerTransform;
+        [SerializeField] private LayerMask lm_interactable;
+
 
         [Header("Audio")]
         [SerializeField] private AudioCollection audioCollection;
@@ -30,7 +34,7 @@ namespace Swift_Blade
         [Header("EventChannels")]
         [SerializeField] private EquipmentChannelSO onHitChannel;
 
-        [Header("Debug_Params")]
+        [Header("Anim_Param")]
         [SerializeField] private AnimationTriggers animEndTrigger;
         [SerializeField, Space(10)] private AnimationParameterSO anim_idle;
         [SerializeField] private AnimationParameterSO anim_move;
@@ -53,7 +57,7 @@ namespace Swift_Blade
 
             public int Experience { get; private set; }
             public int Level { get; private set; }
-            public int StatPoint { get; private set; }
+            public int StatPoint { get; set; }
             public LevelStat()
             {
                 BaseEnemyHealth.OnAnyEnemyDead += OnEnemyDead;
@@ -84,6 +88,7 @@ namespace Swift_Blade
         //public IReadOnlyList<Vector3> GetComboForceList => comboForceList;
         //public IReadOnlyList<float> GetPeriods => periods;
         public bool IsPlayerDead { get; private set; }
+        public bool IsInteractable { get; private set; }
         #region PlayerComponentGetter
         public PlayerCamera GetPlayerCamera => GetEntityComponent<PlayerCamera>();
         public PlayerMovement GetPlayerMovement => GetEntityComponent<PlayerMovement>();
@@ -101,11 +106,14 @@ namespace Swift_Blade
 
         public static LevelStat level = new LevelStat();
 
+        private RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
+
+        private IInteractable GetClosestInteractable => interactable.GetComponent<IInteractable>();
+        private GameObject interactable;
         private Tween playerInvincibleTween;
         protected override void Awake()
         {
             base.Awake();
-
             if (Instance == null)
                 Instance = this;
         }
@@ -132,7 +140,8 @@ namespace Swift_Blade
                 GetPlayerHealth.IsPlayerInvincible = true;
                 StatSO dashInvincibleTimeStat = GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DASH_INVINCIBLE_TIME);
                 float delay = dashInvincibleTimeStat.Value;
-                playerInvincibleTween = DOVirtual.DelayedCall(delay, () =>
+                playerInvincibleTween = DOVirtual.DelayedCall(delay,
+                    () =>
                 {
                     GetPlayerHealth.IsPlayerInvincible = false;
                 }, false);
@@ -153,7 +162,8 @@ namespace Swift_Blade
                 {
                     playerStateMachine.ChangeState(PlayerStateEnum.Dead);
                 });
-            playerStateMachine.OnChangeState += (type) =>
+            playerStateMachine.OnChangeState +=
+                (type) =>
             {
                 if (type == PlayerStateEnum.Roll || type == PlayerStateEnum.HitStun)
                 {
@@ -175,6 +185,16 @@ namespace Swift_Blade
             UI_DebugPlayer.DebugText(2, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DAMAGE).Value, "atkBase");
             UI_DebugPlayer.DebugText(3, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).Value, "dec");
 
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                IInteractable interactable = GetClosestInteractable;
+                if (interactable != null)
+                {
+                    interactable.Interact();
+                }
+            }
+
+
             Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))
                 UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
@@ -185,6 +205,35 @@ namespace Swift_Blade
             //    GetPlayerAnimator.GetAnimator.Play(anim_death.GetAnimationHash, -1);
             //}
         }
+        private void FixedUpdate()
+        {
+            const int radius = 2;
+
+            int hitCount = Physics.SphereCastNonAlloc(playerTransform.position, radius, Vector3.up, buffer_overlapSphereResult, 0.1f, lm_interactable);
+            UI_DebugPlayer.DebugText(5, hitCount, "length");
+            interactable = null;
+
+            if (hitCount > 0)
+            {
+                float tempHighest = Mathf.Infinity;
+                GameObject result = null;
+
+                for (int i = 0; i < hitCount; i++)
+                {
+                    RaycastHit item = buffer_overlapSphereResult[i];
+                    Vector3 distance = item.transform.position - playerTransform.position;
+                    Debug.DrawLine(item.transform.position, playerTransform.position, Color.blue);
+                    if (tempHighest > distance.sqrMagnitude)
+                    {
+                        tempHighest = distance.sqrMagnitude;
+                        result = item.transform.gameObject;
+                    }
+                }
+                interactable = result;
+                Debug.DrawRay(result.transform.position, Vector3.up, Color.red);
+            }
+        }
+
         public void Attack(EComboState previousState, EComboState nonImmediateState = EComboState.None)
         {
             playerAttackState.PreviousComboState = previousState;
@@ -195,9 +244,10 @@ namespace Swift_Blade
         {
             playerAttackState.ClearComboHistory();
         }
-
-
         public PlayerStateEnum GetCurrentState() => playerStateMachine.GetState();
-
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(playerTransform.position, 2);
+        }
     }
 }

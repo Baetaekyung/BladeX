@@ -21,6 +21,16 @@ namespace Swift_Blade.UI
             _raycaster = GetComponent<GraphicRaycaster>();
         }
 
+        private void OnDestroy()
+        {
+            cG.DOKill();
+        }
+
+        private void OnDisable()
+        {
+            cG.DOKill();
+        }
+
         public virtual void Popup()
         {
             cG.DOFade(1, _fadeTime)

@@ -21,7 +21,8 @@ namespace Swift_Blade.Level
         [Header("Next Level info")]
         public Image header;
         public TextMeshProUGUI clearText;
-        public Button nextLevelButton;
+
+        [SerializeField] private GameObject[] elements;
         
         public float headerMaxSize = 200;
         [Range(0.1f, 2)] public float headerFadeInDuration;
@@ -37,6 +38,13 @@ namespace Swift_Blade.Level
             levelEvent.SceneMoveEvent += StartFade;
             levelEvent.LevelClearEvent += SetActiveClearPanel;
             levelEvent.SceneChangeEvent += NextOtherScene;
+
+            foreach (var element in elements)
+            {
+                element.transform.localScale = Vector3.zero;
+            }
+            
+            ResetClearPanel();
         }
 
         private void OnDestroy()
@@ -75,37 +83,28 @@ namespace Swift_Blade.Level
             fadeImage.DOFade(0, fadeOutTime).OnComplete(() =>
             {
                 isFading = false;
+                foreach (var elem in elements)
+                {
+                    elem.transform.DOKill();
+                    elem.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBounce);
+                }
             });
         }
                 
         private void SetActiveClearPanel()
         {
             header.gameObject.SetActive(true);
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(header.DOFade(1, headerFadeInDuration));
-            sequence.Append(header.rectTransform.DOSizeDelta(new Vector2(1920 , headerMaxSize) , headerSizeUpDuration).SetEase(Ease.OutBack));
-            sequence.SetDelay(0.2f);
-            sequence.Append(clearText.DOFade(1,clearTextFadeInDuration));
-            sequence.SetDelay(1.1f);
-            sequence.AppendCallback(()=>nextLevelButton.gameObject.SetActive(true));
-            sequence.Append(nextLevelButton.transform.DOScaleY(1 , 0.4f));
-            
+
+            header.DOKill();
+            header.transform.DOScaleY(1, headerSizeUpDuration);
         }
         private void ResetClearPanel()
         {
-            header.gameObject.SetActive(false);
-            var headerColor = header.color;
-            headerColor.a = 0;
-            header.color = headerColor;
-            
-            header.rectTransform.sizeDelta = new Vector2(1920, 4);
-
-            var color = clearText.color;
-            color.a = 0;
-            clearText.color = color;
-    
-            nextLevelButton.gameObject.SetActive(false);
-            nextLevelButton.transform.localScale = new Vector3(1, 0, 1);
+            header.DOKill();
+            header.transform.DOScaleY(0, headerSizeUpDuration).OnComplete(() =>
+            {
+                header.gameObject.SetActive(false);
+            });
         }
 
         public void NextScene()

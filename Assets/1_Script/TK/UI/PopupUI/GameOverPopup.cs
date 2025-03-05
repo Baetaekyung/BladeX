@@ -36,6 +36,8 @@ namespace Swift_Blade
 
         public void Resume()
         {
+            cG.DOKill();
+            
             string curScene = SceneManager.GetActiveScene().name;
             levelClearEvent.SceneChangeEvent.Invoke(curScene);
         }

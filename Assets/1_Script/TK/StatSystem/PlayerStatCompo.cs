@@ -10,12 +10,7 @@ namespace Swift_Blade
         [SerializeField] private StyleMeter styleMeter;
         //todo why ref here? 어디서 쓰고 있어서 일단 놔둠;;
         public StyleMeter GetStyleMeter => styleMeter;
-
-        [ContextMenu("Init")]
-        public void TestInit()
-        {
-            Initialize();   
-        }
+        
         private void Awake()
         {
             styleMeter.PlayerStat = this;
