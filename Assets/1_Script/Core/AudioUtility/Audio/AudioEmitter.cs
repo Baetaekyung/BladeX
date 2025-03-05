@@ -20,6 +20,7 @@ namespace Swift_Blade.Audio
         private AudioSO currentAudioSO;
         private bool isKilled;
         [SerializeField] private AudioSO defaultAudioSO;
+        [SerializeField] private bool prePlaced;
 
         private void Awake()
         {
@@ -168,8 +169,11 @@ namespace Swift_Blade.Audio
             //global
             audioSource.clip = audioSO.clip;
             audioSource.outputAudioMixerGroup = audioSO.audioMixerGroup;
+
             //audioSource3D.loop
             //playoneshot
+            if (prePlaced) return;
+
             audioSource.priority = audioSO.priority;
             audioSource.volume = audioSO.volume;
             audioSource.pitch = audioSO.pitch;
