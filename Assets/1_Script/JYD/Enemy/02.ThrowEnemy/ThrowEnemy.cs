@@ -14,24 +14,6 @@ namespace Swift_Blade.Enemy.Throw
             _throwEnemyAnimationController.target = target;
         }
 
-        protected override void Update()
-        {
-            if(baseHealth.isDead)return;
-            
-            if (baseAnimationController.isManualRotate)
-            {
-                FactToTarget(target.position);
-            }
-
-            if (baseAnimationController.isManualMove && !DetectForwardObstacle())
-            {
-                attackDestination = transform.position + transform.forward;
-
-                transform.position = Vector3.MoveTowards(transform.position, attackDestination, 
-                    baseAnimationController.AttackMoveSpeed * Time.deltaTime);
-            }
-        }
-        
         public override void DeadEvent()
         {
             base.DeadEvent();

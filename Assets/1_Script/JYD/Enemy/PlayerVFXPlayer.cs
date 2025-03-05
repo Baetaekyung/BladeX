@@ -33,6 +33,9 @@ namespace Swift_Blade
         {
             ParryParticle parryParticle = MonoGenericPool<ParryParticle>.Pop();
             parryParticle.transform.position = parryParticleTrm.position;
+            
+            HitSlash hitSlash = MonoGenericPool<HitSlash>.Pop();
+            hitSlash.transform.position = parryParticleTrm.position;
         }
                 
     }

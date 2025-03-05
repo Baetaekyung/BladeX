@@ -15,25 +15,8 @@ namespace Swift_Blade.Enemy.Goblin
 
         protected override void Update()
         {
-            if (baseHealth.isDead)
-                return;
-
-            if (baseAnimationController.isManualRotate) 
-                FactToTarget(target.position);
-
-            if (baseAnimationController.isManualMove && !DetectForwardObstacle())
-            {
-                var distance = Vector3.Distance(transform.position, target.position);
-
-                if (distance > stopDistance)
-                {
-                    attackDestination = transform.position + transform.forward;
-
-                    transform.position = Vector3.MoveTowards(transform.position, attackDestination,
-                        baseAnimationController.AttackMoveSpeed * Time.deltaTime);
-                }
-            }
-
+            base.Update();
+            
             if (goblinAnimator.isManualKnockback && !DetectBackwardObstacle())
             {
                 attackDestination = transform.position + -transform.forward;
