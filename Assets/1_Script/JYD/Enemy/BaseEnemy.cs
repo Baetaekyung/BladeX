@@ -100,7 +100,7 @@ namespace Swift_Blade.Enemy
         {
             var targetRot = Quaternion.LookRotation(target - transform.position);
             var currentEulerAngle = transform.rotation.eulerAngles;
-
+            
             var yRotation = Mathf.LerpAngle(currentEulerAngle.y, targetRot.eulerAngles.y, rotateSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(currentEulerAngle.x, yRotation, currentEulerAngle.z);
         }
