@@ -34,7 +34,7 @@ namespace Swift_Blade
         }
         private void FixedUpdate()
         {
-            UpdateCameraDistance();
+            //UpdateCameraDistance();
         }
         private void UpdateCameraDistance()
         {

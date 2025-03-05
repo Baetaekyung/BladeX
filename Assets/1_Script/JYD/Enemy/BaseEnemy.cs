@@ -71,19 +71,14 @@ namespace Swift_Blade.Enemy
         
         protected virtual void Update()
         {
-            if (baseHealth.isDead) 
+            if (baseHealth.isDead)
                 return;
             
-            if (baseAnimationController.isManualRotate)
-            {
+            if (baseAnimationController.isManualRotate) 
                 FactToTarget(target.position);
-            }
-                        
+
             if (baseAnimationController.isManualMove && !DetectForwardObstacle())
             {
-                var directionToTarget = (target.position - transform.position).normalized;
-                attackDestination = target.position - directionToTarget * 1f;
-                
                 var distance = Vector3.Distance(transform.position, target.position);
 
                 if (distance > stopDistance)
@@ -100,7 +95,7 @@ namespace Swift_Blade.Enemy
         {
             var targetRot = Quaternion.LookRotation(target - transform.position);
             var currentEulerAngle = transform.rotation.eulerAngles;
-
+            
             var yRotation = Mathf.LerpAngle(currentEulerAngle.y, targetRot.eulerAngles.y, rotateSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(currentEulerAngle.x, yRotation, currentEulerAngle.z);
         }

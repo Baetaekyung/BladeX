@@ -1,11 +1,11 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Swift_Blade
 {
     public class GroundTrap : MonoBehaviour
     {
-
         [Header("General")]
         [SerializeField] private Transform trapSpears;
         [SerializeField, Range(0.6f, 2)] private float delay = 1;// note this must be longer than tween duration
@@ -14,6 +14,8 @@ namespace Swift_Blade
         [Header("Active/Inactive")]
         [SerializeField] private AnimationCurve easeCurbeActive;
         [SerializeField] private AnimationCurve easeCurveInactive;
+
+        [SerializeField] private UnityEvent UE_OnActive;
 
         [SerializeField] private Color32 colorActive;
         private Color32 colorInactive;
@@ -42,6 +44,7 @@ namespace Swift_Blade
                 float targetY = GetYValue();
                 trapSpears.DOLocalMoveY(targetY, duration).SetEase(curve);
                 meshRenderer.material.DOColor(color, duration).SetEase(curve);
+                UE_OnActive?.Invoke();
             }
         }
         private float GetYValue()

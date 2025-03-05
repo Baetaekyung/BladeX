@@ -1,3 +1,4 @@
+using Swift_Blade.Audio;
 using System;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace Swift_Blade
     {
         [SerializeField] private BreakableObject breakableObject;
         [SerializeField] private GameObject brokenModel;
+        [SerializeField] private AudioEmitter audioEmitter;
         private void Awake()
         {
             breakableObject.OnDeadStart += OnDeadStart;
@@ -16,6 +18,7 @@ namespace Swift_Blade
         {
             brokenModel.SetActive(true);
             breakableObject.gameObject.SetActive(false);
+            audioEmitter?.Play();
         }
         private void OnGameObjectDestroy(BreakableObject breakableObject)
         {

@@ -23,9 +23,9 @@ namespace Swift_Blade
 
             if (health <= 0)
             {
-                OnDeadStart?.Invoke(this);
                 deadFlag = true;
                 DeadDead();
+                OnDeadStart?.Invoke(this);
             }
         }
         protected void DeadDead()

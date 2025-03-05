@@ -11,7 +11,8 @@ namespace Swift_Blade.Combat.Caster
 
         [Space(20)] public bool CanCurrentAttackParry = true;
         [Space(10)] public UnityEvent parryEvents;
-
+        public UnityEvent unParriableAttack;
+        
         public override bool CastDamage()
         {
             OnCastEvent?.Invoke();
@@ -65,6 +66,7 @@ namespace Swift_Blade.Combat.Caster
 
         public void DisableParryForCurrentAttack()
         {
+            unParriableAttack?.Invoke();
             CanCurrentAttackParry = false;
         }
         

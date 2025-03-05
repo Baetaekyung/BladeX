@@ -1,6 +1,7 @@
 using DG.Tweening;
 using Swift_Blade.Combat.Caster;
 using Swift_Blade.Enemy.Throw;
+using Swift_Blade.Feeling;
 using Swift_Blade.Pool;
 using UnityEngine.Animations.Rigging;
 using UnityEngine;
@@ -9,8 +10,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
 {
     public class GolemAnimatorController : ThrowAnimatorController
     {
-        [SerializeField] private Collider bodyCollider;
-
+        [SerializeField] private CameraShakeType cameraShakeType;
         [SerializeField] private Rig rig;
         
         [SerializeField] private PoolPrefabMonoBehaviourSO groundCrackSO;
@@ -71,6 +71,11 @@ namespace Swift_Blade.Enemy.Boss.Golem
                 g.transform.position = forwardGroundCrackTrm.position;
             }
             
+        }
+
+        private void ShakeCam()
+        {
+            CameraShakeManager.Instance.DoShake(cameraShakeType);
         }
     }
 }

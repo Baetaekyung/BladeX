@@ -18,8 +18,6 @@ namespace Swift_Blade.Pool
     public abstract class ObjectPoolBase<T>
         where T : class
     {
-        public event Action ClearEvent;
-
         public IReadOnlyList<T> GetList => poolList;
         protected readonly List<T> poolList;
         private readonly int maxCapacity;
@@ -66,7 +64,6 @@ namespace Swift_Blade.Pool
         
         public virtual void Clear()
         {
-            ClearEvent?.Invoke();
             poolList.Clear();
         }
     }

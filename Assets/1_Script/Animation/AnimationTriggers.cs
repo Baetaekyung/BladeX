@@ -1,3 +1,4 @@
+using Swift_Blade.Audio;
 using System;
 using UnityEngine;
 using UnityEngine.Scripting;
@@ -18,6 +19,8 @@ namespace Swift_Blade
 
         public event Action OnRotateAllowSetEvent;
         public event Action OnRotateDisallowSetEvent;
+
+        public event Action<AudioSO> OnAudioPlayEvent;
 
         [Preserve]
         private void OnAnimationEndTrigger()
@@ -66,6 +69,12 @@ namespace Swift_Blade
         {
             OnRotateDisallowSetEvent?.Invoke();
         }
+        [Preserve]
+        private void OnAudioPlay(AudioSO audio)
+        {
+            OnAudioPlayEvent?.Invoke(audio);
+        }
+
         //[Preserve]
         //private void OnMovementSet(float set)
         //{

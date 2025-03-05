@@ -15,7 +15,7 @@ namespace Swift_Blade.Audio
     //    public bool isLoop;
     //}   
 
-    [CreateAssetMenu(fileName = "AudioSO", menuName = "Scriptable Objects/AudioSO")]
+    [CreateAssetMenu(fileName = "AudioSO", menuName = "Scriptable Objects/Audio/AudioSO")]
     public class AudioSO : ScriptableObject
     {
 
@@ -45,7 +45,9 @@ namespace Swift_Blade.Audio
         [HideInInspector]   public AnimationCurve curve = AnimationCurve.Linear(0, 1, 1, 0);
 
         public float GetSpatialBlend => is3D ? 1 : 0;
-        
+
+
+
         //[SerializeField] AudioStruct audioStruct;
         //public AudioStruct GetAudioStruct => audioStruct;
     }
