@@ -55,6 +55,8 @@ namespace Swift_Blade
         
         public virtual void OnPointerEnter(PointerEventData eventData)
         {
+            inventoryManager.UpdateCursorUI(_itemDataSO); //커서에 UI 생성
+            
             if (!inventoryManager.IsDragging) return; //드래그 중이 아닐때는 return
             if (_itemDataSO != null) //이 슬롯에 아이템이 존재할 경우는 Change 불가 (나중에 가능하게 만들기)
             {
@@ -69,6 +71,8 @@ namespace Swift_Blade
 
         public virtual void OnPointerExit(PointerEventData eventData)
         {
+            inventoryManager.DisableCursor();
+            
             if(!inventoryManager.IsDragging) return;
             if (inventoryManager.SelectedItem != _itemDataSO) return;
             if (inventoryManager.isSlotChanged == false) return;
@@ -79,6 +83,8 @@ namespace Swift_Blade
 
         public virtual void OnPointerUp(PointerEventData eventData)
         {
+            inventoryManager.DisableCursor();
+            
             if (inventoryManager.SelectedItem == null && IsEmptySlot())
                 return;
             

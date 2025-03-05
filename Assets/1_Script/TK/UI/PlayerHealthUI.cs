@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace Swift_Blade.UI
 {
@@ -19,14 +18,13 @@ namespace Swift_Blade.UI
         private void Start()
         {
             _healthIcons = new List<GameObject>();
-            
-            _playerHealth = FindFirstObjectByType<PlayerHealth>();
 
+            _playerHealth = FindFirstObjectByType<PlayerHealth>();
+            
             if (_playerHealth != null)
             {
-                SetHealthUI(_playerHealth.GetMaxHealth, _playerHealth.GetCurrentHealth);
-                
                 _playerHealth.OnHitEvent.AddListener(HandleSetHealthUI);
+                SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetHealthStat.Value);
             }
         }
 
@@ -46,13 +44,7 @@ namespace Swift_Blade.UI
                 return;
             }
             
-            SetHealthUI(_playerHealth.GetCurrentHealth, _playerHealth.GetCurrentHealth);
-        }
-
-        [ContextMenu("Test Setting Health")]
-        public void SetHealthUITest()
-        {
-            SetHealthUI(5, 5);
+            SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth);
         }
         
         public void SetHealthUI(float maxHealth, float currentHealth)
@@ -63,9 +55,13 @@ namespace Swift_Blade.UI
                 _healthIcons.Clear();
             }
             
-            float emptyHealth = maxHealth - currentHealth;
-
-            for (int i = 0; i < Mathf.RoundToInt(maxHealth - emptyHealth); i++)
+            int intMaxHealth = Mathf.RoundToInt(maxHealth);
+            int emptyHealth = intMaxHealth - Mathf.RoundToInt(currentHealth);
+            int fullHealth = intMaxHealth - emptyHealth;
+            
+            Debug.Log(fullHealth);
+            
+            for (int i = 0; i < fullHealth; i++)
             {
                 GameObject icon = Instantiate(fullHealthPrefab, healthUI);
                 _healthIcons.Add(icon);
@@ -74,6 +70,7 @@ namespace Swift_Blade.UI
             for (int j = 0; j < emptyHealth; j++)
             {
                 GameObject icon = Instantiate(burnHealthPrefab, healthUI);
+                icon.transform.DOShakeRotation(0.4f, Vector3.forward * 25f);
                 _healthIcons.Add(icon);
             }
         }

@@ -22,6 +22,8 @@ namespace Swift_Blade.Level
         public Image header;
         public TextMeshProUGUI clearText;
         public Button nextLevelButton;
+
+        [SerializeField] private GameObject[] elements;
         
         public float headerMaxSize = 200;
         [Range(0.1f, 2)] public float headerFadeInDuration;
@@ -37,6 +39,11 @@ namespace Swift_Blade.Level
             levelEvent.SceneMoveEvent += StartFade;
             levelEvent.LevelClearEvent += SetActiveClearPanel;
             levelEvent.SceneChangeEvent += NextOtherScene;
+
+            foreach (var element in elements)
+            {
+                element.transform.localScale = Vector3.zero;
+            }
             
             ResetClearPanel();
         }
@@ -77,6 +84,10 @@ namespace Swift_Blade.Level
             fadeImage.DOFade(0, fadeOutTime).OnComplete(() =>
             {
                 isFading = false;
+                foreach (var elem in elements)
+                {
+                    elem.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBounce);
+                }
             });
         }
                 

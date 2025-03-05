@@ -11,6 +11,7 @@ namespace Swift_Blade
         private void OnEnable()
         {
             Player.LevelStat.OnLevelUp += HandleInfoChange;
+            //TODO: StatInfoUI.OnStatChanged += HandleInfoChange;
         }
 
         private void OnDisable()
@@ -18,11 +19,21 @@ namespace Swift_Blade
             Player.LevelStat.OnLevelUp -= HandleInfoChange;
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                //TODO: test code delete
+                Player.level.StatPoint++;
+                HandleInfoChange(Player.level);
+            }
+        }
+
         private void HandleInfoChange(Player.LevelStat levelStat)
         {
             foreach (var statText in statPointText)
             {
-                statText.text = $"Remain Stat Point: {levelStat.StatPoint}";
+                statText.text = $"Stat point: {levelStat.StatPoint}";
             }
         }
     }

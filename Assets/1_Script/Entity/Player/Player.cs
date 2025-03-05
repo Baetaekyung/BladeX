@@ -53,7 +53,7 @@ namespace Swift_Blade
 
             public int Experience { get; private set; }
             public int Level { get; private set; }
-            public int StatPoint { get; private set; }
+            public int StatPoint { get; set; }
             public LevelStat()
             {
                 BaseEnemyHealth.OnAnyEnemyDead += OnEnemyDead;

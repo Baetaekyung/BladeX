@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -65,6 +66,8 @@ namespace Swift_Blade
                 return;
             }
             
+            BuyAnimation();
+            
             _itemCount--;
             remainCount.text = $"remain: {_itemCount.ToString()}";
             
@@ -73,6 +76,14 @@ namespace Swift_Blade
             
             if(_itemCount <= 0)
                 soldOutPanel.SetActive(true);
+        }
+
+        private void BuyAnimation()
+        {
+            buyButton.transform.DOKill();
+
+            buyButton.transform.DOShakeScale(0.3f, new Vector3(0.3f, 0.3f, 0));
+            buyButton.transform.DOShakeRotation(0.3f, new Vector3(0, 0, 2.5f));
         }
     }
 }

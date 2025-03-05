@@ -10,6 +10,7 @@ namespace Swift_Blade.UI
         Inventory,
         Shop,
         GameOver,
-        Status
+        Status,
+        None
     }
 }
