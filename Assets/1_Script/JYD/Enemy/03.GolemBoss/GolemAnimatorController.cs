@@ -11,9 +11,6 @@ namespace Swift_Blade.Enemy.Boss.Golem
     public class GolemAnimatorController : ThrowAnimatorController
     {
         [SerializeField] private CameraShakeType cameraShakeType;
-        
-        [SerializeField] private Collider bodyCollider;
-        
         [SerializeField] private Rig rig;
         
         [SerializeField] private PoolPrefabMonoBehaviourSO groundCrackSO;
