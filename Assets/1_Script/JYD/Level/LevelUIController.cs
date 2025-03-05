@@ -21,7 +21,6 @@ namespace Swift_Blade.Level
         [Header("Next Level info")]
         public Image header;
         public TextMeshProUGUI clearText;
-        public Button nextLevelButton;
 
         [SerializeField] private GameObject[] elements;
         
@@ -86,6 +85,7 @@ namespace Swift_Blade.Level
                 isFading = false;
                 foreach (var elem in elements)
                 {
+                    elem.transform.DOKill();
                     elem.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBounce);
                 }
             });
@@ -95,10 +95,12 @@ namespace Swift_Blade.Level
         {
             header.gameObject.SetActive(true);
 
+            header.DOKill();
             header.transform.DOScaleY(1, headerSizeUpDuration);
         }
         private void ResetClearPanel()
         {
+            header.DOKill();
             header.transform.DOScaleY(0, headerSizeUpDuration).OnComplete(() =>
             {
                 header.gameObject.SetActive(false);

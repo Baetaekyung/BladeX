@@ -10,7 +10,14 @@ namespace Swift_Blade
         
         protected virtual void Initialize()
         {
-            //after save system, load saved stats
+            StatSO[] _tempStats = new StatSO[_stats.Length];
+
+            for (int i = 0; i < _stats.Length; i++)
+            {
+                _tempStats[i] = _stats[i].Clone();
+            }
+
+            _stats = _tempStats;
         }
 
         public StatSO GetStat(StatSO stat)
@@ -52,7 +59,7 @@ namespace Swift_Blade
 
         public void ClearAllModifiers()
         {
-            foreach (var stat in _stats)
+            foreach (StatSO stat in _stats)
             {
                 stat.ClearModifier();
             }
