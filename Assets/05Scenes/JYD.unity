@@ -193,6 +193,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stage10_BossStage
       objectReference: {fileID: 0}
+    - target: {fileID: 6499279651817818121, guid: 583c3799e037be149b23058c57938bc4, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: ad87ae9a943b8eb4184bb50b941a1e24, type: 2}
     - target: {fileID: 8055874119605956553, guid: 583c3799e037be149b23058c57938bc4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10
@@ -1329,35 +1333,35 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 296104839605046796, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.6501083
+      value: 6.663881
       objectReference: {fileID: 0}
     - target: {fileID: 296104839605046796, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.158562
+      value: 11.936432
       objectReference: {fileID: 0}
     - target: {fileID: 296104839605046796, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.6501057
+      value: -6.6638794
       objectReference: {fileID: 0}
     - target: {fileID: 296104839605046796, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.75401294
+      value: 0.86926055
       objectReference: {fileID: 0}
     - target: {fileID: 296104839605046796, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.53387076
+      value: 0.312953
       objectReference: {fileID: 0}
     - target: {fileID: 296104839605046796, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.31232238
+      value: -0.3600595
       objectReference: {fileID: 0}
     - target: {fileID: 296104839605046796, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.2211365
+      value: 0.12962937
       objectReference: {fileID: 0}
     - target: {fileID: 296104839605046796, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 70.6
+      value: 39.6
       objectReference: {fileID: 0}
     - target: {fileID: 814462047537304845, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: _statOverrides.Array.data[0]._isUseOverride
@@ -1370,6 +1374,26 @@ PrefabInstance:
     - target: {fileID: 814462047537304845, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: _statOverrides.Array.data[4]._overrideValue
       value: 1.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 2146183822903394731, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.86926055
+      objectReference: {fileID: 0}
+    - target: {fileID: 2146183822903394731, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.312953
+      objectReference: {fileID: 0}
+    - target: {fileID: 2146183822903394731, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.3600595
+      objectReference: {fileID: 0}
+    - target: {fileID: 2146183822903394731, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.12962937
+      objectReference: {fileID: 0}
+    - target: {fileID: 2146183822903394731, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 39.6
       objectReference: {fileID: 0}
     - target: {fileID: 2768221587414307873, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_Cameras.Array.size
@@ -1512,7 +1536,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelEvent: {fileID: 11400000, guid: a2d8f67d9c116a8499c86ab4cb0ed966, type: 2}
   spawnEnemies:
-  - spawnInfos: []
+  - spawnInfos:
+    - enemy: {fileID: 3789115119428442451, guid: 6425d3cf65ae67d43a3909f708be1037, type: 3}
+      spawnPosition: {fileID: 1743052241}
   waveCount: 0
 --- !u!1 &1879097197
 GameObject:
@@ -1722,6 +1748,10 @@ PrefabInstance:
     - target: {fileID: 5782296022825403814, guid: 039ef463e7718f84389c3d1ae749ff85, type: 3}
       propertyPath: m_Name
       value: SwrodBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 5782296022825403814, guid: 039ef463e7718f84389c3d1ae749ff85, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6679206513978228259, guid: 039ef463e7718f84389c3d1ae749ff85, type: 3}
       propertyPath: m_LocalPosition.x

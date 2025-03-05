@@ -31704,6 +31704,7 @@ MonoBehaviour:
   - rid: 2781718363940586415
   - rid: 2781718363940586416
   - rid: 2781718363940586417
+  - rid: 6383922955203117145
   references:
     version: 2
     RefIds:
@@ -31754,7 +31755,7 @@ MonoBehaviour:
           m_Value0: 9477954891741127956
           m_Value1: 18151398301787368271
         Name: BossDamageCaster
-        m_Value: {fileID: 1439601775916354955}
+        m_Value: {fileID: 7874380501532071119}
     - rid: 2781718363940586415
       type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -31779,6 +31780,14 @@ MonoBehaviour:
           m_Value1: 6349385616022663559
         Name: MoveSpeed
         m_Value: 6.5
+    - rid: 6383922955203117145
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 8209533304993222908
+          m_Value1: 11078574770511027248
+        Name: CheckForward
+        m_Value: {fileID: 740264442749277415}
 --- !u!114 &1376496929723881180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31857,8 +31866,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  moveSpeed: 4.2
-  rotateSpeed: 15
+  moveSpeed: 4
+  rotateSpeed: 9.89
   stopDistance: 1.7
   checkForward: {fileID: 740264442749277415}
   whatIsWall:
@@ -31993,7 +32002,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8327603021878107764}
-  - component: {fileID: 1439601775916354955}
+  - component: {fileID: 7874380501532071119}
   m_Layer: 0
   m_Name: DamageCaster
   m_TagString: Untagged
@@ -32016,7 +32025,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9142303646647914277}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1439601775916354955
+--- !u!114 &7874380501532071119
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -32025,7 +32034,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3949941398276699087}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3edc02f1693843e78cb87a933589c9f6, type: 3}
+  m_Script: {fileID: 11500000, guid: cc3295a6b5106394ab630d5e94c3588b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetLayer:
@@ -32045,7 +32054,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1376496929723881180}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BossBaseHealth, Assembly-CSharp
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp
         m_MethodName: ChangeParryState
         m_Mode: 1
         m_Arguments:

@@ -24,12 +24,16 @@ public class MoveToTargetAction : Action
 
     protected override Status OnStart()
     {
+        if (Target.Value == null) 
+            return Status.Failure;
+        
         Agent.Value.speed = MoveSpeed.Value;
 
         distance = Vector3.Distance(Target.Value.transform.position, Agent.Value.transform.position);
 
-        if (distance <= attackDistance.Value || distance <= meleeAttackDistance.Value) return Status.Success;
-
+        if (distance <= attackDistance.Value || distance <= meleeAttackDistance.Value) 
+            return Status.Success;
+        
         return Status.Running;
     }
 
@@ -42,8 +46,10 @@ public class MoveToTargetAction : Action
 
         distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
         distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
-        if (distance <= attackDistance.Value || distance <= meleeAttackDistance.Value) return Status.Success;
-
+        
+        if (distance <= attackDistance.Value || distance <= meleeAttackDistance.Value) 
+            return Status.Success;
+        
         return Status.Running;
     }
 }
