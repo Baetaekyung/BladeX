@@ -9,7 +9,7 @@ namespace Swift_Blade.Combat.Feedback
         [Header("Flash info")] 
         [SerializeField] private Transform root;
         
-        [Range(0f,1f)][SerializeField] private float flashDuration;
+        [Range(0f,5f)][SerializeField] private float flashDuration;
         [Range(1,10)][SerializeField] private int flashCount;
         
         [SerializeField] private Material _flashMat;
