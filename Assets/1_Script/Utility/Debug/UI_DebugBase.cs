@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.Search.SearchValue;
-using UnityEngine.InputSystem;
 
 public static class DBG_UI_KEYS
 {

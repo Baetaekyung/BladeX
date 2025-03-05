@@ -121,6 +121,9 @@ namespace Swift_Blade
         {
             base.Start();
             Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator.GetAnimator;
+
+            playerStateMachine.StateDictionary = new();
+            
             playerStateMachine.AddState(PlayerStateEnum.Move, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
             playerAttackState = new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null);
             playerStateMachine.AddState(PlayerStateEnum.Attack, playerAttackState);
