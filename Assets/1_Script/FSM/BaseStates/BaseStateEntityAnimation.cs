@@ -1,3 +1,4 @@
+using Swift_Blade.Audio;
 using System;
 using UnityEngine;
 
@@ -30,6 +31,7 @@ namespace Swift_Blade.FSM.States
 
         protected virtual void OnForceEventTrigger(float force)             => Debug.Log("OnFroce");
         protected virtual void OnSpeedMultiplierDefaultTrigger(float set)   => Debug.Log("OnSpeedmultiplier");
+        protected virtual void OnAudioPlayTrigger(AudioSO audioSO)          => Debug.Log("OnAudio");
         //protected virtual void OnMovementSetTrigger(Vector3 value) => Debug.Log("Onmovementset");
         public override void Enter()
         {
@@ -46,6 +48,8 @@ namespace Swift_Blade.FSM.States
 
             animationTriggers.OnForceEvent += OnForceEventTrigger;
             animationTriggers.OnSpeedMultiplierDefaultEvent += OnSpeedMultiplierDefaultTrigger;
+            animationTriggers.OnAudioPlayEvent += OnAudioPlayTrigger;
+
             //animationTriggers.OnMovementSetEvent += OnMovementSetTrigger;
             if (baseAnimParam != null)
                 PlayAnimationOnEnter();
@@ -65,6 +69,8 @@ namespace Swift_Blade.FSM.States
 
             animationTriggers.OnForceEvent -= OnForceEventTrigger;
             animationTriggers.OnSpeedMultiplierDefaultEvent -= OnSpeedMultiplierDefaultTrigger;
+            animationTriggers.OnAudioPlayEvent -= OnAudioPlayTrigger;
+
             //animationTriggers.OnMovementSetEvent -= OnMovementSetTrigger;
             base.Exit();
             //re init

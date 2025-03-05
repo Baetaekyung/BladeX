@@ -15,12 +15,10 @@ namespace Swift_Blade.FSM.States
         
         private PlayerParryController parryController;
         
-        
         public PlayerParryState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
             playerRenderer = player.GetPlayerRenderer;
             parryController = player.GetPlayerParryController;
-            
         }
 
         public override void Enter()
@@ -58,14 +56,10 @@ namespace Swift_Blade.FSM.States
 
         public override void Exit()
         {
-           
             parryController.SetParry(false);
             playerMovement.AllowInputMove = true;
                         
             base.Exit();
         }
-        
-                
-        
     }
 }

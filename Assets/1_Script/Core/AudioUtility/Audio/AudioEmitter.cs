@@ -14,20 +14,19 @@ namespace Swift_Blade.Audio
     public class AudioEmitter : MonoBehaviour, IPoolable
     {
         public event Action OnEndCallback;
-        //todo : clear this dictionary when scene changes
-        //todo : dont count if soundSO is set to uncount
-        private static readonly Dictionary<int, int> audioDictionary = new(16);
+        private static readonly Dictionary<int, int> audioDictionary = new Dictionary<int, int>(20);
 
         private AudioSource audioSource;
         private AudioSO currentAudioSO;
         private bool isKilled;
+        [SerializeField] private AudioSO defaultAudioSO;
+
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
-        }
-        public void OnPopInitialize()
-        {
-
+            audioSource.playOnAwake = false;
+            if(defaultAudioSO != null)
+                Initialize(defaultAudioSO);
         }
         void IPoolable.OnCreate()
         {
@@ -59,10 +58,9 @@ namespace Swift_Blade.Audio
         {
             if (!audioSO.enableMaxCount) return;
 
-            AudioClip currentClip = audioSO.clip;
-            int hash = currentClip.GetHashCode();
+            int hash = audioSO.clip.GetHashCode();
             int result = --audioDictionary[hash];
-            Debug.Assert(result >= 0, "there is no way this can happen. otherwise yell at me");
+            Debug.Assert(result >= 0, "yell at me ojy");
         }
         public void Play(bool destroyOnEnd = false)
         {
@@ -95,17 +93,27 @@ namespace Swift_Blade.Audio
                     KillAudio();
             }
         }
-        public void PlayWithInit(AudioSO audioSO, bool destroyOnEnd = false)
+        public void PlayWithInit(AudioSO audioSO, bool killOnEnd = false)
         {
             if(audioSource.isPlaying)
                 StopAudio();
             Initialize(audioSO);
-            Play(destroyOnEnd);
+            Play(killOnEnd);
         }
-        //public void PlayOneShot()
-        //{
-        //    PlayOneShot(currentAudioSO);
-        //}
+        /// <summary>
+        /// plays without checking
+        /// </summary>
+        public void PlayOneShot()
+        {
+            //bool flag = IsAudioPlayable(currentAudioSO, true);
+            //if (!flag)
+            //{
+            //    Debug.LogWarning($"AudioInstance Reached Max {currentAudioSO.name}");
+            //    return;
+            //}
+            audioSource.PlayOneShot(currentAudioSO.clip, currentAudioSO.volume);
+            //PlayOneShot(currentAudioSO);
+        }
         //public void PlayOneShot(AudioSO audioSO)
         //{
         //    bool flag = IsCurrentAudioPlayable(currentAudioSO, true);
@@ -119,12 +127,11 @@ namespace Swift_Blade.Audio
         //        audioSource.PlayOneShot(audioSO.clip);
         //    }
         //}
-        //public void PlayOneShotWithInit(AudioSO audioSO)
-        //{
-        //    Initialize(audioSO);
-        //    PlayOneShot(audioSO);
-        //}
-
+        public void PlayOneShotWithInit(AudioSO audioSO)
+        {
+            Initialize(audioSO);
+            PlayOneShot();
+        }
         public void StopAudio()
         {
             if (!audioSource.isPlaying) return;

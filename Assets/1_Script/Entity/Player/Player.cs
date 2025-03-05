@@ -27,9 +27,6 @@ namespace Swift_Blade
         [Header("EventChannels")]
         [SerializeField] private EquipmentChannelSO onHitChannel;
 
-        [Header("Audio")]
-        [SerializeField] private AudioSO aud_dead;
-
         [Header("Debug_Params")]
         [SerializeField] private AnimationTriggers animEndTrigger;
         [SerializeField, Space(10)] private AnimationParameterSO anim_idle;
@@ -151,7 +148,6 @@ namespace Swift_Blade
                 () =>
                 {
                     playerStateMachine.ChangeState(PlayerStateEnum.Dead);
-                    AudioManager.PlayWithInit(aud_dead, true);
                 });
             playerStateMachine.OnChangeState += (type) =>
             {
@@ -169,15 +165,6 @@ namespace Swift_Blade
         private void Update()
         {
             playerStateMachine.UpdateState();
-
-            if (Input.GetKeyDown(KeyCode.X))
-            {
-                AudioManager.PlayWithInit(aud_dead, true);
-            }
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                AudioEmitter.Dbg(aud_dead);
-            }
 
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
