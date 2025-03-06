@@ -10,7 +10,7 @@ namespace Swift_Blade.Combat.Projectile
         public float forceAmount;
         //protected NavMeshObstacle obstacle;
 
-        protected Rigidbody Rigidbody;
+        [SerializeField] protected Rigidbody Rigidbody;
 
         protected virtual void Start()
         {
@@ -35,6 +35,13 @@ namespace Swift_Blade.Combat.Projectile
 
             Rigidbody.mass = 1;
             Rigidbody.AddForce(force * forceAmount, ForceMode.Impulse);
+        }
+
+        public virtual void SetRigid(bool PS, float RM)
+        {
+            SetPhysicsState(PS);
+
+            Rigidbody.mass = RM;
         }
     }
 }
