@@ -88,6 +88,7 @@ namespace Swift_Blade
             
             _popupList.Add(popups[popupType]);
             popups[popupType].Popup();
+            popups[popupType].transform.SetAsLastSibling();
         }
 
         public void DelayPopup(PopupType popupType, float delay)
@@ -96,6 +97,7 @@ namespace Swift_Blade
             
             _popupList.Add(popups[popupType]);
             popups[popupType].DelayPopup(delay);
+            popups[popupType].transform.SetAsLastSibling();
         }
 
         public void DelayPopup(PopupType popupType, float delay, Action callback)
@@ -104,6 +106,7 @@ namespace Swift_Blade
             
             _popupList.Add(popups[popupType]);
             popups[popupType].DelayPopup(delay, callback);
+            popups[popupType].transform.SetAsLastSibling();
         }
         
         public void PopDown()

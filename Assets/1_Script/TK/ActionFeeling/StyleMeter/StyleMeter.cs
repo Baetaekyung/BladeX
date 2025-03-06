@@ -41,10 +41,15 @@ namespace Swift_Blade
 
         private void OnEnable()
         {
+            Init();
+        }
+
+        public void Init()
+        {
             appliedMultiplier = 1f;
             _addedMultiplier = 0f;
         }
-
+        
         public void SuccessHit()
         {
             const float initialValue = 0.1f;

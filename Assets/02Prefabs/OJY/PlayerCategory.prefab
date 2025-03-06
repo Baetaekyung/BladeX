@@ -13101,6 +13101,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 1547652066911575172}
+  lm_interactable:
+    serializedVersion: 2
+    m_Bits: 0
   audioCollection: {fileID: 11400000, guid: 517e6938a25b7b945af9b8626a5ca6ed, type: 2}
   onHitChannel: {fileID: 11400000, guid: f1a43005198a1f34ca0dbbba46903cab, type: 2}
   animEndTrigger: {fileID: 150995623001427998}
@@ -37340,7 +37343,19 @@ MonoBehaviour:
   _currentHealth: 500
   OnDeadEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: fd2fecfb682b5984f93729859182a0ab, type: 2}
+        m_TargetAssemblyTypeName: Swift_Blade.StyleMeter, Assembly-CSharp
+        m_MethodName: Init
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnHitEvent:
     m_PersistentCalls:
       m_Calls:
@@ -37397,6 +37412,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.CameraFocusFeedback,
           Assembly-CSharp
         m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: fd2fecfb682b5984f93729859182a0ab, type: 2}
+        m_TargetAssemblyTypeName: Swift_Blade.StyleMeter, Assembly-CSharp
+        m_MethodName: TakeDamage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -45652,7 +45679,7 @@ Transform:
   m_GameObject: {fileID: 8769104566819483706}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.2586508, y: -1.8471568, z: -2.412843}
+  m_LocalPosition: {x: 0.0000010115244, y: 0.000000435931, z: -0.0000009127682}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
