@@ -53,6 +53,10 @@ namespace Swift_Blade.FSM.States
             //animationTriggers.OnMovementSetEvent += OnMovementSetTrigger;
             if (baseAnimParam != null)
                 PlayAnimationOnEnter();
+            else
+            {
+                Debug.Log("Anim param is null");
+            }
         }
 
 
@@ -72,10 +76,11 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnAudioPlayEvent -= OnAudioPlayTrigger;
 
             //animationTriggers.OnMovementSetEvent -= OnMovementSetTrigger;
-            base.Exit();
             //re init
             OnAllowRotateAllowTrigger();
             OnSpeedMultiplierDefaultTrigger(1);
+            
+            Debug.Log("Exit State");
         }
 
         protected virtual void PlayAnimationOnEnter()
