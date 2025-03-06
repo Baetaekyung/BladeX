@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
 public static class DBG_UI_KEYS
@@ -34,15 +35,18 @@ public abstract class UI_DebugBase<T> : MonoSingleton<T> where T : UI_DebugBase<
     private void OnChange() => gameObject.SetActive(ShowDebugUI);
     private static void SetDebug(in int index, in string str, string prefix = "", in int key = 0)
     {
+
+    }
+    //public static void DebugText(int index, string stringValue, string prefix = "", int key = 0) => SetDebug(index, stringValue, prefix, key);
+    public static void DebugText<VT>(int index, VT value, string prefix = "", int key = 0)
+    {
         T instance = Instance;
         if (key != instance.Key || instance == null) return;
         instance.stringBuilder.Clear();
         instance.stringBuilder.Append(prefix);
         instance.stringBuilder.Append(" : ");
-        instance.stringBuilder.Append(str);
+        instance.stringBuilder.Append(value.ToString());
         instance.list[index].text = instance.stringBuilder.ToString();
     }
-    public static void DebugText(int index, string stringValue, string prefix = "", int key = 0) => SetDebug(index, stringValue, prefix, key);
-    public static void DebugText<VT>(int index, VT valueType, string prefix = "", int key = 0) => SetDebug(index, valueType.ToString(), prefix, key);
 
 }
