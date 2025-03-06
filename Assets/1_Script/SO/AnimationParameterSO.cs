@@ -10,7 +10,7 @@ namespace Swift_Blade
         public int GetAnimationHash { get; private set; }
         public float GetPeriod => period;
 
-        private void OnValidate()
+        private void OnEnable()
         {
             if (string.IsNullOrEmpty(paramName) == false)
             {
