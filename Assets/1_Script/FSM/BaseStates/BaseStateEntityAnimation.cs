@@ -72,7 +72,6 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnAudioPlayEvent -= OnAudioPlayTrigger;
 
             //animationTriggers.OnMovementSetEvent -= OnMovementSetTrigger;
-            base.Exit();
             //re init
             OnAllowRotateAllowTrigger();
             OnSpeedMultiplierDefaultTrigger(1);

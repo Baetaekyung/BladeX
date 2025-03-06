@@ -75,7 +75,10 @@ namespace Swift_Blade.FSM.States
         }
         protected sealed override void OnAllowRotateAllowTrigger() => playerMovement.AllowRotate = true;
         protected sealed override void OnAllowRotateDisallowTrigger() => playerMovement.AllowRotate = false;
-        protected override void OnAnimationEndTrigger() => GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
+        protected override void OnAnimationEndTrigger()
+        {
+            GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
+        } 
         protected sealed override void OnSpeedMultiplierDefaultTrigger(float set) => playerMovement.SpeedMultiplierDefault = set;
         protected override void OnAudioPlayTrigger(AudioSO audioSO)
         {
