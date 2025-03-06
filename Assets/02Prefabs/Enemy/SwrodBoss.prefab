@@ -45454,9 +45454,9 @@ GameObject:
   - component: {fileID: 8161863624544920820}
   - component: {fileID: 1908999335113879507}
   - component: {fileID: 3575926326915301583}
-  - component: {fileID: 1344055792727759508}
   - component: {fileID: 2646160260723031557}
   - component: {fileID: 5492742793706994907}
+  - component: {fileID: 1344055792727759508}
   m_Layer: 7
   m_Name: SwrodBoss
   m_TagString: Untagged
@@ -45696,29 +45696,6 @@ MonoBehaviour:
   isManualRotate: 0
   isManualMove: 0
   cameraShakeType: 3
---- !u!114 &1344055792727759508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5782296022825403814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58651a8d9c291a24ebe392862daf6ef0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  moveSpeed: 6.8
-  rotateSpeed: 19.7
-  stopDistance: 2.05
-  checkForward: {fileID: 1882639443864621935}
-  whatIsWall:
-    serializedVersion: 2
-    m_Bits: 2048
-  maxDistance: 1.27
-  showGizmo: 1
-  sword: {fileID: 7307799705064874111}
 --- !u!114 &2646160260723031557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45787,6 +45764,32 @@ MonoBehaviour:
   prickEffect: {fileID: 11400000, guid: 448e4fac51f97074d8eb268a9334c66c, type: 2}
   prickTrm1: {fileID: 6666297108255584503}
   prickTrm2: {fileID: 882628041340589753}
+--- !u!114 &1344055792727759508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5782296022825403814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58651a8d9c291a24ebe392862daf6ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  moveSpeed: 6.8
+  rotateSpeed: 19.7
+  stopDistance: 2.05
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 256
+  checkForward: {fileID: 1882639443864621935}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 2048
+  maxDistance: 1.27
+  showGizmo: 1
+  sword: {fileID: 7307799705064874111}
 --- !u!1 &5783172332564757590
 GameObject:
   m_ObjectHideFlags: 0

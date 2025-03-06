@@ -82,8 +82,7 @@ namespace Swift_Blade.Enemy
 
             if (baseAnimationController.isManualMove && !DetectForwardObstacle())
             {
-                bool isGround = Physics.Raycast(transform.position + Vector3.up * 1.2f, Vector3.down , out RaycastHit RaycastHit,  100f, whatIsGround);
-                Debug.DrawRay(transform.position + Vector3.up * 1.2f , Vector3.down * 100f, Color.red);
+                bool isGround = Physics.Raycast(transform.position + Vector3.up * 1.2f, Vector3.down , out RaycastHit RaycastHit,  10, whatIsGround);
                 if (isGround == false)return;
                 
                 var distance = Vector3.Distance(transform.position, target.position);
