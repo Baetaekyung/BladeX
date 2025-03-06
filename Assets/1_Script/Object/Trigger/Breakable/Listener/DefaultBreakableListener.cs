@@ -18,7 +18,8 @@ namespace Swift_Blade
         {
             brokenModel.SetActive(true);
             breakableObject.gameObject.SetActive(false);
-            audioEmitter?.Play();
+            if(audioEmitter != null)
+                audioEmitter.Play();
         }
         private void OnGameObjectDestroy(BreakableObject breakableObject)
         {

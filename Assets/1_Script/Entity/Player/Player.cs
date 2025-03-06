@@ -108,7 +108,7 @@ namespace Swift_Blade
 
         private RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
 
-        private IInteractable GetClosestInteractable => interactable.GetComponent<IInteractable>();
+        private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
         private GameObject interactable;
         private Tween playerInvincibleTween;
         protected override void Awake()
@@ -122,8 +122,6 @@ namespace Swift_Blade
             base.Start();
             Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator.GetAnimator;
 
-            playerStateMachine.StateDictionary = new();
-            
             playerStateMachine.AddState(PlayerStateEnum.Move, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
             playerAttackState = new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null);
             playerStateMachine.AddState(PlayerStateEnum.Attack, playerAttackState);
@@ -183,6 +181,9 @@ namespace Swift_Blade
         {
             playerStateMachine.UpdateState();
 
+            if (Input.GetKeyDown(KeyCode.Z))
+                AudioEmitter.Dbg2();
+
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
             UI_DebugPlayer.DebugText(2, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DAMAGE).Value, "atkBase");
@@ -193,6 +194,7 @@ namespace Swift_Blade
                 IInteractable interactable = GetClosestInteractable;
                 if (interactable != null)
                 {
+                    print("int");
                     interactable.Interact();
                 }
             }

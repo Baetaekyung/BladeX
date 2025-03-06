@@ -10,12 +10,15 @@ namespace Swift_Blade
         public int GetAnimationHash { get; private set; }
         public float GetPeriod => period;
 
-        private void OnEnable()
+        private void Awake()
         {
             if (string.IsNullOrEmpty(paramName) == false)
             {
                 GetAnimationHash = Animator.StringToHash(paramName);
             }
         }
+        //private void OnEnable()
+        //{
+        //}
     }
 }

@@ -26,7 +26,6 @@ namespace Swift_Blade.FSM.States
         {
             base.Enter();
             //additionalZValue = 0;
-            Debug.Log($"Enter State");
             playerMovement.UseMouseLock = false;
         }
         public override void Update()
@@ -79,7 +78,6 @@ namespace Swift_Blade.FSM.States
         protected override void OnAnimationEndTrigger()
         {
             GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
-            Debug.Log("Animation End");
         } 
         protected sealed override void OnSpeedMultiplierDefaultTrigger(float set) => playerMovement.SpeedMultiplierDefault = set;
         protected override void OnAudioPlayTrigger(AudioSO audioSO)
