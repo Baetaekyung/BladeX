@@ -180,6 +180,9 @@ namespace Swift_Blade
         {
             playerStateMachine.UpdateState();
 
+            if (Input.GetKeyDown(KeyCode.Z))
+                AudioEmitter.Dbg2();
+
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
             UI_DebugPlayer.DebugText(2, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DAMAGE).Value, "atkBase");
