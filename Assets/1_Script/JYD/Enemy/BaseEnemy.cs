@@ -74,8 +74,6 @@ namespace Swift_Blade.Enemy
         {
             if (baseHealth.isDead)
                 return;
-
-            
             
             if (baseAnimationController.isManualRotate) 
                 FactToTarget(target.position);

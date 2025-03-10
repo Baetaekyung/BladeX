@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Swift_Blade.Combat.Projectile
 {
@@ -9,9 +8,9 @@ namespace Swift_Blade.Combat.Projectile
         [SerializeField] protected float moveSpeed;
         public float forceAmount;
         //protected NavMeshObstacle obstacle;
-
+        
         [SerializeField] protected Rigidbody Rigidbody;
-
+        
         protected virtual void Start()
         {
             //obstacle = GetComponent<NavMeshObstacle>();
