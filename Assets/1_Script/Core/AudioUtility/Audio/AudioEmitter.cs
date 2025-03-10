@@ -6,33 +6,32 @@ using UnityEngine;
 
 namespace Swift_Blade.Audio
 {
-    /// <summary>
-    /// please only use AudioEmitter as runtime audio player.
-    /// AudioEmitter can be preplaced though.
-    /// </summary>
-    [RequireComponent(typeof(AudioSource))]
     public class AudioEmitter : MonoBehaviour, IPoolable
     {
-        public event Action OnEndCallback;
         private static readonly Dictionary<int, int> audioDictionary = new Dictionary<int, int>(20);
 
-        [Header("preplaced")]
+        public event Action OnEndCallback;
+
+        [Header("Preplaced")]
         [SerializeField] private AudioSO defaultAudioSO;
-        [SerializeField] private bool prePlaced;
+        private bool prePlaced = true;
 
         [Header("General")]
         private AudioSource audioSource;
         private AudioSO currentAudioSO;
 
+        private bool IsInitialized => currentAudioSO != null;
         private bool isInPool;                          //flag for checking if this is inside the pool
         private bool shouldDecraseCountOnDestroy;       //flag for OnDisable/OnDestroy
-        private bool isInitialized;                     //flag for recyclePool Object
 
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
             audioSource.playOnAwake = false;
-            if (prePlaced)
+        }
+        private void Start()    //black magick, this is delayed when pooled.
+        {
+            if (prePlaced)      //not initialized until IPoolable.OnCreate
             {
                 bool flag = defaultAudioSO != null;
                 Debug.Assert(flag, "emitter is preplaced but defaultAudioSO is null", this);
@@ -42,14 +41,20 @@ namespace Swift_Blade.Audio
         void IPoolable.OnCreate()
         {
             isInPool = true;
+            prePlaced = false;
         }
-        void IPoolable.OnPopInitialize()
+        void IPoolable.OnPop()
         {
-            OnEndCallback       = default(Action);
-            currentAudioSO      = default(AudioSO);
-            isInPool            = default(bool);
-            shouldDecraseCountOnDestroy   = default(bool);
-            isInitialized       = default(bool);
+            isInPool = false;
+            shouldDecraseCountOnDestroy = false;
+        }
+        void IPoolable.OnPush()
+        {
+            OnEndCallback = null;
+            currentAudioSO = null;
+
+            isInPool = true;
+            shouldDecraseCountOnDestroy = false;
         }
         public static void Dbg(AudioSO audioSO)
         {
@@ -61,7 +66,7 @@ namespace Swift_Blade.Audio
             {
                 if (item.Value != 0)
                 {
-                    Debug.LogError("fuck" + item.Key);
+                    Debug.LogError("err " + item.Key);
                 }
             }
         }
@@ -85,21 +90,18 @@ namespace Swift_Blade.Audio
 
             int hash = audioSO.clip.GetHashCode();
             int result = --audioDictionary[hash];
-            //print(result);
             Debug.Assert(result >= 0, "yell at me ojy");
         }
         public void Play(bool destroyOnEnd = false)
         {
-            if (isInPool) throw new Exception("audio emitter is already killed");
-
-            bool flag = isInitialized && currentAudioSO != null;
-            Debug.Assert(flag, "playing audio without initialization");
+            if (isInPool) throw new InvalidOperationException("audio emitter is already killed");
+            if (!IsInitialized) throw new InvalidOperationException("playing without init");
 
             if (audioSource.isPlaying)
                 StopAudio();
 
-            bool flag2 = IsAudioPlayable(currentAudioSO, true);
-            if (!flag2)
+            bool flagPlayable = IsAudioPlayable(currentAudioSO, true);
+            if (!flagPlayable)
             {
                 Debug.LogWarning($"AudioInstance Reached Max {currentAudioSO.name}");
                 return;
@@ -109,16 +111,15 @@ namespace Swift_Blade.Audio
 
             audioSource.Play();
             StartCoroutine(WaitUntilAudioEnd());
-            
+
             IEnumerator WaitUntilAudioEnd()
             {
                 while (audioSource.isPlaying)
                 {
                     yield return null;
                 }
-                OnEndCallback?.Invoke();
-                DecreaseDictionaryInstance(currentAudioSO);
-                shouldDecraseCountOnDestroy = false;
+
+                OnAudioStop();
 
                 if (destroyOnEnd)
                     KillAudio();
@@ -126,7 +127,7 @@ namespace Swift_Blade.Audio
         }
         public void PlayWithInit(AudioSO audioSO, bool killOnEnd = false)
         {
-            if(audioSource.isPlaying)
+            if (audioSource.isPlaying) //can't initialize without stopping audio
                 StopAudio();
             Initialize(audioSO);
             Play(killOnEnd);
@@ -137,31 +138,14 @@ namespace Swift_Blade.Audio
         public void PlayOneShot()
         {
             if (isInPool) throw new Exception("audio emitter is already killed");
+            if (!IsInitialized) throw new Exception("playing without init");
 
-            //bool flag = IsAudioPlayable(currentAudioSO, true);
-            //if (!flag)
-            //{
-            //    Debug.LogWarning($"AudioInstance Reached Max {currentAudioSO.name}");
-            //    return;
-            //}
             audioSource.PlayOneShot(currentAudioSO.clip, currentAudioSO.volume);
-            //PlayOneShot(currentAudioSO);
         }
-        //public void PlayOneShot(AudioSO audioSO)
-        //{
-        //    bool flag = IsCurrentAudioPlayable(currentAudioSO, true);
-        //    if (!flag)
-        //    {
-        //        Debug.LogWarning($"AudioInstance Reached Max {currentAudioSO.name}");
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        audioSource.PlayOneShot(audioSO.clip);
-        //    }
-        //}
         public void PlayOneShotWithInit(AudioSO audioSO)
         {
+            if (audioSource.isPlaying) //can't initialize without stopping audio
+                StopAudio();
             Initialize(audioSO);
             PlayOneShot();
         }
@@ -174,24 +158,20 @@ namespace Swift_Blade.Audio
 
             StopAllCoroutines();
 
-            OnEndCallback?.Invoke();                    //should i call this?
-            DecreaseDictionaryInstance(currentAudioSO);
-            shouldDecraseCountOnDestroy = false;
+            //OnEndCallback?.Invoke();
+            //DecreaseDictionaryInstance(currentAudioSO);
+            //shouldDecraseCountOnDestroy = false;
+            OnAudioStop();
 
             audioSource.Stop();
         }
         public void KillAudio()
         {
-            if (isInPool)
-            {
-                Debug.LogWarning("audio emitter is already killed.");
-                return;
-            }
+            if (isInPool) throw new InvalidOperationException("audio emitter is already killed");
 
             StopAudio();
             MonoGenericPool<AudioEmitter>.Push(this);   //deactivate gameObject, auto cancel Coroutine.
-            shouldDecraseCountOnDestroy = false;
-            isInPool = true;
+            shouldDecraseCountOnDestroy = false;        //Stop Audio has early exit
         }
         public void Initialize(AudioSO audioSO)
         {
@@ -200,8 +180,6 @@ namespace Swift_Blade.Audio
                 Debug.LogWarning($"n:{name}_initializing while playing audio");
                 return;
             }
-
-            isInitialized = true;
 
             currentAudioSO = audioSO;
 
@@ -229,14 +207,18 @@ namespace Swift_Blade.Audio
             if (audioSO.audioRolloffMode == AudioRolloffMode.Custom)
                 audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioSO.curve);
         }
-
+        private void OnAudioStop()
+        {
+            OnEndCallback?.Invoke();
+            DecreaseDictionaryInstance(currentAudioSO);
+            shouldDecraseCountOnDestroy = false;
+        }
         private void OnDestroy()
         {
             if (!isInPool && shouldDecraseCountOnDestroy)
             {
-                print("dontdestroy killing aud" + audioSource.clip.name);
-                OnEndCallback?.Invoke();                    //should i call this?
-                DecreaseDictionaryInstance(currentAudioSO);
+                print("destroy runtime aud" + audioSource.clip.name);
+                OnAudioStop();
             }
 
         }

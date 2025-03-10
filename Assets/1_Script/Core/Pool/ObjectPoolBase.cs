@@ -45,7 +45,7 @@ namespace Swift_Blade.Pool
             bool collision = ObjectPoolBase.collisionCheck;
             if (collision)
             {
-                foreach (T item in poolList)
+                foreach (T item in poolList)//todo : change this to hash set
                 {
                     if (item == instance)
                         throw new Exception($"Collision Detected. prefab : {instance}, {nameof(T)}_POOL");
