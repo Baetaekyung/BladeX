@@ -22,7 +22,7 @@ namespace Swift_Blade
             {
                 shootPosList.Add(t);
             }
-            StartCoroutine("Ming");
+            StartCoroutine(nameof(Ming));
         }
 
         private IEnumerator Ming()
@@ -34,7 +34,7 @@ namespace Swift_Blade
                 float throwedNansu = Random.Range(0f, 100f);
 
                 //만약 몇퍼센트 확률이라면 붐박스소환
-                nowObj = Instantiate(throwedNansu > 30f ? rock5 : boomBox, shootPosList[listNansu].position, Quaternion.identity);
+                nowObj = Instantiate(throwedNansu > 0f ? rock5 : rock5, shootPosList[listNansu].position, Quaternion.identity);
 
                 bool compoExist = nowObj.TryGetComponent(out MinigameThrowed mt);
                 bool compoExistTest = nowObj.TryGetComponent(out Bomb bb);

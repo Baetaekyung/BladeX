@@ -12,11 +12,10 @@ GameObject:
   - component: {fileID: 8070725908961861370}
   - component: {fileID: 290836329371931872}
   - component: {fileID: 7880045339287341859}
-  - component: {fileID: 4985711536127889366}
   - component: {fileID: -6901380104979789328}
-  - component: {fileID: -7826566209564830563}
+  - component: {fileID: -3760810998879274762}
   m_Layer: 10
-  m_Name: ThrowStone_5_MingEdition_GEMSTONE
+  m_Name: EffectStone_5_MingEdition_GEMSTONE 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -109,7 +108,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -117,25 +116,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4985711536127889366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6010071214303549201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47d1b3b7704d3a0449031c84967b24f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 10
-  forceAmount: 40
-  Rigidbody: {fileID: 7880045339287341859}
-  stoneType: 0
-  isClosedToPlayer: 0
-  parryObj: {fileID: 115104, guid: 2d3f7d77c6992164eac6bb544a606765, type: 3}
-  DestroyedEffectObj: {fileID: 6010071214303549201, guid: 58f8950651d363a4180338360ca83a51, type: 3}
 --- !u!136 &-6901380104979789328
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -149,9 +129,9 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -159,7 +139,7 @@ CapsuleCollider:
   m_Height: 0.4
   m_Direction: 1
   m_Center: {x: -0.048181295, y: 0.00078475475, z: -0.011731625}
---- !u!114 &-7826566209564830563
+--- !u!114 &-3760810998879274762
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,8 +148,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6010071214303549201}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1bf3a7d5a7dcac4583de5876ace80c2, type: 3}
+  m_Script: {fileID: 11500000, guid: da4a13b9772894f41ba658ce1548cf66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {x: 0, y: 0, z: 0}
-  endPos: {x: 0, y: 0, z: 0}
+  laterDestTime: 3
