@@ -92,8 +92,8 @@ namespace Swift_Blade.Level
                 //|| Mouse.current.leftButton.wasPressedThisFrame
                 //|| Mouse.current.rightButton.wasPressedThisFrame)
             {
-                string currentLevelStr = $"{baseSceneName}_{currentLevel + 1}";
-                        
+                string currentLevelStr = levels[currentLevel].name;
+                
                 levelEvent.SceneMoveEvent?.Invoke(currentLevelStr , ()=> isMoving = false);
                 isMoving = true;
             }
