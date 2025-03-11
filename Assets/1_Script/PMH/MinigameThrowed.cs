@@ -1,5 +1,6 @@
 using Swift_Blade.Combat;
 using Swift_Blade.Combat.Projectile;
+using Swift_Blade.Feeling;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -11,6 +12,8 @@ namespace Swift_Blade
             Gem,
             Boom
         }
+
+        [SerializeField] CameraShakeType camShakType;
 
         [SerializeField] private StoneType stoneType;
         [SerializeField] private bool isClosedToPlayer;
@@ -41,6 +44,9 @@ namespace Swift_Blade
             if(canParry)
             {
                 Debug.Log("ÆÐ¸®¹Ö");
+
+                CameraShakeManager.Instance.DoShake(camShakType);
+
                 transform.localScale *= 10;
 
                 for (int i = 0; i < 4; i++)
@@ -83,6 +89,7 @@ namespace Swift_Blade
 
             if(other.CompareTag("Ground"))
             {
+                CameraShakeManager.Instance.DoShake(camShakType);
                 MissCountdown();
                 Destroy(this.gameObject);
             }
