@@ -1,8 +1,8 @@
 using System;
 using DG.Tweening;
-using Swift_Blade.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Swift_Blade
 {
@@ -11,6 +11,12 @@ namespace Swift_Blade
         [SerializeField] private TextMeshProUGUI dialogMessageText;
         [SerializeField] private TextMeshProUGUI talkerText;
         [SerializeField] private CanvasGroup canvasGroup;
+
+        [SerializeField] private Button acceptButton;
+        [SerializeField] private Button cancelButton;
+
+        public Button GetAcceptButton => acceptButton;
+        public Button GetCancelButton => cancelButton;
 
         public void ShowDialog() //콜백 없음
         {
@@ -51,6 +57,12 @@ namespace Swift_Blade
         private void ClearTalker()
         {
             talkerText.text = "";
+        }
+        
+        private void OnDisable()
+        {
+            acceptButton.onClick.RemoveAllListeners();
+            cancelButton.onClick.RemoveAllListeners();
         }
     }
 }

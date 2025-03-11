@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Swift_Blade
 {
@@ -14,12 +16,18 @@ namespace Swift_Blade
     
     public class InventoryManager : MonoSingleton<InventoryManager>
     {
+        //TODO: 나중에 UI랑 Manager기능 분리하기.
         [Header("UI 부분")]
-        [SerializeField] private RectTransform canvasTrm;
-        [SerializeField] private RectTransform cursorTrm;
-        [SerializeField] private SelectItem_UI selectedItemImage;
         [SerializeField] private List<EquipInfoUI> equipInfoUIs = new(4);
-        private SelectItem_UI _createdItemUI;
+        [SerializeField] private List<EquipmentSlot> equipSlots;
+
+        [Header("Item Information")]
+        [SerializeField] private Image           itemIcon;
+        [SerializeField] private TextMeshProUGUI itemName;
+        [SerializeField] private TextMeshProUGUI itemDescription;
+        [SerializeField] private TextMeshProUGUI itemTypeInfo;
+        
+        //-------------------------------------------------------------
         
         [HideInInspector] public bool isSlotChanged = false; 
         private bool _isDragging = false;
@@ -56,17 +64,6 @@ namespace Swift_Blade
             UpdateAllSlots();
         }
         
-        private void Update()
-        {
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                canvasTrm, //RectTransform Object에 부착되어 있어야 작동한다. 
-                Input.mousePosition,
-                null,
-                out Vector2 mousePosInUISpace);
-            
-            cursorTrm.position = mousePosInUISpace + new Vector2(Screen.width / 2f, Screen.height / 2f);
-        }
-        
         public void UpdateAllSlots()
         {
             for (int i = 0; i < itemSlots.Count; i++)
@@ -82,45 +79,24 @@ namespace Swift_Blade
         }
 
         //아이템을 클릭했을 때 커서에 표시되는 UI
-        public void UpdateCursorUI(ItemDataSO itemData)
+        public void UpdateInfoUI(ItemDataSO itemData)
         {
-            if (itemData == null)
-            {
-                DisableCursor();
-                return;
-            }
-            
-            void SetCursorUI()
-            {
-                _createdItemUI.iconImage.sprite = itemData.itemImage;
-                _createdItemUI.SetUI(
-                    itemData.itemName,
-                    itemData.itemType.ToString(),
-                    itemData.description);
-                _createdItemUI.gameObject.SetActive(true);
-            }
-            
-            if (_isExistUIObject)
-            {
-                SetCursorUI();
-                return;
-            }
-            _isExistUIObject = true;
-            _createdItemUI = Instantiate(selectedItemImage, cursorTrm);
-            
-            SetCursorUI();
-            _createdItemUI.transform.position = cursorTrm.position;
+            SetInfoUI(itemData);
         }
 
-        public void DisableCursor()
+        private void SetInfoUI(ItemDataSO itemData)
         {
-            _createdItemUI.gameObject?.SetActive(false);
+            itemIcon.sprite      = itemData ? itemData.itemImage : null;
+            itemIcon.color       = itemData ? Color.white : Color.clear;
+            itemName.text        = itemData ? itemData.itemName : String.Empty;
+            itemDescription.text = itemData ? itemData.description : String.Empty;
+            itemTypeInfo.text    = itemData ? itemData.itemType.ToString() : String.Empty;
         }
-
+        
         //Mouse Up을 했을 때 발생
         public void DeselectItem()
         {
-            _createdItemUI.gameObject.SetActive(false);
+            // _createdItemUI.gameObject.SetActive(false);
 
             SelectedItem = null;
             _isDragging = false;
@@ -148,6 +124,11 @@ namespace Swift_Blade
             return itemSlots.FirstOrDefault(item => item.IsEmptySlot());
         }
 
+        public EquipmentSlot GetEmptyEquipSlot()
+        {
+            return equipSlots.FirstOrDefault(slot => slot.IsEmptySlot());
+        }
+        
         public bool AllSlotsFull()
         {
             if (itemSlots.FirstOrDefault(item => item.IsEmptySlot()) == default)
@@ -159,9 +140,6 @@ namespace Swift_Blade
 
         public void UpdateEquipInfoUI()
         {
-            if (Inventory.currentEquipment.Count == 0)
-                return;
-
             for (int j = 0; j < equipInfoUIs.Count; j++)
             {
                 equipInfoUIs[j].SetIcon(null);

@@ -23,12 +23,14 @@ namespace Swift_Blade
 
         private void OnEnable()
         {
+            OnStatChanged += SetStatInfoUI;
             upgradeButton.onClick.AddListener(UpgradeStat);
             SetStatInfoUI();
         }
 
         private void OnDisable()
         {
+            OnStatChanged -= SetStatInfoUI;
             upgradeButton.onClick.RemoveAllListeners();
         }
 
@@ -79,6 +81,7 @@ namespace Swift_Blade
             }
             
             _statRecords.Clear();
+            OnStatChanged?.Invoke();
         }
         
         [ContextMenu("set")]

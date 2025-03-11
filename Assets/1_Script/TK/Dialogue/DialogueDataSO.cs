@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Action = System.Action;
 
 namespace Swift_Blade
 {
