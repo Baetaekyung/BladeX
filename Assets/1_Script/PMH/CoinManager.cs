@@ -7,7 +7,7 @@ namespace Swift_Blade
     {
         public static CoinManager Instance;
 
-        [SerializeField] private int coinValue = 300;
+        [SerializeField] private int coinValue = 0;
 
         private int missCount = 50;
 

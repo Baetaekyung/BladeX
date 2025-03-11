@@ -2,13 +2,12 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class RockToCoin : MinigameItems
+    public class MinigameCoin : MinigameItems
     {
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent<PlayerHealth>(out PlayerHealth ph))
             {
-                BallGenerator.Instance.AllObjectToCoin();
                 Destroy(gameObject);
             }
         }

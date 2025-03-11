@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class BallGenerator : MonoBehaviour
+    public class BallGenerator : MonoSingleton<BallGenerator>
     {
         [SerializeField] private float tickRate = 1;
 
@@ -14,7 +14,9 @@ namespace Swift_Blade
         [SerializeField] private GameObject RollingRock;
         [SerializeField] private GameObject BrokingItem;
         [SerializeField] private GameObject ToCoinItem;
+        [SerializeField] private GameObject JustCoin;
 
+        [SerializeField] private List<Transform> rockAndItemList;
 
         [SerializeField] private Vector4[] patthon;
         //0없음
@@ -60,14 +62,41 @@ namespace Swift_Blade
                     //
                     break;
                 case 1: //돌
-                    Instantiate(RollingRock, spawnPoints[n].position, Quaternion.identity);
+                    GameObject item1 = Instantiate(RollingRock, spawnPoints[n].position, Quaternion.identity);
+                    rockAndItemList.Add(item1.transform);
                     break;
                 case 2: //아이템
-                    //Instantiate(RollingRock, spawnPoints[2].position, Quaternion.identity);
+                    int rn = Random.Range(0, 2);
+                    if(rn == 0)
+                    {
+                        GameObject item2 = Instantiate(ToCoinItem, spawnPoints[n].position, Quaternion.identity);
+                        rockAndItemList.Add(item2.transform);
+                    }
+                    else
+                    {
+                        GameObject item2 = Instantiate(BrokingItem, spawnPoints[n].position, Quaternion.identity);
+                        rockAndItemList.Add(item2.transform);
+                    }
+                        
                     break;
                 case 3: //코인
-                    //Instantiate(RollingRock, spawnPoints[3].position, Quaternion.identity);
+                    GameObject item3 = Instantiate(JustCoin, spawnPoints[n].position, Quaternion.identity);
+                    rockAndItemList.Add(item3.transform);
                     break;
+            }
+        }
+
+        public void RemoveMeInList(Transform target)
+        {
+            rockAndItemList.Remove(target);
+        }
+
+        public void AllObjectToCoin()
+        {
+            foreach(Transform item in rockAndItemList)
+            {
+                Instantiate(JustCoin, item.position, Quaternion.identity);
+                Destroy(item.gameObject);
             }
         }
     }
