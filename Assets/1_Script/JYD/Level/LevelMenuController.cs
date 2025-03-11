@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -7,15 +6,28 @@ using UnityEngine.InputSystem;
 
 namespace Swift_Blade.Level
 {
+
+    [System.Serializable]
+    public enum MoveDirection
+    {
+        Up,
+        Right,
+        Down,
+        Left
+    }
+    
     public class LevelMenuController : MonoBehaviour
     {
         public LevelClearEventSO levelEvent;
         
         public List<Transform> levels;
+        public MoveDirection[] NextStageDirections;
+        public MoveDirection[] PreviousStageDirections;
+        
         public Transform player;
         
         public int currentLevel = 0;
-
+        
         [Space] 
         public string baseSceneName;
         public bool useDistanceAdjustment;
@@ -31,31 +43,60 @@ namespace Swift_Blade.Level
         
         private void Update()
         {
-            if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
-            {
-                NextLevel();
-            }
+            if (isMoving) return;
             
-            if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
-            {
-                PrevLevel();
-            }
-            
-            if (Keyboard.current.enterKey.wasPressedThisFrame)
-            {
-                SelectLevel();
-            }
-            
+            PrevLevels();
+            NextLevels();
+            SelectLevel();
         }
 
+        private void PrevLevels()
+        {
+            if (currentLevel > 0)  
+            {
+                switch (PreviousStageDirections[currentLevel - 1])
+                {
+                    case MoveDirection.Up when Keyboard.current.upArrowKey.wasPressedThisFrame:
+                    case MoveDirection.Right when Keyboard.current.rightArrowKey.wasPressedThisFrame:
+                    case MoveDirection.Down when Keyboard.current.downArrowKey.wasPressedThisFrame:
+                    case MoveDirection.Left when Keyboard.current.leftArrowKey.wasPressedThisFrame:
+                        PrevLevel();
+                        break;
+                }
+            }
+                        
+        }
+
+        private void NextLevels()
+        {
+            if (currentLevel >= levels.Count - 1) 
+                return;
+    
+            switch (NextStageDirections[currentLevel])
+            {
+                case MoveDirection.Up when Keyboard.current.upArrowKey.wasPressedThisFrame:
+                case MoveDirection.Right when Keyboard.current.rightArrowKey.wasPressedThisFrame:
+                case MoveDirection.Down when Keyboard.current.downArrowKey.wasPressedThisFrame:
+                case MoveDirection.Left when Keyboard.current.leftArrowKey.wasPressedThisFrame:
+                    NextLevel();
+                    break;
+            }
+        }
+
+        
         private void SelectLevel()
         {
             if (isMoving) return;
             
-            string currentLevelStr = $"{baseSceneName}_{currentLevel + 1}";
+            if (Keyboard.current.enterKey.wasPressedThisFrame )
+                //|| Mouse.current.leftButton.wasPressedThisFrame
+                //|| Mouse.current.rightButton.wasPressedThisFrame)
+            {
+                string currentLevelStr = $"{baseSceneName}_{currentLevel + 1}";
                         
-            levelEvent.SceneMoveEvent?.Invoke(currentLevelStr , ()=> isMoving = false);
-            isMoving = true;
+                levelEvent.SceneMoveEvent?.Invoke(currentLevelStr , ()=> isMoving = false);
+                isMoving = true;
+            }
         }
 
         private void NextLevel()
@@ -92,7 +133,5 @@ namespace Swift_Blade.Level
                 isMoving = false;
             });
         }
-
-
     }
 }
