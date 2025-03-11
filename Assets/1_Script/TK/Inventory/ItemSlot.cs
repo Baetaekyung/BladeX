@@ -26,8 +26,22 @@ namespace Swift_Blade
             {
                 if (_itemDataSO.itemType == ItemType.EQUIPMENT)
                 {
+                    inventoryManager.Inventory.currentEquipment.Add(_itemDataSO.equipmentData);
+                    inventoryManager.GetEmptyEquipSlot().SetItemData(_itemDataSO);
+                    inventoryManager.Inventory.itemInventory.Remove(_itemDataSO);
+            
+                    inventoryManager.UpdateEquipInfoUI();
+            
+                    BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
+                    baseEquip?.OnEquipment();
+            
+                    _itemDataSO = null;
+                    
+                    inventoryManager.UpdateAllSlots();
+                    inventoryManager.DeselectItem();
+                    
                     _useItem = true;
-                    return; //일회용 아이템이 아니기 때문에 return
+                    return;
                 }
                 
                 _itemDataSO.itemObject.ItemEffect();
@@ -42,7 +56,7 @@ namespace Swift_Blade
                 return;
             }
             
-            inventoryManager.UpdateCursorUI(_itemDataSO); //커서에 UI 생성
+            inventoryManager.UpdateInfoUI(_itemDataSO);
             
             inventoryManager.IsDragging = true; //드래그 중이라고 표시하기
             inventoryManager.SelectedItem = _itemDataSO; //현재 선택된 아이템은 이 슬롯의 아이템
@@ -55,7 +69,7 @@ namespace Swift_Blade
         
         public virtual void OnPointerEnter(PointerEventData eventData)
         {
-            inventoryManager.UpdateCursorUI(_itemDataSO); //커서에 UI 생성
+            inventoryManager.UpdateInfoUI(_itemDataSO); //커서에 UI 생성
             
             if (!inventoryManager.IsDragging) return; //드래그 중이 아닐때는 return
             if (_itemDataSO != null) //이 슬롯에 아이템이 존재할 경우는 Change 불가 (나중에 가능하게 만들기)
@@ -71,7 +85,7 @@ namespace Swift_Blade
 
         public virtual void OnPointerExit(PointerEventData eventData)
         {
-            inventoryManager.DisableCursor();
+            inventoryManager.UpdateInfoUI(null);
             
             if(!inventoryManager.IsDragging) return;
             if (inventoryManager.SelectedItem != _itemDataSO) return;
@@ -83,7 +97,7 @@ namespace Swift_Blade
 
         public virtual void OnPointerUp(PointerEventData eventData)
         {
-            inventoryManager.DisableCursor();
+            inventoryManager.UpdateInfoUI(null);
             
             if (inventoryManager.SelectedItem == null && IsEmptySlot())
                 return;

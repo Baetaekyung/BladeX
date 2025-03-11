@@ -15,6 +15,7 @@ namespace Swift_Blade
         
         public override void InvokeEvent()
         {
+            DialogueManager.Instance.CancelDialogue();
             DialogueManager.Instance.DoDialogue(nextDialogue);
         }
     }
