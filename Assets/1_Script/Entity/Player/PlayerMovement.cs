@@ -99,7 +99,7 @@ namespace Swift_Blade
                 input = InputDirection;
                 if (lowestContactPointBottom.HasValue)
                 {
-                    input = Vector3.ProjectOnPlane(InputDirection, lowestContactPointBottom.Value.normal);
+                    input = Vector3.ProjectOnPlane(input, lowestContactPointBottom.Value.normal);
                     input.Normalize();
                 }
                 if (AllowRotate)

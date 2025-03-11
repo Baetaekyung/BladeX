@@ -12,12 +12,13 @@ namespace Swift_Blade
         public Vector3 GetInputDirectionRotated => CameraRotationOnlyY * GetInputDirection;
         public Vector3 GetMousePositionWorld { get; private set; }
         public Vector3 GetMouseDirection { get; private set; }
+        public Vector2 GetRollDirection => new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
         /// <summary>
         /// im not sure if this is valid
         /// </summary>
         //public Vector3 InputDirectionRotatedNormalized => CameraRotation * (InputDirection.sqrMagnitude < 1 ? InputDirection: InputDirection.normalized);
         //private Quaternion CameraRotation => playerCamera.GetResultQuaternion;
-        private Quaternion CameraRotationOnlyY => playerCamera.GetResultQuaternionOnlyY;
+        public Quaternion CameraRotationOnlyY => playerCamera.GetResultQuaternionOnlyY;
 
         private PlayerCamera playerCamera;
         private PlayerMovement playerMovement;

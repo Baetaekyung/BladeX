@@ -31,7 +31,7 @@ namespace Swift_Blade.FSM.States
         {
             base.Enter();
             player.ClearComboHistory();
-            inputLocalLerp = Vector3.zero;
+            //inputLocalLerp = Vector3.zero;
             allowListening = false;
             inputBuffer = false;
             allowChangeToAttack = false;
@@ -72,6 +72,7 @@ namespace Swift_Blade.FSM.States
         public override void Exit()
         {
             player.GetPlayerMovement.AllowInputMove = true;
+            anim_inputLocalLerp = Vector3.zero;
             playerHealth.IsPlayerInvincible = false;
             OnRollEnd?.Invoke();
             base.Exit();

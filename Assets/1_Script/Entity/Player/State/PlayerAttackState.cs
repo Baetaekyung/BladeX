@@ -125,7 +125,7 @@ namespace Swift_Blade.FSM.States
         public override void Exit()
         {
             playerMovement.SpeedMultiplierDefault = 1;
-            inputLocalLerp = Vector3.zero;
+            anim_inputLocalLerp = Vector3.zero;
             //playerMovement.UseMouseLock = false;
             base.Exit();
         }
