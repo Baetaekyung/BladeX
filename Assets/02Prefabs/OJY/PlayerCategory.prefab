@@ -3953,6 +3953,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -1.209507, y: -0.44004822, z: -0.58578587}
     m_Extent: {x: 6.263031, y: 5.4559026, z: 3.4425898}
   m_DirtyAABB: 0
+--- !u!1 &874753054849456658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5781057234805245007}
+  m_Layer: 0
+  m_Name: LevelUpTrm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5781057234805245007
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874753054849456658}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1547652066911575172}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &885961040059178948
 GameObject:
   m_ObjectHideFlags: 0
@@ -13133,10 +13164,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f799d164b4993f4f8b3f7dd0a3b272e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dustEffect: {fileID: 11400000, guid: 9948a7b5594f97746b8a52465d6ba870, type: 2}
-  hitSlashEffect: {fileID: 11400000, guid: 78344e406fd969349aecc415910520cd, type: 2}
-  parryEffect: {fileID: 11400000, guid: d40b8b3b53d73dc4f839d65878943be2, type: 2}
+  dustParticle: {fileID: 11400000, guid: 9948a7b5594f97746b8a52465d6ba870, type: 2}
+  hitSlashParticle: {fileID: 11400000, guid: 78344e406fd969349aecc415910520cd, type: 2}
+  parryParticle: {fileID: 11400000, guid: d40b8b3b53d73dc4f839d65878943be2, type: 2}
   parryParticleTrm: {fileID: 8632028477375930125}
+  levelUpParticle: {fileID: 11400000, guid: cac137e626bf9e34da4536541946621c, type: 2}
+  levelUpEffectTrm: {fileID: 5781057234805245007}
 --- !u!1 &2777974626546988096
 GameObject:
   m_ObjectHideFlags: 0
@@ -37322,6 +37355,7 @@ Transform:
   - {fileID: 2889313541361825741}
   - {fileID: 2146183822903394731}
   - {fileID: 8632028477375930125}
+  - {fileID: 5781057234805245007}
   - {fileID: 2739040428307220391}
   - {fileID: 6850592672844698303}
   m_Father: {fileID: 5704459122665910530}

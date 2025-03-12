@@ -17,13 +17,12 @@ namespace Swift_Blade.Level
         [Range(0.1f, 10)] public float fadeInTime;
         [Range(0.1f, 10)] public float fadeOutTime;
         private bool isFading;
-
+        
         [Header("Next Level info")]
         public Image header;
-        public TextMeshProUGUI clearText;
-
-        [SerializeField] private GameObject[] elements;
-        
+        [SerializeField] private Image[] elements;
+        [SerializeField] private float elementsFadeInTime;
+                
         public float headerMaxSize = 200;
         [Range(0.1f, 2)] public float headerFadeInDuration;
         [Range(0.1f ,2)] public float headerSizeUpDuration;
@@ -31,19 +30,17 @@ namespace Swift_Blade.Level
 
         private StringBuilder currentSceneName = new StringBuilder();
         
-        private void Start()
+        private void Awake()
         {
             DontDestroyOnLoad(gameObject);
-            
+        }
+
+        private void Start()
+        {
             levelEvent.SceneMoveEvent += StartFade;
             levelEvent.LevelClearEvent += SetActiveClearPanel;
             levelEvent.SceneChangeEvent += NextOtherScene;
 
-            foreach (var element in elements)
-            {
-                element.transform.localScale = Vector3.zero;
-            }
-            
             ResetClearPanel();
         }
 
@@ -83,26 +80,34 @@ namespace Swift_Blade.Level
             fadeImage.DOFade(0, fadeOutTime).OnComplete(() =>
             {
                 isFading = false;
-                foreach (var elem in elements)
-                {
-                    elem.transform.DOKill();
-                    elem.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBounce);
-                }
+                
             });
         }
                 
         private void SetActiveClearPanel()
         {
             header.gameObject.SetActive(true);
-
+            
             header.DOKill();
-            header.transform.DOScaleY(1, headerSizeUpDuration);
+            header.rectTransform.DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x , 20), headerSizeUpDuration).SetDelay(1.2f).OnComplete(() =>
+            {
+                header.rectTransform
+                    .DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x, 930), headerSizeUpDuration).OnComplete(
+                        () =>
+                        {
+                            foreach (var item in elements)
+                            {
+                                item.DOFade(1, elementsFadeInTime);
+                            }
+                        });
+            });
         }
         private void ResetClearPanel()
         {
             header.DOKill();
-            header.transform.DOScaleY(0, headerSizeUpDuration).OnComplete(() =>
+            header.rectTransform.DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x , 0), headerSizeUpDuration).OnComplete(() =>
             {
+                
                 header.gameObject.SetActive(false);
             });
         }
