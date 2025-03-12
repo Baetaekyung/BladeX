@@ -39,7 +39,7 @@ namespace Swift_Blade.Level
         {
             MovePlayer(currentLevel);
         }
-        
+                
         private void Update()
         {
             if (isMoving) return;

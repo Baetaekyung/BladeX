@@ -31,8 +31,16 @@ namespace Swift_Blade.Level
         
         private void Awake()
         {
+            LevelUIController existingInstance = FindObjectOfType<LevelUIController>();
+
+            if (existingInstance != null && existingInstance != this)
+            {
+                Destroy(existingInstance.gameObject);
+            }
+            
             DontDestroyOnLoad(gameObject);
         }
+
 
         private void Start()
         {

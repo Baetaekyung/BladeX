@@ -1,3 +1,4 @@
+using System;
 using Swift_Blade.Pool;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -18,6 +19,11 @@ namespace Swift_Blade
         private void Start()
         {
             Player.LevelStat.OnLevelUp += LevelUpEffect;
+        }
+
+        private void OnDestroy()
+        {
+            Player.LevelStat.OnLevelUp -= LevelUpEffect;
         }
 
         public void EntityComponentAwake(Entity entity)
