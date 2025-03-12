@@ -1,19 +1,18 @@
+using Swift_Blade.UI;
+using System.Collections;
 using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class BrokingToRock : MonoBehaviour
+    public class BrokingToRock : MinigameItems
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void OnTriggerEnter(Collider other)
         {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
+            if (other.TryGetComponent<PlayerHealth>(out PlayerHealth ph))
+            {
+                PlayerMinigameStatus.Instance.GetCanBrokingItem();
+                Destroy(gameObject);
+            }  
         }
     }
 }
