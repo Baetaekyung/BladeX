@@ -19,7 +19,7 @@ namespace Swift_Blade.Pool
         {
             T result = Object.Instantiate(prefab, Vector3.zero, Quaternion.identity);
             result.OnCreate();
-            //result.gameObject.hideFlags = HideFlags.HideInHierarchy;
+            result.gameObject.hideFlags = HideFlags.HideInHierarchy;
             result.gameObject.SetActive(false);
             return result;
         }
@@ -31,13 +31,13 @@ namespace Swift_Blade.Pool
         {
             T instance = base.Pop();
             instance.OnPop();
-            //instance.gameObject.hideFlags = HideFlags.None;
+            instance.gameObject.hideFlags = HideFlags.None;
             instance.gameObject.SetActive(true);
             return instance;
         }
         public override void Push(T instance)
         {
-            //instance.gameObject.hideFlags = HideFlags.HideInHierarchy;
+            instance.gameObject.hideFlags = HideFlags.HideInHierarchy;
             instance.OnPush();
             instance.gameObject.SetActive(false);
             base.Push(instance);
