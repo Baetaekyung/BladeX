@@ -31,7 +31,6 @@ namespace Swift_Blade
         
         [HideInInspector] public bool isSlotChanged = false; 
         private bool _isDragging = false;
-        private bool _isExistUIObject = false;
 
         [SerializeField] private PlayerInventory playerInventory;
         [SerializeField] private List<ItemSlot> itemSlots = new List<ItemSlot>();
