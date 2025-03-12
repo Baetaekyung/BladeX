@@ -40,8 +40,7 @@ namespace Swift_Blade.Feeling
             return this;
         }
         
-        //타임 스케일 원래대로 돌리는 함수
-        public HitStopManager EndHitStop() 
+        public void EndHitStop() 
         {
             if (_hitStopCoroutine is not null)
             {
@@ -51,8 +50,6 @@ namespace Swift_Blade.Feeling
             InvokeCompleteEvent();
 
             Time.timeScale = DEFAULT_TIMESCALE;
-
-            return this;
         }
 
         private IEnumerator HitStopCoroutine(HitStopSO hitStopData)

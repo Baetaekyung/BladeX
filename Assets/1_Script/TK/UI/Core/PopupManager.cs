@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Swift_Blade.Level;
 using Swift_Blade.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,15 +13,25 @@ namespace Swift_Blade
         public SerializableDictionary<PopupType, PopupUI> popups
             = new SerializableDictionary<PopupType, PopupUI>();
         private List<PopupUI> _popupList = new List<PopupUI>();
-
+        
         public bool IsRemainPopup => _popupList.Count > 0;
         public event Action OnPopUpOpenOrClose;
+        
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            if (popups.ContainsKey(PopupType.LevelClear) == false)
+            {
+                popups.Add(PopupType.LevelClear, FindObjectOfType<LevelUIController>());
+            }
+        }
         
         private void Start()
         {
             InitPopups();
         }
-
+        
         private void InitPopups()
         {
             foreach (var popupUI in popups.Values)
@@ -100,7 +111,7 @@ namespace Swift_Blade
             popups[popupType].transform.SetAsLastSibling();
             OnPopUpOpenOrClose?.Invoke();
         }
-
+        
         public void DelayPopup(PopupType popupType, float delay)
         {
             if (_popupList.Contains(popups[popupType])) return;

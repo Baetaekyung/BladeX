@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 35589045}
   - component: {fileID: 35589044}
   - component: {fileID: 35589043}
+  - component: {fileID: 35589047}
   - component: {fileID: 35589042}
   m_Layer: 5
   m_Name: LevelCanvas
@@ -151,6 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 294de87f6002c6840a04148fbe3e1342, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cG: {fileID: 35589047}
+  _fadeTime: 0
+  popupType: 7
   levelEvent: {fileID: 11400000, guid: a2d8f67d9c116a8499c86ab4cb0ed966, type: 2}
   fadeImage: {fileID: 1739528931}
   fadeInTime: 1.6
@@ -254,6 +258,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &35589047
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35589041}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &44128819 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1668561149159913549, guid: d22f73e06a5a6cb45b89b3f374260738, type: 3}
@@ -1328,7 +1344,7 @@ Transform:
   m_GameObject: {fileID: 971996866}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.1564345, z: 0, w: 0.98768836}
-  m_LocalPosition: {x: 60, y: 0, z: 0}
+  m_LocalPosition: {x: -30, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1913,15 +1929,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelEvent: {fileID: 11400000, guid: a2d8f67d9c116a8499c86ab4cb0ed966, type: 2}
   levels:
+  - {fileID: 971996867}
   - {fileID: 408682639}
   - {fileID: 1428100909}
   - {fileID: 1077521505}
   - {fileID: 1083461867}
-  - {fileID: 971996867}
   NextStageDirections: 01000000010000000100000001000000
   PreviousStageDirections: 03000000030000000300000003000000
   player: {fileID: 349228904}
-  currentLevel: 0
+  currentLevel: 1
   baseSceneName: Stage
   useDistanceAdjustment: 0
   moveSpeed: 10
@@ -23680,11 +23696,11 @@ SceneRoots:
   - {fileID: 1973628286}
   - {fileID: 1904256711}
   - {fileID: 1764331160}
+  - {fileID: 971996867}
   - {fileID: 408682639}
   - {fileID: 1428100909}
   - {fileID: 1077521505}
   - {fileID: 1083461867}
-  - {fileID: 971996867}
   - {fileID: 349228904}
   - {fileID: 35589046}
   - {fileID: 689752642}
