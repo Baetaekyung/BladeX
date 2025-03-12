@@ -38,7 +38,7 @@ namespace Swift_Blade
         private void InitializeFPS()
         {
             fpsDropdown.onValueChanged.AddListener(HandleFPSChanged);
-            fpsDropdown.value = 1;
+            fpsDropdown.value = 2;
         }
 
         private void HandleFullScreenChanged(bool isOn)
