@@ -55,8 +55,8 @@ namespace Swift_Blade
             statMultiplierText.DOKill();
             
             //Animation
-            statMultiplierText.transform.DOScale(Vector3.one * 1.1f, 0.1f).OnComplete(
-                () => statMultiplierText.transform.DOScale(Vector3.one, 0.15f));
+            statMultiplierText.transform.DOShakeScale(1.2f, 0.14f);
+            statMultiplierText.transform.DOShakeRotation(1f, 0.14f);
             
             statMultiplierText.text = styleMeter.appliedMultiplier.ToString("0.00");
             // StyleMeterEffectChanged();
