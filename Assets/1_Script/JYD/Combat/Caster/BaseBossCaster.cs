@@ -32,7 +32,16 @@ namespace Swift_Blade.Combat.Caster
                 
                 if (CanCurrentAttackParry && hit.collider.TryGetComponent(out PlayerParryController parryController))
                 {
-                    if (parryController.CanParry())
+                    Vector3 playerToAttacker = (transform.position - hit.collider.transform.position).normalized;
+
+                    Vector3 playerForward = hit.collider.transform.forward;
+
+                    float dot = Vector3.Dot(playerForward, playerToAttacker);
+
+                    bool isLookingAtAttacker = dot > Mathf.Cos(140 * Mathf.Deg2Rad);
+                    
+                    
+                    if (parryController.CanParry() && isLookingAtAttacker)
                     {
                         parryEvents?.Invoke();//적 쪽
                         parryController.ParryEvents?.Invoke();//플레이어쪽
