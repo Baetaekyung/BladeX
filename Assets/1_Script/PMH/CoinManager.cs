@@ -7,11 +7,13 @@ namespace Swift_Blade
     {
         public static CoinManager Instance;
 
-        [SerializeField] private int coinValue = 0;
+        [field : SerializeField] public int coinValue = 0;
 
         private int missCount = 50;
 
         [SerializeField] private TMP_Text coinText;
+
+        [SerializeField] private PlayerInventory invenSO;
 
         private void Awake()
         {
@@ -32,6 +34,15 @@ namespace Swift_Blade
         public void DiscountCoin()
         {
             coinValue -= missCount;
+        }
+        public void AddedCountCoin()
+        {
+            coinValue += missCount;
+        }
+
+        public void GameFinishToAddCoin()
+        {
+            invenSO.Currency += coinValue;
         }
     }
 }

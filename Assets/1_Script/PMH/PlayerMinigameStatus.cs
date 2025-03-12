@@ -9,14 +9,16 @@ namespace Swift_Blade
 
         public void GetCanBrokingItem()
         {
+            isCanBrokingrock = false;
+            StopAllCoroutines();
             StartCoroutine("GetItemEvents");
         }
         private IEnumerator GetItemEvents()
         {
-            PlayerMinigameStatus.Instance.isCanBrokingrock = true;
+            isCanBrokingrock = true;
             Debug.Log("무적이되.");
             yield return new WaitForSeconds(5);
-            PlayerMinigameStatus.Instance.isCanBrokingrock = false;
+            isCanBrokingrock = false;
             Debug.Log("다적이되.");
         }
     }

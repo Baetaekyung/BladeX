@@ -8,6 +8,7 @@ namespace Swift_Blade
         {
             if (other.TryGetComponent<PlayerHealth>(out PlayerHealth ph))
             {
+                CoinManager.Instance.AddedCountCoin();
                 Destroy(gameObject);
             }
         }

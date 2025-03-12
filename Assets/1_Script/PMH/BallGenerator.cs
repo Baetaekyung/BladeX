@@ -19,6 +19,8 @@ namespace Swift_Blade
         [SerializeField] private List<Transform> rockAndItemList;
 
         [SerializeField] private Vector4[] patthon;
+
+        private int patthonCount;
         //0없음
         //1돌
         //2아이템
@@ -28,6 +30,7 @@ namespace Swift_Blade
             {
                 spawnPoints.Add(t);
             }
+            patthonCount = 0;
             StartCoroutine("BallGenerateCoroutine");
         }
 
@@ -42,19 +45,24 @@ namespace Swift_Blade
 
         private void SpawnBall()
         {
-            int n = Random.Range(0, spawnPoints.Count);
+            if(patthonCount >= patthon.Length)
+            {
+                patthonCount = 0;
+            }
 
-            Debug.Log(Mathf.FloorToInt(patthon[n].x));
-            InstantiateRock(Mathf.FloorToInt(patthon[n].x), 0);
-            Debug.Log(Mathf.FloorToInt(patthon[n].y));
-            InstantiateRock(Mathf.FloorToInt(patthon[n].y), 1);
-            Debug.Log(Mathf.FloorToInt(patthon[n].z));
-            InstantiateRock(Mathf.FloorToInt(patthon[n].z), 2);
-            Debug.Log(Mathf.FloorToInt(patthon[n].w));  
-            InstantiateRock(Mathf.FloorToInt(patthon[n].w), 3);
+            //Debug.Log(Mathf.FloorToInt(patthon[n].x));
+            InstantiateRock(Mathf.FloorToInt(patthon[patthonCount].x), 0);
+            //Debug.Log(Mathf.FloorToInt(patthon[n].y));
+            InstantiateRock(Mathf.FloorToInt(patthon[patthonCount].y), 1);
+            //Debug.Log(Mathf.FloorToInt(patthon[n].z));
+            InstantiateRock(Mathf.FloorToInt(patthon[patthonCount].z), 2);
+            //.Log(Mathf.FloorToInt(patthon[n].w));  
+            InstantiateRock(Mathf.FloorToInt(patthon[patthonCount].w), 3);
+            Debug.Log(patthonCount + " 번째 소환!!!!!!!!!!!!!!");
+            patthonCount++;
         }
 
-        private void InstantiateRock(int pn, int n)
+        private void InstantiateRock(int pn, int spawnPoints)
         {
             switch (pn)
             {
@@ -62,25 +70,25 @@ namespace Swift_Blade
                     //
                     break;
                 case 1: //돌
-                    GameObject item1 = Instantiate(RollingRock, spawnPoints[n].position, Quaternion.identity);
+                    GameObject item1 = Instantiate(RollingRock, this.spawnPoints[spawnPoints].position, Quaternion.identity);
                     rockAndItemList.Add(item1.transform);
                     break;
                 case 2: //아이템
                     int rn = Random.Range(0, 2);
                     if(rn == 0)
                     {
-                        GameObject item2 = Instantiate(ToCoinItem, spawnPoints[n].position, Quaternion.identity);
+                        GameObject item2 = Instantiate(ToCoinItem, this.spawnPoints[spawnPoints].position, Quaternion.identity);
                         rockAndItemList.Add(item2.transform);
                     }
                     else
                     {
-                        GameObject item2 = Instantiate(BrokingItem, spawnPoints[n].position, Quaternion.identity);
+                        GameObject item2 = Instantiate(BrokingItem, this.spawnPoints[spawnPoints].position, Quaternion.identity);
                         rockAndItemList.Add(item2.transform);
                     }
                         
                     break;
                 case 3: //코인
-                    GameObject item3 = Instantiate(JustCoin, spawnPoints[n].position, Quaternion.identity);
+                    GameObject item3 = Instantiate(JustCoin, this.spawnPoints[spawnPoints].position, Quaternion.identity);
                     rockAndItemList.Add(item3.transform);
                     break;
             }
@@ -95,8 +103,15 @@ namespace Swift_Blade
         {
             foreach(Transform item in rockAndItemList)
             {
-                Instantiate(JustCoin, item.position, Quaternion.identity);
-                Destroy(item.gameObject);
+                if(item.TryGetComponent<RockToCoin>(out RockToCoin rtc))
+                {
+                    Destroy(item.gameObject);
+                }
+                else
+                {
+                    Instantiate(JustCoin, item.position, Quaternion.identity);
+                    Destroy(item.gameObject);
+                }
             }
         }
     }
