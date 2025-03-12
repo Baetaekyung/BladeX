@@ -19,14 +19,13 @@ namespace Swift_Blade.Level
         private bool isFading;
         
         [Header("Next Level info")]
-        public Image header;
-        [SerializeField] private Image[] elements;
+        [SerializeField] private Image header;
+        [SerializeField] private GameObject[] elements;
+        [SerializeField] private TextMeshProUGUI[] buttonTexts;
+        
         [SerializeField] private float elementsFadeInTime;
+        [Range(0.1f ,2)] [SerializeField] private float headerSizeUpDuration;
                 
-        public float headerMaxSize = 200;
-        [Range(0.1f, 2)] public float headerFadeInDuration;
-        [Range(0.1f ,2)] public float headerSizeUpDuration;
-        [Range(0.1f , 2)] public float clearTextFadeInDuration;
 
         private StringBuilder currentSceneName = new StringBuilder();
         
@@ -40,7 +39,7 @@ namespace Swift_Blade.Level
             levelEvent.SceneMoveEvent += StartFade;
             levelEvent.LevelClearEvent += SetActiveClearPanel;
             levelEvent.SceneChangeEvent += NextOtherScene;
-
+            
             ResetClearPanel();
         }
 
@@ -80,37 +79,83 @@ namespace Swift_Blade.Level
             fadeImage.DOFade(0, fadeOutTime).OnComplete(() =>
             {
                 isFading = false;
-                
             });
         }
-                
+        
         private void SetActiveClearPanel()
         {
             header.gameObject.SetActive(true);
-            
             header.DOKill();
-            header.rectTransform.DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x , 20), headerSizeUpDuration).SetDelay(1.2f).OnComplete(() =>
-            {
-                header.rectTransform
-                    .DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x, 930), headerSizeUpDuration).OnComplete(
-                        () =>
-                        {
-                            foreach (var item in elements)
-                            {
-                                item.DOFade(1, elementsFadeInTime);
-                            }
-                        });
-            });
+            
+            Sequence sequence = DOTween.Sequence();
+            
+            sequence.Append(header.rectTransform.DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x, 20), headerSizeUpDuration).SetDelay(1.2f))
+                .Append(header.rectTransform.DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x, 930), headerSizeUpDuration))
+                .OnComplete(() => FadeInElements());
         }
+        
         private void ResetClearPanel()
         {
             header.DOKill();
-            header.rectTransform.DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x , 0), headerSizeUpDuration).OnComplete(() =>
-            {
-                
-                header.gameObject.SetActive(false);
-            });
+
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(FadeOutElements());
+            sequence.Append(header.rectTransform.DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x, 0),headerSizeUpDuration));
+            sequence.AppendCallback(()=>header.gameObject.SetActive(false));                
+            
         }
+        
+        private void FadeInElements()
+        {
+            Sequence sequence = DOTween.Sequence();
+
+            foreach (var item in elements)
+            {
+                if (item.TryGetComponent(out TextMeshProUGUI text))
+                {
+                    sequence.Join(text.DOFade(1, elementsFadeInTime));
+                }
+
+                if (item.TryGetComponent(out Image image))
+                {
+                    sequence.Join(image.DOFade(1, elementsFadeInTime));
+                }
+            }
+
+            sequence.AppendInterval(0.2f);
+    
+            foreach (var item in buttonTexts)
+            {
+                sequence.Join(item.DOFade(1, elementsFadeInTime));
+            }
+        }
+
+        private Tween FadeOutElements()
+        {
+            Sequence fadeSequence = DOTween.Sequence();
+            
+            foreach (var item in buttonTexts)
+            {
+                fadeSequence.Join(item.DOFade(0, elementsFadeInTime));
+            }
+
+            foreach (var item in elements)
+            {
+                if (item.TryGetComponent(out TextMeshProUGUI text))
+                {
+                    fadeSequence.Join(text.DOFade(0, elementsFadeInTime));
+                }
+
+                if (item.TryGetComponent(out Image image))
+                {
+                    fadeSequence.Join(image.DOFade(0, elementsFadeInTime));
+                }
+            }
+
+            return fadeSequence;
+        }
+
+
 
         public void NextScene()
         {
