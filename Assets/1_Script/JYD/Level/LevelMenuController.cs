@@ -82,23 +82,21 @@ namespace Swift_Blade.Level
                     break;
             }
         }
-
         
         private void SelectLevel()
         {
-            if (isMoving) return;
-            
             if (Keyboard.current.enterKey.wasPressedThisFrame 
                 || Mouse.current.leftButton.wasPressedThisFrame
                 || Mouse.current.rightButton.wasPressedThisFrame)
             {
-                string currentLevelStr = levels[currentLevel].name;
-                
-                levelEvent.SceneMoveEvent?.Invoke(currentLevelStr , ()=> isMoving = false);
                 isMoving = true;
+
+                string currentLevelStr = levels[currentLevel].name;
+        
+                levelEvent.SceneMoveEvent?.Invoke(currentLevelStr, () => { isMoving = false; });
             }
         }
-
+                
         private void NextLevel()
         {
             if (levels.Count - 1 <= currentLevel || isMoving) return;
