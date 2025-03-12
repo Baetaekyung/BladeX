@@ -25,7 +25,7 @@ namespace Swift_Blade.Level
         public MoveDirection[] PreviousStageDirections;
         
         public Transform player;
-        
+                
         public int currentLevel = 0;
         
         [Space] 
@@ -88,9 +88,9 @@ namespace Swift_Blade.Level
         {
             if (isMoving) return;
             
-            if (Keyboard.current.enterKey.wasPressedThisFrame )
-                //|| Mouse.current.leftButton.wasPressedThisFrame
-                //|| Mouse.current.rightButton.wasPressedThisFrame)
+            if (Keyboard.current.enterKey.wasPressedThisFrame 
+                || Mouse.current.leftButton.wasPressedThisFrame
+                || Mouse.current.rightButton.wasPressedThisFrame)
             {
                 string currentLevelStr = levels[currentLevel].name;
                 
