@@ -3,10 +3,9 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 namespace Swift_Blade.Level
 {
-
+    
     [System.Serializable]
     public enum MoveDirection
     {
@@ -85,9 +84,9 @@ namespace Swift_Blade.Level
         
         private void SelectLevel()
         {
-            if (Keyboard.current.enterKey.wasPressedThisFrame 
-                || Mouse.current.leftButton.wasPressedThisFrame
-                || Mouse.current.rightButton.wasPressedThisFrame)
+            if (Keyboard.current.enterKey.wasPressedThisFrame )
+                /*|| Mouse.current.leftButton.wasPressedThisFrame*/
+                //|| Mouse.current.rightButton.wasPressedThisFrame)
             {
                 isMoving = true;
 
@@ -96,7 +95,7 @@ namespace Swift_Blade.Level
                 levelEvent.SceneMoveEvent?.Invoke(currentLevelStr, () => { isMoving = false; });
             }
         }
-                
+        
         private void NextLevel()
         {
             if (levels.Count - 1 <= currentLevel || isMoving) return;

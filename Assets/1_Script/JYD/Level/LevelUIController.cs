@@ -39,7 +39,7 @@ namespace Swift_Blade.Level
             levelEvent.SceneMoveEvent += StartFade;
             levelEvent.LevelClearEvent += SetActiveClearPanel;
             levelEvent.SceneChangeEvent += NextOtherScene;
-
+            
             ResetClearPanel();
         }
 
