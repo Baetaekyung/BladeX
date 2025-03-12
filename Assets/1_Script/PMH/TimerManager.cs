@@ -53,7 +53,7 @@ namespace Swift_Blade
             ResultPanel.gameObject.SetActive(true);
 
             coinValueTxt.text = "coin : " + coinManager.coinValue;
-            levelClearAction?.Invoke();
+            levelClearSO.SceneChangeEvent?.Invoke("LevelMenu");
         }
     }
 }
