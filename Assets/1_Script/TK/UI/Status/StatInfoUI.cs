@@ -79,7 +79,8 @@ namespace Swift_Blade
             {
                 statRecord.Key.BaseValue -= statRecord.Value * statRecord.Key.increaseAmount;
             }
-            
+
+            UsedStatPoint = 0;
             _statRecords.Clear();
             OnStatChanged?.Invoke();
         }
@@ -91,7 +92,7 @@ namespace Swift_Blade
 
             _sb.Append(stat.displayName);
             _sb.Append(": ");
-            _sb.Append(stat.Value).Append(" / ").Append(stat.MaxValue);
+            _sb.Append(stat.Value.ToString("0.0")).Append(" / ").Append(stat.MaxValue);
 
             statInfoText.text = _sb.ToString();
         }
