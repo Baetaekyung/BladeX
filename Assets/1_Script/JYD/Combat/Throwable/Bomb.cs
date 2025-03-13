@@ -27,10 +27,13 @@ namespace Swift_Blade.Combat.Projectile
         {
             if ((whatIsGround & (1 << other.gameObject.layer)) != 0 ||
                 (whatIsTarget & (1 << other.gameObject.layer)) != 0)
+            {
                 if (canExplosion)
+                {
                     Explosion(other.contacts[0].point);
-                else
-                    Destroy(this.gameObject);
+                }
+            }
+                   
         }
 
         private void OnDrawGizmosSelected()
@@ -50,7 +53,7 @@ namespace Swift_Blade.Combat.Projectile
             }
 
             CameraShakeManager.Instance.DoShake(shakeType);
-
+            
             var e = MonoGenericPool<Explosion>.Pop();
             e.transform.position = explosionPoint;
 
