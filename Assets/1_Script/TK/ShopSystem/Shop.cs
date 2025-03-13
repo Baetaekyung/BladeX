@@ -15,8 +15,8 @@ namespace Swift_Blade
         {
             int itemCount = itemTable.itemTable.Count;
 
-            if (ShopSlots.Count != 0)
-                DeleteRemainSlot();
+            // if (ShopSlots.Count != 0)
+            //     DeleteRemainSlot();
             
             for (int i = 0; i < itemCount; i++)
             {
