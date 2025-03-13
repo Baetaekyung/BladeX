@@ -38,7 +38,7 @@ namespace Swift_Blade
         {
             if (Player.level.StatPoint <= 0)
             {
-                Debug.Log("What");
+                Debug.Log("StatPoint가 존재하지 않음!");
                 return;
             }
 
@@ -90,9 +90,12 @@ namespace Swift_Blade
         { 
             _sb.Clear();
 
+            float clampedValue = 0f;
+            clampedValue = Mathf.Clamp(clampedValue, stat.BaseValue, stat.MaxValue);
+            
             _sb.Append(stat.displayName);
             _sb.Append(": ");
-            _sb.Append(stat.Value.ToString("0.0")).Append(" / ").Append(stat.MaxValue);
+            _sb.Append(clampedValue.ToString("0.00")).Append(" / ").Append(stat.MaxValue);
 
             statInfoText.text = _sb.ToString();
         }

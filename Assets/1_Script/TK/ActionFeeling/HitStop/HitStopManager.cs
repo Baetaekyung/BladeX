@@ -6,7 +6,9 @@ namespace Swift_Blade.Feeling
 {
     [MonoSingletonUsage(MonoSingletonFlags.DontDestroyOnLoad)]
     public class HitStopManager : MonoSingleton<HitStopManager>
-    {        
+    {
+        [SerializeField] private StyleMeter styleMeter;
+        
         [Header("타임 스케일 관련 변수 및 우선순위")]
         public float CurrentTimeScale { get; private set; }
         private const float DEFAULT_TIMESCALE = 1; //기본 타임 스케일
@@ -23,7 +25,7 @@ namespace Swift_Blade.Feeling
         protected override void Awake()
         {
             base.Awake();
-            Time.timeScale = DEFAULT_TIMESCALE;
+            Time.timeScale = DEFAULT_TIMESCALE + styleMeter.GetModifierValue;
         }
 
         public HitStopManager DoHitStop(HitStopSO hitStopData)
@@ -49,7 +51,7 @@ namespace Swift_Blade.Feeling
 
             InvokeCompleteEvent();
 
-            Time.timeScale = DEFAULT_TIMESCALE;
+            Time.timeScale = DEFAULT_TIMESCALE + styleMeter.GetModifierValue;
         }
 
         private IEnumerator HitStopCoroutine(HitStopSO hitStopData)
@@ -62,14 +64,14 @@ namespace Swift_Blade.Feeling
 
                 yield return StartCoroutine(ChangeTimeScale(hitStopData.smoothStep, DEFAULT_TIMESCALE));
                 
-                Time.timeScale = DEFAULT_TIMESCALE;
+                Time.timeScale = DEFAULT_TIMESCALE + styleMeter.GetModifierValue;
             }
             else if (hitStopData.hitStopType == HitStopType.IMMEDIATE)
             {
-                Time.timeScale = hitStopData.timeScale;
+                Time.timeScale = hitStopData.timeScale + styleMeter.GetModifierValue;
 
                 yield return new WaitForSecondsRealtime(hitStopData.duration);
-                Time.timeScale = DEFAULT_TIMESCALE;
+                Time.timeScale = DEFAULT_TIMESCALE + styleMeter.GetModifierValue;
             }
 
             InvokeCompleteEvent();
@@ -85,7 +87,7 @@ namespace Swift_Blade.Feeling
                 _smoothValue += smoothTime;
                 CurrentTimeScale = Mathf.Lerp(CurrentTimeScale, targetScale, _smoothValue);
                 
-                Time.timeScale = CurrentTimeScale;
+                Time.timeScale = CurrentTimeScale + styleMeter.GetModifierValue;
                 
                 yield return _waitForEndOfFrame;
             }
