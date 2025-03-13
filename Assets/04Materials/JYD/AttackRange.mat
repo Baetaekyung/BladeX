@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EntityShader
-  m_Shader: {fileID: -6465566751694194690, guid: 65bd68843c0f4d2468d40d2100d1bcb0, type: 3}
+  m_Name: AttackRange
+  m_Shader: {fileID: -6465566751694194690, guid: 9b4e681081e2b4c469111bb649e2f7ee, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,31 +24,11 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _AmbientMap:
-        m_Texture: {fileID: 0}
+    - Base_Map:
+        m_Texture: {fileID: 2800000, guid: 58f532d73e1cbff4ba9538e65303124b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _CrackTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetalicMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SmoothnessMap:
+    - Normal_Map:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -66,27 +46,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AOStrength: 0
-    - _DissolveHeight: 0.5
-    - _DissolveScale: 10
-    - _DissolveWidth: 0.1
-    - _EmissionPower: 0
-    - _EnemyHP: 1
-    - _MetalicStrength: 0
-    - _NormalStrength: 0
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    - _SmoothnessStrength: 0
-    - _isHit: 0
-    m_Colors:
-    - _CrackColor: {r: 16, g: 0, b: 0, a: 0}
-    - _CrackShape: {r: 1, g: 1, b: 0, a: 0}
-    - _DissolveColor: {r: 0.9056578, g: 0, b: 0, a: 0}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
-    - _FlickerColor: {r: 1, g: 1, b: 1, a: 0}
+    - Normal_Blend: 0.5
+    - _DecalMeshBiasType: 0
+    - _DecalMeshDepthBias: 0
+    - _DecalMeshViewBias: 0
+    - _DrawOrder: 0
+    m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &1154233611235933294
+--- !u!114 &5670722344393424479
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

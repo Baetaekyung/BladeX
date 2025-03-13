@@ -20,7 +20,7 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 192
+        m_Bits: 64
       PassNames: []
     overrideMaterial: {fileID: 2100000, guid: 5a8879b9da3208e4e9fd495b5edb55c7, type: 2}
     overrideMaterialPassIndex: 0
@@ -70,7 +70,8 @@ MonoBehaviour:
   - {fileID: 7833122117494664109}
   - {fileID: -7601326159092055686}
   - {fileID: 7798361889216250112}
-  m_RendererFeatureMap: ad6b866f10d7b46c7a016fc121aa829600c1ad1cd258396c
+  - {fileID: 8276635545796297158}
+  m_RendererFeatureMap: ad6b866f10d7b46c7a016fc121aa829600c1ad1cd258396cc6418f6a2d84dc72
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -116,7 +117,7 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 192
+        m_Bits: 448
       PassNames: []
     overrideMaterial: {fileID: 0}
     overrideMaterialPassIndex: 0
@@ -173,3 +174,24 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 3302065f671a8450b82c9ddf07426f3a, type: 3}
   - {fileID: 2800000, guid: 56a77a3e8d64f47b6afe9e3c95cb57d5, type: 3}
   m_Shader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
+--- !u!114 &8276635545796297158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1614fc811f8f184697d9bee70ab9fe5, type: 3}
+  m_Name: DecalRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  m_Settings:
+    technique: 0
+    maxDrawDistance: 1000
+    decalLayers: 0
+    dBufferSettings:
+      surfaceData: 2
+    screenSpaceSettings:
+      normalBlend: 0
