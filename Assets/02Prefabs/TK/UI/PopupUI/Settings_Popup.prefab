@@ -2514,6 +2514,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7214175977069823337}
   - component: {fileID: 3639087501635898576}
+  - component: {fileID: 7232375807080739211}
   m_Layer: 5
   m_Name: SFX_slider
   m_TagString: Untagged
@@ -2589,12 +2590,28 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3739810899855779608}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 100
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7232375807080739211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4495722396341971268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27374c8f36a4df742a46844171c782e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeSlider: {fileID: 3639087501635898576}
+  saveKey: SFX
+  mixerGroup: {fileID: 4148372489624890486, guid: 93a40e7b5e3dcbc49af1ca1a27589d7c, type: 2}
+  mixerParamName: SFXVolume
 --- !u!1 &4822957211150040594
 GameObject:
   m_ObjectHideFlags: 0
@@ -2891,6 +2908,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7727679232651971351}
   - component: {fileID: 7286486948403848152}
+  - component: {fileID: 2050722420627101704}
   m_Layer: 5
   m_Name: BGM_slider
   m_TagString: Untagged
@@ -2966,12 +2984,28 @@ MonoBehaviour:
   m_HandleRect: {fileID: 5009274098543926448}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 100
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2050722420627101704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4999586457708878889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27374c8f36a4df742a46844171c782e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeSlider: {fileID: 7286486948403848152}
+  saveKey: BGM
+  mixerGroup: {fileID: 3883643346760571396, guid: 93a40e7b5e3dcbc49af1ca1a27589d7c, type: 2}
+  mixerParamName: BGMVolume
 --- !u!1 &5606847825163866040
 GameObject:
   m_ObjectHideFlags: 0

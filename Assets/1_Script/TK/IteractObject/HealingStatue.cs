@@ -6,6 +6,7 @@ namespace Swift_Blade
     {
         [SerializeField] private int healAmount;
         [SerializeField] private DialogueDataSO dialogueData;
+        [SerializeField] private DialogueDataSO afterRewardDialogueData;
 
         private bool _isRewarded = false;
         
@@ -14,7 +15,7 @@ namespace Swift_Blade
         {
             if (_isRewarded)
             {
-                Debug.Log("이미 보상을 받았다..");
+                DialogueManager.Instance.DoDialogue(afterRewardDialogueData);
             }
             else
             {
