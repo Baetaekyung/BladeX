@@ -6,7 +6,7 @@ namespace Swift_Blade
 {
     public class TimerManager : MonoBehaviour
     {
-        [SerializeField] private LevelClearEventSO levelClearSO;
+        [SerializeField] private SceneManagerSO levelClearSO;
         private Action levelClearAction;
 
         [SerializeField] private float default_timeValue;
@@ -53,7 +53,7 @@ namespace Swift_Blade
             ResultPanel.gameObject.SetActive(true);
 
             coinValueTxt.text = "coin : " + coinManager.coinValue;
-            levelClearSO.SceneChangeEvent?.Invoke("Store");
+            levelClearSO.LoadScene("Store");
         }
     }
 }

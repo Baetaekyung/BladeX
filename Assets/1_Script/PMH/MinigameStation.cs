@@ -7,12 +7,12 @@ namespace Swift_Blade
     public class MinigameStation : MonoBehaviour, IInteractable
     {
         [SerializeField] private string gameSceneName;
-        [SerializeField] private LevelClearEventSO clearSO;
+        [SerializeField] private SceneManagerSO clearSO;
 
         public void Interact()
         {
             Debug.Log("Interacted");
-            clearSO.SceneChangeEvent?.Invoke(gameSceneName);
+            clearSO.LoadScene(gameSceneName);
         }
     }
 }

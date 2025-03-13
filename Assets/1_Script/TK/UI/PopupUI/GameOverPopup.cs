@@ -2,6 +2,7 @@ using DG.Tweening;
 using Swift_Blade.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Swift_Blade
@@ -10,7 +11,7 @@ namespace Swift_Blade
     {
         [SerializeField] private float fadeInTime;
         [SerializeField] private float fadeOutTime;
-        [SerializeField] private LevelClearEventSO levelClearEvent;
+        [SerializeField] private SceneManagerSO sceneManager;
         
         
         [ContextMenu("Popup")]
@@ -31,7 +32,7 @@ namespace Swift_Blade
 
         public void GoToTitle()
         {
-            levelClearEvent.SceneChangeEvent.Invoke("LevelMenu");
+            sceneManager.LoadScene("LevelMenu");
         }
 
         public void Resume()
@@ -39,7 +40,7 @@ namespace Swift_Blade
             cG.DOKill();
             
             string curScene = SceneManager.GetActiveScene().name;
-            levelClearEvent.SceneChangeEvent.Invoke(curScene);
+            sceneManager.LoadScene(curScene);
         }
         
     }
