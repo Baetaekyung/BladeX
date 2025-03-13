@@ -54,6 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7168717148363366524}
   - component: {fileID: 3836357517005406196}
+  - component: {fileID: 3024478860902336034}
   m_Layer: 8
   m_Name: Ground_Coll
   m_TagString: Untagged
@@ -97,6 +98,38 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 30, y: 1, z: 30}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3024478860902336034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057519833150915236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: b61195c31dbac4343858fbb6179e85a9, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1 &2063961738308201160
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +174,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2063961738308201160}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
@@ -3804,6 +3837,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 146600, guid: 061eadc372909d041918ffb638c23137, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4763332441392086104}
+    - targetCorrespondingSourceObject: {fileID: 146600, guid: 061eadc372909d041918ffb638c23137, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2481353794496553901}
   m_SourcePrefab: {fileID: 100100000, guid: 061eadc372909d041918ffb638c23137, type: 3}
 --- !u!4 &4328435841591071734 stripped
 Transform:
@@ -3836,6 +3872,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.0993712, y: 1.033365, z: 0.83303046}
   m_Center: {x: -0.047039162, y: 0.5166825, z: 0.12160343}
+--- !u!208 &2481353794496553901
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4328435841591336400}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.0500001, y: 0.517, z: 0.41700003}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.047000002, y: 0.517, z: 0.12200001}
+  m_TimeToStationary: 0.5
 --- !u!1001 &4644899956455000571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4895,6 +4947,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 146600, guid: 061eadc372909d041918ffb638c23137, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4701908407694634231}
+    - targetCorrespondingSourceObject: {fileID: 146600, guid: 061eadc372909d041918ffb638c23137, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 704638016879695247}
   m_SourcePrefab: {fileID: 100100000, guid: 061eadc372909d041918ffb638c23137, type: 3}
 --- !u!1 &5831942832802456487 stripped
 GameObject:
@@ -4922,6 +4977,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.0993707, y: 1.033365, z: 0.8330303}
   m_Center: {x: -0.04703915, y: 0.5166825, z: 0.1216034}
+--- !u!208 &704638016879695247
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5831942832802456487}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.0500001, y: 0.517, z: 0.41700003}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.047000002, y: 0.517, z: 0.12200001}
+  m_TimeToStationary: 0.5
 --- !u!4 &5831942832802721153 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 406158, guid: 061eadc372909d041918ffb638c23137, type: 3}

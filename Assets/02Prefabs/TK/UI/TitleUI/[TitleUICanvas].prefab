@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.6685208, g: 0.78300273, b: 0.8537736, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -125,7 +125,7 @@ Canvas:
   m_GameObject: {fileID: 8583597190296736135}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -251,7 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -399,9 +399,61 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 370
       objectReference: {fileID: 0}
+    - target: {fileID: 768966248922721851, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 768966248922721851, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 768966248922721851, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 768966248922721851, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenQuitHelpPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 768966248922721851, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Swift_Blade.PopupManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 768966248922721851, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1205934511605419576, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
       propertyPath: animationScale
       value: 1.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647644114443723230, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_Name
+      value: SettingBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 2145716530899859994, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2145716530899859994, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2145716530899859994, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2145716530899859994, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenSettingPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 2145716530899859994, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Swift_Blade.PopupManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2145716530899859994, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2149556949310450766, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
       propertyPath: m_Pivot.x
@@ -638,6 +690,10 @@ PrefabInstance:
       value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 3726527038238153601, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3726527038238153601, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 7558145092897362196, guid: 7252d47af18add04cbaf8f0089da51bb, type: 2}
@@ -751,7 +807,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5141061301336892453, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -650
+      value: -649.99994
       objectReference: {fileID: 0}
     - target: {fileID: 5141061301336892453, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -764,6 +820,10 @@ PrefabInstance:
     - target: {fileID: 6288758462200170090, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
       propertyPath: animationScale
       value: 1.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323213806360053971, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+      propertyPath: m_text
+      value: Settings
       objectReference: {fileID: 0}
     - target: {fileID: 6323213806360053971, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
       propertyPath: m_fontSize
@@ -905,7 +965,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3399279977285905460, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+    - {fileID: 8486913020578612888, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
+    - {fileID: 6160480005762042704, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
     m_RemovedGameObjects:
     - {fileID: 4379373966703525837, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}
     - {fileID: 535854749266148935, guid: 7ef7d7a79f853544d969e09627cea441, type: 3}

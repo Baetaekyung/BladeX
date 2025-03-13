@@ -10,7 +10,7 @@ namespace Swift_Blade
         private Action levelClearAction;
 
         [SerializeField] private float default_timeValue;
-
+        
         private float timer = 0;
 
         [SerializeField] private TMP_Text timerText;
@@ -53,7 +53,7 @@ namespace Swift_Blade
             ResultPanel.gameObject.SetActive(true);
 
             coinValueTxt.text = "coin : " + coinManager.coinValue;
-            levelClearSO.SceneChangeEvent?.Invoke("LevelMenu");
+            levelClearSO.SceneChangeEvent?.Invoke("Store");
         }
     }
 }

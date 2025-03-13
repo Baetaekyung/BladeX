@@ -85,11 +85,6 @@ namespace Swift_Blade
 
             while (!_isForcedCancel && dialogProcess < messageLength)
             {
-                if (dialogProcess == messageLength - 1)
-                {
-                    ClickAcceptButton(dialogueData);
-                }
-                
                 _isForcedMessageSkip = false;
                 
                 _dialogueUI.ClearMessageBox(); //기존 메세지 지워주기
@@ -106,6 +101,14 @@ namespace Swift_Blade
                     _dialogueUI.SetMessage(_sb.ToString());
 
                     yield return _waitForSeconds;
+                }
+                
+                if (dialogProcess == messageLength - 1)
+                {
+                    ClickAcceptButton(dialogueData);
+
+                    yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Return));
+                    _dialogueUI.GetAcceptButton.onClick?.Invoke();
                 }
                 
                 yield return new WaitUntil(() 

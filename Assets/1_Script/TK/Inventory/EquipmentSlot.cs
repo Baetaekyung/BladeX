@@ -16,34 +16,21 @@ namespace Swift_Blade
             if (inventoryManager.SelectedItem.IsEquipment() == false) 
                 return;
             
-            if (inventoryManager.Inventory.currentEquipment.Contains(inventoryManager.SelectedItem.equipmentData))
-            {
-                Debug.Log("이미 장착중인 아이템" + inventoryManager.SelectedItem.itemName);
-                PopupUI popup = PopupManager.Instance.GetPopupUI(PopupType.Text);
-                TextPopup textPopup = (TextPopup)popup;
-                textPopup.SetText("You already equip this equipment!");
-                PopupManager.Instance.DelayPopup(PopupType.Text, 2f, () =>
-                {
-                    PopupManager.Instance.PopDown(PopupType.Text);
-                });
-                return; //중복 장착 방지
-            }
-            
             if (_itemDataSO != null)
                 return;
             
             base.OnPointerEnter(eventData);
-            
-            inventoryManager.Inventory.currentEquipment.Add(_itemDataSO.equipmentData);
-            inventoryManager.Inventory.itemInventory.Remove(_itemDataSO);
-            
-            inventoryManager.UpdateEquipInfoUI();
-            
-            BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
-            baseEquip?.OnEquipment();
-            
-            inventoryManager.UpdateAllSlots();
-            inventoryManager.DeselectItem();
+            //
+            // inventoryManager.Inventory.currentEquipment.Add(_itemDataSO.equipmentData);
+            // inventoryManager.Inventory.itemInventory.Remove(_itemDataSO);
+            //
+            // inventoryManager.UpdateEquipInfoUI();
+            //
+            // BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
+            // baseEquip?.OnEquipment();
+            //
+            // inventoryManager.UpdateAllSlots();
+            // inventoryManager.DeselectItem();
         }
 
         public override void OnPointerDown(PointerEventData eventData)

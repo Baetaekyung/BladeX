@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.PlayerLoop;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -41,10 +42,15 @@ namespace Swift_Blade
 
         private void OnEnable()
         {
-            Init();
+            SceneManager.sceneLoaded += Init;
         }
 
-        public void Init()
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= Init;
+        }
+
+        public void Init(Scene scene, LoadSceneMode mode)
         {
             appliedMultiplier = 1f;
             _addedMultiplier = 0f;

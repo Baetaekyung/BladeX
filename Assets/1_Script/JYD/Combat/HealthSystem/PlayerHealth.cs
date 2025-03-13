@@ -65,9 +65,8 @@ namespace Swift_Blade
             OnDeadEvent?.Invoke();
             isDead = true;
             
-            
+            PopupManager.Instance.AllPopDown();
             PopupManager.Instance.PopUp(PopupType.GameOver);
-            
         }
     }
 }
