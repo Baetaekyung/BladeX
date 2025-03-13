@@ -179,6 +179,14 @@ namespace Swift_Blade
             }
         }
 
+        public void AllPopDown()
+        {
+            while (_popupList.Count != 0)
+            {
+                PopDown();
+            }
+        }
+        
         public PopupUI GetPopupUI(PopupType type)
         {
             if (popups.TryGetValue(type, out var popup) == false)
