@@ -25,6 +25,7 @@ namespace Swift_Blade
         {
             OnStatChanged += SetStatInfoUI;
             upgradeButton.onClick.AddListener(UpgradeStat);
+            
             SetStatInfoUI();
         }
 
@@ -38,8 +39,12 @@ namespace Swift_Blade
         {
             if (Player.level.StatPoint <= 0)
             {
-                Debug.Log("StatPoint가 존재하지 않음!");
-                return;
+                Debug.Log("스텟포인트가 없다.");
+            }
+
+            if (Mathf.Approximately(stat.BaseValue, stat.MaxValue))
+            {
+                Debug.Log("스텟이 최대이다.");
             }
 
             Player.level.StatPoint -= 1;
@@ -54,14 +59,8 @@ namespace Swift_Blade
 
         private void RecordAddedStat()
         {
-            if (_statRecords.ContainsKey(stat))
-            {
+            if (!_statRecords.TryAdd(stat, 1))
                 _statRecords[stat] += 1;
-            }
-            else
-            {
-                _statRecords.Add(stat, 1);
-            }
         }
 
         public void InitializeStat()
@@ -85,17 +84,24 @@ namespace Swift_Blade
             OnStatChanged?.Invoke();
         }
         
-        [ContextMenu("set")]
-        public void SetStatInfoUI()
+        private void SetStatInfoUI()
         { 
             _sb.Clear();
-
-            float clampedValue = 0f;
-            clampedValue = Mathf.Clamp(clampedValue, stat.BaseValue, stat.MaxValue);
             
             _sb.Append(stat.displayName);
             _sb.Append(": ");
-            _sb.Append(clampedValue.ToString("0.00")).Append(" / ").Append(stat.MaxValue);
+
+            if (stat.statType != StatType.HEALTH)
+            {
+                _sb.Append((Mathf.Clamp(stat.BaseValue, stat.MinValue, stat.MaxValue)).ToString("0.00"))
+                    .Append(" / ").Append(stat.MaxValue);
+            }
+            else
+            {
+                _sb.Append((Mathf.Clamp(Mathf.RoundToInt(stat.BaseValue), stat.MinValue, stat.MaxValue))
+                        .ToString("N"))
+                        .Append(" / ").Append(stat.MaxValue);
+            }
 
             statInfoText.text = _sb.ToString();
         }
