@@ -1,13 +1,7 @@
 using Unity.Hierarchy;
 using UnityEngine;
 
-public enum NodeType
-{
-    Default,
-    LevelUp,
-    Event,
-    None,
-}
+
 
 namespace Swift_Blade.Level.Portal
 {

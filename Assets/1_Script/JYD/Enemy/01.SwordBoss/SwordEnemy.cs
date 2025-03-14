@@ -13,8 +13,14 @@ namespace Swift_Blade.Enemy.Sword
         [Header("Head Info")]
         public GameObject[] heads;
         
+        [Header("Helmet Info")]
+        public GameObject[] helmets;
+        
         [Header("Chest Info")]
         public GameObject[] Chests;
+        
+        [Header("Chest Info")]
+        public GameObject[] Pants;
         
         [Header("Left Shoulder Info")]
         public GameObject[] LeftShoulders;
@@ -27,7 +33,10 @@ namespace Swift_Blade.Enemy.Sword
             base.Start();
             
             SetRandomPart(heads);
+            SetRandomPart(helmets);
             SetRandomPart(Chests);
+            SetRandomPart(Pants);
+            
             SetRandomPart(LeftShoulders,RightShoulders);
             
             SetRandomSword();
@@ -52,6 +61,8 @@ namespace Swift_Blade.Enemy.Sword
 
         private void SetRandomPart(GameObject[] parts)
         {
+            if(parts.Length == 0)return;
+            
             foreach (var part in parts)
             {
                 part.SetActive(false);

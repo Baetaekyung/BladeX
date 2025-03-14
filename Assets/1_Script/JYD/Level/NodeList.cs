@@ -3,6 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+public enum NodeType
+{
+    //default
+    Exp,
+    
+    //event
+    Event,
+    
+    //level Up
+    Point,
+    Challenge,
+    Store,
+    
+    //boss
+    Boss,
+    
+    None,
+}
+
 [Serializable]
 public struct Node
 {
@@ -67,10 +86,12 @@ namespace Swift_Blade.Level
         {
             nodeDictionary = new NodeDictionary(nodelist);
         }
-
+        
         public string GetNode(NodeType nodeType)
         {
+            //get random node            
             return nodeDictionary[nodeType];
         }
+        
     }
 }
