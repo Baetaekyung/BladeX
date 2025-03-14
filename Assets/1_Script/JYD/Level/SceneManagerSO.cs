@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    [CreateAssetMenu(fileName = "LevelClearEventSO", menuName = "SO/LevelClearEvent")]
+    [CreateAssetMenu(fileName = "SceneManager", menuName = "SO/Scene/SceneManager")]
     public class SceneManagerSO : ScriptableObject
     {
         public event Action LevelClearEvent;
