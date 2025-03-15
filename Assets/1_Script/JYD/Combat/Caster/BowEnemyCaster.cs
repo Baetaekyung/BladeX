@@ -18,7 +18,7 @@ namespace Swift_Blade.Combat.Caster
             Arrow arrow = MonoGenericPool<Arrow>.Pop();
             arrow.transform.position = firePos.transform.position;
             arrow.transform.rotation = Quaternion.LookRotation(firePos.transform.forward);
-            
+            arrow.Shot();
             
             return true;
         }

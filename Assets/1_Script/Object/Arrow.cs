@@ -13,9 +13,7 @@ namespace Swift_Blade.Pool
         private bool deadFlag;
         private void Awake()
         {
-            Vector3 velocity = transform.forward;
             rigidBody = GetComponent<Rigidbody>();
-            rigidBody.linearVelocity = velocity * speed;
         }
 
         private void Update()
@@ -27,23 +25,32 @@ namespace Swift_Blade.Pool
             }
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider other)
         {
             if (deadFlag) return;
             deadFlag = true;
             //do dead arrow stuff here
             
-            if (collision.gameObject.TryGetComponent(out PlayerHealth playerHealth))
+            if (other.gameObject.TryGetComponent(out PlayerHealth playerHealth))
             {
                 playerHealth.TakeDamage(new ActionData() { damageAmount = 1, stun = false });
+                MonoGenericPool<Arrow>.Push(this);
             }
         }
-
+        
         public void OnPopInitialize()
         {
             rigidBody.angularVelocity = Vector3.zero;
-            rigidBody.velocity = Vector3.zero;
+            rigidBody.linearVelocity = Vector3.zero;
+                        
             pushTimer = 0;
+        }
+        
+        public void Shot()
+        {
+            Vector3 velocity = transform.forward;
+            rigidBody.linearVelocity = velocity * speed;
+
         }
                 
     }

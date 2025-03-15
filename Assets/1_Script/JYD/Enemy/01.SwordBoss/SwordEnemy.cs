@@ -1,4 +1,3 @@
-using System;
 using Swift_Blade.Enemy.Boss.Sword;
 using UnityEngine;
 
@@ -51,10 +50,10 @@ namespace Swift_Blade.Enemy.Sword
             }
             
             int randIndex = UnityEngine.Random.Range(0, swords.Length);
-            sword = swords[randIndex];
+            weapon = swords[randIndex];
             
-            sword.SetActive(true);
-            sword.gameObject.name = swordName;    
+            weapon.SetActive(true);
+            weapon.gameObject.name = swordName;    
             
             (baseAnimationController as SwordEnemyAnimationController).Rebind();
         }

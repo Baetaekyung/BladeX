@@ -14018,7 +14018,7 @@ MonoBehaviour:
   parryEvents:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606645187405922877}
+      - m_Target: {fileID: 4658632682958390200}
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp
         m_MethodName: ChangeParryState
         m_Mode: 1
@@ -18854,9 +18854,10 @@ GameObject:
   - component: {fileID: 367271892949231015}
   - component: {fileID: 3294568256837781155}
   - component: {fileID: 1062021171754124941}
-  - component: {fileID: 1606645187405922877}
-  - component: {fileID: 9026629819011193845}
-  - component: {fileID: 37198835327133731}
+  - component: {fileID: 6774926829503876658}
+  - component: {fileID: 4658632682958390200}
+  - component: {fileID: 5176809234258255014}
+  - component: {fileID: 4373479783955632218}
   m_Layer: 7
   m_Name: TrashMobSpear
   m_TagString: Untagged
@@ -18990,44 +18991,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Graph: {fileID: -8100337668574242599, guid: 27d84298a52390946a46586729a9b03a, type: 2}
+  m_Graph: {fileID: -8100337668574242599, guid: 6df83e71a98dec449a8ad92a4c48e8b1, type: 2}
   m_BlackboardVariableOverridesList:
-  - rid: 2285474097556357490
-  - rid: 1607273058493268000
-  - rid: 1607273377352123009
-  - rid: 1607273058493268002
-  - rid: 2781718363940586414
-  - rid: 2781718363940586415
-  - rid: 2781718363940586416
-  - rid: 2781718363940586417
+  - rid: 6383923183999254843
+  - rid: 6383923183999254868
+  - rid: 6383923183999254869
+  - rid: 6383923190365159754
   references:
     version: 2
     RefIds:
-    - rid: 1607273058493268000
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 1823908589997029196
-          m_Value1: 16617269392962309977
-        Name: Target
-        m_Value: {fileID: 0}
-    - rid: 1607273058493268002
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 16842789263302442139
-          m_Value1: 15124673902740489662
-        Name: AttackDistance
-        m_Value: 3
-    - rid: 1607273377352123009
-      type: {class: 'BlackboardVariable`1[[ChangeBossState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 11937102824706042065
-          m_Value1: 10486772480902912100
-        Name: ChangeBossState
-        m_Value: {fileID: 0}
-    - rid: 2285474097556357490
+    - rid: 6383923183999254843
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -19035,15 +19008,15 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 2711587243227452591}
-    - rid: 2781718363940586414
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Caster.BaseBossCaster, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+    - rid: 6383923183999254868
+      type: {class: 'BlackboardVariable`1[[Swift_Blade.Enemy.BaseEnemyAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
-          m_Value0: 9477954891741127956
-          m_Value1: 18151398301787368271
-        Name: BossDamageCaster
-        m_Value: {fileID: 3498847551612479478}
-    - rid: 2781718363940586415
+          m_Value0: 17003141457256015539
+          m_Value1: 18031931821477734673
+        Name: AnimatorController
+        m_Value: {fileID: 5176809234258255014}
+    - rid: 6383923183999254869
       type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -19051,23 +19024,15 @@ MonoBehaviour:
           m_Value1: 8025144667599098049
         Name: Animator
         m_Value: {fileID: 6690900708578067814}
-    - rid: 2781718363940586416
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Enemy.BaseEnemyAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 17003141457256015539
-          m_Value1: 18031931821477734673
-        Name: AnimatorController
-        m_Value: {fileID: 9026629819011193845}
-    - rid: 2781718363940586417
+    - rid: 6383923190365159754
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
-          m_Value0: 13897812490964975154
-          m_Value1: 6349385616022663559
-        Name: MoveSpeed
-        m_Value: 6.5
---- !u!114 &1606645187405922877
+          m_Value0: 16842789263302442139
+          m_Value1: 15124673902740489662
+        Name: AttackDistance
+        m_Value: 3.5
+--- !u!114 &6774926829503876658
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19076,90 +19041,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2711587243227452591}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47de7c16339d4affbf35303bcc0780a0, type: 3}
+  m_Script: {fileID: 11500000, guid: c5d48c280d01c7b4e8bfb4226af1c632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnHitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 293848147114109080}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDeadEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 37198835327133731}
-        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Boss.Sword.SwordBoss, Assembly-CSharp
-        m_MethodName: DeadEvent
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  maxHealth: 1
-  currentHealth: 0
-  isDead: 0
-  BehaviorGraphAgent: {fileID: 1062021171754124941}
-  changeBossState: {fileID: 0}
---- !u!114 &9026629819011193845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2711587243227452591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab5454292fb003418ab15e3d914f48e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultAttackMoveSpeed: 8.8
-  animationEnd: 0
-  isManualRotate: 0
-  isManualMove: 0
-  maxAnimationSpeed: 1.3
-  minAnimationSpeed: 1
---- !u!114 &37198835327133731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2711587243227452591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3827d9b5ae9a6dc4dbee7b0443780b9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  moveSpeed: 4.8
-  rotateSpeed: 11.12
-  stopDistance: 3
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 256
-  checkForward: {fileID: 1205181387020574961}
-  whatIsWall:
-    serializedVersion: 2
-    m_Bits: 2048
-  maxDistance: 1.58
-  showGizmo: 1
-  sword: {fileID: 0}
-  swordName: SM_Wep_Sword_Large_01
-  swords:
+  weaponName: SM_Wep_Sword_Large_01
+  weapons:
   - {fileID: 5160643202854501949}
   - {fileID: 5448203082521744252}
   - {fileID: 4612428874602708468}
@@ -19185,19 +19071,112 @@ MonoBehaviour:
   - {fileID: 4233280410528551125}
   - {fileID: 1679452747280047545}
   - {fileID: 9147410743858899953}
+  RightShoulders:
+  - {fileID: 4659369683357636830}
+  - {fileID: 4969251524138416590}
+  - {fileID: 4335386827043959547}
+  LeftShoulders:
+  - {fileID: 4659369683357636830}
+  - {fileID: 4969251524138416590}
+  - {fileID: 4335386827043959547}
   Pants:
   - {fileID: 7387001606985443401}
   - {fileID: 5750094804625529245}
   - {fileID: 8621771305273088823}
   - {fileID: 4481350899437206146}
-  LeftShoulders:
-  - {fileID: 4659369683357636830}
-  - {fileID: 4969251524138416590}
-  - {fileID: 4335386827043959547}
-  RightShoulders:
-  - {fileID: 4659369683357636830}
-  - {fileID: 4969251524138416590}
-  - {fileID: 4335386827043959547}
+  RightLegs: []
+  leftLegs: []
+--- !u!114 &4658632682958390200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711587243227452591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a970b73a23fd204d93af0d5583e55dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnHitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 293848147114109080}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4373479783955632218}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.BaseEnemy, Assembly-CSharp
+        m_MethodName: DeadEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  maxHealth: 3
+  currentHealth: 0
+  isDead: 0
+  BehaviorGraphAgent: {fileID: 1062021171754124941}
+  changeBossState: {fileID: 0}
+--- !u!114 &5176809234258255014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711587243227452591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c119b932384cc3749ba253393b204855, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultAttackMoveSpeed: 8.1
+  animationEnd: 0
+  isManualRotate: 0
+  isManualMove: 0
+  maxAnimationSpeed: 1.3
+  minAnimationSpeed: 1
+--- !u!114 &4373479783955632218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711587243227452591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbf562604a0a48bf9ee639a7dab44ee7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  moveSpeed: 5.1
+  rotateSpeed: 11.61
+  stopDistance: 1.85
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 256
+  checkForward: {fileID: 1205181387020574961}
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 2048
+  maxDistance: 1.79
+  showGizmo: 0
+  weapon: {fileID: 0}
 --- !u!1 &2716848384297471201
 GameObject:
   m_ObjectHideFlags: 0

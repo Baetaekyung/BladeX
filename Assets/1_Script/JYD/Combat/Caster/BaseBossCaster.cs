@@ -70,7 +70,7 @@ namespace Swift_Blade.Combat.Caster
         {
             return transform.position + transform.forward * -_casterInterpolation * 2;
         }
-
+        
         public void DisableParryForCurrentAttack()
         {
             unParriableAttack?.Invoke();
@@ -84,7 +84,6 @@ namespace Swift_Blade.Combat.Caster
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(GetStartPosition() + transform.forward * _castingRange, _casterRadius);
             Gizmos.color = Color.white;
-
         }
     }
 }
