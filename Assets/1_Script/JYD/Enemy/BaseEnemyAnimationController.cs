@@ -11,7 +11,7 @@ namespace Swift_Blade.Enemy
         protected NavMeshAgent NavMeshAgent;
         
         protected BaseEnemy enemy;
-        protected LayerCaster layerCaster;
+        protected ICasterAble layerCaster;
 
         [SerializeField] [Range(1,60)] private float defaultAttackMoveSpeed;
         private float attackMoveSpeed;
@@ -28,11 +28,11 @@ namespace Swift_Blade.Enemy
             Animator = GetComponent<Animator>();
             enemy = GetComponent<BaseEnemy>();
             NavMeshAgent = GetComponent<NavMeshAgent>();
-            layerCaster = GetComponentInChildren<LayerCaster>();
+            layerCaster = GetComponentInChildren<ICasterAble>();
         }
         private void Cast()
         {
-            layerCaster.CastDamage();
+            layerCaster.Cast();
         }
           
         public void SetAnimationEnd() => animationEnd = true;

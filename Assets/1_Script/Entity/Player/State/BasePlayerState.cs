@@ -87,7 +87,7 @@ namespace Swift_Blade.FSM.States
         //protected sealed override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetAdditionalVelocity(value);
         protected sealed override void OnAttackTrigger()
         {
-            if (player.GetPlayerDamageCaster.CastDamage())
+            if (player.GetPlayerDamageCaster.Cast())
             {
                 player.GetEntityComponent<PlayerStatCompo>().GetStyleMeter.SuccessHit();
             }

@@ -1,12 +1,14 @@
-using System.Collections;
+using System;
 using UnityEngine;
 
-namespace Swift_Blade.Object
+namespace Swift_Blade.Pool
 {
-    public class Arrow : MonoBehaviour
+    public class Arrow : MonoBehaviour , IPoolable
     {
         [SerializeField] private float speed;
-
+        [SerializeField] private float pushTime;
+        private float pushTimer;
+        
         private Rigidbody rigidBody;
         private bool deadFlag;
         private void Awake()
@@ -15,18 +17,34 @@ namespace Swift_Blade.Object
             rigidBody = GetComponent<Rigidbody>();
             rigidBody.linearVelocity = velocity * speed;
         }
+
+        private void Update()
+        {
+            pushTimer += Time.deltaTime;
+            if (pushTimer > pushTime)
+            {
+                MonoGenericPool<Arrow>.Push(this);
+            }
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             if (deadFlag) return;
             deadFlag = true;
             //do dead arrow stuff here
-            Destroy(gameObject, 0.1f);
-
+            
             if (collision.gameObject.TryGetComponent(out PlayerHealth playerHealth))
             {
                 playerHealth.TakeDamage(new ActionData() { damageAmount = 1, stun = false });
             }
         }
 
+        public void OnPopInitialize()
+        {
+            rigidBody.angularVelocity = Vector3.zero;
+            rigidBody.velocity = Vector3.zero;
+            pushTimer = 0;
+        }
+                
     }
 }

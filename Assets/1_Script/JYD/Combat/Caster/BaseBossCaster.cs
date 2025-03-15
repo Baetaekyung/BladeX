@@ -13,7 +13,7 @@ namespace Swift_Blade.Combat.Caster
         [Space(10)] public UnityEvent parryEvents;
         public UnityEvent unParriableAttack;
         
-        public override bool CastDamage()
+        public override bool Cast()
         {
             OnCastEvent?.Invoke();
             
