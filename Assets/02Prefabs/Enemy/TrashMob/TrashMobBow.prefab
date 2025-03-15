@@ -1738,6 +1738,7 @@ MonoBehaviour:
   - rid: 6383923182837433313
   - rid: 6383923182837433314
   - rid: 6383923182837433315
+  - rid: 6383923194080788735
   references:
     version: 2
     RefIds:
@@ -1773,6 +1774,14 @@ MonoBehaviour:
           m_Value1: 15124673902740489662
         Name: AttackDistance
         m_Value: 9
+    - rid: 6383923194080788735
+      type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 4587477390239814325
+          m_Value1: 9138209511253205768
+        Name: EnemyHealth
+        m_Value: {fileID: 3549838609332126204}
 --- !u!114 &6260689719838969344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1882,6 +1891,19 @@ MonoBehaviour:
       - m_Target: {fileID: -4059651018620559840}
         m_TargetAssemblyTypeName: Swift_Blade.Enemy.BaseEnemy, Assembly-CSharp
         m_MethodName: DeadEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2499420712798203980}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.BowEnemyAnimationController,
+          Assembly-CSharp
+        m_MethodName: StopDrawBowstring
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

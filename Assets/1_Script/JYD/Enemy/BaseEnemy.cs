@@ -142,9 +142,10 @@ namespace Swift_Blade.Enemy
             owner?.TryNextEnemyCanSpawn();
             
             StopImmediately();
-                
-            weapon.AddComponent<EnemyWeapon>();
             collider.enabled = false;
+            
+            if(weapon != null)
+                weapon.AddComponent<EnemyWeapon>();
         }
         
         protected bool DetectForwardObstacle()

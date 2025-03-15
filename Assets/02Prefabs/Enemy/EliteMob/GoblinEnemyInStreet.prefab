@@ -32231,6 +32231,7 @@ MonoBehaviour:
   - rid: 3879321506256519318
   - rid: 3879321506256519320
   - rid: 2781718364554789815
+  - rid: 6383923194033865456
   references:
     version: 2
     RefIds:
@@ -32282,6 +32283,14 @@ MonoBehaviour:
           m_Value1: 8025144667599098049
         Name: Animator
         m_Value: {fileID: 519070926827355230}
+    - rid: 6383923194033865456
+      type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15252200985774186846
+          m_Value1: 6006074403945827629
+        Name: EnemyHealth
+        m_Value: {fileID: 4664362950419918974}
 --- !u!136 &7583609243381672223
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -32368,6 +32377,8 @@ MonoBehaviour:
   animationEnd: 0
   isManualRotate: 0
   isManualMove: 0
+  maxAnimationSpeed: 1.3
+  minAnimationSpeed: 1
   knockbackSpeed: 14
   isManualKnockback: 0
 --- !u!114 &3669204044569326016
@@ -32395,6 +32406,7 @@ MonoBehaviour:
     m_Bits: 2048
   maxDistance: 0.95
   showGizmo: 1
+  weapon: {fileID: 0}
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 64

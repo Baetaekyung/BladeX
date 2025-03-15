@@ -31946,8 +31946,8 @@ GameObject:
   - component: {fileID: 4033413054359988417}
   - component: {fileID: 3991919465998473168}
   - component: {fileID: 6837282425248631878}
-  - component: {fileID: 6405993487956724485}
   - component: {fileID: 8132421530998017649}
+  - component: {fileID: 6405993487956724485}
   - component: {fileID: 7719732985646483005}
   m_Layer: 7
   m_Name: GoblinBoss
@@ -32093,6 +32093,7 @@ MonoBehaviour:
   - rid: 2781718364404319153
   - rid: 2781718364404319154
   - rid: 2781718364618228301
+  - rid: 6383923194033864838
   references:
     version: 2
     RefIds:
@@ -32160,6 +32161,34 @@ MonoBehaviour:
           m_Value1: 8025144667599098049
         Name: Animator
         m_Value: {fileID: 4502871627910593828}
+    - rid: 6383923194033864838
+      type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16211676265174593259
+          m_Value1: 4783264038869002118
+        Name: EnemyHealth
+        m_Value: {fileID: 6405993487956724485}
+--- !u!114 &8132421530998017649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6279240284268919097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e41c1dd04d3de24aa6de84e8dc46743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultAttackMoveSpeed: 12
+  animationEnd: 0
+  isManualRotate: 0
+  isManualMove: 0
+  maxAnimationSpeed: 0
+  minAnimationSpeed: 0
+  knockbackSpeed: 40
+  isManualKnockback: 0
 --- !u!114 &6405993487956724485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32219,24 +32248,6 @@ MonoBehaviour:
   isDead: 0
   BehaviorGraphAgent: {fileID: 6837282425248631878}
   changeBossState: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
---- !u!114 &8132421530998017649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6279240284268919097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e41c1dd04d3de24aa6de84e8dc46743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultAttackMoveSpeed: 12
-  animationEnd: 0
-  isManualRotate: 0
-  isManualMove: 0
-  knockbackSpeed: 40
-  isManualKnockback: 0
 --- !u!114 &7719732985646483005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32262,6 +32273,7 @@ MonoBehaviour:
     m_Bits: 256
   maxDistance: 1.6
   showGizmo: 1
+  weapon: {fileID: 0}
   summonPrefab: {fileID: -6619329512110227562, guid: f4bedd91a9c4bdd47a5bd4271b27c777, type: 3}
   maxSummonCount: 3
   minSummonCount: 1

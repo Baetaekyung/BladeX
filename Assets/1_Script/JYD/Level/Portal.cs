@@ -1,7 +1,4 @@
-using Unity.Hierarchy;
 using UnityEngine;
-
-
 
 namespace Swift_Blade.Level.Portal
 {
@@ -12,11 +9,24 @@ namespace Swift_Blade.Level.Portal
         
         [SerializeField] private NodeType type;
         
+        private ParticleSystem particle;
+
+        private void Start()
+        {
+            particle = GetComponent<ParticleSystem>();
+        }
+
         public void Interact()
         {
             string nodeName = nodeList.GetNode(type);
-            
             sceneManager.LoadScene(nodeName);
         }
+
+        public void ActivePortal()
+        {
+            particle.Simulate(0);
+            particle.Play();
+        }
+        
     }
 }
