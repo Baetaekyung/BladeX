@@ -23,6 +23,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
 
         protected void Start()
         {
+            base.Start();
             damageCaster = caster as GolemBossCaster;
 
             MonoGenericPool<GroundCrack>.Initialize(groundCrackSO);

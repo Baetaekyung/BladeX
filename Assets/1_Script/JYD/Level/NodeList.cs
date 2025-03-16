@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Swift_Blade.Level.Portal;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public enum NodeType
@@ -13,7 +15,7 @@ public enum NodeType
     
     //level Up
     Point,
-    Challenge,
+    Challange,
     Store,
     
     //boss
@@ -26,51 +28,98 @@ public enum NodeType
 public struct Node
 {
     public NodeType nodeType;
+    public Portal portalPrefab;
     public string nodeName;
 }
 
 [Serializable]
 public class NodeDictionary
 {
-    private Dictionary<NodeType, List<string>> nodeList;
+    private Dictionary<NodeType, List<Node>> nodeList;
 
     public NodeDictionary(Node[] nodes)
     {
-        nodeList = new Dictionary<NodeType, List<string>>();
+        nodeList = new Dictionary<NodeType, List<Node>>();
 
         foreach (var item in nodes)
         {
             if (!nodeList.ContainsKey(item.nodeType))
             {
-                nodeList[item.nodeType] = new List<string>();
+                nodeList[item.nodeType] = new List<Node>();
             }
             
-            nodeList[item.nodeType].Add(item.nodeName);
+            nodeList[item.nodeType].Add(item);
         }
     }
 
-    public string this[NodeType nodeType]
+    private bool IsValidScene(string sceneName)
     {
-        get
+        if (string.IsNullOrEmpty(sceneName))
+            return false;
+        
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
-            if (nodeList.ContainsKey(nodeType))
-            {
-                return nodeList[nodeType][Random.Range(0, nodeList[nodeType].Count)];
-            }
-            Debug.LogError("유효하지 않은 Node에 접근하고 있습니다.");
-            return string.Empty;
+            string path = SceneUtility.GetScenePathByBuildIndex(i);
+            string scenePath = System.IO.Path.GetFileNameWithoutExtension(path);
+                        
+            if (scenePath == sceneName)
+                return true;
         }
-        set
+        return false;
+    }
+
+    public Node GetRandomNode(NodeType nodeType)
+    {
+        if (nodeList.ContainsKey(nodeType) && nodeList[nodeType].Count > 0)
         {
-            if (nodeList.ContainsKey(nodeType))
+            List<Node> nodes = nodeList[nodeType];
+
+            if (nodes.Count == 1 && nodes[0].nodeName == SceneManager.GetActiveScene().name)
             {
-                nodeList[nodeType].Add(value);
+                return nodes[0];
             }
-            else
+            
+            Node selectedNode;
+            do
             {
-                nodeList[nodeType] = new List<string> { value };
-            }
+                selectedNode = nodes[Random.Range(0, nodes.Count)];
+            } while (selectedNode.nodeName == SceneManager.GetActiveScene().name);
+                
+            if (IsValidScene(selectedNode.nodeName))
+                return selectedNode;
+
+            Debug.LogError("sceneName이 sceneList에 없습니다!");
+            return default;
         }
+
+        Debug.LogError("유효하지 않은 Node에 접근하고 있습니다.");
+        return default;
+    }
+
+    public List<NodeType> GetNodeTypes(int currentNodeIndex)
+    {
+        List<NodeType> nodes = new List<NodeType>();
+
+        if (currentNodeIndex >= 10)
+        {
+            nodes.Add(NodeType.Boss);
+        }
+        else if (currentNodeIndex >= 5)
+        {
+            nodes.Add(NodeType.Point);
+            nodes.Add(NodeType.Store);
+            nodes.Add(NodeType.Challange);
+        }
+        else
+        {
+            int random = Random.Range(0,100);
+            if (random < 20)
+                nodes.Add(NodeType.Event);            
+            
+            nodes.Add(NodeType.Exp);            
+        }
+        
+        return nodes;
     }
 }
 
@@ -81,17 +130,29 @@ namespace Swift_Blade.Level
     {
         [SerializeField] private Node[] nodelist;
         private NodeDictionary nodeDictionary;
+
+        private static int CURRENT_NODE_INDEX = 0;
         
         private void OnEnable()
         {
+            CURRENT_NODE_INDEX = 0;
+            
             nodeDictionary = new NodeDictionary(nodelist);
         }
         
-        public string GetNode(NodeType nodeType)
+        public Node[] GetNode()
         {
-            //get random node            
-            return nodeDictionary[nodeType];
+            List<NodeType> nodeTypes = nodeDictionary.GetNodeTypes(CURRENT_NODE_INDEX);
+            Node[] nodes = new Node[nodeTypes.Count];
+            
+            //Debug.Log(nodes.Length);
+            
+            for (int i = 0; i < nodeTypes.Count; i++)
+            {
+                nodes[i] = nodeDictionary.GetRandomNode(nodeTypes[i]);
+            }
+
+            return nodes;
         }
-        
     }
 }

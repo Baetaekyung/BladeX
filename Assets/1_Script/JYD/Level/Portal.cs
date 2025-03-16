@@ -5,28 +5,44 @@ namespace Swift_Blade.Level.Portal
     public class Portal : MonoBehaviour, IInteractable
     {
         [SerializeField] private SceneManagerSO sceneManager;
-        [SerializeField] private NodeList nodeList;
         
-        [SerializeField] private NodeType type;
+        [SerializeField] private bool isDefaultPortal;
         
         private ParticleSystem particle;
-
+        [SerializeField] private string sceneName;
+        
+        
         private void Start()
         {
-            particle = GetComponent<ParticleSystem>();
+            particle = GetComponentInChildren<ParticleSystem>();
+            particle.Play();
+            
+            //transform.LookAt(Camera.main.transform);
+            
+            if (isDefaultPortal)
+            {
+                particle.Simulate(0);
+                particle.Play();
+            }
+                       
         }
-
         public void Interact()
         {
-            string nodeName = nodeList.GetNode(type);
-            sceneManager.LoadScene(nodeName);
+            sceneManager.LoadScene(sceneName);
         }
 
         public void ActivePortal()
         {
-            particle.Simulate(0);
-            particle.Play();
+            /*particle.Simulate(0);
+            particle.Play();*/
         }
+
+        public void SetLoadScene(string _sceneName)
+        {
+            sceneName = _sceneName;
+        }
+        
+        
         
     }
 }
