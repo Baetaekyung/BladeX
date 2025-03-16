@@ -45,7 +45,8 @@ namespace Swift_Blade
         protected override void Awake()
         {
             base.Awake();
-            
+
+            playerInventory = playerInventory.Clone();
             InitializeSlots();
         }
 
@@ -64,6 +65,18 @@ namespace Swift_Blade
             }
 
             UpdateAllSlots();
+        }
+
+        private void Start()
+        {
+            Player.Instance.GetEntityComponent<PlayerHealth>()
+                .OnDeadEvent.AddListener(playerInventory.Initialize);
+        }
+
+        private void OnDisable()
+        {
+            Player.Instance.GetEntityComponent<PlayerHealth>()
+                .OnDeadEvent.AddListener(playerInventory.Initialize);
         }
 
         private void Update()

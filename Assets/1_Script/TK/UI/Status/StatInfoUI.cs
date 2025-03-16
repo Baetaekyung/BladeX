@@ -25,7 +25,10 @@ namespace Swift_Blade
         {
             OnStatChanged += SetStatInfoUI;
             upgradeButton.onClick.AddListener(UpgradeStat);
-            
+        }
+
+        private void Start()
+        {
             SetStatInfoUI();
         }
 
