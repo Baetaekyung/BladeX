@@ -15,6 +15,7 @@ namespace Swift_Blade.Enemy
         [Range(0,30)][SerializeField] protected float moveSpeed;
         [Range(0,20)][SerializeField] protected float rotateSpeed;
         [Range(0, 5)] [SerializeField] protected float stopDistance;
+        [SerializeField] private LayerMask whatIsGround;
         
         [Header("Detect Forward Info")]
         public Transform checkForward;
@@ -79,12 +80,16 @@ namespace Swift_Blade.Enemy
 
             if (baseAnimationController.isManualMove && !DetectForwardObstacle())
             {
+                bool isGround = Physics.Raycast(transform.position + Vector3.up * 1.2f, Vector3.down , out RaycastHit RaycastHit,  10, whatIsGround);
+                if (isGround == false)return;
+                
                 var distance = Vector3.Distance(transform.position, target.position);
-
+                
                 if (distance > stopDistance)
                 {
                     attackDestination = transform.position + transform.forward;
-
+                    attackDestination.y = RaycastHit.point.y;
+                    
                     transform.position = Vector3.MoveTowards(transform.position, attackDestination,
                         baseAnimationController.AttackMoveSpeed * Time.deltaTime);
                 }

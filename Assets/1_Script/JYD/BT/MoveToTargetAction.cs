@@ -19,7 +19,8 @@ public class MoveToTargetAction : Action
 
     [SerializeReference] public BlackboardVariable<float> meleeAttackDistance;
     [SerializeReference] public BlackboardVariable<float> attackDistance;
-
+    
+    
     private float distance;
 
     protected override Status OnStart()
@@ -43,7 +44,7 @@ public class MoveToTargetAction : Action
 
         Boss.Value.FactToTarget(Boss.Value.GetNextPathPoint());
         Agent.Value.SetDestination(targetPos);
-
+        
         distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
         distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
         

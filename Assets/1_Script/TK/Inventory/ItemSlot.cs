@@ -1,4 +1,5 @@
 using System;
+using Swift_Blade.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,16 +19,51 @@ namespace Swift_Blade
         public virtual void OnPointerDown(PointerEventData eventData)
         {
             //현재 드래그 중이면 이미 선택된 아이템이 존재한다는 뜻이므로 return
-            if (inventoryManager.IsDragging) return; 
+            if (inventoryManager.IsDragging) 
+                return; 
             //빈 슬롯인 경우에 클릭해도 의미가 없기 때문에 return
-            if (IsEmptySlot()) return;
-
+            if (IsEmptySlot())
+                return;
+            
             if (eventData.button == PointerEventData.InputButton.Right) //우클릭으로 사용
             {
                 if (_itemDataSO.itemType == ItemType.EQUIPMENT)
                 {
+                    if (inventoryManager.Inventory
+                        .currentEquipment.Contains(_itemDataSO.equipmentData))
+                    {
+                        PopupUI popup = PopupManager.Instance.GetPopupUI(PopupType.Text);
+                        TextPopup textPopup = (TextPopup)popup;
+                        textPopup.SetText("이미 장착중이다.");
+                        PopupManager.Instance.DelayPopup(PopupType.Text, 2f, () =>
+                        {
+                            PopupManager.Instance.PopDown(PopupType.Text);
+                        });
+
+                        inventoryManager.UpdateAllSlots();
+                        inventoryManager.DeselectItem();
+                    
+                        _useItem = true;
+                        
+                        return; //왜 리턴이 안돼는데
+                    }
+                    
+                    inventoryManager.Inventory.currentEquipment.Add(_itemDataSO.equipmentData);
+                    inventoryManager.GetEmptyEquipSlot().SetItemData(_itemDataSO);
+                    inventoryManager.Inventory.itemInventory.Remove(_itemDataSO);
+            
+                    inventoryManager.UpdateEquipInfoUI();
+            
+                    BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
+                    baseEquip?.OnEquipment();
+            
+                    _itemDataSO = null;
+                    
+                    inventoryManager.UpdateAllSlots();
+                    inventoryManager.DeselectItem();
+                    
                     _useItem = true;
-                    return; //일회용 아이템이 아니기 때문에 return
+                    return;
                 }
                 
                 _itemDataSO.itemObject.ItemEffect();
@@ -42,20 +78,17 @@ namespace Swift_Blade
                 return;
             }
             
-            inventoryManager.UpdateCursorUI(_itemDataSO); //커서에 UI 생성
+            inventoryManager.UpdateInfoUI(_itemDataSO);
             
             inventoryManager.IsDragging = true; //드래그 중이라고 표시하기
             inventoryManager.SelectedItem = _itemDataSO; //현재 선택된 아이템은 이 슬롯의 아이템
             
             _itemDataSO = null; //이 슬롯 비워주기
-            itemImage.sprite = emptySprite; //슬롯 UI 비워주기
-            
-            inventoryManager.UpdateAllSlots(); //슬롯 UI 적용시키기
         }
         
         public virtual void OnPointerEnter(PointerEventData eventData)
         {
-            inventoryManager.UpdateCursorUI(_itemDataSO); //커서에 UI 생성
+            inventoryManager.UpdateInfoUI(_itemDataSO);
             
             if (!inventoryManager.IsDragging) return; //드래그 중이 아닐때는 return
             if (_itemDataSO != null) //이 슬롯에 아이템이 존재할 경우는 Change 불가 (나중에 가능하게 만들기)
@@ -71,7 +104,7 @@ namespace Swift_Blade
 
         public virtual void OnPointerExit(PointerEventData eventData)
         {
-            inventoryManager.DisableCursor();
+            inventoryManager.UpdateInfoUI(null);
             
             if(!inventoryManager.IsDragging) return;
             if (inventoryManager.SelectedItem != _itemDataSO) return;
@@ -83,7 +116,7 @@ namespace Swift_Blade
 
         public virtual void OnPointerUp(PointerEventData eventData)
         {
-            inventoryManager.DisableCursor();
+            inventoryManager.UpdateInfoUI(null);
             
             if (inventoryManager.SelectedItem == null && IsEmptySlot())
                 return;

@@ -22,7 +22,7 @@ namespace Swift_Blade
             {
                 shootPosList.Add(t);
             }
-            StartCoroutine("Ming");
+            StartCoroutine(nameof(Ming));
         }
 
         private IEnumerator Ming()
@@ -34,7 +34,7 @@ namespace Swift_Blade
                 float throwedNansu = Random.Range(0f, 100f);
 
                 //만약 몇퍼센트 확률이라면 붐박스소환
-                nowObj = Instantiate(throwedNansu > 30f ? rock5 : boomBox, shootPosList[listNansu].position, Quaternion.identity);
+                nowObj = Instantiate(throwedNansu > 20f ? rock5 : boomBox, shootPosList[listNansu].position, Quaternion.identity);
 
                 bool compoExist = nowObj.TryGetComponent(out MinigameThrowed mt);
                 bool compoExistTest = nowObj.TryGetComponent(out Bomb bb);
@@ -44,11 +44,11 @@ namespace Swift_Blade
                     Debug.Log($"포스는 {dir} (포스기아님)");
                     if(mt)
                     {
-                        mt.SetDirection(dir);
+                        //mt.SetDirection(dir);
                     }
                     if(bb)
                     {
-                        bb.SetDirection(dir);
+                        //bb.SetDirection(dir);
                     }
                     Debug.Log("제가언제말이라도했습니까");
                 }
@@ -58,7 +58,7 @@ namespace Swift_Blade
 
                 //throwRock.GetComponent<BaseThrow>().SetDirection(Vector3.up);
                 //Debug.Log(throwRock.GetComponent<BaseThrow>());
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.5f);
             }
         }
     }

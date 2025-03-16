@@ -20,8 +20,8 @@ namespace Swift_Blade.UI
         {
             _raycaster = GetComponent<GraphicRaycaster>();
         }
-
-        private void OnDestroy()
+        
+        protected virtual void OnDestroy()
         {
             cG.DOKill();
         }
@@ -37,13 +37,13 @@ namespace Swift_Blade.UI
                 .SetEase(Ease.OutCirc);
             _raycaster.enabled = true;
         }
-
+        
         public virtual void PopDown()
         {
             _raycaster.enabled = false;
             cG.DOFade(0, _fadeTime).SetEase(Ease.OutCirc);
         }
-
+        
         //팝업하고 딜레이 이후 팝업 닫기
         #region Delay Popup
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Swift_Blade.Level;
 using Swift_Blade.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,11 +14,24 @@ namespace Swift_Blade
             = new SerializableDictionary<PopupType, PopupUI>();
         private List<PopupUI> _popupList = new List<PopupUI>();
         
+        public bool IsRemainPopup => _popupList.Count > 0;
+        public event Action OnPopUpOpenOrClose;
+        
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            if (popups.ContainsKey(PopupType.LevelClear) == false)
+            {
+                popups.Add(PopupType.LevelClear, FindObjectOfType<LevelUIController>());
+            }
+        }
+        
         private void Start()
         {
             InitPopups();
         }
-
+        
         private void InitPopups()
         {
             foreach (var popupUI in popups.Values)
@@ -54,6 +68,9 @@ namespace Swift_Blade
 
         private void StatusOpen()
         {
+            if (popups.ContainsKey(PopupType.Status) == false)
+                return;
+            
             if (Keyboard.current.oKey.wasPressedThisFrame)
             {
                 if (GetRemainPopup(PopupType.Status) != null)
@@ -69,6 +86,9 @@ namespace Swift_Blade
 
         private void OpenCloseInventory()
         {
+            if (popups.ContainsKey(PopupType.Inventory) == false)
+                return;
+            
             if (Keyboard.current.iKey.wasPressedThisFrame)
             {
                 if (GetRemainPopup(PopupType.Inventory) != null)
@@ -89,8 +109,9 @@ namespace Swift_Blade
             _popupList.Add(popups[popupType]);
             popups[popupType].Popup();
             popups[popupType].transform.SetAsLastSibling();
+            OnPopUpOpenOrClose?.Invoke();
         }
-
+        
         public void DelayPopup(PopupType popupType, float delay)
         {
             if (_popupList.Contains(popups[popupType])) return;
@@ -98,6 +119,7 @@ namespace Swift_Blade
             _popupList.Add(popups[popupType]);
             popups[popupType].DelayPopup(delay);
             popups[popupType].transform.SetAsLastSibling();
+            OnPopUpOpenOrClose?.Invoke();
         }
 
         public void DelayPopup(PopupType popupType, float delay, Action callback)
@@ -107,6 +129,7 @@ namespace Swift_Blade
             _popupList.Add(popups[popupType]);
             popups[popupType].DelayPopup(delay, callback);
             popups[popupType].transform.SetAsLastSibling();
+            OnPopUpOpenOrClose?.Invoke();
         }
         
         public void PopDown()
@@ -116,10 +139,12 @@ namespace Swift_Blade
                 PopupUI popup = _popupList.Last();
                 _popupList.RemoveAt(_popupList.Count - 1); 
                 popup.PopDown();
+                OnPopUpOpenOrClose?.Invoke();
             }
             else
             {
                 PopUp(PopupType.Option);
+                OnPopUpOpenOrClose?.Invoke();
             }
         }
 
@@ -144,14 +169,24 @@ namespace Swift_Blade
                 {
                     _popupList.RemoveAt(index);
                     popup.PopDown();
+                    OnPopUpOpenOrClose?.Invoke();
                 }
             }
             else
             {
                 PopUp(PopupType.Option);
+                OnPopUpOpenOrClose?.Invoke();
             }
         }
 
+        public void AllPopDown()
+        {
+            while (_popupList.Count != 0)
+            {
+                PopDown();
+            }
+        }
+        
         public PopupUI GetPopupUI(PopupType type)
         {
             if (popups.TryGetValue(type, out var popup) == false)
@@ -170,5 +205,7 @@ namespace Swift_Blade
         }
 
         public void OpenSettingPopup() => PopUp(PopupType.Setting);
+        //타이틀에선 Option이 나가기 도움 버튼
+        public void OpenQuitHelpPopup() => PopUp(PopupType.Option); 
     }
 }

@@ -57,6 +57,7 @@ namespace Swift_Blade
         public void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
         {
             _currentHealth = Mathf.Clamp(_currentHealth + healAmount, 0, _maxHealth);
+            Debug.Log($"Take Heal: {healAmount}");
         }
 
         public void Dead()
@@ -64,9 +65,8 @@ namespace Swift_Blade
             OnDeadEvent?.Invoke();
             isDead = true;
             
-            
+            PopupManager.Instance.AllPopDown();
             PopupManager.Instance.PopUp(PopupType.GameOver);
-            
         }
     }
 }

@@ -6,7 +6,6 @@ namespace Swift_Blade
     [CreateAssetMenu(fileName = "PlayerInventory", menuName = "SO/PlayerInventory")]
     public class PlayerInventory : ScriptableObject
     {
-        public int Currency { get; set; }
         public int currentInventoryCapacity;
         public int maxInventoryCapacity;
         
@@ -15,6 +14,8 @@ namespace Swift_Blade
         [HideInInspector] public List<ItemSlot> itemSlots;
         public List<EquipmentData> currentEquipment = new List<EquipmentData>();
         public List<EquipmentChannelSO> currentEquipmentEffects = new List<EquipmentChannelSO>();
+        
+        public int Currency { get; set; }
         
         private void OnEnable()
         {

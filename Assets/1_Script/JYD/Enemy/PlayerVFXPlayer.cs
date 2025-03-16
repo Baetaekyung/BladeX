@@ -1,21 +1,37 @@
+using System;
 using Swift_Blade.Pool;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
     public class PlayerVFXPlayer : MonoBehaviour,IEntityComponent
     {
-        [SerializeField] private PoolPrefabMonoBehaviourSO dustEffect;
-        [SerializeField] private PoolPrefabMonoBehaviourSO hitSlashEffect;
-        [SerializeField] private PoolPrefabMonoBehaviourSO parryEffect;
+        [SerializeField] private PoolPrefabMonoBehaviourSO dustParticle;
+        [SerializeField] private PoolPrefabMonoBehaviourSO hitSlashParticle;
+        [SerializeField] private PoolPrefabMonoBehaviourSO parryParticle;
         [SerializeField] private Transform parryParticleTrm;
-        private PlayerStatCompo _statCompo;
+        [SerializeField] private PoolPrefabMonoBehaviourSO levelUpParticle;
+        [SerializeField] private Transform levelUpEffectTrm;
         
+        private PlayerStatCompo _statCompo;
+
+        private void Start()
+        {
+            Player.LevelStat.OnLevelUp += LevelUpEffect;
+        }
+
+        private void OnDestroy()
+        {
+            Player.LevelStat.OnLevelUp -= LevelUpEffect;
+        }
+
         public void EntityComponentAwake(Entity entity)
         {
-            MonoGenericPool<Dust>.Initialize(dustEffect);
-            MonoGenericPool<HitSlash>.Initialize(hitSlashEffect);
-            MonoGenericPool<ParryParticle>.Initialize(parryEffect);
+            MonoGenericPool<Dust>.Initialize(dustParticle);
+            MonoGenericPool<HitSlash>.Initialize(hitSlashParticle);
+            MonoGenericPool<ParryParticle>.Initialize(parryParticle);
+            MonoGenericPool<LevelUpParticle>.Initialize(levelUpParticle);
         }
                 
         public void PlayDamageEffect(ActionData actionData)
@@ -37,6 +53,12 @@ namespace Swift_Blade
             HitSlash hitSlash = MonoGenericPool<HitSlash>.Pop();
             hitSlash.transform.position = parryParticleTrm.position;
         }
-                
+
+        private void LevelUpEffect(Player.LevelStat levelStat)
+        {
+            LevelUpParticle levelUpParticle = MonoGenericPool<LevelUpParticle>.Pop();
+            levelUpParticle.transform.position = levelUpEffectTrm.position;
+            
+        }
     }
 }

@@ -45,7 +45,7 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO anim_hitStun;
 
         [SerializeField] private AnimationParameterSO anim_dbg;
-
+        
         [Header("Combo")]
         [SerializeField] protected List<AttackComboSO> comboList;
         public EComboState[] dbg_comboHistory;
@@ -62,7 +62,6 @@ namespace Swift_Blade
         public class LevelStat
         {
             public static event Action<LevelStat> OnLevelUp;
-
             public int Experience { get; private set; }
             public int Level { get; private set; }
             public int StatPoint { get; set; }

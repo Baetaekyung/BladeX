@@ -2,19 +2,20 @@ using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
     public class HoverUI : MonoBehaviour
         ,IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private float _hoverTargetSize;
-        [SerializeField, Tooltip("1 / 애니메이션 속도")] private float _hoverAnimationSpeed;
-        private Tween _currentTween;
-        private RectTransform _rectTrm;
+        [FormerlySerializedAs("_hoverTargetSize")] [SerializeField] protected float animationScale;
+        [SerializeField, Tooltip("1 / 애니메이션 속도")] protected float _hoverAnimationSpeed;
+        protected RectTransform _rectTrm;
+        protected Tween _currentTween;
         private bool _isHovering;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _rectTrm = GetComponent<RectTransform>();
         }
@@ -29,7 +30,12 @@ namespace Swift_Blade
             
             _isHovering = true;
             
-            _rectTrm.DOScale(Vector3.one * _hoverTargetSize, 1 / _hoverAnimationSpeed)
+            HoverAnimation();
+        }
+
+        protected virtual void HoverAnimation()
+        {
+            _rectTrm.DOScale(Vector3.one * animationScale, 1 / _hoverAnimationSpeed)
                 .SetEase(Ease.InSine);
         }
 
@@ -43,11 +49,16 @@ namespace Swift_Blade
             
             _isHovering = false;
             
+            HoverAnimationEnd();
+        }
+
+        protected virtual void HoverAnimationEnd()
+        {
             _rectTrm.DOScale(Vector3.one, 1 / _hoverAnimationSpeed)
                 .SetEase(Ease.OutSine);
         }
 
-        public void SetHovering(bool isHovering)
+        public virtual void SetHovering(bool isHovering)
         {
             _isHovering = isHovering;
         }

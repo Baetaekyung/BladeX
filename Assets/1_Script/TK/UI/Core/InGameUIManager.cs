@@ -8,26 +8,26 @@ namespace Swift_Blade
 {
     public class InGameUIManager : MonoSingleton<InGameUIManager>
     {
-        [field: SerializeField] public CanvasGroup BossHealthBarUI { get; private set; }
+        [field: SerializeField] public GameObject BossHealthBarUI { get; private set; }
 
-        protected override void Awake()
+        [ContextMenu("Test")]
+        public void EnableBoss()
         {
-            base.Awake();
-            
-            EnableBossUIs(FindFirstObjectByType<BaseEnemy>() != null);
+            EnableBossUIs(true);
         }
-
+        
         public void EnableBossUIs(bool enable)
         {
             if (enable)
             {
-                BossHealthBarUI.alpha = 0;
                 BossHealthBarUI.gameObject.SetActive(true);
-                BossHealthBarUI.DOFade(1, 0.4f);
+                BossHealthBarUI.GetComponent<RectTransform>().DOAnchorPosY(-75, 0.7f)
+                    .SetEase(Ease.OutBounce);
             }
             else
             {
-                BossHealthBarUI.DOFade(0, 0.4f)
+                BossHealthBarUI.GetComponent<RectTransform>().DOAnchorPosY(110, 0.7f)
+                    .SetEase(Ease.Linear)
                     .OnComplete(() => BossHealthBarUI.gameObject.SetActive(false));
             }
         }

@@ -23,12 +23,12 @@ namespace Swift_Blade
             if (_isRewarded) //이미 보상을 받았음
             {
                 //이벤트 없이 다이얼로그만 진행
-                DialogueManager.Instance.DoDialogue(dialogueData).OnComplete(dialogueEndEvent);
+                DialogueManager.Instance.DoDialogue(dialogueData).OnAccept(dialogueEndEvent);
                 return;
             }
 
             DialogueManager.Instance.DoDialogue(dialogueData)
-                .OnComplete(() =>
+                .OnAccept(() =>
                 {
                     dialogueEndEvent?.Invoke();
                     HandleEndEventRegister();

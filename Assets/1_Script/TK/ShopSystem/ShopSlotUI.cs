@@ -29,8 +29,8 @@ namespace Swift_Blade
             _currentItem = newItem;
             _itemCount = count;
             
-            _buttonText.text = $"Buy - {_itemCost.ToString()}$";
-            remainCount.text = $"remain: {count.ToString()}";
+            _buttonText.text = $"{_itemCost.ToString()}ÄÚÀÎ";
+            remainCount.text = $"³²Àº °¹¼ö: {count.ToString()}";
             itemIcon.sprite = newItem.itemImage;
             itemNameText.text = newItem.itemName;
             itemDescriptionText.text = newItem.description;
@@ -69,7 +69,7 @@ namespace Swift_Blade
             BuyAnimation();
             
             _itemCount--;
-            remainCount.text = $"remain: {_itemCount.ToString()}";
+            remainCount.text = $"³²Àº °¹¼ö: {_itemCount.ToString()}";
             
             InventoryManager.Instance.AddItemToEmptySlot(_currentItem);
             inventory.currentInventoryCapacity++;

@@ -1,3 +1,4 @@
+using Unity.Behavior;
 using UnityEngine;
 
 namespace Swift_Blade.Enemy.Goblin
@@ -12,8 +13,11 @@ namespace Swift_Blade.Enemy.Goblin
         protected override void Start()
         {
             base.Start();
+            btAgent.SetVariableValue("Target", (Transform)null);
+            btAgent.enabled = false;
+
+            target = null;
             
-            btAgent.enabled = true;
             targets = new Collider[1];
         }
         
@@ -27,7 +31,7 @@ namespace Swift_Blade.Enemy.Goblin
                     target = findTarget;
                     btAgent.BlackboardReference.SetVariableValue("Target", target);
                     btAgent.enabled = true;
-                    
+                                        
                     /*var isIsLine = CanSeeTarget(findTarget);
 
                     if (isIsLine)
