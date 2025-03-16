@@ -23,6 +23,10 @@ namespace Swift_Blade.Enemy
         public float maxDistance;
         public bool showGizmo;
         
+        [Header("Weapon info")]
+        public GameObject weapon;
+        
+        
         protected Vector3 attackDestination;
         private Vector3 nextPathPoint;
         protected Collider collider;
@@ -34,7 +38,6 @@ namespace Swift_Blade.Enemy
 
         private EnemySpawner owner;
         
-
         protected virtual void Start()
         {
             btAgent = GetComponent<BehaviorGraphAgent>();
@@ -42,7 +45,7 @@ namespace Swift_Blade.Enemy
             baseHealth = GetComponent<BaseEnemyHealth>();
             collider = GetComponent<Collider>();
             baseAnimationController = GetComponentInChildren<BaseEnemyAnimationController>();
-
+            
             InitBtAgent();
         }
         
@@ -136,9 +139,12 @@ namespace Swift_Blade.Enemy
         public virtual void DeadEvent()
         {
             owner?.TryNextEnemyCanSpawn();
-                        
+            
             StopImmediately();
             collider.enabled = false;
+            
+            if(weapon != null)
+                weapon.AddComponent<EnemyWeapon>();
         }
         
         protected bool DetectForwardObstacle()

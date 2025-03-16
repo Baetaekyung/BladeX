@@ -4,12 +4,9 @@ namespace Swift_Blade
 {
     public class DefaultEquiptment : BaseEquipment
     {
-        public override void ItemEffect()
+        public override void ItemEffect(Player player)
         {
-        }
-
-        public override void Interact()
-        {
+            
         }
     }
 }

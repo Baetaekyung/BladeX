@@ -51,9 +51,7 @@ namespace Swift_Blade
                     inventoryManager.Inventory.currentEquipment.Add(_itemDataSO.equipmentData);
                     inventoryManager.GetEmptyEquipSlot().SetItemData(_itemDataSO);
                     inventoryManager.Inventory.itemInventory.Remove(_itemDataSO);
-            
-                    inventoryManager.UpdateEquipInfoUI();
-            
+                    
                     BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
                     baseEquip?.OnEquipment();
             
@@ -65,17 +63,17 @@ namespace Swift_Blade
                     _useItem = true;
                     return;
                 }
+                if (_itemDataSO.itemType == ItemType.ITEM)
+                {
+                    inventoryManager.UpdateQuickSlotUI(_itemDataSO);
+                    _itemDataSO = null;
+                    itemImage.sprite = emptySprite;
                 
-                _itemDataSO.itemObject.ItemEffect();
-                inventoryManager.Inventory.itemInventory.Remove(_itemDataSO);
+                    inventoryManager.UpdateAllSlots();
 
-                _itemDataSO = null;
-                itemImage.sprite = emptySprite;
-                
-                inventoryManager.UpdateAllSlots();
-
-                _useItem = true;
-                return;
+                    _useItem = true;
+                    return;
+                }
             }
             
             inventoryManager.UpdateInfoUI(_itemDataSO);

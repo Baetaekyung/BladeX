@@ -58,7 +58,7 @@ namespace Swift_Blade
             statMultiplierText.transform.DOShakeScale(1.2f, 0.14f);
             statMultiplierText.transform.DOShakeRotation(1f, 0.14f);
             
-            statMultiplierText.text = styleMeter.appliedMultiplier.ToString("0.00");
+            statMultiplierText.text = $"Meter: {styleMeter.appliedMultiplier:0.00}";
             // StyleMeterEffectChanged();
         }
 

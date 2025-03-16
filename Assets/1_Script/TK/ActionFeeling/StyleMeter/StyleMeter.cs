@@ -78,7 +78,6 @@ namespace Swift_Blade
         {
             _timeModifier = Mathf.Lerp(minTimeModifierValue, maxTimeModifierValue,
                 value / maxMultiplier);
-            Debug.Log(_timeModifier.Value);
         }
 
         public void TakeDamage()

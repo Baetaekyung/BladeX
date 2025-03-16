@@ -45,7 +45,6 @@ namespace Swift_Blade
                         baseEquip?.OffEquipment();
                         
                         inventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);
-                        inventoryManager.UpdateEquipInfoUI();
                         
                         inventoryManager.AddItemToEmptySlot(_itemDataSO);
                         SetItemData(null);
@@ -82,8 +81,6 @@ namespace Swift_Blade
             inventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);
             inventoryManager.Inventory.itemInventory.Add(_itemDataSO);
             SetItemData(null);
-            
-            inventoryManager.UpdateEquipInfoUI();
         }
 
 

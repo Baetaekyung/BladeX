@@ -15,13 +15,13 @@ namespace Swift_Blade
         public List<EquipmentData> currentEquipment = new List<EquipmentData>();
         public List<EquipmentChannelSO> currentEquipmentEffects = new List<EquipmentChannelSO>();
         
-        public int Currency { get; set; }
+        public int Coin { get; set; }
         
         private void OnEnable()
         {
 #if UNITY_EDITOR
             
-            Currency = 9999; //테스트 용도
+            Coin = 9999; //테스트 용도
             
 #endif
             

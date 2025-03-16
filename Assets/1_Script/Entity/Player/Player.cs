@@ -73,7 +73,6 @@ namespace Swift_Blade
         {
             comboList.Remove(attackComboSO);
         }
-
         #region PlayerComponentGetter
         public PlayerCamera GetPlayerCamera => GetEntityComponent<PlayerCamera>();
         public PlayerMovement GetPlayerMovement => GetEntityComponent<PlayerMovement>();
@@ -173,10 +172,10 @@ namespace Swift_Blade
                 }
             };
             GetEntityComponent<PlayerDamageCaster>().OnCastDamageEvent.AddListener(
-                (ActionData actionData) =>
-            {
-                onHitChannel.RaiseEvent();
-            });
+                (action) =>
+                {
+                    onHitChannel.RaiseEvent(this);
+                });
         }
         private void Update()
         {
@@ -200,7 +199,6 @@ namespace Swift_Blade
                 }
             }
 
-            mousePosition.position = GetPlayerInput.GetMousePositionWorld;
 
             Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))
