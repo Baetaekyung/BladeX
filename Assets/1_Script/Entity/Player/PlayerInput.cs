@@ -44,14 +44,14 @@ namespace Swift_Blade
                 GetInputDirectionRaw = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
                 GetInputDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
                 Vector3 mousePos = Input.mousePosition;
-                Ray mouseRay = playerCamera.GetStaticCamera.ScreenPointToRay(mousePos);
+                Ray mouseRay = playerCamera.GetPlayerCamera.ScreenPointToRay(mousePos);//GetStaticCamera.ScreenPointToRay(mousePos);
+                Debug.DrawRay(mouseRay.origin, mouseRay.direction * 20, Color.red);
                 if (plane.Raycast(mouseRay, out float distance))
                 {
                     Vector3 hitPoint = mouseRay.GetPoint(distance);
                     GetMousePositionWorld = hitPoint;
                     GetMouseDirection = hitPoint - playerMovement.transform.position;
                 }
-
             }
             LegacyInput();
         }

@@ -22,11 +22,11 @@ namespace Swift_Blade
     }
     public class Player : Entity
     {
-        public static Entity Instance { get; private set; }
+        public static Player Instance { get; private set; }
         [Header("General")]
         [SerializeField] private Transform playerTransform;
         [SerializeField] private LayerMask lm_interactable;
-
+        [SerializeField] private Transform mousePosition;
 
         [Header("Audio")]
         [SerializeField] private AudioCollection audioCollection;
@@ -47,9 +47,17 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO anim_dbg;
 
         [Header("Combo")]
-        [SerializeField] protected AttackComboSO[] comboList;
+        [SerializeField] protected List<AttackComboSO> comboList;
         public EComboState[] dbg_comboHistory;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
+        public void AddCombo(AttackComboSO attackComboSO)
+        {
+            comboList.Add(attackComboSO);
+        }
+        public void RemoveCombo(AttackComboSO attackComboSO)
+        {
+            comboList.Remove(attackComboSO);
+        }
 
         public class LevelStat
         {
@@ -150,7 +158,8 @@ namespace Swift_Blade
 
             PlayerHealth playerHealth = GetPlayerHealth;
 
-            playerHealth.OnHitEvent.AddListener((data) =>
+            playerHealth.OnHitEvent.AddListener(
+                (data) =>
             {
                 if (IsPlayerDead) return;
                 bool isHitStun = data.stun;
@@ -160,9 +169,9 @@ namespace Swift_Blade
             });
             playerHealth.OnDeadEvent.AddListener(
                 () =>
-                {
-                    playerStateMachine.ChangeState(PlayerStateEnum.Dead);
-                });
+            {
+                playerStateMachine.ChangeState(PlayerStateEnum.Dead);
+            });
             playerStateMachine.OnChangeState +=
                 (type) =>
             {
@@ -173,9 +182,9 @@ namespace Swift_Blade
             };
             GetEntityComponent<PlayerDamageCaster>().OnCastDamageEvent.AddListener(
                 (action) =>
-                {
-                    onHitChannel.RaiseEvent();
-                });
+            {
+                onHitChannel.RaiseEvent();
+            });
         }
         private void Update()
         {
@@ -199,6 +208,7 @@ namespace Swift_Blade
                 }
             }
 
+            mousePosition.position = GetPlayerInput.GetMousePositionWorld;
 
             Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))

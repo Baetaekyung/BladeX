@@ -189,6 +189,12 @@ namespace Swift_Blade
             }
         }
 
-        
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, transform.position + Vector3.up * bottomYOffset);
+            Vector3 pointYOffset = transform.position + Vector3.up * bottomYOffset;
+            Gizmos.DrawLine(pointYOffset, pointYOffset + Vector3.right);
+        }
     }
 }

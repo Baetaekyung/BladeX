@@ -59,6 +59,8 @@ namespace Swift_Blade.FSM.States
             //additionalZValue = 0;
 
             player.GetPlayerAnimator.GetAnimator.SetFloat("Z", anim_inputLocal.z);// + additionalZValue);
+
+            UI_DebugPlayer.DebugText(7, anim_inputLocalLerp, "animLocalLerp");
         }
         /// <summary>
         /// </summary>
