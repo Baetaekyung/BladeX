@@ -54,7 +54,7 @@ namespace Swift_Blade
             if (_currentItem == null)
                 return;
 
-            if (inventory.Currency < _itemCost)
+            if (inventory.Coin < _itemCost)
             {
                 Debug.Log("소유중인 자원이 Item의 가격보다 적음");
                 return;

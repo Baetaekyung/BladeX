@@ -11,8 +11,8 @@ namespace Swift_Blade
         public SerializableDictionary<StatType, float> statModifier
             = new SerializableDictionary<StatType, float>();
         [field: SerializeField] public EquipmentChannelSO EventChannel { get; private set; }
-        public string itemSerialCode; //스텟에 더할때 구별해주는 번호
-        public Sprite equipmentIcon;
+        [HideInInspector] public string                   itemSerialCode; //스텟에 더할때 구별해주는 번호
+        public Sprite                                     equipmentIcon;
 
 #if UNITY_EDITOR
 

@@ -6,11 +6,12 @@ namespace Swift_Blade
     {
         [SerializeField] private int value = 1;
         [SerializeField] private StatType targetStat;
-        public override void ItemEffect()
+        public override void ItemEffect(Player player)
         {
-            PlayerStatCompo psc = Player.Instance.GetEntityComponent<PlayerStatCompo>();
-            StatSO targetStatSO = psc.GetStat(targetStat);
-            psc.IncreaseBaseValue(targetStatSO, value);
+            // PlayerStatCompo psc = Player.Instance.GetEntityComponent<PlayerStatCompo>();
+            // StatSO targetStatSO = psc.GetStat(targetStat);
+            // psc.IncreaseBaseValue(targetStatSO, value);
+            Debug.Log("Item Use");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Swift_Blade
@@ -17,8 +18,9 @@ namespace Swift_Blade
     public class InventoryManager : MonoSingleton<InventoryManager>
     {
         //TODO: 나중에 UI랑 Manager기능 분리하기.
+        [FormerlySerializedAs("equipInfoUIs")]
         [Header("UI 부분")]
-        [SerializeField] private List<EquipInfoUI> equipInfoUIs = new(4);
+        [SerializeField] private QuickSlotUI quickSlotUI;
         [SerializeField] private List<EquipmentSlot> equipSlots;
 
         [Header("Item Information")]
@@ -37,6 +39,7 @@ namespace Swift_Blade
         
         public bool IsDragging { get => _isDragging; set => _isDragging = value; }
         public ItemDataSO SelectedItem { get; set; }
+        public ItemDataSO QuickSlotItem { get; set; }
         public PlayerInventory Inventory => playerInventory;
         
         protected override void Awake()
@@ -62,7 +65,18 @@ namespace Swift_Blade
 
             UpdateAllSlots();
         }
-        
+
+        private void Update()
+        {
+            //임시 퀵슬롯 키
+            if (Input.GetKeyDown(KeyCode.Alpha1)) 
+            {
+                QuickSlotItem.itemObject.ItemEffect(Player.Instance as Player);
+                QuickSlotItem = null;
+                UpdateQuickSlotUI(null);
+            }
+        }
+
         public void UpdateAllSlots()
         {
             for (int i = 0; i < itemSlots.Count; i++)
@@ -137,17 +151,22 @@ namespace Swift_Blade
             return false;
         }
 
-        public void UpdateEquipInfoUI()
+        public void UpdateQuickSlotUI(ItemDataSO itemData)
         {
-            for (int j = 0; j < equipInfoUIs.Count; j++)
+            if (itemData == null)
             {
-                equipInfoUIs[j].SetIcon(null);
+                quickSlotUI.SetIcon(null);
+                return;
             }
             
-            for (int i = 0; i < Inventory.currentEquipment.Count; i++)
+            if (QuickSlotItem != null)
             {
-                equipInfoUIs[i].SetIcon(Inventory.currentEquipment[i].equipmentIcon);
+                ItemSlot newSlot = GetEmptySlot();
+                newSlot.SetItemData(itemData);
             }
+            
+            quickSlotUI.SetIcon(itemData.itemImage);
+            QuickSlotItem = itemData;
         }
     }
 }

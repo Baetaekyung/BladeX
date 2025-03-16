@@ -42,7 +42,7 @@ namespace Swift_Blade
 
         public void GameFinishToAddCoin()
         {
-            invenSO.Currency += coinValue;
+            invenSO.Coin += coinValue;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Swift_Blade
         private void Update()
         {
             if(Input.GetKeyDown(KeyCode.P))
-                channel.RaiseEvent();
+                channel.RaiseEvent((Player)Player.Instance);
         }
     }
 }

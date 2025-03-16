@@ -59,8 +59,6 @@ namespace Swift_Blade.UI
             int emptyHealth = intMaxHealth - Mathf.RoundToInt(currentHealth);
             int fullHealth = intMaxHealth - emptyHealth;
             
-            Debug.Log(fullHealth);
-            
             for (int i = 0; i < fullHealth; i++)
             {
                 GameObject icon = Instantiate(fullHealthPrefab, healthUI);

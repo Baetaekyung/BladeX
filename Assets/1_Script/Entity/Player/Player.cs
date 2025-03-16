@@ -173,7 +173,7 @@ namespace Swift_Blade
             GetEntityComponent<PlayerDamageCaster>().OnCastDamageEvent.AddListener(
                 (action) =>
                 {
-                    onHitChannel.RaiseEvent();
+                    onHitChannel.RaiseEvent(this);
                 });
         }
         private void Update()
