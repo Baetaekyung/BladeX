@@ -40,8 +40,14 @@ namespace Swift_Blade.Pool
                 MonoGenericPool<Arrow>.Push(this);
             }
         }
-        
-        public void OnPopInitialize()
+                
+        public void Shot()
+        {
+            Vector3 velocity = transform.forward;
+            rigidBody.linearVelocity = velocity * speed;
+        }
+
+        public void OnPop()
         {
             rigidBody.angularVelocity = Vector3.zero;
             rigidBody.linearVelocity = Vector3.zero;
@@ -51,12 +57,5 @@ namespace Swift_Blade.Pool
             pushTimer = 0;
         }
         
-        public void Shot()
-        {
-            Vector3 velocity = transform.forward;
-            rigidBody.linearVelocity = velocity * speed;
-
-        }
-                
     }
 }
