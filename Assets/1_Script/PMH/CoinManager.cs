@@ -26,18 +26,16 @@ namespace Swift_Blade
                 Destroy(Instance);
             }
         }
-        private void Update()
-        {
-            coinText.text = coinValue + " Coin";
-        }
 
         public void DiscountCoin()
         {
             coinValue -= missCount;
+            coinText.text = coinValue + " Coin";
         }
-        public void AddedCountCoin()
+        public void AddedCountCoin(int setCoinValue = 50)
         {
-            coinValue += missCount;
+            coinValue += setCoinValue;
+            coinText.text = coinValue + " Coin";
         }
 
         public void GameFinishToAddCoin()

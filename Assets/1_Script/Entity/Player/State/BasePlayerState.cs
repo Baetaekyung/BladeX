@@ -12,7 +12,7 @@ namespace Swift_Blade.FSM.States
         protected readonly PlayerInput playerInput;
 
         //private static float additionalZValue;
-        protected static Vector3 inputLocalLerp;
+        protected static Vector3 anim_inputLocalLerp;
         protected virtual bool BaseAllowAttackInput { get; } = true;
         protected virtual bool BaseAllowParryInput { get; } = true;
         protected virtual bool BaseAllowDashInput { get; } = true;
@@ -44,19 +44,23 @@ namespace Swift_Blade.FSM.States
             //    GetOwnerFsm.ChangeState(PlayerStateEnum.Dead);
 
             //movement
-            Vector3 resultInput = playerInput.GetInputDirectionRawRotated.normalized;
-            Vector3 resultAnimatorInput = playerInput.GetInputDirectionRawRotated;
-            inputLocalLerp = Vector3.MoveTowards(inputLocalLerp, resultAnimatorInput, Time.deltaTime * 8);
-            player.GetPlayerMovement.InputDirection = resultInput;
+            Quaternion CameraRotation = playerInput.CameraRotationOnlyY;
+            Vector3 localInput = playerInput.GetInputDirectionRaw;
+            Vector3 resultVector = CameraRotation * localInput;
+            player.GetPlayerMovement.InputDirection = resultVector;
 
             //animator
+            Vector3 resultAnimatorInput = resultVector;
+            anim_inputLocalLerp = Vector3.MoveTowards(anim_inputLocalLerp, resultAnimatorInput, Time.deltaTime * 8);
             Transform playerTransform = player.GetPlayerRenderer.GetPlayerVisualTrasnform;
-            Vector3 inputLocal = playerTransform.InverseTransformDirection(inputLocalLerp);
-            Debug.DrawRay(Vector3.zero, inputLocal, Color.red, 0.1f);
-            player.GetPlayerAnimator.GetAnimator.SetFloat("X", inputLocal.x);
+            Vector3 anim_inputLocal = playerTransform.InverseTransformDirection(anim_inputLocalLerp);
+            Debug.DrawRay(Vector3.zero, anim_inputLocal, Color.red, 0.1f);
+            player.GetPlayerAnimator.GetAnimator.SetFloat("X", anim_inputLocal.x);
             //additionalZValue = 0;
 
-            player.GetPlayerAnimator.GetAnimator.SetFloat("Z", inputLocal.z);// + additionalZValue);
+            player.GetPlayerAnimator.GetAnimator.SetFloat("Z", anim_inputLocal.z);// + additionalZValue);
+
+            UI_DebugPlayer.DebugText(7, anim_inputLocalLerp, "animLocalLerp");
         }
         /// <summary>
         /// </summary>
@@ -78,7 +82,7 @@ namespace Swift_Blade.FSM.States
         protected override void OnAnimationEndTrigger()
         {
             GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
-        } 
+        }
         protected sealed override void OnSpeedMultiplierDefaultTrigger(float set) => playerMovement.SpeedMultiplierDefault = set;
         protected override void OnAudioPlayTrigger(AudioSO audioSO)
         {
