@@ -100,11 +100,12 @@ public class NodeDictionary
     {
         List<NodeType> nodes = new List<NodeType>();
 
-        if (currentNodeIndex >= 10)
+        
+        if (currentNodeIndex % 10 == 0)
         {
             nodes.Add(NodeType.Boss);
         }
-        else if (currentNodeIndex >= 5)
+        else if (currentNodeIndex % 5 == 0)
         {
             nodes.Add(NodeType.Point);
             nodes.Add(NodeType.Store);
@@ -113,7 +114,7 @@ public class NodeDictionary
         else
         {
             int random = Random.Range(0,100);
-            if (random < 20)
+            if (random < 15)
                 nodes.Add(NodeType.Event);            
             
             nodes.Add(NodeType.Exp);            
@@ -142,7 +143,7 @@ namespace Swift_Blade.Level
         
         public Node[] GetNode()
         {
-            List<NodeType> nodeTypes = nodeDictionary.GetNodeTypes(CURRENT_NODE_INDEX);
+            List<NodeType> nodeTypes = nodeDictionary.GetNodeTypes(++CURRENT_NODE_INDEX);
             Node[] nodes = new Node[nodeTypes.Count];
             
             //Debug.Log(nodes.Length);

@@ -16,13 +16,17 @@ namespace Swift_Blade.Level.Portal
         {
             particle = GetComponentInChildren<ParticleSystem>();
             particle.Play();
-            
-            //transform.LookAt(Camera.main.transform);
-            
+                                    
             if (isDefaultPortal)
             {
                 particle.Simulate(0);
                 particle.Play();
+            }
+            else
+            {
+                Vector3 direction = Camera.main.transform.position - transform.position;
+                direction.y = 0; 
+                transform.rotation = Quaternion.LookRotation(direction);
             }
                        
         }
