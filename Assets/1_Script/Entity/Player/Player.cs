@@ -23,10 +23,26 @@ namespace Swift_Blade
     public class Player : Entity
     {
         public static Player Instance { get; private set; }
+        public static event Action OnDead;
+        public bool IsPlayerDead { get; private set; }
+        //public bool IsInteractable { get; private set; }
+
+        public static event Action Debug_Updt;
+        private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
+        private PlayerAttackState playerAttackState;
+
+        public static LevelStat level = new LevelStat();
+
+        private readonly RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
+
+        private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
+        private GameObject interactable;
+        private Tween playerInvincibleTween;
+
         [Header("General")]
         [SerializeField] private Transform playerTransform;
-        [SerializeField] private LayerMask lm_interactable;
         [SerializeField] private Transform mousePosition;
+        [SerializeField] private LayerMask lm_interactable;
 
         [Header("Audio")]
         [SerializeField] private AudioCollection audioCollection;
@@ -48,7 +64,6 @@ namespace Swift_Blade
         
         [Header("Combo")]
         [SerializeField] protected List<AttackComboSO> comboList;
-        public EComboState[] dbg_comboHistory;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
         public void AddCombo(AttackComboSO attackComboSO)
         {
@@ -58,6 +73,17 @@ namespace Swift_Blade
         {
             comboList.Remove(attackComboSO);
         }
+
+        #region PlayerComponentGetter
+        public PlayerCamera GetPlayerCamera => GetEntityComponent<PlayerCamera>();
+        public PlayerMovement GetPlayerMovement => GetEntityComponent<PlayerMovement>();
+        public PlayerInput GetPlayerInput => GetEntityComponent<PlayerInput>();
+        public PlayerRenderer GetPlayerRenderer => GetEntityComponent<PlayerRenderer>();
+        public PlayerAnimator GetPlayerAnimator => GetEntityComponent<PlayerAnimator>();
+        public PlayerDamageCaster GetPlayerDamageCaster => GetEntityComponent<PlayerDamageCaster>();
+        public PlayerParryController GetPlayerParryController => GetEntityComponent<PlayerParryController>();
+        public PlayerHealth GetPlayerHealth => GetEntityComponent<PlayerHealth>();
+        #endregion
 
         public class LevelStat
         {
@@ -87,37 +113,7 @@ namespace Swift_Blade
             }
         }
 
-        //[SerializeField] private AnimationParameterSO[] comboParamHash;
-        //[SerializeField] private Vector3[] comboForceList;
-        //[SerializeField] private float[] periods;
-        //
-        //public IReadOnlyList<AnimationParameterSO> GetComboHashAtk => comboParamHash;
-        //public IReadOnlyList<Vector3> GetComboForceList => comboForceList;
-        //public IReadOnlyList<float> GetPeriods => periods;
-        public bool IsPlayerDead { get; private set; }
-        public bool IsInteractable { get; private set; }
-        #region PlayerComponentGetter
-        public PlayerCamera GetPlayerCamera => GetEntityComponent<PlayerCamera>();
-        public PlayerMovement GetPlayerMovement => GetEntityComponent<PlayerMovement>();
-        public PlayerInput GetPlayerInput => GetEntityComponent<PlayerInput>();
-        public PlayerRenderer GetPlayerRenderer => GetEntityComponent<PlayerRenderer>();
-        public PlayerAnimator GetPlayerAnimator => GetEntityComponent<PlayerAnimator>();
-        public PlayerDamageCaster GetPlayerDamageCaster => GetEntityComponent<PlayerDamageCaster>();
-        public PlayerParryController GetPlayerParryController => GetEntityComponent<PlayerParryController>();
-        public PlayerHealth GetPlayerHealth => GetEntityComponent<PlayerHealth>();
-        #endregion
 
-        public static event Action Debug_Updt;
-        private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
-        private PlayerAttackState playerAttackState;
-
-        public static LevelStat level = new LevelStat();
-
-        private RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
-
-        private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
-        private GameObject interactable;
-        private Tween playerInvincibleTween;
         protected override void Awake()
         {
             base.Awake();
@@ -135,15 +131,11 @@ namespace Swift_Blade
             PlayerRollState playerRollState = new PlayerRollState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_roll);
             playerStateMachine.AddState(PlayerStateEnum.Roll, playerRollState);
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
-            PlayerDeadState playerDeadState = new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death);
-            playerStateMachine.AddState(PlayerStateEnum.Dead, playerDeadState);
+            playerStateMachine.AddState(PlayerStateEnum.Dead, new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death));
             playerStateMachine.AddState(PlayerStateEnum.HitStun, new PlayerHitStunState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_hitStun));
             playerStateMachine.SetStartState(PlayerStateEnum.Move);
-            playerDeadState.OnPlayerDead += () =>
-            {
-                IsPlayerDead = true;
-            };
-            playerRollState.OnRollEnd += () =>
+            playerRollState.OnRollEnd += 
+                () =>
             {
                 GetPlayerHealth.IsPlayerInvincible = true;
                 StatSO dashInvincibleTimeStat = GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DASH_INVINCIBLE_TIME);
@@ -158,7 +150,7 @@ namespace Swift_Blade
             PlayerHealth playerHealth = GetPlayerHealth;
 
             playerHealth.OnHitEvent.AddListener(
-                (data) =>
+                (ActionData data) =>
             {
                 if (IsPlayerDead) return;
                 bool isHitStun = data.stun;
@@ -170,9 +162,10 @@ namespace Swift_Blade
                 () =>
             {
                 playerStateMachine.ChangeState(PlayerStateEnum.Dead);
+                IsPlayerDead = true;
             });
             playerStateMachine.OnChangeState +=
-                (type) =>
+                (PlayerStateEnum type) =>
             {
                 if (type == PlayerStateEnum.Roll || type == PlayerStateEnum.HitStun)
                 {
@@ -180,7 +173,7 @@ namespace Swift_Blade
                 }
             };
             GetEntityComponent<PlayerDamageCaster>().OnCastDamageEvent.AddListener(
-                (action) =>
+                (ActionData actionData) =>
             {
                 onHitChannel.RaiseEvent();
             });
@@ -189,8 +182,8 @@ namespace Swift_Blade
         {
             playerStateMachine.UpdateState();
 
-            if (Input.GetKeyDown(KeyCode.Z))
-                AudioEmitter.Dbg2();
+            //if (Input.GetKeyDown(KeyCode.Z))
+            //    AudioEmitter.Dbg2();
 
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
@@ -212,12 +205,6 @@ namespace Swift_Blade
             Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))
                 UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
-            //UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
-            //if (Input.GetKeyDown(KeyCode.F))
-            //{
-            //    GetPlayerAnimator.GetAnimator.Rebind();
-            //    GetPlayerAnimator.GetAnimator.Play(anim_death.GetAnimationHash, -1);
-            //}
         }
         private void FixedUpdate()
         {
