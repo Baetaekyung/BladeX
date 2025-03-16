@@ -12,14 +12,14 @@ namespace Swift_Blade
             breakableObject.OnDeadStart += OnDeadStart;
             breakableObject.OnGameObjectDestroy += OnGameObjectDestroy;
         }
-        private void OnDeadStart()
+        private void OnDeadStart(BreakableObject _)
         {
             brokenModel.SetActive(true);
             FireBaseAction();
             //if(audioEmitter != null)
             //    audioEmitter.Play();
         }
-        private void OnGameObjectDestroy()
+        private void OnGameObjectDestroy(BreakableObject _)
         {
             Destroy(gameObject);
         }

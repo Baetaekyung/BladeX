@@ -7,8 +7,8 @@ namespace Swift_Blade
     public class BreakableObject : MonoBehaviour, IDamageble
     {
         public event Action<float> OnHit;
-        public event Action OnDeadStart;
-        public event Action OnGameObjectDestroy;
+        public event Action<BreakableObject> OnDeadStart;
+        public event Action<BreakableObject> OnGameObjectDestroy;
 
         public float delayDead = 1;
         public float health = 10;
@@ -21,7 +21,7 @@ namespace Swift_Blade
                 () =>
             {
                 Destroy(gameObject);
-                OnGameObjectDestroy?.Invoke();
+                OnGameObjectDestroy?.Invoke(this);
             }, false);
         }
         void IDamageble.TakeDamage(ActionData actionData)
@@ -35,7 +35,7 @@ namespace Swift_Blade
             {
                 deadFlag = true;
                 gameObject.SetActive(false);
-                OnDeadStart?.Invoke();
+                OnDeadStart?.Invoke(this);
                 DelayDead();
             }
         }

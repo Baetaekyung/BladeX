@@ -1,13 +1,11 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
-using System.Collections.Generic;
-using System.Collections;
 using UnityEngine.Events;
 
 namespace Swift_Blade
 {
-
+    
     public class PressurePlate : MonoBehaviour
     {
         //todo : https://discussions.unity.com/t/fix-ontriggerexit-will-now-be-called-for-disabled-gameobjects-colliders/738523
@@ -28,19 +26,21 @@ namespace Swift_Blade
         private bool exitFlag;      //flag for exitFire
 
         private Tween tween;
-        private void OnTriggerEnter(Collider other)
+        //private void OnTriggerEnter(Collider other)
+        //{
+        //    
+        //}
+        private void OnTriggerStay(Collider other)
         {
-            if (exitFlag) return;   
             if (hasContact) return;
 
             hasContact = true;
+
+            if (exitFlag) return;
+
             OnPressed?.Invoke();
             UE_Onpressed.Invoke();
             OnChange(true);
-        }
-        private void OnTriggerStay(Collider other)
-        {
-            hasContact = true;
         }
         private void OnTriggerExit(Collider other)
         {
@@ -66,7 +66,11 @@ namespace Swift_Blade
         }
         private void OnChange(bool isPressed)
         {
-            if (tween != null) tween.Kill();
+            if (tween != null)
+            {
+                tween.Kill();
+            }
+
             float duration = isPressed ? 0.2f : 0.1f;
             float endValue = isPressed ? Y_PRESSED : Y_UNPRESSED;
             tween = floor.DOLocalMoveY(endValue, duration);
