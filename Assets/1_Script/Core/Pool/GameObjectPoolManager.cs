@@ -22,8 +22,8 @@ namespace Swift_Blade.Pool
             int hash = prefabSO.GetHash;
             GameObject prefab = prefabSO.GetPrefab;
 
-            bool collisionCheck = !gameObjectPoolDictionary.ContainsKey(prefabSO.GetHash);
-            Debug.Assert(collisionCheck, $"Trying to add a key that has been added to the dictionary. {prefab.name}{hash}");
+            bool collisionCheckPoolMap = !gameObjectPoolDictionary.ContainsKey(prefabSO.GetHash);
+            Debug.Assert(collisionCheckPoolMap, $"Trying to add a key that has been added to the dictionary. {prefab.name}{hash}");
 
             CreateDictionary(prefabSO);
         }

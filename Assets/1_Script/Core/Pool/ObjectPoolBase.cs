@@ -12,7 +12,6 @@ namespace Swift_Blade.Pool
             collisionCheck = true;
         }
 #endif  
-
     }
 
     public abstract class ObjectPoolBase<T>

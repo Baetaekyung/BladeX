@@ -14,7 +14,9 @@ namespace Swift_Blade.Audio
 
         [Header("Preplaced")]
         [SerializeField] private AudioSO defaultAudioSO;
+        [SerializeField] private bool overrideVolume;
         private bool prePlaced = true;
+
 
         [Header("General")]
         private AudioSource audioSource;
@@ -187,12 +189,12 @@ namespace Swift_Blade.Audio
             audioSource.clip = audioSO.clip;
             audioSource.outputAudioMixerGroup = audioSO.audioMixerGroup;
 
-            //audioSource3D.loop
-            //playoneshot
+            //preplaced settings
+            if(!overrideVolume)
+                audioSource.volume = audioSO.volume;
             if (prePlaced) return;
 
             audioSource.priority = audioSO.priority;
-            audioSource.volume = audioSO.volume;
             audioSource.pitch = audioSO.pitch;
             audioSource.panStereo = audioSO.streoPan;
             audioSource.spatialBlend = audioSO.GetSpatialBlend;

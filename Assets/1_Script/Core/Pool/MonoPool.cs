@@ -5,7 +5,6 @@ namespace Swift_Blade.Pool
     internal class MonoPool<T> : UnityObjectPool<T>
         where T : MonoBehaviour, IPoolable
     {
-        //protected override string PoolParentName => $"MonoPool_{typeof(T)}";
         public MonoPool(T prefab, int initialPoolCapacity = 100, int maxCapacity = 1000, int preCreate = 10) : base(prefab, initialPoolCapacity, maxCapacity, preCreate)
         {
             UnityObjectPool.SceneChangePoolDestroyEvent += base.Clear;

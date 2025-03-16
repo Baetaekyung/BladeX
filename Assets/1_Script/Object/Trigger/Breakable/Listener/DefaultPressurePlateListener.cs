@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class DefaultPressurePlateListener : MonoBehaviour
+    public class DefaultPressurePlateListener : ListenerBase
     {
         [SerializeField] private PressurePlate pressurePlate;
         [SerializeField] private GameObject objectToSpawn;
@@ -13,6 +13,7 @@ namespace Swift_Blade
         private void OnPressed()
         {
             Instantiate(objectToSpawn, transform.position, transform.rotation);
+            FireBaseAction();
         }
         private void OnDrawGizmosSelected()
         {
