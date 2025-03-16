@@ -7,8 +7,6 @@ namespace Swift_Blade.Enemy.Boss.Reaper
         [HideInInspector] public ReaperBossAnimatorController _reaperAnimatorController;
         
         private Vector3 lastPosition;
-        public GameObject weapon;
-        
         public BoxCollider knockbackCollider;
         
         protected override void Start()
@@ -61,11 +59,6 @@ namespace Swift_Blade.Enemy.Boss.Reaper
         {
             knockbackCollider.enabled = _isActive;
         }
-        
-        public override void DeadEvent()
-        {
-            base.DeadEvent();
-            weapon.AddComponent<EnemyWeapon>();
-        }
+      
     }
 }
