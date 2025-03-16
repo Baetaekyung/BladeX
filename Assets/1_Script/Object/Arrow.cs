@@ -57,5 +57,16 @@ namespace Swift_Blade.Pool
             pushTimer = 0;
         }
         
+        public void Shot()
+        {
+            Vector3 velocity = transform.forward;
+            rigidBody.linearVelocity = velocity * speed;
+
+        }
+
+        public void OnPop()
+        {
+            
+        }
     }
 }
