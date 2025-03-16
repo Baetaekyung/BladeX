@@ -57,6 +57,10 @@ namespace Swift_Blade.Pool
             rigidBody.linearVelocity = velocity * speed;
 
         }
-                
+
+        public void OnPop()
+        {
+            
+        }
     }
 }
