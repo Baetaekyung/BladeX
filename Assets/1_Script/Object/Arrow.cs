@@ -8,12 +8,15 @@ namespace Swift_Blade.Pool
         [SerializeField] private float speed;
         [SerializeField] private float pushTime;
         private float pushTimer;
-        
+
+        private TrailRenderer trailRenderer;
         private Rigidbody rigidBody;
+        
         private bool deadFlag;
         private void Awake()
         {
             rigidBody = GetComponent<Rigidbody>();
+            trailRenderer = GetComponentInChildren<TrailRenderer>();
         }
 
         private void Update()
@@ -42,7 +45,9 @@ namespace Swift_Blade.Pool
         {
             rigidBody.angularVelocity = Vector3.zero;
             rigidBody.linearVelocity = Vector3.zero;
-                        
+            trailRenderer.Clear();
+            deadFlag = false;
+            
             pushTimer = 0;
         }
         

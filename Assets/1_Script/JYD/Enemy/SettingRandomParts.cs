@@ -17,6 +17,12 @@ namespace Swift_Blade.Enemy
         [Header("Chest Info")]
         public GameObject[] Chests;
         
+        [Header("RightArms Info")]
+        public GameObject[] RightArms;
+        
+        [Header("LeftArms Info")]
+        public GameObject[] LeftArms;
+        
         [Header("Right Shoulder Info")]
         public GameObject[] RightShoulders;
         
@@ -44,6 +50,7 @@ namespace Swift_Blade.Enemy
             SetRandomPart(heads);
             SetRandomPart(helmets);
             SetRandomPart(Chests);
+            SetRandomPart(RightArms,LeftArms);
             SetRandomPart(LeftShoulders,RightShoulders);
             SetRandomPart(Pants);
             SetRandomPart(leftLegs, RightLegs);

@@ -1818,6 +1818,8 @@ MonoBehaviour:
   - {fileID: 4893303374169415346}
   - {fileID: 89639005149719572}
   - {fileID: 8780957189125811069}
+  RightArms: []
+  LeftArms: []
   RightShoulders: []
   LeftShoulders: []
   Pants:
@@ -1888,9 +1890,10 @@ MonoBehaviour:
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -4059651018620559840}
-        m_TargetAssemblyTypeName: Swift_Blade.Enemy.BaseEnemy, Assembly-CSharp
-        m_MethodName: DeadEvent
+      - m_Target: {fileID: 2499420712798203980}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.BowEnemyAnimationController,
+          Assembly-CSharp
+        m_MethodName: StopDrawBowstring
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1900,10 +1903,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2499420712798203980}
-        m_TargetAssemblyTypeName: Swift_Blade.Enemy.BowEnemyAnimationController,
-          Assembly-CSharp
-        m_MethodName: StopDrawBowstring
+      - m_Target: {fileID: -4059651018620559840}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.BaseEnemy, Assembly-CSharp
+        m_MethodName: DeadEvent
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1932,8 +1934,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   moveSpeed: 3.1
-  rotateSpeed: 1.95
-  stopDistance: 0.68
+  rotateSpeed: 16
+  stopDistance: 3.54
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
@@ -1941,7 +1943,7 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 2048
-  maxDistance: 0.64
+  maxDistance: 2.57
   showGizmo: 0
   weapon: {fileID: 0}
 --- !u!1 &244090027269921086
@@ -42561,13 +42563,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5641480010529792362}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.060049467, y: 0.7045524, z: 0.06004941, w: 0.7045524}
-  m_LocalPosition: {x: 0.199, y: 0.044, z: 0}
+  m_LocalRotation: {x: -0.07391272, y: 0.7032332, z: 0.07391272, w: 0.7032332}
+  m_LocalPosition: {x: 0.199, y: 0.044, z: 0.024}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2946508081663974203}
-  m_LocalEulerAnglesHint: {x: -9.743, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: -12, y: 90, z: 0}
 --- !u!1 &5643967957195756852
 GameObject:
   m_ObjectHideFlags: 0

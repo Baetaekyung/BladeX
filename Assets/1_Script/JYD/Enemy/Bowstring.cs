@@ -23,6 +23,7 @@ namespace Swift_Blade.Enemy
                 lineRenderer.SetPosition(2, rightEnd.position);
             }
             
+            
         }
 
         private void OnDrawGizmos()

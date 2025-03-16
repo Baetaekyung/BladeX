@@ -18376,41 +18376,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.095706835, y: -0.02073674, z: 0.019283153}
     m_Extent: {x: 0.12922089, y: 0.07473057, z: 0.104646035}
   m_DirtyAABB: 0
---- !u!114 &2236715052943925048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4213204643426615944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47de7c16339d4affbf35303bcc0780a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnHitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3132793782317055404}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDeadEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  maxHealth: 9999
-  currentHealth: 0
-  isDead: 0
-  BehaviorGraphAgent: {fileID: 484260806889953545}
-  changeBossState: {fileID: 0}
 --- !u!1 &2239157967898458313
 GameObject:
   m_ObjectHideFlags: 0
@@ -32991,8 +32956,8 @@ GameObject:
   - component: {fileID: 6864913390825173144}
   - component: {fileID: 7363286153314707300}
   - component: {fileID: 484260806889953545}
-  - component: {fileID: 2236715052943925048}
   - component: {fileID: 9107611316546068807}
+  - component: {fileID: 9107611316546068808}
   m_Layer: 7
   m_Name: Dummy
   m_TagString: Untagged
@@ -56416,7 +56381,7 @@ MonoBehaviour:
   parryEvents:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2236715052943925048}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp
         m_MethodName: ChangeParryState
         m_Mode: 1
@@ -73303,10 +73268,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c119b932384cc3749ba253393b204855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultAttackMoveSpeed: 1
+  defaultAttackMoveSpeed: 5
   animationEnd: 0
   isManualRotate: 0
   isManualMove: 0
+  maxAnimationSpeed: 1.3
+  minAnimationSpeed: 1
+--- !u!114 &9107611316546068808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4213204643426615944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a970b73a23fd204d93af0d5583e55dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnHitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3132793782317055404}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  maxHealth: 999
+  currentHealth: 0
+  isDead: 0
+  BehaviorGraphAgent: {fileID: 484260806889953545}
+  changeBossState: {fileID: 0}
 --- !u!1 &9109961222736845884
 GameObject:
   m_ObjectHideFlags: 0

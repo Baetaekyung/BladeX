@@ -4,7 +4,6 @@ using Swift_Blade.Level;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade.Enemy
 {
