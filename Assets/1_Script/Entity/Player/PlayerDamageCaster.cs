@@ -26,7 +26,7 @@ namespace Swift_Blade.Combat.Caster
             _statCompo = entity.GetEntityComponent<PlayerStatCompo>();
         }
         
-        public override bool CastDamage()
+        public override bool Cast()
         {
             Vector3 startPos = GetStartPosition();
                     
