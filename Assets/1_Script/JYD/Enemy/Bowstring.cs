@@ -14,13 +14,18 @@ namespace Swift_Blade.Enemy
 
         private void Update()
         {
-            lineRenderer.enabled = canDraw;
             
-            if (lineRenderer.enabled)
+            if (canDraw)
             {
                 lineRenderer.SetPosition(0, leftEnd.position);
                 lineRenderer.SetPosition(1, drawPoint.position);
                 lineRenderer.SetPosition(2, rightEnd.position);
+            }
+            else
+            {
+                lineRenderer.SetPosition(0, leftEnd.position);
+                lineRenderer.SetPosition(1, rightEnd.position);
+                lineRenderer.SetPosition(2,rightEnd.position);
             }
             
             
