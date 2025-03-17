@@ -205,12 +205,12 @@ namespace Swift_Blade
                     {
                         interactable.Interact();
                         interactable.OnEndCallbackSubscribe(OnEndCallback);
-                        playerStateMachine.ChangeState(PlayerStateEnum.Interact);
+                        //playerStateMachine.ChangeState(PlayerStateEnum.Interact);
                     }
                     void OnEndCallback()
                     {
                         interactable.OnEndCallbackUnsubscribe(OnEndCallback);
-                        playerStateMachine.ChangeState(PlayerStateEnum.Move);
+                        //playerStateMachine.ChangeState(PlayerStateEnum.Move);
                     }
                 }
             }
