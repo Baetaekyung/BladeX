@@ -17,6 +17,8 @@ namespace Swift_Blade
         public ItemType   itemType;
         public ItemObject itemObject;
 
+        public bool useQuickSlot = false;
+
         [Space]
         [Header("장비일 때 필요한 변수들")]
         public EquipmentData equipmentData; //장비일 때만 넣어주기

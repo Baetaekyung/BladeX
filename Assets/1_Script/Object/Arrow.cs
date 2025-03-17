@@ -56,6 +56,5 @@ namespace Swift_Blade.Pool
             
             pushTimer = 0;
         }
-        
     }
 }

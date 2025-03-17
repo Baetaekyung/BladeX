@@ -11,7 +11,6 @@ namespace Swift_Blade.UI
         Shop,
         GameOver,
         Status,
-        LevelClear,
         None
     }
 }

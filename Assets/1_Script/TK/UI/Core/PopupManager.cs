@@ -17,11 +17,6 @@ namespace Swift_Blade
         public bool IsRemainPopup => _popupList.Count > 0;
         public event Action OnPopUpOpenOrClose;
         
-        protected override void Awake()
-        {
-            base.Awake();
-        }
-        
         private void Start()
         {
             InitPopups();

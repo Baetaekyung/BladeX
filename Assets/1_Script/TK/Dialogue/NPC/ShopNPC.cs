@@ -12,7 +12,8 @@ namespace Swift_Blade
         
         private void Awake()
         {
-            _shop = FindFirstObjectByType<Shop>(FindObjectsInactive.Include);//todo : change this
+            _shop = FindFirstObjectByType<Shop>(FindObjectsInactive.Include);
+            _isRewarded = false;
         }
 
         [ContextMenu("Interact")]

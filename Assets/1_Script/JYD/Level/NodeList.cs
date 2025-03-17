@@ -117,7 +117,7 @@ public class NodeDictionary : IEnumerable<Node>
         {
             nodes.Add(NodeType.Boss);
         }
-        else if (currentNodeIndex % 5 == 0)
+        else if (currentNodeIndex % 1 == 0)
         {
             nodes.Add(NodeType.Point);
             nodes.Add(NodeType.Store);

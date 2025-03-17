@@ -34,7 +34,7 @@ namespace Swift_Blade
         public static LevelStat level = new LevelStat();
 
         private readonly RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
-
+        
         private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
         private GameObject interactable;
         private Tween playerInvincibleTween;
