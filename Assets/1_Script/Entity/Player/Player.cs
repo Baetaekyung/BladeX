@@ -184,6 +184,8 @@ namespace Swift_Blade
             //if (Input.GetKeyDown(KeyCode.Z))
             //    AudioEmitter.Dbg2();
 
+            mousePosition.position = GetPlayerInput.GetMousePositionWorld;
+
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
             UI_DebugPlayer.DebugText(2, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DAMAGE).Value, "atkBase");
@@ -196,6 +198,12 @@ namespace Swift_Blade
                 {
                     print("int");
                     interactable.Interact();
+                    interactable.OnEndCallbackSubscribe(OnEndCallback);
+                    void OnEndCallback()
+                    {
+                        Debug.Log("end");
+                        interactable.OnEndCallbackUnsubscribe(OnEndCallback);
+                    }
                 }
             }
 
