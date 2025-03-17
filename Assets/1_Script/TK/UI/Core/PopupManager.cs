@@ -17,16 +17,6 @@ namespace Swift_Blade
         public bool IsRemainPopup => _popupList.Count > 0;
         public event Action OnPopUpOpenOrClose;
         
-        protected override void Awake()
-        {
-            base.Awake();
-            
-            if (popups.ContainsKey(PopupType.LevelClear) == false)
-            {
-                popups.Add(PopupType.LevelClear, FindObjectOfType<LevelUIController>());
-            }
-        }
-        
         private void Start()
         {
             InitPopups();
