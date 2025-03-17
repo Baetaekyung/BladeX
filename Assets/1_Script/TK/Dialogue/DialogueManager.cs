@@ -167,12 +167,16 @@ namespace Swift_Blade
             _dialogueUI.SetMessage(_currentDialogueMessage); //강제로 완성된 문자열 대입
         }
 
-        public void OnAccept(Action onAccept)
+        public void Subscribe(Action onAccept)
         {
             if (onAccept == null)
                 return;
             
             _onAcceptEvent = onAccept;
+        }
+        public void Desubscribe(Action onAccept)
+        {
+            _onAcceptEvent -= onAccept;
         }
     }
 }

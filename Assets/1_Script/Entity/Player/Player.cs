@@ -18,14 +18,14 @@ namespace Swift_Blade
         Roll,
         Parry,
         Dead,
-        HitStun
+        HitStun,
+        Interact
     }
     public class Player : Entity
     {
         public static Player Instance { get; private set; }
         public static event Action OnDead;
         public bool IsPlayerDead { get; private set; }
-        //public bool IsInteractable { get; private set; }
 
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
@@ -112,7 +112,6 @@ namespace Swift_Blade
             }
         }
 
-
         protected override void Awake()
         {
             base.Awake();
@@ -132,6 +131,7 @@ namespace Swift_Blade
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
             playerStateMachine.AddState(PlayerStateEnum.Dead, new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death));
             playerStateMachine.AddState(PlayerStateEnum.HitStun, new PlayerHitStunState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_hitStun));
+            playerStateMachine.AddState(PlayerStateEnum.Interact, new PlayerInteractState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
             playerStateMachine.SetStartState(PlayerStateEnum.Move);
             playerRollState.OnRollEnd += 
                 () =>
@@ -196,17 +196,24 @@ namespace Swift_Blade
                 IInteractable interactable = GetClosestInteractable;
                 if (interactable != null)
                 {
-                    print("int");
-                    interactable.Interact();
-                    interactable.OnEndCallbackSubscribe(OnEndCallback);
+                    if (false && Input.GetKey(KeyCode.LeftShift))
+                    {
+                        interactable.OnEndCallbackUnsubscribe(OnEndCallback);
+                        Debug.Log("unsub");
+                    }
+                    else
+                    {
+                        interactable.Interact();
+                        interactable.OnEndCallbackSubscribe(OnEndCallback);
+                        playerStateMachine.ChangeState(PlayerStateEnum.Interact);
+                    }
                     void OnEndCallback()
                     {
-                        Debug.Log("end");
                         interactable.OnEndCallbackUnsubscribe(OnEndCallback);
+                        playerStateMachine.ChangeState(PlayerStateEnum.Move);
                     }
                 }
             }
-
 
             Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))
