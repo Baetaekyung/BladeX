@@ -17,7 +17,14 @@ namespace Swift_Blade
         {
             TalkWithNPC();
         }
+        void IInteractable.OnEndCallbackSubscribe(Action onEndCallback)
+        {
+            DialogueManager.Instance.OnAccept(onEndCallback);
+        }
+        void IInteractable.OnEndCallbackUnsubscribe(Action onEndCallback)
+        {
 
+        }
         protected void TalkWithNPC(Action dialogueEndEvent = null)
         {
             if (_isRewarded) //이미 보상을 받았음
