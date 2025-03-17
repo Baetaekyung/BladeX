@@ -168,7 +168,7 @@ namespace Swift_Blade.Level
         [SerializeField] private Portal.Portal bossPortal;
         
         
-        private static int CURRENT_NODE_INDEX = 0;
+        private int CURRENT_NODE_INDEX = 0;
         
         private void OnEnable()
         {
