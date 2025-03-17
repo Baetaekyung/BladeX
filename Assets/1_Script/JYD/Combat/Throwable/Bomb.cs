@@ -48,7 +48,7 @@ namespace Swift_Blade.Combat.Projectile
             if (colliders.Length > 0)
             {
                 var actionData = new ActionData();
-                actionData.damageAmount = 40;
+                actionData.damageAmount = 1;
                 colliders[0].GetComponentInChildren<IDamageble>().TakeDamage(actionData);
             }
 

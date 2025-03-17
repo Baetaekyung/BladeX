@@ -20,11 +20,6 @@ namespace Swift_Blade
         protected override void Awake()
         {
             base.Awake();
-            
-            if (popups.ContainsKey(PopupType.LevelClear) == false)
-            {
-                popups.Add(PopupType.LevelClear, FindObjectOfType<LevelUIController>());
-            }
         }
         
         private void Start()
