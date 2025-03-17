@@ -1,7 +1,9 @@
 using System;
+using DG.Tweening;
 using Swift_Blade.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Swift_Blade
@@ -10,6 +12,7 @@ namespace Swift_Blade
         IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {
         [SerializeField] protected Image itemImage;
+        [SerializeField] protected Image accentFrame;
         [SerializeField] protected Sprite emptySprite;
         protected ItemDataSO _itemDataSO;
         protected InventoryManager inventoryManager => InventoryManager.Instance;
@@ -65,14 +68,26 @@ namespace Swift_Blade
                 }
                 if (_itemDataSO.itemType == ItemType.ITEM)
                 {
-                    inventoryManager.UpdateQuickSlotUI(_itemDataSO);
-                    _itemDataSO = null;
-                    itemImage.sprite = emptySprite;
+                    if (_itemDataSO.useQuickSlot == true)
+                    {
+                        inventoryManager.UpdateQuickSlotUI(_itemDataSO);
+                        _itemDataSO = null;
+                        itemImage.color = new Color(1, 1, 1, 0.4f);
                 
-                    inventoryManager.UpdateAllSlots();
+                        inventoryManager.UpdateAllSlots();
 
-                    _useItem = true;
-                    return;
+                        _useItem = true;
+                        return;
+                    }
+                    else
+                    {
+                        _itemDataSO.itemObject.ItemEffect(Player.Instance);
+                        _itemDataSO = null;
+                        itemImage.sprite = emptySprite;
+                
+                        inventoryManager.UpdateAllSlots();
+                        _useItem = true;
+                    }
                 }
             }
             
@@ -87,6 +102,12 @@ namespace Swift_Blade
         public virtual void OnPointerEnter(PointerEventData eventData)
         {
             inventoryManager.UpdateInfoUI(_itemDataSO);
+            
+            if (!accentFrame.gameObject.activeSelf)
+                accentFrame.gameObject.SetActive(true);
+
+            transform.DOKill();
+            transform.DOScale(1.06f, 0.5f);
             
             if (!inventoryManager.IsDragging) return; //드래그 중이 아닐때는 return
             if (_itemDataSO != null) //이 슬롯에 아이템이 존재할 경우는 Change 불가 (나중에 가능하게 만들기)
@@ -103,6 +124,9 @@ namespace Swift_Blade
         public virtual void OnPointerExit(PointerEventData eventData)
         {
             inventoryManager.UpdateInfoUI(null);
+            if (accentFrame.gameObject.activeSelf)
+                accentFrame.gameObject.SetActive(false);
+            transform.DOScale(1f, 0.5f);
             
             if(!inventoryManager.IsDragging) return;
             if (inventoryManager.SelectedItem != _itemDataSO) return;

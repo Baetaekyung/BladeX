@@ -54,6 +54,7 @@ namespace Swift_Blade
         private void StartNewDialogue(DialogueDataSO dialogueData)
         {
             _dialogueUI.GetCancelButton.onClick.AddListener(CancelDialogue);
+            _dialogueUI.GetAcceptButton.onClick.RemoveAllListeners();
             _dialogueUI.GetAcceptButton.gameObject.SetActive(false);
             _dialogueUI.ClearMessageBox();
             _sb.Clear();
@@ -120,14 +121,15 @@ namespace Swift_Blade
 
         private void ClickAcceptButton(DialogueDataSO dialogueData)
         {
-            _dialogueUI.GetAcceptButton.gameObject.SetActive(true);
-            _dialogueUI.GetAcceptButton.onClick.AddListener(InvokeAcceptEvent);
-            _dialogueUI.GetAcceptButton.onClick.AddListener(() =>
+            void InvokeAllDialogueEvents()
             {
                 foreach (DialogueEventSO dialogueEvent in dialogueData.dialogueEvent)
                     dialogueEvent?.InvokeEvent();
-            });
+            }
             
+            _dialogueUI.GetAcceptButton.gameObject.SetActive(true);
+            _dialogueUI.GetAcceptButton.onClick.AddListener(InvokeAcceptEvent);
+            _dialogueUI.GetAcceptButton.onClick.AddListener(InvokeAllDialogueEvents);
             _dialogueUI.GetAcceptButton.onClick.AddListener(CancelDialogue);
         }
 
@@ -135,6 +137,8 @@ namespace Swift_Blade
         {
             _onAcceptEvent?.Invoke();
             _onAcceptEvent = null;
+            
+            _dialogueUI.GetAcceptButton.onClick.RemoveAllListeners();
         }
 
         public void CancelDialogue()

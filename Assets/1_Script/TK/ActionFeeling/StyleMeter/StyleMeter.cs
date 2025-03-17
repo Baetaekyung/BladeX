@@ -48,16 +48,6 @@ namespace Swift_Blade
 
         public float GetModifierValue => _timeModifier ?? -0.1f;
 
-        private void OnEnable()
-        {
-            Player.Instance.GetEntityComponent<PlayerHealth>().OnDeadEvent.AddListener(Init);
-        }
-
-        private void OnDisable()
-        {
-            Player.Instance.GetEntityComponent<PlayerHealth>().OnDeadEvent.RemoveListener(Init);
-        }
-
         //초기화인데 초기화 안할거라고 하는..
         public void Init()
         {

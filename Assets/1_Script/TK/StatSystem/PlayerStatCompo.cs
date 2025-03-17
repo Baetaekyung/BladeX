@@ -26,11 +26,13 @@ namespace Swift_Blade
         private void Start()
         {
             _player.GetEntityComponent<PlayerHealth>().OnDeadEvent.AddListener(Initialize);
+            _player.GetEntityComponent<PlayerHealth>().OnDeadEvent.AddListener(styleMeter.Init);
         }
 
         private void OnDestroy()
         {
             _player.GetEntityComponent<PlayerHealth>().OnDeadEvent.RemoveListener(Initialize);
+            _player.GetEntityComponent<PlayerHealth>().OnDeadEvent.RemoveListener(styleMeter.Init);
         }
     }
 }

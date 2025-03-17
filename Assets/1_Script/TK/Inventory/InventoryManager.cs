@@ -20,7 +20,7 @@ namespace Swift_Blade
         //TODO: 나중에 UI랑 Manager기능 분리하기.
         [FormerlySerializedAs("equipInfoUIs")]
         [Header("UI 부분")]
-        [SerializeField] private QuickSlotUI quickSlotUI;
+        [SerializeField] private QuickSlotUI         quickSlotUI;
         [SerializeField] private List<EquipmentSlot> equipSlots;
 
         [Header("Item Information")]
@@ -32,10 +32,10 @@ namespace Swift_Blade
         //-------------------------------------------------------------
         
         [HideInInspector] public bool isSlotChanged = false; 
-        private bool _isDragging = false;
+        private bool                  _isDragging = false;
 
         [SerializeField] private PlayerInventory playerInventory;
-        [SerializeField] private List<ItemSlot> itemSlots = new List<ItemSlot>();
+        [SerializeField] private List<ItemSlot>  itemSlots = new List<ItemSlot>();
         
         public bool IsDragging { get => _isDragging; set => _isDragging = value; }
         public ItemDataSO SelectedItem { get; set; }
@@ -84,7 +84,7 @@ namespace Swift_Blade
             //임시 퀵슬롯 키
             if (Input.GetKeyDown(KeyCode.Alpha1)) 
             {
-                QuickSlotItem.itemObject.ItemEffect(Player.Instance as Player);
+                QuickSlotItem.itemObject.ItemEffect(Player.Instance);
                 QuickSlotItem = null;
                 UpdateQuickSlotUI(null);
             }

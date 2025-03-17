@@ -38,10 +38,5 @@ namespace Swift_Blade
             inventory.maxInventoryCapacity = itemSlots.Count - 4; // -4는 장비슬롯 때문에
             inventory.currentEquipment = new List<EquipmentData>();
         }
-
-        private void OnDisable()
-        {
-            Player.Instance.GetEntityComponent<PlayerHealth>().OnDeadEvent.RemoveListener(Initialize);
-        }
     }
 }
