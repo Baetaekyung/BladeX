@@ -16,6 +16,13 @@ namespace Swift_Blade.FSM.States
         protected virtual bool BaseAllowAttackInput { get; } = true;
         protected virtual bool BaseAllowParryInput { get; } = true;
         protected virtual bool BaseAllowDashInput { get; } = true;
+
+        private const float delayParry = 1;
+        private const float delayDash = 1.5f;
+
+        private static float nextDelayTime_AllowParry;
+        private static float nextDelayTime_AllowDash;
+
         protected BasePlayerState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
             player = entity;
@@ -56,9 +63,8 @@ namespace Swift_Blade.FSM.States
             Vector3 anim_inputLocal = playerTransform.InverseTransformDirection(anim_inputLocalLerp);
             Debug.DrawRay(Vector3.zero, anim_inputLocal, Color.red, 0.1f);
             player.GetPlayerAnimator.GetAnimator.SetFloat("X", anim_inputLocal.x);
-            //additionalZValue = 0;
 
-            player.GetPlayerAnimator.GetAnimator.SetFloat("Z", anim_inputLocal.z);// + additionalZValue);
+            player.GetPlayerAnimator.GetAnimator.SetFloat("Z", anim_inputLocal.z);
 
             UI_DebugPlayer.DebugText(7, anim_inputLocalLerp, "animLocalLerp");
         }
@@ -71,10 +77,14 @@ namespace Swift_Blade.FSM.States
         }
         protected virtual void OnParryInput()
         {
+            if (nextDelayTime_AllowParry > Time.time) return;
+            nextDelayTime_AllowParry = Time.time + delayParry;
             GetOwnerFsm.ChangeState(PlayerStateEnum.Parry);
         }
         protected virtual void OnDashInput()
         {
+            if (nextDelayTime_AllowDash > Time.time) return;
+            nextDelayTime_AllowDash = Time.time + delayDash;
             GetOwnerFsm.ChangeState(PlayerStateEnum.Roll);
         }
         protected sealed override void OnAllowRotateAllowTrigger() => playerMovement.AllowRotate = true;
