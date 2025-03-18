@@ -19,7 +19,7 @@ namespace Swift_Blade.FSM.States
             animationTriggers = animTrigger;
             this.entity = entity;
         }
-
+        #region Event
         protected virtual void OnAnimationEndTrigger()                      => Debug.Log("OnAnimationEnd");
         protected virtual void OnAnimationEndableTrigger()                  => Debug.Log("OnanimatoinEndable");
         protected virtual void OnAnimationEndTriggerListen()                => Debug.Log("OnAnimationListen");
@@ -32,7 +32,7 @@ namespace Swift_Blade.FSM.States
         protected virtual void OnForceEventTrigger(float force)             => Debug.Log("OnFroce");
         protected virtual void OnSpeedMultiplierDefaultTrigger(float set)   => Debug.Log("OnSpeedmultiplier");
         protected virtual void OnAudioPlayTrigger(AudioSO audioSO)          => Debug.Log("OnAudio");
-        //protected virtual void OnMovementSetTrigger(Vector3 value) => Debug.Log("Onmovementset");
+        #endregion
         public override void Enter()
         {
             base.Enter();
@@ -50,12 +50,9 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnSpeedMultiplierDefaultEvent += OnSpeedMultiplierDefaultTrigger;
             animationTriggers.OnAudioPlayEvent += OnAudioPlayTrigger;
 
-            //animationTriggers.OnMovementSetEvent += OnMovementSetTrigger;
             if (baseAnimParam != null)
                 PlayAnimationOnEnter();
         }
-
-
         public override void Exit()
         {
             animationTriggers.OnAnimationEndEvent -= OnAnimationEndTrigger;
@@ -71,12 +68,10 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnSpeedMultiplierDefaultEvent -= OnSpeedMultiplierDefaultTrigger;
             animationTriggers.OnAudioPlayEvent -= OnAudioPlayTrigger;
 
-            //animationTriggers.OnMovementSetEvent -= OnMovementSetTrigger;
             //re init
             OnAllowRotateAllowTrigger();
             OnSpeedMultiplierDefaultTrigger(1);
         }
-
         protected virtual void PlayAnimationOnEnter()
         {
             PlayAnimationRebind(baseAnimParam.GetAnimationHash, -1);
