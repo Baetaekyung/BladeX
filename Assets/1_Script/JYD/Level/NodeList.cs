@@ -111,13 +111,12 @@ public class NodeDictionary : IEnumerable<Node>
     public List<NodeType> GetNodeTypes(int currentNodeIndex)
     {
         List<NodeType> nodes = new List<NodeType>();
-
         
         if (currentNodeIndex % 10 == 0)
         {
             nodes.Add(NodeType.Boss);
         }
-        else if (currentNodeIndex % 1 == 0)
+        else if (currentNodeIndex % 6 == 0)
         {
             nodes.Add(NodeType.Point);
             nodes.Add(NodeType.Store);
@@ -167,12 +166,11 @@ namespace Swift_Blade.Level
         [SerializeField] private Portal.Portal challangePortal;
         [SerializeField] private Portal.Portal bossPortal;
         
-        
-        private int CURRENT_NODE_INDEX = 0;
-        
+        private int currentNodeIndex = 0;
+         
         private void OnEnable()
         {
-            CURRENT_NODE_INDEX = 0;
+            currentNodeIndex = 0;
             nodeDictionary = new NodeDictionary(nodelist);
 
             foreach (var item in nodeDictionary)
@@ -206,7 +204,7 @@ namespace Swift_Blade.Level
         
         public Node[] GetNode()
         {
-            List<NodeType> nodeTypes = nodeDictionary.GetNodeTypes(++CURRENT_NODE_INDEX);
+            List<NodeType> nodeTypes = nodeDictionary.GetNodeTypes(++currentNodeIndex);
             
             Node[] nodes = new Node[nodeTypes.Count];
             

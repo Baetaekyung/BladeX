@@ -87,6 +87,10 @@ namespace Swift_Blade.Combat.Feedback
 
             ResetFeedback();
         }
+        private void OnDestroy()
+        {
+            ResetFeedback();
+        }
 
         public override void ResetFeedback()
         {
