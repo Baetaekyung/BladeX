@@ -11,15 +11,12 @@ namespace Swift_Blade.FSM
         public event Action<StateEnum> OnChangeState;
 
         public State<StateEnum> CurrentState { get; protected set; }
-        //public IReadOnlyDictionary<StateEnum, State<StateEnum>> GetStateDictionary => StateDictionary;
         private Dictionary<StateEnum, State<StateEnum>> StateDictionary { get; set; } = new();
 
         public void AddState(StateEnum type, State<StateEnum> instance) =>  StateDictionary.Add(type, instance);
         public void SetStartState(StateEnum state) => CurrentState = StateDictionary[state];
         public void ChangeState(StateEnum type)
         {
-            //Debug.Log(type.ToString());
-
             OnChangeState?.Invoke(type);
             CurrentState.Exit();
             CurrentState = StateDictionary[type];
@@ -30,7 +27,6 @@ namespace Swift_Blade.FSM
         {
             CurrentState.Current?.Invoke(); 
         } 
-
 
         public StateEnum GetState()
         {
