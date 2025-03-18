@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Swift_Blade.Level;
 using Swift_Blade.Level.Portal;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -64,6 +65,8 @@ public class NodeDictionary : IEnumerable<Node>
         }
     }
 
+    public string this[NodeType type] => nodeList[type][Random.Range(0 , nodeList[type].Count)].nodeName;
+    
     private bool IsValidScene(string sceneName)
     {
         if (string.IsNullOrEmpty(sceneName))
@@ -214,6 +217,11 @@ namespace Swift_Blade.Level
             }
 
             return nodes;
+        }
+
+        public string GetNodeName(NodeType nodeType)
+        {
+            return nodeDictionary[nodeType];
         }
     }
 }
