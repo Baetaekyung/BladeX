@@ -12,7 +12,7 @@ namespace Swift_Blade
         
         public List<ItemDataSO> itemInventory;
 
-        [HideInInspector] public List<ItemSlot> itemSlots;
+        [HideInInspector] public List<ItemSlot> itemSlots = new List<ItemSlot>();
         public List<EquipmentData> currentEquipment = new List<EquipmentData>();
         public List<EquipmentChannelSO> currentEquipmentEffects = new List<EquipmentChannelSO>();
         
@@ -22,7 +22,7 @@ namespace Swift_Blade
         {
             var inventory = Instantiate(this);
             inventory.Initialize();
-
+            
             return inventory;
         }
 
@@ -34,9 +34,13 @@ namespace Swift_Blade
             inventory.itemInventory = new List<ItemDataSO>();
             inventory.currentEquipmentEffects = new List<EquipmentChannelSO>();
             
+            inventory.Coin = 0;
+            
             inventory.currentInventoryCapacity = itemInventory.Count;
-            inventory.maxInventoryCapacity = itemSlots.Count - 4; // -4는 장비슬롯 때문에
+            inventory.maxInventoryCapacity = itemSlots.Count - 5; // -5는 장비슬롯 때문에
             inventory.currentEquipment = new List<EquipmentData>();
         }
+
+
     }
 }
