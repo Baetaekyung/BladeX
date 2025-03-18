@@ -7,6 +7,7 @@ using Swift_Blade.Combat.Caster;
 using UnityEngine;
 using DG.Tweening;
 using Swift_Blade.Audio;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade
 {
@@ -29,7 +30,7 @@ namespace Swift_Blade
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
         private PlayerAttackState playerAttackState;
-
+        
         public static LevelStat level = new LevelStat();
         
         private readonly RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
@@ -99,21 +100,22 @@ namespace Swift_Blade
             public void Init(SceneManagerSO sceneManagerSo)
             {
                 sceneManager = sceneManagerSo;
-                sceneManager.LevelClearEvent += OnEnemyDead;
+                sceneManager.LevelClearEvent += OnLevelClear;
             }
             ~LevelStat()
             {
-                sceneManager.LevelClearEvent -= OnEnemyDead;
+                sceneManager.LevelClearEvent -= OnLevelClear;
             }
-            private void OnEnemyDead()
+            private void OnLevelClear()
             {
-                Experience++;
                 const int maxRequiredExperience = 2;
+                Experience++;
+                                
                 if (Experience >= maxRequiredExperience)
                 {
                     Experience = Experience - maxRequiredExperience;
                     Level++;
-                    StatPoint += Level;
+                    StatPoint += 3;
                     OnLevelUp?.Invoke(this);
                 }
             }

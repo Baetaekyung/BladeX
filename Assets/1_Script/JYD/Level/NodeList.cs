@@ -104,11 +104,11 @@ public class NodeDictionary : IEnumerable<Node>
                 return selectedNode;
 
             Debug.LogError("sceneName이 sceneList에 없습니다!");
-            return default;
+            return null;
         }
 
         Debug.LogError("유효하지 않은 Node에 접근하고 있습니다.");
-        return default;
+        return null;
     }
 
     public List<NodeType> GetNodeTypes(int currentNodeIndex)

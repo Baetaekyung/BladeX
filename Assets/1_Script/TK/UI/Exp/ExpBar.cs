@@ -18,12 +18,14 @@ namespace Swift_Blade
             _currentGauge = Player.level.Experience % 2f;
             gauge.fillAmount = Player.level.Experience / 2f;
         }
-
+        
         private void Update()
         {
             infoText.text = $"{Player.level.Experience} / 2";
             _currentGauge = Mathf.Lerp(_currentGauge, Player.level.Experience / 2f, Time.deltaTime * 4f);
             gauge.fillAmount = _currentGauge;
         }
+
+        
     }
 }

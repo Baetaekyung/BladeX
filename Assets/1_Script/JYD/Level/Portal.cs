@@ -38,12 +38,6 @@ namespace Swift_Blade.Level.Portal
             sceneManager.LoadScene(sceneName);
         }
 
-        public void ActivePortal()
-        {
-            /*particle.Simulate(0);
-            particle.Play();*/
-        }
-
         public void SetScene(string _sceneName)
         {
             sceneName = _sceneName;

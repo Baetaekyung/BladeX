@@ -66,7 +66,7 @@ namespace Swift_Blade
 
             UpdateAllSlots();
         }
-
+        
         private void Start()
         {
             Player.Instance.GetEntityComponent<PlayerHealth>()
