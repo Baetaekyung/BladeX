@@ -71,7 +71,7 @@ namespace Swift_Blade
             _itemCount--;
             remainCount.text = $"³²Àº °¹¼ö: {_itemCount.ToString()}";
             
-            InventoryManager.Instance.AddItemToEmptySlot(_currentItem);
+            InventoryManager.Instance.AddItemToMatchSlot(_currentItem);
             inventory.currentInventoryCapacity++;
             
             if(_itemCount <= 0)
