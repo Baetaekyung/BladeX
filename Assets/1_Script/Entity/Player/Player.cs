@@ -6,7 +6,6 @@ using Swift_Blade.Combat;
 using Swift_Blade.Combat.Caster;
 using UnityEngine;
 using DG.Tweening;
-using Swift_Blade.Combat.Health;
 using Swift_Blade.Audio;
 
 namespace Swift_Blade
@@ -18,21 +17,21 @@ namespace Swift_Blade
         Roll,
         Parry,
         Dead,
-        HitStun
+        HitStun,
+        Interact
     }
     public class Player : Entity
     {
         public static Player Instance { get; private set; }
         public static event Action OnDead;
         public bool IsPlayerDead { get; private set; }
-        //public bool IsInteractable { get; private set; }
 
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
         private PlayerAttackState playerAttackState;
 
         public static LevelStat level = new LevelStat();
-
+        
         private readonly RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
         
         private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
@@ -65,6 +64,10 @@ namespace Swift_Blade
         [Header("Combo")]
         [SerializeField] protected List<AttackComboSO> comboList;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
+
+        [Header("SceneManager")] 
+        [SerializeField] private SceneManagerSO SceneManagerSO;
+        
         public void AddCombo(AttackComboSO attackComboSO)
         {
             comboList.Add(attackComboSO);
@@ -90,13 +93,17 @@ namespace Swift_Blade
             public int Experience { get; private set; }
             public int Level { get; private set; }
             public int StatPoint { get; set; }
-            public LevelStat()
+
+            private SceneManagerSO sceneManager;
+
+            public void Init(SceneManagerSO sceneManagerSo)
             {
-                BaseEnemyHealth.OnAnyEnemyDead += OnEnemyDead;
+                sceneManager = sceneManagerSo;
+                sceneManager.LevelClearEvent += OnEnemyDead;
             }
             ~LevelStat()
             {
-                BaseEnemyHealth.OnAnyEnemyDead -= OnEnemyDead;
+                sceneManager.LevelClearEvent -= OnEnemyDead;
             }
             private void OnEnemyDead()
             {
@@ -112,12 +119,13 @@ namespace Swift_Blade
             }
         }
 
-
         protected override void Awake()
         {
             base.Awake();
             if (Instance == null)
                 Instance = this;
+            level.Init(SceneManagerSO);
+            
         }
         protected override void Start()
         {
@@ -132,6 +140,7 @@ namespace Swift_Blade
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
             playerStateMachine.AddState(PlayerStateEnum.Dead, new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death));
             playerStateMachine.AddState(PlayerStateEnum.HitStun, new PlayerHitStunState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_hitStun));
+            playerStateMachine.AddState(PlayerStateEnum.Interact, new PlayerInteractState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
             playerStateMachine.SetStartState(PlayerStateEnum.Move);
             playerRollState.OnRollEnd += 
                 () =>
@@ -183,6 +192,8 @@ namespace Swift_Blade
 
             //if (Input.GetKeyDown(KeyCode.Z))
             //    AudioEmitter.Dbg2();
+            
+            mousePosition.position = GetPlayerInput.GetMousePositionWorld;
 
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
@@ -194,11 +205,24 @@ namespace Swift_Blade
                 IInteractable interactable = GetClosestInteractable;
                 if (interactable != null)
                 {
-                    print("int");
-                    interactable.Interact();
+                    if (false && Input.GetKey(KeyCode.LeftShift))
+                    {
+                        interactable.OnEndCallbackUnsubscribe(OnEndCallback);
+                        Debug.Log("unsub");
+                    }
+                    else
+                    {
+                        interactable.Interact();
+                        interactable.OnEndCallbackSubscribe(OnEndCallback);
+                        //playerStateMachine.ChangeState(PlayerStateEnum.Interact);
+                    }
+                    void OnEndCallback()
+                    {
+                        interactable.OnEndCallbackUnsubscribe(OnEndCallback);
+                        //playerStateMachine.ChangeState(PlayerStateEnum.Move);
+                    }
                 }
             }
-
 
             Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))

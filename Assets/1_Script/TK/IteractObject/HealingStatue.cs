@@ -21,7 +21,7 @@ namespace Swift_Blade
             }
             else
             {
-                DialogueManager.Instance.DoDialogue(dialogueData).OnAccept(Heal);
+                DialogueManager.Instance.DoDialogue(dialogueData).Subscribe(Heal);
                 _isRewarded = true;
             }
         }

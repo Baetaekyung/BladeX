@@ -41,7 +41,7 @@ namespace Swift_Blade.Level.Portal
             particle.Play();*/
         }
 
-        public void SetLoadScene(string _sceneName)
+        public void SetScene(string _sceneName)
         {
             sceneName = _sceneName;
         }

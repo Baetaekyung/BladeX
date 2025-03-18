@@ -36,7 +36,7 @@ namespace Swift_Blade.Pool
             
             if (other.gameObject.TryGetComponent(out PlayerHealth playerHealth))
             {
-                playerHealth.TakeDamage(new ActionData() { damageAmount = 1, stun = false });
+                playerHealth.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
                 MonoGenericPool<Arrow>.Push(this);
             }
         }
