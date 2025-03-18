@@ -44,7 +44,7 @@ namespace Swift_Blade
         [SerializeField] private LayerMask lm_interactable;
 
         [Header("Audio")]
-        [SerializeField] private AudioCollection audioCollection;
+        [SerializeField] private AudioSOCollection audioCollection;
 
         [Header("EventChannels")]
         [SerializeField] private EquipmentChannelSO onHitChannel;
