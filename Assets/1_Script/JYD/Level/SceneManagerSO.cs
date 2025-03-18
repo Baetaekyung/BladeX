@@ -16,7 +16,6 @@ namespace Swift_Blade
         
         public void LoadScene(string sceneName,Action callback = null)
         {
-           
             SceneLoadEvent?.Invoke(sceneName,callback);
         }
         
