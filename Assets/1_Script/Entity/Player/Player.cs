@@ -6,7 +6,6 @@ using Swift_Blade.Combat;
 using Swift_Blade.Combat.Caster;
 using UnityEngine;
 using DG.Tweening;
-using Swift_Blade.Combat.Health;
 using Swift_Blade.Audio;
 
 namespace Swift_Blade
@@ -32,7 +31,7 @@ namespace Swift_Blade
         private PlayerAttackState playerAttackState;
 
         public static LevelStat level = new LevelStat();
-
+        
         private readonly RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
         
         private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
@@ -65,6 +64,10 @@ namespace Swift_Blade
         [Header("Combo")]
         [SerializeField] protected List<AttackComboSO> comboList;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
+
+        [Header("SceneManager")] 
+        [SerializeField] private SceneManagerSO SceneManagerSO;
+        
         public void AddCombo(AttackComboSO attackComboSO)
         {
             comboList.Add(attackComboSO);
@@ -90,13 +93,17 @@ namespace Swift_Blade
             public int Experience { get; private set; }
             public int Level { get; private set; }
             public int StatPoint { get; set; }
-            public LevelStat()
+
+            private SceneManagerSO sceneManager;
+
+            public void Init(SceneManagerSO sceneManagerSo)
             {
-                BaseEnemyHealth.OnAnyEnemyDead += OnEnemyDead;
+                sceneManager = sceneManagerSo;
+                sceneManager.LevelClearEvent += OnEnemyDead;
             }
             ~LevelStat()
             {
-                BaseEnemyHealth.OnAnyEnemyDead -= OnEnemyDead;
+                sceneManager.LevelClearEvent -= OnEnemyDead;
             }
             private void OnEnemyDead()
             {
@@ -117,6 +124,8 @@ namespace Swift_Blade
             base.Awake();
             if (Instance == null)
                 Instance = this;
+            level.Init(SceneManagerSO);
+            
         }
         protected override void Start()
         {
@@ -183,7 +192,7 @@ namespace Swift_Blade
 
             //if (Input.GetKeyDown(KeyCode.Z))
             //    AudioEmitter.Dbg2();
-
+            
             mousePosition.position = GetPlayerInput.GetMousePositionWorld;
 
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");

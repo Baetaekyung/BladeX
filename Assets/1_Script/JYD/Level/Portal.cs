@@ -37,8 +37,8 @@ namespace Swift_Blade.Level.Portal
 
         public void ActivePortal()
         {
-            particle.Simulate(0);
-            particle.Play();
+            /*particle.Simulate(0);
+            particle.Play();*/
         }
 
         public void SetScene(string _sceneName)
