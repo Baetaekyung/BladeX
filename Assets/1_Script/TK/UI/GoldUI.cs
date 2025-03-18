@@ -13,8 +13,8 @@ namespace Swift_Blade
         private void Start()
         {
             sceneManagerSo.LevelClearEvent += AddRandomGold;
-            
-            SetGoldUI();
+            coinText.text = "0 코인";
+            //SetGoldUI();
         }
         
         private void OnDestroy()
@@ -24,7 +24,7 @@ namespace Swift_Blade
                 
         private void SetGoldUI()
         {
-            coinText.text = $"{playerInventory.Inventory.Coin.ToString()} 코인";
+            coinText.text = $"{InventoryManager.Inventory.Coin.ToString()} 코인";
         }
         
         public void Execute()
@@ -35,7 +35,7 @@ namespace Swift_Blade
         private void AddRandomGold()
         {
             int randomGold = Random.Range(50, 100);
-            playerInventory.Inventory.Coin += randomGold;
+            InventoryManager.Inventory.Coin += randomGold;
             
             SetGoldUI();
         }
