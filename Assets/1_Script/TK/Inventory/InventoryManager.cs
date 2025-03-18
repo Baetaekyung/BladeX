@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -31,71 +32,159 @@ namespace Swift_Blade
         
         //-------------------------------------------------------------
         
-        [HideInInspector] public bool isSlotChanged = false; 
-        private bool                  _isDragging = false;
+        [HideInInspector] 
+        public bool  isSlotChanged = false; 
+        private bool _isDragging = false;
 
-        [SerializeField] private PlayerInventory playerInventory;
         [SerializeField] private List<ItemSlot>  itemSlots = new List<ItemSlot>();
+        private Dictionary<ItemDataSO, int> _itemDatas = new();
+        private List<ItemDataSO> _itemTable = new();
+        private int _currentItemIndex = 0;
         
         public bool IsDragging { get => _isDragging; set => _isDragging = value; }
-        public ItemDataSO SelectedItem { get; set; }
         public ItemDataSO QuickSlotItem { get; set; }
-        public PlayerInventory Inventory => playerInventory;
-        
-        protected override void Awake()
-        {
-            base.Awake();
+        public static PlayerInventory Inventory { get; set; }
+        public static readonly List<ItemDataSO> EquipmentDatas = new List<ItemDataSO>(5);
+        public static bool IsAfterInit = false;
 
-            playerInventory = playerInventory.Clone();
+        private void Start()
+        {
+            if (IsAfterInit == false)
+                return;
+            
             InitializeSlots();
         }
 
-        private void InitializeSlots()
+        public void InitializeSlots()
         {
-            playerInventory.itemSlots = new List<ItemSlot>();
+            _currentItemIndex = 0;
+
+            Inventory.itemSlots = new List<ItemSlot>();
             
             for (int i = 0; i < itemSlots.Count; i++)
-                playerInventory.itemSlots.Add(itemSlots[i]);
+                Inventory.itemSlots.Add(itemSlots[i]);
+
+            for (int i = 0; i < EquipmentDatas.Count; i++)
+            {
+                var slot = GetMatchTypeEquipSlot(EquipmentDatas[i].equipmentData.slotType);
+                slot.SetItemData(EquipmentDatas[i]);
+            }
             
             //인벤토리의 아이템 데이터를 슬롯에 넣어주기 (장비창 제외)
-            for (int i = 0; i < playerInventory.itemInventory.Count; i++)
+            for (int i = 0; i < Inventory.itemInventory.Count; i++)
             {
+                ItemSlot matchSlot = GetMatchItemSlot(Inventory.itemInventory[i]);
                 ItemSlot emptySlot = GetEmptySlot();
-                emptySlot.SetItemData(playerInventory.itemInventory[i]);
+
+                ItemDataSO currentIndexItem = Inventory.itemInventory[i];
+                
+                //퀵슬롯 등록을 위한 item만 모아놓기
+                if (currentIndexItem.itemType == ItemType.ITEM)
+                {
+                    if (_itemDatas.ContainsKey(currentIndexItem))
+                    {
+                        _itemDatas[currentIndexItem]++;
+                        continue;
+                    }
+                    if (!_itemTable.Contains(currentIndexItem))
+                        _itemTable.Add(currentIndexItem);
+                    
+                    _itemDatas.Add(currentIndexItem, 1);
+                }
+
+                if (matchSlot != null)
+                {
+                    matchSlot.SetItemData(Inventory.itemInventory[i]);
+                    Inventory.itemInventory[i].ItemSlot = matchSlot;
+                    continue;
+                }
+                
+                emptySlot.SetItemData(Inventory.itemInventory[i]);
+                Inventory.itemInventory[i].ItemSlot = emptySlot;
             }
 
+            QuickSlotItem = _itemTable[_currentItemIndex];
+            UpdateQuickSlotUI(QuickSlotItem);
+            
             UpdateAllSlots();
         }
-        
-        private void Start()
-        {
-            Player.Instance.GetEntityComponent<PlayerHealth>()
-                .OnDeadEvent.AddListener(playerInventory.Initialize);
-        }
 
-        private void OnDisable()
-        {
-            Player.Instance.GetEntityComponent<PlayerHealth>()
-                .OnDeadEvent.AddListener(playerInventory.Initialize);
-        }
+        // private void Start()
+        // {
+        //     Player.Instance.GetEntityComponent<PlayerHealth>()
+        //         .OnDeadEvent.AddListener(Inventory.Initialize);
+        // }
+        //
+        // private void OnDisable()
+        // {
+        //     Player.Instance.GetEntityComponent<PlayerHealth>()
+        //         .OnDeadEvent.AddListener(Inventory.Initialize);
+        // }
 
         private void Update()
         {
             //임시 퀵슬롯 키
-            if (Input.GetKeyDown(KeyCode.Alpha1)) 
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
+                if (QuickSlotItem == null)
+                    return;
+                
                 QuickSlotItem.itemObject.ItemEffect(Player.Instance);
-                QuickSlotItem = null;
-                UpdateQuickSlotUI(null);
+                
+                //아이템 다 쓰면 넘어가기
+                if (--_itemDatas[QuickSlotItem] <= 0)
+                {
+                    _itemDatas.Remove(QuickSlotItem);
+                    _itemTable.Remove(QuickSlotItem);
+                    Inventory.itemInventory.Remove(QuickSlotItem);
+                    
+                    ChangeQuickSlotItem();
+                    UpdateAllSlots();
+                }
+                UpdateQuickSlotUI(QuickSlotItem);
             }
+
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                quickSlotUI.transform.DOKill();
+                quickSlotUI.transform.DOShakeScale(0.2f, Vector3.one * 1.03f);
+                ChangeQuickSlotItem();
+            }
+        }
+
+        private void ChangeQuickSlotItem()
+        {
+            if (_itemTable.Count == 0)
+            {
+                QuickSlotItem = null;
+                UpdateQuickSlotUI(QuickSlotItem);
+                return;
+            }
+                
+            if (_currentItemIndex >= _itemTable.Count - 1)
+                _currentItemIndex = 0;
+            else
+                _currentItemIndex++;
+                
+            QuickSlotItem = _itemTable[_currentItemIndex];
+            UpdateQuickSlotUI(QuickSlotItem);
         }
 
         public void UpdateAllSlots()
         {
             for (int i = 0; i < itemSlots.Count; i++)
             {
-                if (itemSlots[i].GetSlotItemData() == null) //빈 슬롯이면 empty 이미지
+                //빈 슬롯이면 empty 이미지
+                if (itemSlots[i].GetSlotItemData() == null
+                    && itemSlots[i] is not EquipmentSlot)
+                {
                     itemSlots[i].SetItemImage(null);
+                }
+                else if (itemSlots[i].GetSlotItemData() == null
+                         && itemSlots[i] is EquipmentSlot equipSlot)
+                {
+                    itemSlots[i].SetItemImage(equipSlot.GetInfoIcon);
+                }
                 else //아이템이 존재하면 itemImage 넣어주기
                 {
                     Sprite itemIcon = itemSlots[i].GetSlotItemData().itemImage;
@@ -118,18 +207,8 @@ namespace Swift_Blade
             itemDescription.text = itemData ? itemData.description : String.Empty;
             itemTypeInfo.text    = itemData ? itemData.itemType.ToString() : String.Empty;
         }
-        
-        //Mouse Up을 했을 때 발생
-        public void DeselectItem()
-        {
-            // _createdItemUI.gameObject.SetActive(false);
 
-            SelectedItem = null;
-            _isDragging = false;
-            isSlotChanged = false;
-        }
-
-        public void AddItemToEmptySlot(ItemDataSO newItem)
+        public void AddItemToMatchSlot(ItemDataSO newItem)
         {
             if (AllSlotsFull())
             {
@@ -137,10 +216,26 @@ namespace Swift_Blade
                 return;
             }
             
-            playerInventory.itemInventory.Add(newItem);
+            Inventory.itemInventory.Add(newItem);
+
+            var matchSlot = GetMatchItemSlot(newItem);
+
+            if (matchSlot)
+            {
+                matchSlot.SetItemData(newItem);
+                newItem.ItemSlot = matchSlot;
+            }
+            else
+                AddItemToEmptySlot(newItem);
             
+            UpdateAllSlots();
+        }
+
+        public void AddItemToEmptySlot(ItemDataSO newItem)
+        {
             var emptySlot = GetEmptySlot();
             emptySlot.SetItemData(newItem);
+            newItem.ItemSlot = emptySlot;
             
             UpdateAllSlots();
         }
@@ -150,9 +245,29 @@ namespace Swift_Blade
             return itemSlots.FirstOrDefault(item => item.IsEmptySlot());
         }
 
-        public EquipmentSlot GetEmptyEquipSlot()
+        private ItemSlot GetMatchItemSlot(ItemDataSO item)
         {
-            return equipSlots.FirstOrDefault(slot => slot.IsEmptySlot());
+            return itemSlots.FirstOrDefault(slot => slot.GetSlotItemData() == item);
+        }
+
+        public EquipmentSlot GetMatchTypeEquipSlot(EquipmentSlotType type)
+        {
+            EquipmentSlot matchSlot = equipSlots.FirstOrDefault(slot => slot.GetSlotType == type);
+            
+            if (matchSlot == null)
+            {
+                Debug.LogError($"Doesn't exist match type, typename: {type.ToString()}");
+                return default;
+            }
+            
+            if (matchSlot.IsEmptySlot())
+                return matchSlot;
+
+            //Original item need to go to the inventory
+            ItemDataSO tempItemData = matchSlot.GetSlotItemData();
+            GetEmptySlot().SetItemData(tempItemData);
+
+            return matchSlot;
         }
         
         public bool AllSlotsFull()
@@ -172,14 +287,17 @@ namespace Swift_Blade
                 return;
             }
             
-            if (QuickSlotItem != null)
-            {
-                ItemSlot newSlot = GetEmptySlot();
-                newSlot.SetItemData(itemData);
-            }
-            
             quickSlotUI.SetIcon(itemData.itemImage);
-            QuickSlotItem = itemData;
+        }
+
+        public int GetItemCount(ItemDataSO itemData)
+        {
+            if (_itemDatas.ContainsKey(itemData))
+            {
+                return _itemDatas[itemData];
+            }
+
+            return -1;
         }
     }
 }
