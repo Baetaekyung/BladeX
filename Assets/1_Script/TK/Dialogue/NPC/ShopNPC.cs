@@ -23,10 +23,20 @@ namespace Swift_Blade
             TalkWithNPC(HandleOpenShop);
         }
 
+        protected override void TalkWithNPC(Action dialogueEndEvent = null)
+        {
+            DialogueManager.Instance.DoDialogue(dialogueData).Subscribe(HandleDialogueEndEvent);
+            
+            void HandleDialogueEndEvent()
+            {
+                dialogueEndEvent?.Invoke();
+                OnDialogueEndEvent?.Invoke();
+            }
+        }
+
         private void HandleOpenShop()
         {
             _shop.SetItems(shopItems);
-            Debug.Log("handle open shop");
             
             PopupManager.Instance.PopUp(PopupType.Shop);
         }
