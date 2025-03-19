@@ -14,15 +14,14 @@ namespace Swift_Blade
 
         public void SetItems(ItemTableSO itemTable)
         {
-            int itemCount = itemTable.itemTable.Count;
+            List<ItemSet> randomItemTable = itemTable.GetRandomItemTable();
 
             if (shopSlots.Count != 0)
                 DeleteRemainSlot();
             
-            for (int i = 0; i < itemCount; i++)
+            for (int i = 0; i < randomItemTable.Count; i++)
             {
                 ItemSet currentItem = itemTable.itemTable[i];
-
                 ShopSlotUI shopSlot = Instantiate(shopSlotPrefab, parent);
                 
                 shopSlot.SetSlotItem(currentItem.itemData, 
