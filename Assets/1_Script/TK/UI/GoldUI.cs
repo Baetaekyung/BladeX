@@ -12,24 +12,24 @@ namespace Swift_Blade
         
         private void Start()
         {
-            sceneManagerSo.LevelClearEvent += AddRandomGold;
             coinText.text = "0 코인";
-            //SetGoldUI();
+            sceneManagerSo.LevelClearEvent += AddRandomGold;
         }
         
         private void OnDestroy()
         {
             sceneManagerSo.LevelClearEvent -= AddRandomGold;
         }
-                
-        private void SetGoldUI()
-        {
-            coinText.text = $"{InventoryManager.Inventory.Coin.ToString()} 코인";
-        }
         
         public void Execute()
         {
             SetGoldUI();
+        }
+        
+        private void SetGoldUI()
+        {
+            coinText.text = $"{InventoryManager.Inventory.Coin.ToString()} 코인";
+            print(InventoryManager.Inventory.Coin);
         }
 
         private void AddRandomGold()

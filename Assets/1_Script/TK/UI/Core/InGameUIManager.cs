@@ -1,7 +1,7 @@
-using System;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
+using Debug = Utility.Debug;
 
 namespace Swift_Blade
 {
