@@ -32,7 +32,7 @@ namespace Swift_Blade
 
         public void GoToTitle()
         {
-            sceneManager.LoadScene("Menu");
+            sceneManager.LoadScene("Title");
         }
 
         public void Resume()

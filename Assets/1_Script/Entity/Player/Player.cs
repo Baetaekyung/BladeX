@@ -1,13 +1,12 @@
-using Swift_Blade.FSM;
-using Swift_Blade.FSM.States;
-using System;
-using System.Collections.Generic;
-using Swift_Blade.Combat;
 using Swift_Blade.Combat.Caster;
+using System.Collections.Generic;
+using Swift_Blade.FSM.States;
+using Swift_Blade.Combat;
+using Swift_Blade.Audio;
+using Swift_Blade.FSM;
 using UnityEngine;
 using DG.Tweening;
-using Swift_Blade.Audio;
-using Random = UnityEngine.Random;
+using System;
 
 namespace Swift_Blade
 {
@@ -26,7 +25,7 @@ namespace Swift_Blade
         public static Player Instance { get; private set; }
         public static event Action OnDead;
         public bool IsPlayerDead { get; private set; }
-
+        
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
         private PlayerAttackState playerAttackState;
@@ -193,7 +192,7 @@ namespace Swift_Blade
             //    AudioEmitter.Dbg2();
             
             mousePosition.position = GetPlayerInput.GetMousePositionWorld;
-
+            
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
             UI_DebugPlayer.DebugText(2, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DAMAGE).Value, "atkBase");
