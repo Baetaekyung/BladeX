@@ -18,10 +18,12 @@ namespace Swift_Blade.Enemy
         void Start()
         {
             Vector3 explosionPosition = transform.position;
-            float explosionForce = 500f;
-            float explosionRadius = 2f; 
-
+            float explosionForce = 100;
+            float explosionRadius = 4f;
             rb.AddExplosionForce(explosionForce, explosionPosition, explosionRadius);
+
+            rb.angularVelocity = new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f));
         }
+
     }
 }

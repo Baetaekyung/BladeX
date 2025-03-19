@@ -36,6 +36,8 @@ namespace Swift_Blade
         }
         private void Update()
         {
+            if(PopupManager.Instance.IsRemainPopup)return;
+            
             plane.SetNormalAndPosition(Vector3.up, playerMovement.transform.position);
             void LegacyInput()
             {
