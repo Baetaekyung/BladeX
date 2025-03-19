@@ -25,6 +25,7 @@ namespace Swift_Blade
         private void HandleOpenShop()
         {
             _shop.SetItems(shopItems);
+            Debug.Log("handle open shop");
             
             PopupManager.Instance.PopUp(PopupType.Shop);
         }

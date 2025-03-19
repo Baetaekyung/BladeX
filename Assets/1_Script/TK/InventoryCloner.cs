@@ -9,7 +9,7 @@ namespace Swift_Blade
 
         private void Start()
         {
-            //이게 맞나..   
+            //What.. I can think more....
             InventoryManager.Inventory = playerInv.Clone();
             InventoryManager.Instance.InitializeSlots();
             InventoryManager.IsAfterInit = true;

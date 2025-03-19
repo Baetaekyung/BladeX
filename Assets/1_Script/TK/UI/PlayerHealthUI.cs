@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
 
 namespace Swift_Blade.UI
@@ -24,6 +25,7 @@ namespace Swift_Blade.UI
             if (_playerHealth != null)
             {
                 _playerHealth.OnHitEvent.AddListener(HandleSetHealthUI);
+                _playerHealth.OnHealthUpdateEvent += SetHealthUI;
                 SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetHealthStat.Value);
             }
         }

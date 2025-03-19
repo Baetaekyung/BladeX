@@ -169,9 +169,6 @@ namespace Swift_Blade
 
         public void Subscribe(Action onAccept)
         {
-            if (onAccept == null)
-                return;
-            
             _onAcceptEvent = onAccept;
         }
         public void Desubscribe(Action onAccept)
