@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -6,6 +7,11 @@ namespace Swift_Blade
     public class RemainPointUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI remainText;
+
+        private void Start()
+        {
+            HandleUpdateRemainUI(Player.level);
+        }
         
         private void OnEnable()
         {
