@@ -113,7 +113,7 @@ public class NodeDictionary : IEnumerable<Node>
     {
         List<NodeType> nodes = new List<NodeType>();
         
-        if (currentNodeIndex % 6 == 0)
+        if (currentNodeIndex % 3 == 0)
         {
             nodes.Add(NodeType.Boss);
         }
