@@ -35,8 +35,9 @@ namespace Swift_Blade
         
         private void AddRandomGold()
         {
-            int randomGold = Random.Range(50, 100);
-            InventoryManager.Inventory.Coin += randomGold;
+            /*int randomGold = Random.Range(50, 100);
+            print(InventoryManager.Inventory);
+            InventoryManager.Inventory.Coin += randomGold;*/
             
             SetGoldUI();
         }

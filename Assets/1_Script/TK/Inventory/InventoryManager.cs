@@ -59,7 +59,7 @@ namespace Swift_Blade
         public void InitializeSlots()
         {
             _currentItemIndex = 0;
-
+                        
             Inventory.itemSlots = new List<ItemSlot>();
             
             for (int i = 0; i < itemSlots.Count; i++)
