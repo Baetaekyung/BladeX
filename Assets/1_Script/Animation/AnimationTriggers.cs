@@ -27,7 +27,7 @@ namespace Swift_Blade
         public event Action OnRotateDisallowSetEvent;
 
         public event Action<AudioSO> OnAudioPlayEvent;
-        public event Action<EAudioType> OnAudioPlayEventWithType;
+        public event Action<EAudioType> OnAudioPlayWithTypeEvent;
 
         [Preserve]
         private void OnAnimationEndTrigger()
@@ -56,5 +56,7 @@ namespace Swift_Blade
         private void OnAudioPlay(AudioSO audio) => OnAudioPlayEvent?.Invoke(audio);
         [Preserve]
         private void OnAudioPlayCollection(AudioSOCollection audioSOCollection) => OnAudioPlay(audioSOCollection.GetRandomAudio);
+        [Preserve]
+        private void OnAudioPlayWithType(EAudioType type) => OnAudioPlayWithTypeEvent?.Invoke(type);
     }
 }

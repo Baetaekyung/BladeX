@@ -47,6 +47,7 @@ namespace Swift_Blade
         public static List<ItemDataSO> EquipmentDatas = new List<ItemDataSO>();
         public static bool IsAfterInit = false;
 
+        
         private void Start()
         {
             if (IsAfterInit == false)
@@ -58,7 +59,7 @@ namespace Swift_Blade
         public void InitializeSlots()
         {
             _currentItemIndex = 0;
-
+                        
             Inventory.itemSlots = new List<ItemSlot>();
             
             for (int i = 0; i < itemSlots.Count; i++)
