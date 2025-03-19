@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using Debug = Utility.Debug;
 using Random = UnityEngine.Random;
 
 namespace Swift_Blade
@@ -13,7 +14,7 @@ namespace Swift_Blade
         private void Start()
         {
             sceneManagerSo.LevelClearEvent += AddRandomGold;
-
+            
             SetGoldUI();
         }
         
@@ -22,14 +23,14 @@ namespace Swift_Blade
             sceneManagerSo.LevelClearEvent -= AddRandomGold;
         }
         
-        public void Execute()
-        {
-            SetGoldUI();
-        }
-        
         private void SetGoldUI()
         {
-            coinText.text = $"{InventoryManager.Inventory.Coin.ToString()} 코인";
+            if(InventoryManager.Inventory != null)                        
+                coinText.text = $"{InventoryManager.Inventory.Coin.ToString()} 코인";
+            else
+            {
+                coinText.text = "0 코인";
+            }
         }
         
         private void AddRandomGold()

@@ -47,6 +47,7 @@ namespace Swift_Blade
         public static readonly List<ItemDataSO> EquipmentDatas = new List<ItemDataSO>(5);
         public static bool IsAfterInit = false;
 
+        
         private void Start()
         {
             if (IsAfterInit == false)
