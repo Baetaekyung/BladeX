@@ -6,10 +6,9 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-
     public class ChallangeSpawner : MonoBehaviour
     {
-        [SerializeField] private ActionData actionData;
+        private ActionData actionData;
         [SerializeField] private SceneManagerSO sceneManagerSO;
         public List<SpawnInfos> spawnEnemies;
 
@@ -22,6 +21,12 @@ namespace Swift_Blade
 
         [SerializeField] private Transform[] spawnPosition;
 
+        private void Awake()
+        {
+            actionData.damageAmount = 99;
+            actionData.dealer = default;
+            actionData.hitNormal = default;
+        }
         private void Start()
         {
             StartCoroutine("EnemyWavesCoroutin");
@@ -31,10 +36,11 @@ namespace Swift_Blade
 
         private void TimesOut()
         {
+            Debug.Log("¾ß±â¿î~~!!!!!!!!!");
             sceneManagerSO.LevelClear();
             foreach(var enemy in spawnEnemyList)
             {
-                enemy.GetComponent<BaseEnemyHealth>().TakeDamage(actionData);
+                enemy.transform.GetComponent<BaseEnemyHealth>().TakeDamage(actionData);
             }
         }
 
