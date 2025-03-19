@@ -1,3 +1,4 @@
+using System;
 using Swift_Blade.UI;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,6 +16,7 @@ namespace Swift_Blade
         [SerializeField] private float _currentHealth;
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
+        public event Action<float, float> OnHealthUpdateEvent;
 
         public float GetCurrentHealth => _currentHealth;
         public StatSO GetHealthStat => _healthStat;
@@ -31,8 +33,16 @@ namespace Swift_Blade
         
         public void EntityComponentStart(Entity entity)
         {
-            _maxHealth = _statCompo.GetStat(StatType.HEALTH).Value;
-            _currentHealth = _statCompo.GetStat(StatType.HEALTH).Value;
+            _healthStat = _statCompo.GetStat(StatType.HEALTH);
+            _maxHealth = _healthStat.Value;
+            _currentHealth = _healthStat.Value;
+        }
+
+        public void HealthUpdate()
+        {
+            _maxHealth = _healthStat.Value;
+            
+            OnHealthUpdateEvent?.Invoke(_maxHealth, _currentHealth);
         }
 
         public void TakeDamage(ActionData actionData)
@@ -56,8 +66,10 @@ namespace Swift_Blade
         
         public void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
         {
-            _currentHealth = Mathf.Clamp(_currentHealth + healAmount, 0, _maxHealth);
-            Debug.Log($"Take Heal: {healAmount}");
+            _currentHealth += healAmount;
+            _currentHealth = Mathf.Clamp(_currentHealth, _healthStat.MinValue, _healthStat.MaxValue);
+            
+            HealthUpdate();
         }
 
         public void Dead()

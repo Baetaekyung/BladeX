@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 namespace Swift_Blade
 {
-    public class GoldUI : MonoBehaviour,IUIExecute
+    public class GoldUI : MonoBehaviour
     {
         [SerializeField] private InventoryManager playerInventory;
         [SerializeField] private TextMeshProUGUI coinText;
@@ -13,25 +13,25 @@ namespace Swift_Blade
         private void Start()
         {
             sceneManagerSo.LevelClearEvent += AddRandomGold;
-            coinText.text = "0 코인";
-            //SetGoldUI();
+
+            SetGoldUI();
         }
         
         private void OnDestroy()
         {
             sceneManagerSo.LevelClearEvent -= AddRandomGold;
         }
-                
-        private void SetGoldUI()
-        {
-            coinText.text = $"{InventoryManager.Inventory.Coin.ToString()} 코인";
-        }
         
         public void Execute()
         {
             SetGoldUI();
         }
-
+        
+        private void SetGoldUI()
+        {
+            coinText.text = $"{InventoryManager.Inventory.Coin.ToString()} 코인";
+        }
+        
         private void AddRandomGold()
         {
             int randomGold = Random.Range(50, 100);

@@ -108,7 +108,7 @@ namespace Swift_Blade.Enemy
             enemy.weapon.name = weaponName;
             
             animatorController.Rebind();
-                        
+            
         }
     }
 }

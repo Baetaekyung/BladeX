@@ -50,6 +50,13 @@ namespace Swift_Blade
                 //Key is StatType, Value is ModifyValue
                 _playerStat.AddModifier(stat.Key, equipData.itemSerialCode, stat.Value);
 
+                if (stat.Key == StatType.HEALTH)
+                {
+                    PlayerHealth playerHealth = Player.Instance?.GetEntityComponent<PlayerHealth>();
+                    //playerHealth?.TakeHeal(stat.Value);
+                    playerHealth?.HealthUpdate();
+                }
+                
                 Debug.Log($"{stat.Key.ToString()} Stat increase amount {stat.Value}!)");
             }
         }
@@ -73,7 +80,14 @@ namespace Swift_Blade
                 //Key is StatType
                 _playerStat.RemoveModifier(stat.Key, equipData.itemSerialCode);
                 
-                Debug.Log($"{stat.Key.ToString()} Stat increase amount {stat.Value}!)");
+                if (stat.Key == StatType.HEALTH)
+                {
+                    PlayerHealth playerHealth = Player.Instance?.GetEntityComponent<PlayerHealth>();
+                    //playerHealth?.TakeHeal(-stat.Value);
+                    playerHealth?.HealthUpdate();
+                }
+                
+                Debug.Log($"{stat.Key.ToString()} Stat decrease amount {stat.Value}!)");
             }
         }
     }
