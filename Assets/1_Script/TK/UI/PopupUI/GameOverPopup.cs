@@ -32,15 +32,13 @@ namespace Swift_Blade
 
         public void GoToTitle()
         {
-            sceneManager.LoadScene("LevelMenu");
+            sceneManager.LoadScene("Menu");
         }
 
         public void Resume()
         {
             cG.DOKill();
-            
-            string curScene = SceneManager.GetActiveScene().name;
-            sceneManager.LoadScene(curScene);
+            sceneManager.LoadScene("Menu");
         }
         
     }

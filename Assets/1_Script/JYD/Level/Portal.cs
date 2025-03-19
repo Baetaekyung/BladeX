@@ -5,6 +5,7 @@ namespace Swift_Blade.Level.Portal
     public class Portal : MonoBehaviour, IInteractable
     {
         [SerializeField] private SceneManagerSO sceneManager;
+        [SerializeField] private NodeList nodeList;
         
         [SerializeField] private bool isDefaultPortal;
         
@@ -21,6 +22,8 @@ namespace Swift_Blade.Level.Portal
             {
                 particle.Simulate(0);
                 particle.Play();
+                
+                SetScene(nodeList.GetNodeName(NodeType.Exp));
             }
             else
             {
@@ -33,12 +36,6 @@ namespace Swift_Blade.Level.Portal
         public void Interact()
         {
             sceneManager.LoadScene(sceneName);
-        }
-
-        public void ActivePortal()
-        {
-            /*particle.Simulate(0);
-            particle.Play();*/
         }
 
         public void SetScene(string _sceneName)

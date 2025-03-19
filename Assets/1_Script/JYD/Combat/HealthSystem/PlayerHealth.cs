@@ -21,7 +21,7 @@ namespace Swift_Blade
         public float GetCurrentHealth => _currentHealth;
         public StatSO GetHealthStat => _healthStat;
         
-        private const float DamageInterval = 0.72f;
+        private const float DamageInterval = 0.22f;
         private float lastDamageTime;
         //private float _maxHealth;
         private bool isDead;
