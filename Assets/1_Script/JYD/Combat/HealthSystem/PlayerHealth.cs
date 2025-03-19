@@ -12,8 +12,7 @@ namespace Swift_Blade
         [SerializeField] private StatSO _healthStat;
         
         private float _maxHealth;
-        public float GetMaxHealth => _maxHealth;
-        [SerializeField] private float _currentHealth;
+        public static float _currentHealth;
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
         public event Action<float, float> OnHealthUpdateEvent;
@@ -35,7 +34,8 @@ namespace Swift_Blade
         {
             _healthStat = _statCompo.GetStat(StatType.HEALTH);
             _maxHealth = _healthStat.Value;
-            _currentHealth = _healthStat.Value;
+            
+            HealthUpdate();
         }
 
         public void HealthUpdate()

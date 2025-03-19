@@ -26,7 +26,7 @@ namespace Swift_Blade.UI
             {
                 _playerHealth.OnHitEvent.AddListener(HandleSetHealthUI);
                 _playerHealth.OnHealthUpdateEvent += SetHealthUI;
-                SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetHealthStat.Value);
+                SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth._currentHealth);
             }
         }
 
