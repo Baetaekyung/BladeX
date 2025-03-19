@@ -25,7 +25,7 @@ namespace Swift_Blade.Feeling
         protected override void Awake()
         {
             base.Awake();
-            Time.timeScale = DEFAULT_TIMESCALE + styleMeter.GetModifierValue;
+            Time.timeScale = DEFAULT_TIMESCALE;
         }
 
         public HitStopManager DoHitStop(HitStopSO hitStopData)
@@ -51,7 +51,7 @@ namespace Swift_Blade.Feeling
 
             InvokeCompleteEvent();
 
-            Time.timeScale = DEFAULT_TIMESCALE + styleMeter.GetModifierValue;
+            Time.timeScale = DEFAULT_TIMESCALE;
         }
 
         private IEnumerator HitStopCoroutine(HitStopSO hitStopData)
@@ -64,14 +64,14 @@ namespace Swift_Blade.Feeling
 
                 yield return StartCoroutine(ChangeTimeScale(hitStopData.smoothStep, DEFAULT_TIMESCALE));
                 
-                Time.timeScale = DEFAULT_TIMESCALE + styleMeter.GetModifierValue;
+                Time.timeScale = DEFAULT_TIMESCALE;
             }
             else if (hitStopData.hitStopType == HitStopType.IMMEDIATE)
             {
-                Time.timeScale = hitStopData.timeScale + styleMeter.GetModifierValue;
+                Time.timeScale = hitStopData.timeScale;
 
                 yield return new WaitForSecondsRealtime(hitStopData.duration);
-                Time.timeScale = DEFAULT_TIMESCALE + styleMeter.GetModifierValue;
+                Time.timeScale = DEFAULT_TIMESCALE;
             }
 
             InvokeCompleteEvent();
@@ -87,7 +87,7 @@ namespace Swift_Blade.Feeling
                 _smoothValue += smoothTime;
                 CurrentTimeScale = Mathf.Lerp(CurrentTimeScale, targetScale, _smoothValue);
                 
-                Time.timeScale = CurrentTimeScale + styleMeter.GetModifierValue;
+                Time.timeScale = CurrentTimeScale;
                 
                 yield return _waitForEndOfFrame;
             }
