@@ -96,6 +96,8 @@ namespace Swift_Blade.Enemy
         
         private void SetRandomWeapon()
         {
+            if(weapons.Length == 0)return;
+            
             foreach (var weapon in weapons)
             {
                 weapon.SetActive(false);

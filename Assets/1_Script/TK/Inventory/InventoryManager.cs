@@ -44,9 +44,10 @@ namespace Swift_Blade
         public bool IsDragging { get => _isDragging; set => _isDragging = value; }
         public ItemDataSO QuickSlotItem { get; set; }
         public static PlayerInventory Inventory { get; set; }
-        public static readonly List<ItemDataSO> EquipmentDatas = new List<ItemDataSO>(5);
+        public static List<ItemDataSO> EquipmentDatas = new List<ItemDataSO>();
         public static bool IsAfterInit = false;
 
+        
         private void Start()
         {
             if (IsAfterInit == false)
@@ -58,7 +59,7 @@ namespace Swift_Blade
         public void InitializeSlots()
         {
             _currentItemIndex = 0;
-
+                        
             Inventory.itemSlots = new List<ItemSlot>();
             
             for (int i = 0; i < itemSlots.Count; i++)
@@ -259,12 +260,18 @@ namespace Swift_Blade
                 Debug.LogError($"Doesn't exist match type, typename: {type.ToString()}");
                 return default;
             }
-            
+
             if (matchSlot.IsEmptySlot())
                 return matchSlot;
 
             //Original item need to go to the inventory
             ItemDataSO tempItemData = matchSlot.GetSlotItemData();
+            
+            var baseEquip = tempItemData.itemObject as BaseEquipment;
+            baseEquip?.OffEquipment();
+            
+            EquipmentDatas.Remove(tempItemData);
+            Inventory.currentEquipment.Remove(tempItemData.equipmentData);
             GetEmptySlot().SetItemData(tempItemData);
 
             return matchSlot;
