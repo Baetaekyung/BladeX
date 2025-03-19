@@ -7,22 +7,31 @@ namespace Swift_Blade
     public abstract class StatComponent : MonoBehaviour
     {
         [SerializeField] protected StatSO[] _stats;
+        public static StatSO[] myStats;
+        public static bool InitOnce = false;
         
         protected virtual void Initialize()
         {
-            StatSO[] _tempStats = new StatSO[_stats.Length];
-
-            for (int i = 0; i < _stats.Length; i++)
+            if (InitOnce == false)
             {
-                _tempStats[i] = _stats[i].Clone();
-            }
+                myStats = new StatSO[_stats.Length];
+                
+                for (int i = 0; i < _stats.Length; i++)
+                {
+                    myStats[i] = _stats[i].Clone();
 
-            _stats = _tempStats;
+                    //no more thing...
+                    if (myStats[i].statType == StatType.HEALTH)
+                        PlayerHealth._currentHealth = myStats[i].Value;
+                }
+
+                InitOnce = true;
+            }
         }
 
         public StatSO GetStat(StatSO stat)
         {
-            StatSO findStat = _stats.FirstOrDefault(x => x.statName == stat.statName);
+            StatSO findStat = myStats.FirstOrDefault(x => x.statName == stat.statName);
             Debug.Assert(findStat != null, "stat can't find");
 
             return findStat;
@@ -30,7 +39,7 @@ namespace Swift_Blade
 
         public StatSO GetStat(StatType statType)
         {
-            StatSO findStat = _stats.FirstOrDefault(x => x.statType == statType);
+            StatSO findStat = myStats.FirstOrDefault(x => x.statType == statType);
             Debug.Assert(findStat != null, "stat can't find");
             
             return findStat;
@@ -59,7 +68,7 @@ namespace Swift_Blade
 
         public void ClearAllModifiers()
         {
-            foreach (StatSO stat in _stats)
+            foreach (StatSO stat in myStats)
             {
                 stat.ClearModifier();
             }

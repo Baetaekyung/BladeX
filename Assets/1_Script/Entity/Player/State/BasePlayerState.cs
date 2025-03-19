@@ -37,6 +37,8 @@ namespace Swift_Blade.FSM.States
         }
         public override void Update()
         {
+            if (PopupManager.Instance.IsRemainPopup) return;
+
             if (Input.GetKeyDown(KeyCode.Mouse0) && BaseAllowAttackInput)
                 OnAttackInput(EComboState.LightAttack);
             if (Input.GetKeyDown(KeyCode.Mouse1) && BaseAllowAttackInput)

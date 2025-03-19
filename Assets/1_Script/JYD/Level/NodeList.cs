@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Swift_Blade.Level;
 using Swift_Blade.Level.Portal;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
@@ -18,7 +16,7 @@ public enum NodeType
     
     //level Up
     Point,
-    Challange,
+    Challenge,
     Store,
     
     //boss
@@ -115,20 +113,20 @@ public class NodeDictionary : IEnumerable<Node>
     {
         List<NodeType> nodes = new List<NodeType>();
         
-        if (currentNodeIndex % 10 == 0)
+        if (currentNodeIndex % 3 == 0)
         {
             nodes.Add(NodeType.Boss);
         }
-        else if (currentNodeIndex % 6 == 0)
+        else if (currentNodeIndex % 2 == 0)
         {
             nodes.Add(NodeType.Point);
             nodes.Add(NodeType.Store);
-            nodes.Add(NodeType.Challange);
+            nodes.Add(NodeType.Challenge);
         }
         else
         {
             int random = Random.Range(0,100);
-            if (random < 15)
+            if (random < 40)
                 nodes.Add(NodeType.Event);            
             
             nodes.Add(NodeType.Exp);            
@@ -189,7 +187,7 @@ namespace Swift_Blade.Level
                     case NodeType.Point:
                         item.SetPortalPrefab(pointPortal);
                         break;
-                    case NodeType.Challange:
+                    case NodeType.Challenge:
                         item.SetPortalPrefab(challangePortal);
                         break;
                     case NodeType.Store:

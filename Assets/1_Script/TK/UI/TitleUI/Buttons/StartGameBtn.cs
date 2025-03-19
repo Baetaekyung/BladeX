@@ -5,6 +5,7 @@ namespace Swift_Blade.UI
 {
     public class StartGameBtn : BaseButton
     {
+        [SerializeField] private SceneManagerSO sceneManagerSo;
         protected override void ClickEvent()
         {
             #region Check is animationUI
@@ -18,7 +19,7 @@ namespace Swift_Blade.UI
 
             #endregion
             
-            Debug.Log("GameStart");
+            sceneManagerSo.LoadScene("Menu");
         }
     }
 }

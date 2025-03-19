@@ -1,6 +1,5 @@
 using System;
 using DG.Tweening;
-using Swift_Blade.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Swift_Blade.Level
 {
-    public class LevelUIController : PopupUI
+    public class LevelUIController : MonoBehaviour
     {
         public SceneManagerSO levelEvent;
         
@@ -27,9 +26,8 @@ namespace Swift_Blade.Level
         [Range(0.1f ,2)] [SerializeField] private float headerSizeUpDuration;
         
         
-        protected override void Awake()
+        protected void Awake()
         {
-            base.Awake();
             
             LevelUIController existingInstance = FindObjectOfType<LevelUIController>();
 
@@ -48,23 +46,10 @@ namespace Swift_Blade.Level
             ResetClearPanel();
         }
 
-        protected override void OnDestroy()
+        protected  void OnDestroy()
         {
-            base.OnDestroy();
-            
             levelEvent.SceneLoadEvent -= StartFade;
         }
-
-        public override void Popup()
-        {
-            SetActiveClearPanel();
-        }
-
-        public override void PopDown()
-        {
-            ResetClearPanel();
-        }
-        
         private void StartFade(string sceneName,Action onComplete)
         {
             if (isFading) return;
