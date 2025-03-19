@@ -103,7 +103,7 @@ namespace Swift_Blade.FSM.States
         {
             if (player.GetPlayerDamageCaster.Cast())
             {
-                player.GetEntityComponent<PlayerStatCompo>().GetStyleMeter.SuccessHit();
+                //player.GetEntityComponent<PlayerStatCompo>().GetStyleMeter.SuccessHit();
             }
         }
     }

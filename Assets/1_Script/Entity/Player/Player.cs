@@ -127,11 +127,6 @@ namespace Swift_Blade
             if (Instance == null)
                 Instance = this;
             level.Init(SceneManagerSO);
-            
-        }
-        protected override void Start()
-        {
-            base.Start();
             Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator.GetAnimator;
 
             playerStateMachine.AddState(PlayerStateEnum.Move, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
@@ -144,44 +139,46 @@ namespace Swift_Blade
             playerStateMachine.AddState(PlayerStateEnum.HitStun, new PlayerHitStunState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_hitStun));
             playerStateMachine.AddState(PlayerStateEnum.Interact, new PlayerInteractState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
             playerStateMachine.SetStartState(PlayerStateEnum.Move);
-            playerRollState.OnRollEnd += 
+            playerRollState.OnRollEnd +=
                 () =>
-            {
-                GetPlayerHealth.IsPlayerInvincible = true;
-                StatSO dashInvincibleTimeStat = GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DASH_INVINCIBLE_TIME);
-                float delay = dashInvincibleTimeStat.Value;
-                playerInvincibleTween = DOVirtual.DelayedCall(delay,
-                    () =>
                 {
-                    GetPlayerHealth.IsPlayerInvincible = false;
-                }, false);
-            };
+                    GetPlayerHealth.IsPlayerInvincible = true;
+                    StatSO dashInvincibleTimeStat = GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DASH_INVINCIBLE_TIME);
+                    float delay = dashInvincibleTimeStat.Value;
+                    delay = Mathf.Max(delay, 0.2f);
+                    Debug.Log(delay);
+                    playerInvincibleTween = DOVirtual.DelayedCall(delay,
+                        () =>
+                        {
+                            GetPlayerHealth.IsPlayerInvincible = false;
+                        }, false);
+                };
 
             PlayerHealth playerHealth = GetPlayerHealth;
 
             playerHealth.OnHitEvent.AddListener(
                 (ActionData data) =>
-            {
-                if (IsPlayerDead) return;
-                bool isHitStun = data.stun;
-                AudioManager.PlayWithInit(audioCollection.GetRandomAudio, true);
-                if (isHitStun)
-                    playerStateMachine.ChangeState(PlayerStateEnum.HitStun);
-            });
+                {
+                    if (IsPlayerDead) return;
+                    bool isHitStun = data.stun;
+                    AudioManager.PlayWithInit(audioCollection.GetRandomAudio, true);
+                    if (isHitStun)
+                        playerStateMachine.ChangeState(PlayerStateEnum.HitStun);
+                });
             playerHealth.OnDeadEvent.AddListener(
                 () =>
-            {
-                playerStateMachine.ChangeState(PlayerStateEnum.Dead);
-                IsPlayerDead = true;
-            });
+                {
+                    playerStateMachine.ChangeState(PlayerStateEnum.Dead);
+                    IsPlayerDead = true;
+                });
             playerStateMachine.OnChangeState +=
                 (PlayerStateEnum type) =>
-            {
-                if (type == PlayerStateEnum.Roll || type == PlayerStateEnum.HitStun)
                 {
-                    playerInvincibleTween?.Kill();
-                }
-            };
+                    if (type == PlayerStateEnum.Roll || type == PlayerStateEnum.HitStun)
+                    {
+                        playerInvincibleTween?.Kill();
+                    }
+                };
             GetEntityComponent<PlayerDamageCaster>().OnCastDamageEvent.AddListener(
                 (action) =>
                 {
