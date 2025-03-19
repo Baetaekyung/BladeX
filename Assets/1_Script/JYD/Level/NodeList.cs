@@ -16,7 +16,7 @@ public enum NodeType
     
     //level Up
     Point,
-    Challange,
+    Challenge,
     Store,
     
     //boss
@@ -121,7 +121,7 @@ public class NodeDictionary : IEnumerable<Node>
         {
             nodes.Add(NodeType.Point);
             nodes.Add(NodeType.Store);
-            nodes.Add(NodeType.Challange);
+            nodes.Add(NodeType.Challenge);
         }
         else
         {
@@ -187,7 +187,7 @@ namespace Swift_Blade.Level
                     case NodeType.Point:
                         item.SetPortalPrefab(pointPortal);
                         break;
-                    case NodeType.Challange:
+                    case NodeType.Challenge:
                         item.SetPortalPrefab(challangePortal);
                         break;
                     case NodeType.Store:
