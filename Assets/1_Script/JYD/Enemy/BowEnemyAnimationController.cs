@@ -1,4 +1,5 @@
 using UnityEngine;
+using Swift_Blade.Enemy.Bow;
 
 namespace Swift_Blade.Enemy
 {

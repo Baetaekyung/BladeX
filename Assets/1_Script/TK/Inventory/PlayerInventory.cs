@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,23 +12,35 @@ namespace Swift_Blade
         
         public List<ItemDataSO> itemInventory;
 
-        [HideInInspector] public List<ItemSlot> itemSlots;
+        [HideInInspector] public List<ItemSlot> itemSlots = new List<ItemSlot>();
         public List<EquipmentData> currentEquipment = new List<EquipmentData>();
         public List<EquipmentChannelSO> currentEquipmentEffects = new List<EquipmentChannelSO>();
         
         public int Coin { get; set; }
         
-        private void OnEnable()
+        public PlayerInventory Clone()
         {
-#if UNITY_EDITOR
+            var inventory = Instantiate(this);
+            inventory.Initialize();
             
-            Coin = 9999; //테스트 용도
-            
-#endif
-            
-            currentInventoryCapacity = itemInventory.Capacity;
-            maxInventoryCapacity = itemSlots.Count - 4; // -4는 장비슬롯 때문에
-            currentEquipment = new List<EquipmentData>();
+            return inventory;
         }
+
+        public void Initialize()
+        {
+            PlayerInventory inventory = Instantiate(this);
+
+            inventory.itemSlots = itemSlots;
+            inventory.itemInventory = new List<ItemDataSO>();
+            inventory.currentEquipmentEffects = new List<EquipmentChannelSO>();
+            
+            inventory.Coin = 0;
+            
+            inventory.currentInventoryCapacity = itemInventory.Count;
+            inventory.maxInventoryCapacity = itemSlots.Count - 5; // -5는 장비슬롯 때문에
+            inventory.currentEquipment = new List<EquipmentData>();
+        }
+
+
     }
 }

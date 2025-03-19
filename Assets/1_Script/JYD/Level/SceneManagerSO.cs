@@ -8,16 +8,16 @@ namespace Swift_Blade
     {
         public event Action LevelClearEvent;
         public event Action<string,Action> SceneLoadEvent;
+        public event Action SceneEnterEvent;
         
         public void LevelClear()
         {
             LevelClearEvent?.Invoke();
         }
         
-        public void LoadScene(string sceneName,Action callback = null)
+        public void LoadScene(string sceneName)
         {
-           
-            SceneLoadEvent?.Invoke(sceneName,callback);
+            SceneLoadEvent?.Invoke(sceneName,SceneEnterEvent);
         }
         
     }

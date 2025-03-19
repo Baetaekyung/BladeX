@@ -5,6 +5,7 @@ namespace Swift_Blade.Level.Portal
     public class Portal : MonoBehaviour, IInteractable
     {
         [SerializeField] private SceneManagerSO sceneManager;
+        [SerializeField] private NodeList nodeList;
         
         [SerializeField] private bool isDefaultPortal;
         
@@ -16,13 +17,19 @@ namespace Swift_Blade.Level.Portal
         {
             particle = GetComponentInChildren<ParticleSystem>();
             particle.Play();
-            
-            //transform.LookAt(Camera.main.transform);
-            
+                                    
             if (isDefaultPortal)
             {
                 particle.Simulate(0);
                 particle.Play();
+                
+                SetScene(nodeList.GetNodeName(NodeType.Exp));
+            }
+            else
+            {
+                Vector3 direction = Camera.main.transform.position - transform.position;
+                direction.y = 0; 
+                transform.rotation = Quaternion.LookRotation(direction);
             }
                        
         }
@@ -31,13 +38,7 @@ namespace Swift_Blade.Level.Portal
             sceneManager.LoadScene(sceneName);
         }
 
-        public void ActivePortal()
-        {
-            /*particle.Simulate(0);
-            particle.Play();*/
-        }
-
-        public void SetLoadScene(string _sceneName)
+        public void SetScene(string _sceneName)
         {
             sceneName = _sceneName;
         }

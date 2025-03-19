@@ -33,7 +33,7 @@ namespace Swift_Blade
         
         public void HandleStatAdder()
         {
-            _playerStat = FindFirstObjectByType<PlayerStatCompo>();
+            _playerStat = Player.Instance?.GetEntityComponent<PlayerStatCompo>();
             
             if (_playerStat == null)
             {
@@ -56,7 +56,7 @@ namespace Swift_Blade
 
         public void HandleStatRemover()
         {
-            _playerStat = Player.Instance.GetEntityComponent<PlayerStatCompo>();
+            _playerStat = Player.Instance?.GetEntityComponent<PlayerStatCompo>();
             
             if (_playerStat == null)
             {

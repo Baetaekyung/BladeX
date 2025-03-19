@@ -7,7 +7,7 @@ namespace Swift_Blade
         [SerializeField] private AttackComboSO animParam;
         public override void ItemEffect(Player player)
         {
-            Player.Instance.AddCombo(animParam);
+            //Player.Instance.AddCombo(animParam);
         }
     }
 }

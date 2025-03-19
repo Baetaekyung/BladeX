@@ -83,7 +83,12 @@ namespace Swift_Blade
             AdditionalVelocity = Vector3.MoveTowards(AdditionalVelocity, Vector3.zero, Time.fixedDeltaTime * 10);
 
             if (lowestContactPointBottom.HasValue) yVal = onGroundYVal;
-            else yVal += Time.fixedDeltaTime * gravitiy * gravitiyMultiplier;
+            else
+            {
+                if (yVal >= -1f)
+                    yVal = -4f;
+                yVal += Time.fixedDeltaTime * gravitiy * gravitiyMultiplier;
+            }
 
             //UI_DebugPlayer.DebugText(5, lowestContactPointBottom.HasValue, "ONGROUND", DBG_UI_KEYS.Keys_PlayerMovement);
             //UI_DebugPlayer.DebugText(0, yVal, "yVal", DBG_UI_KEYS.Keys_PlayerMovement);

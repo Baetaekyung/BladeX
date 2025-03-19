@@ -47,18 +47,9 @@ namespace Swift_Blade
         public PlayerStatCompo PlayerStat;
 
         public float GetModifierValue => _timeModifier ?? -0.1f;
-        
-        private void OnEnable()
-        {
-            SceneManager.sceneLoaded += Init;
-        }
 
-        private void OnDestroy()
-        {
-            SceneManager.sceneLoaded -= Init;
-        }
-
-        public void Init(Scene scene, LoadSceneMode mode)
+        //초기화인데 초기화 안할거라고 하는..
+        public void Init()
         {
             appliedMultiplier = 1f;
             _addedMultiplier = 0f;
