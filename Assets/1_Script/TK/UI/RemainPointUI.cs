@@ -3,14 +3,9 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class RemainPointUI : MonoBehaviour,IUIExecute
+    public class RemainPointUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI remainText;
-        
-        public void Execute()
-        {
-            HandleUpdateRemainUI(Player.level);
-        }
         
         private void OnEnable()
         {

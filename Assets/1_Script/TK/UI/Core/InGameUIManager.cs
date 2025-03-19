@@ -1,7 +1,6 @@
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
-using Debug = Utility.Debug;
 
 namespace Swift_Blade
 {
@@ -10,25 +9,6 @@ namespace Swift_Blade
         [field: SerializeField] public GameObject BossHealthBarUI { get; private set; }
 
         [SerializeField] private SceneManagerSO sceneManagerSo;
-
-        private void Start()
-        {
-            sceneManagerSo.SceneEnterEvent += Execute;
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            sceneManagerSo.SceneEnterEvent -= Execute;
-        }
-
-        private void Execute()
-        {
-            GetComponentsInChildren<IUIExecute>().ToList().ForEach(x =>
-            {
-                x.Execute();
-            });
-        }
         
         [ContextMenu("Test")]
         public void EnableBoss()
