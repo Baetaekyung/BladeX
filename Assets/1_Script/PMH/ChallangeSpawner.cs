@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Enemy;
+using Swift_Blade.Pool;
 using UnityEngine;
 
 namespace Swift_Blade
 {
-
     public class ChallangeSpawner : MonoBehaviour
     {
-        [SerializeField] private ActionData actionData;
+        public PoolPrefabMonoBehaviourSO enemySpawnParticle;
+        private ActionData actionData;
         [SerializeField] private SceneManagerSO sceneManagerSO;
         public List<SpawnInfos> spawnEnemies;
 
@@ -22,8 +23,18 @@ namespace Swift_Blade
 
         [SerializeField] private Transform[] spawnPosition;
 
+        private bool isGameEnd = false;
+
+        private void Awake()
+        {
+            actionData.damageAmount = 999;
+            actionData.dealer = default;
+            actionData.hitNormal = default;
+        }
         private void Start()
         {
+            MonoGenericPool<EnemySpawnParticle>.Initialize(enemySpawnParticle);
+
             StartCoroutine("EnemyWavesCoroutin");
 
             Invoke("TimesOut", endTimeSecond);
@@ -31,10 +42,15 @@ namespace Swift_Blade
 
         private void TimesOut()
         {
+            Debug.Log("¾ß±â¿î~~!!!!!!!!!");
+
+            isGameEnd = true;
+            StopAllCoroutines();
+
             sceneManagerSO.LevelClear();
             foreach(var enemy in spawnEnemyList)
             {
-                enemy.GetComponent<BaseEnemyHealth>().TakeDamage(actionData);
+                enemy.transform.GetComponent<BaseEnemyHealth>().TakeDamage(actionData);
             }
         }
 
@@ -42,8 +58,6 @@ namespace Swift_Blade
         {
             for(int i = 0; i < waveCount; i++)
             {
-                yield return new WaitForSeconds(waveCooltime);
-
                 int randomWave = Random.Range(0, spawnEnemies.Count);
                 Debug.Log(randomWave);
 
@@ -56,8 +70,16 @@ namespace Swift_Blade
                     Quaternion.identity
                     );
 
+                    EnemySpawnParticle spawnParticle = MonoGenericPool<EnemySpawnParticle>.Pop();
+                    spawnParticle.transform.position = spawnPosition[j].position;
+
+
                     spawnEnemyList.Add( nowEnemy );
+
+                    yield return new WaitForSeconds(1);
                 }
+
+                yield return new WaitForSeconds(waveCooltime);
             }
         }
     }

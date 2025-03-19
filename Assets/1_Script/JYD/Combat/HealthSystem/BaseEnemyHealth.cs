@@ -42,7 +42,7 @@ namespace Swift_Blade.Combat.Health
         {
             if(isDead)return;
 
-            currentHealth--;
+            currentHealth -= actionData.damageAmount;
             OnChangeHealthEvent?.Invoke(GetHealthPercent());
         
             if (currentHealth <= 0)
