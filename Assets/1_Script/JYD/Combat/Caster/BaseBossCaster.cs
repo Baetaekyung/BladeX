@@ -13,7 +13,7 @@ namespace Swift_Blade.Combat.Caster
         [Space(10)] public UnityEvent parryEvents;
         public UnityEvent unParriableAttack;
         
-        public override bool CastDamage()
+        public override bool Cast()
         {
             OnCastEvent?.Invoke();
             
@@ -32,14 +32,12 @@ namespace Swift_Blade.Combat.Caster
                 
                 if (CanCurrentAttackParry && hit.collider.TryGetComponent(out PlayerParryController parryController))
                 {
-                    Vector3 playerToAttacker = (transform.position - hit.collider.transform.position).normalized;
-
-                    Vector3 playerForward = hit.collider.transform.forward;
-
-                    float dot = Vector3.Dot(playerForward, playerToAttacker);
-
-                    bool isLookingAtAttacker = dot > Mathf.Cos(140 * Mathf.Deg2Rad);
+                    /*Vector3 attacker = (hit.transform.position - transform.position).normalized;
+                    Vector3 playerForward = hit.transform.forward;
                     
+                    float angle = Vector3.Angle(playerForward, attacker);
+                    bool isLookingAtAttacker = angle < 70;*/
+                    bool isLookingAtAttacker = true;
                     
                     if (parryController.CanParry() && isLookingAtAttacker)
                     {
@@ -72,7 +70,7 @@ namespace Swift_Blade.Combat.Caster
         {
             return transform.position + transform.forward * -_casterInterpolation * 2;
         }
-
+        
         public void DisableParryForCurrentAttack()
         {
             unParriableAttack?.Invoke();
@@ -86,7 +84,6 @@ namespace Swift_Blade.Combat.Caster
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(GetStartPosition() + transform.forward * _castingRange, _casterRadius);
             Gizmos.color = Color.white;
-
         }
     }
 }

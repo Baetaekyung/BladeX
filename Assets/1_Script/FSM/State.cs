@@ -15,7 +15,6 @@ namespace Swift_Blade.FSM.States
         }
         public virtual void Enter()
         {
-            //logic
             Current = Update;
         }
         public virtual void Update()

@@ -1,10 +1,7 @@
-using System;
 using Swift_Blade.Combat.Caster;
-using Swift_Blade.Feeling;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Events;
-using UnityEngine.Rendering;
+
 
 namespace Swift_Blade.Enemy
 {
@@ -14,7 +11,7 @@ namespace Swift_Blade.Enemy
         protected NavMeshAgent NavMeshAgent;
         
         protected BaseEnemy enemy;
-        protected LayerCaster layerCaster;
+        protected ICasterAble caster;
 
         [SerializeField] [Range(1,60)] private float defaultAttackMoveSpeed;
         private float attackMoveSpeed;
@@ -25,19 +22,28 @@ namespace Swift_Blade.Enemy
         public bool animationEnd;
         public bool isManualRotate;
         public bool isManualMove;
-
+        
+        public float maxAnimationSpeed = 1.3f;
+        public float minAnimationSpeed = 1;
+        
         protected virtual void Awake()
         {
             Animator = GetComponent<Animator>();
             enemy = GetComponent<BaseEnemy>();
             NavMeshAgent = GetComponent<NavMeshAgent>();
-            layerCaster = GetComponentInChildren<LayerCaster>();
+            caster = GetComponentInChildren<ICasterAble>();
+        }
+        
+        protected void Start()
+        {
+            float animationSpeed = Random.Range(minAnimationSpeed, maxAnimationSpeed);
+            Animator.SetFloat("Speed" ,animationSpeed);
         }
         private void Cast()
         {
-            layerCaster.CastDamage();
+            caster.Cast();
         }
-          
+        
         public void SetAnimationEnd() => animationEnd = true;
         public void StopAnimationEnd() => animationEnd = false;
         public void StartManualRotate() => isManualRotate = true;
@@ -70,17 +76,10 @@ namespace Swift_Blade.Enemy
             StopManualRotate();
             StopApplyRootMotion();
         }
-                
-        public void SetAllAnimationEnd()
+                        
+        public void Rebind()
         {
-            foreach (AnimatorControllerParameter parameter in Animator.parameters)
-            {
-                if (parameter.type == AnimatorControllerParameterType.Bool ||
-                    parameter.type == AnimatorControllerParameterType.Trigger)
-                {
-                    Animator.SetBool(parameter.name, false);
-                }
-            }
+            Animator.Rebind();
         }
         
     }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Swift_Blade.Combat.Caster
@@ -26,28 +27,37 @@ namespace Swift_Blade.Combat.Caster
             _statCompo = entity.GetEntityComponent<PlayerStatCompo>();
         }
         
-        public override bool CastDamage()
+        public override bool Cast()
         {
             Vector3 startPos = GetStartPosition();
-                    
-            bool isHit = Physics.SphereCast(
-                startPos,
-                _casterRadius,
-                _visualTrm.forward, 
-                out RaycastHit hit,
-                _castingRange, targetLayer);
-        
-            if(isHit)
+            Vector3 endPos = startPos + _visualTrm.forward * _castingRange;
+            
+            Collider[] hitColliders = Physics.OverlapSphere(endPos, _casterRadius, targetLayer);
+            
+            bool isHit = false;
+            HashSet<IDamageble> damagedEntities = new HashSet<IDamageble>(); 
+            
+            foreach (var hitCollider in hitColliders)
             {
-                if(hit.collider.TryGetComponent(out IDamageble health))
+                if (hitCollider.TryGetComponent(out IDamageble health))
                 {
+                    if (damagedEntities.Contains(health))
+                        continue;
+                    
+                    damagedEntities.Add(health);
+                    isHit = true;
+                    
+                    Vector3 hitPoint = hitCollider.ClosestPoint(startPos);
+                    Vector3 hitNormal = (hitPoint - hitCollider.transform.position).normalized;
+                    
                     float damageAmount = _statCompo.GetStat(damageStat).Value;
-                    ActionData actionData = new ActionData(hit.point, hit.normal, damageAmount ,transform , true);
+                    ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, transform, true);
                     
                     OnCastDamageEvent?.Invoke(actionData);
                     health.TakeDamage(actionData);
                 }
             }
+            
             return isHit;
         }
         

@@ -6,7 +6,9 @@ namespace Swift_Blade.Feeling
 {
     [MonoSingletonUsage(MonoSingletonFlags.DontDestroyOnLoad)]
     public class HitStopManager : MonoSingleton<HitStopManager>
-    {        
+    {
+        [SerializeField] private StyleMeter styleMeter;
+        
         [Header("타임 스케일 관련 변수 및 우선순위")]
         public float CurrentTimeScale { get; private set; }
         private const float DEFAULT_TIMESCALE = 1; //기본 타임 스케일

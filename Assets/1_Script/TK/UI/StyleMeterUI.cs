@@ -24,8 +24,8 @@ namespace Swift_Blade
         
         private void Start()
         {
-            styleMeter.OnSuccessHitEvent += HandleMultiplierChanged;
-            styleMeter.OnDamagedEvent += HandleMultiplierChanged;
+            // styleMeter.OnSuccessHitEvent += HandleMultiplierChanged;
+            // styleMeter.OnDamagedEvent += HandleMultiplierChanged;
             
             //StyleMeterEffectChanged();
         }
@@ -50,17 +50,17 @@ namespace Swift_Blade
         //     }
         // }
 
-        private void HandleMultiplierChanged()
-        {
-            statMultiplierText.DOKill();
-            
-            //Animation
-            statMultiplierText.transform.DOShakeScale(1.2f, 0.14f);
-            statMultiplierText.transform.DOShakeRotation(1f, 0.14f);
-            
-            statMultiplierText.text = styleMeter.appliedMultiplier.ToString("0.00");
-            // StyleMeterEffectChanged();
-        }
+        // private void HandleMultiplierChanged()
+        // {
+        //     statMultiplierText.DOKill();
+        //     
+        //     //Animation
+        //     statMultiplierText.transform.DOShakeScale(1.2f, 0.14f);
+        //     statMultiplierText.transform.DOShakeRotation(1f, 0.14f);
+        //     
+        //     statMultiplierText.text = $"Meter: {styleMeter.appliedMultiplier:0.00}";
+        //     // StyleMeterEffectChanged();
+        // }
 
         // private void StyleMeterEffectChanged()
         // {
@@ -74,10 +74,10 @@ namespace Swift_Blade
         //         Mathf.Lerp(0f, 1f, _currentEffectSize));
         // }
 
-        private void OnDestroy()
-        {
-            styleMeter.OnSuccessHitEvent -= HandleMultiplierChanged;
-            styleMeter.OnDamagedEvent -= HandleMultiplierChanged;
-        }
+        // private void OnDestroy()
+        // {
+        //     styleMeter.OnSuccessHitEvent -= HandleMultiplierChanged;
+        //     styleMeter.OnDamagedEvent -= HandleMultiplierChanged;
+        // }
     }
 }

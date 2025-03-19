@@ -12,10 +12,17 @@ namespace Swift_Blade.FSM.States
         protected readonly PlayerInput playerInput;
 
         //private static float additionalZValue;
-        protected static Vector3 inputLocalLerp;
+        protected static Vector3 anim_inputLocalLerp;
         protected virtual bool BaseAllowAttackInput { get; } = true;
         protected virtual bool BaseAllowParryInput { get; } = true;
         protected virtual bool BaseAllowDashInput { get; } = true;
+
+        private const float delayParry = 1;
+        private const float delayDash = 1.5f;
+
+        private static float nextDelayTime_AllowParry;
+        private static float nextDelayTime_AllowDash;
+
         protected BasePlayerState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
             player = entity;
@@ -44,19 +51,22 @@ namespace Swift_Blade.FSM.States
             //    GetOwnerFsm.ChangeState(PlayerStateEnum.Dead);
 
             //movement
-            Vector3 resultInput = playerInput.GetInputDirectionRawRotated.normalized;
-            Vector3 resultAnimatorInput = playerInput.GetInputDirectionRawRotated;
-            inputLocalLerp = Vector3.MoveTowards(inputLocalLerp, resultAnimatorInput, Time.deltaTime * 8);
-            player.GetPlayerMovement.InputDirection = resultInput;
+            Quaternion CameraRotation = playerInput.CameraRotationOnlyY;
+            Vector3 localInput = playerInput.GetInputDirectionRaw;
+            Vector3 resultVector = CameraRotation * localInput;
+            player.GetPlayerMovement.InputDirection = resultVector;
 
             //animator
+            Vector3 resultAnimatorInput = resultVector;
+            anim_inputLocalLerp = Vector3.MoveTowards(anim_inputLocalLerp, resultAnimatorInput, Time.deltaTime * 8);
             Transform playerTransform = player.GetPlayerRenderer.GetPlayerVisualTrasnform;
-            Vector3 inputLocal = playerTransform.InverseTransformDirection(inputLocalLerp);
-            Debug.DrawRay(Vector3.zero, inputLocal, Color.red, 0.1f);
-            player.GetPlayerAnimator.GetAnimator.SetFloat("X", inputLocal.x);
-            //additionalZValue = 0;
+            Vector3 anim_inputLocal = playerTransform.InverseTransformDirection(anim_inputLocalLerp);
+            Debug.DrawRay(Vector3.zero, anim_inputLocal, Color.red, 0.1f);
+            player.GetPlayerAnimator.GetAnimator.SetFloat("X", anim_inputLocal.x);
 
-            player.GetPlayerAnimator.GetAnimator.SetFloat("Z", inputLocal.z);// + additionalZValue);
+            player.GetPlayerAnimator.GetAnimator.SetFloat("Z", anim_inputLocal.z);
+
+            UI_DebugPlayer.DebugText(7, anim_inputLocalLerp, "animLocalLerp");
         }
         /// <summary>
         /// </summary>
@@ -67,10 +77,14 @@ namespace Swift_Blade.FSM.States
         }
         protected virtual void OnParryInput()
         {
+            if (nextDelayTime_AllowParry > Time.time) return;
+            nextDelayTime_AllowParry = Time.time + delayParry;
             GetOwnerFsm.ChangeState(PlayerStateEnum.Parry);
         }
         protected virtual void OnDashInput()
         {
+            if (nextDelayTime_AllowDash > Time.time) return;
+            nextDelayTime_AllowDash = Time.time + delayDash;
             GetOwnerFsm.ChangeState(PlayerStateEnum.Roll);
         }
         protected sealed override void OnAllowRotateAllowTrigger() => playerMovement.AllowRotate = true;
@@ -78,7 +92,7 @@ namespace Swift_Blade.FSM.States
         protected override void OnAnimationEndTrigger()
         {
             GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
-        } 
+        }
         protected sealed override void OnSpeedMultiplierDefaultTrigger(float set) => playerMovement.SpeedMultiplierDefault = set;
         protected override void OnAudioPlayTrigger(AudioSO audioSO)
         {
@@ -87,9 +101,9 @@ namespace Swift_Blade.FSM.States
         //protected sealed override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetAdditionalVelocity(value);
         protected sealed override void OnAttackTrigger()
         {
-            if (player.GetPlayerDamageCaster.CastDamage())
+            if (player.GetPlayerDamageCaster.Cast())
             {
-                player.GetEntityComponent<PlayerStatCompo>().GetStyleMeter.SuccessHit();
+                //player.GetEntityComponent<PlayerStatCompo>().GetStyleMeter.SuccessHit();
             }
         }
     }

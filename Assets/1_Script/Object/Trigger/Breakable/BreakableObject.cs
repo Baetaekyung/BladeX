@@ -14,7 +14,17 @@ namespace Swift_Blade
         public float health = 10;
 
         private bool deadFlag;
-        public void TakeDamage(ActionData actionData)
+
+        private void DelayDead()
+        {
+            DOVirtual.DelayedCall(delayDead, 
+                () =>
+            {
+                Destroy(gameObject);
+                OnGameObjectDestroy?.Invoke(this);
+            }, false);
+        }
+        void IDamageble.TakeDamage(ActionData actionData)
         {
             if (deadFlag) return;
 
@@ -24,27 +34,19 @@ namespace Swift_Blade
             if (health <= 0)
             {
                 deadFlag = true;
-                DeadDead();
+                gameObject.SetActive(false);
                 OnDeadStart?.Invoke(this);
+                DelayDead();
             }
         }
-        protected void DeadDead()
+        void IDamageble.TakeHeal(float amount)
         {
-            DOVirtual.DelayedCall(delayDead, () =>
-            {
-                Destroy(gameObject);
-                OnGameObjectDestroy?.Invoke(this);
-            }, false);
-        }
-        public void TakeHeal(float amount)
-        {
-            //what
-            //throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public void Dead()
+        void IDamageble.Dead()
         {
-            //throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

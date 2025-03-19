@@ -29,8 +29,8 @@ namespace Swift_Blade
             _currentItem = newItem;
             _itemCount = count;
             
-            _buttonText.text = $"Buy - {_itemCost.ToString()}$";
-            remainCount.text = $"remain: {count.ToString()}";
+            _buttonText.text = $"{_itemCost.ToString()}코인";
+            remainCount.text = $"남은 갯수: {count.ToString()}";
             itemIcon.sprite = newItem.itemImage;
             itemNameText.text = newItem.itemName;
             itemDescriptionText.text = newItem.description;
@@ -54,7 +54,7 @@ namespace Swift_Blade
             if (_currentItem == null)
                 return;
 
-            if (inventory.Currency < _itemCost)
+            if (inventory.Coin < _itemCost)
             {
                 Debug.Log("소유중인 자원이 Item의 가격보다 적음");
                 return;
@@ -69,9 +69,9 @@ namespace Swift_Blade
             BuyAnimation();
             
             _itemCount--;
-            remainCount.text = $"remain: {_itemCount.ToString()}";
+            remainCount.text = $"남은 갯수: {_itemCount.ToString()}";
             
-            InventoryManager.Instance.AddItemToEmptySlot(_currentItem);
+            InventoryManager.Instance.AddItemToMatchSlot(_currentItem);
             inventory.currentInventoryCapacity++;
             
             if(_itemCount <= 0)

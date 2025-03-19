@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Swift_Blade
 {
@@ -9,7 +11,7 @@ namespace Swift_Blade
         [SerializeField] private DialogueDataSO afterRewardDialogueData;
 
         private bool _isRewarded = false;
-        
+
         [ContextMenu("Interact")]
         public void Interact()
         {
@@ -19,7 +21,7 @@ namespace Swift_Blade
             }
             else
             {
-                DialogueManager.Instance.DoDialogue(dialogueData).OnAccept(Heal);
+                DialogueManager.Instance.DoDialogue(dialogueData).Subscribe(Heal);
                 _isRewarded = true;
             }
         }
@@ -35,6 +37,11 @@ namespace Swift_Blade
             }
             
             health.TakeHeal(healAmount);
+        }
+
+        private void OnDisable()
+        {
+            _isRewarded = false;
         }
     }
 }

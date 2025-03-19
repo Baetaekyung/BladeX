@@ -40,6 +40,7 @@ namespace Swift_Blade.Combat.Feedback
             vignette.smoothness.value = info.smoothness;
         }
 
+        [ContextMenu("Test")]
         public override void PlayFeedback()
         {
             if(vignette == null) return;
@@ -85,6 +86,10 @@ namespace Swift_Blade.Combat.Feedback
                 yield return null;
             }
 
+            ResetFeedback();
+        }
+        private void OnDestroy()
+        {
             ResetFeedback();
         }
 

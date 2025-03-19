@@ -192,61 +192,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 573590873347782604, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 78.00115
-      objectReference: {fileID: 0}
-    - target: {fileID: 573590873347782604, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.6805649
-      objectReference: {fileID: 0}
-    - target: {fileID: 1249726565225635276, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: ParryEvents.m_PersistentCalls.m_Calls.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1249726565225635276, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: ParryEvents.m_PersistentCalls.m_Calls.Array.data[4].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1249726565225635276, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: ParryEvents.m_PersistentCalls.m_Calls.Array.data[4].m_Target
-      value: 
-      objectReference: {fileID: 11400000, guid: fd2fecfb682b5984f93729859182a0ab, type: 2}
-    - target: {fileID: 1249726565225635276, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: ParryEvents.m_PersistentCalls.m_Calls.Array.data[4].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1249726565225635276, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: ParryEvents.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
-      value: SuccessHit
-      objectReference: {fileID: 0}
-    - target: {fileID: 1249726565225635276, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: ParryEvents.m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
-      value: Swift_Blade.StyleMeter, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1249726565225635276, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: ParryEvents.m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2768221587414307873, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: m_Cameras.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2768221587414307873, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: 'm_Cameras.Array.data[1]'
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2777080882551110989, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_Name
       value: PlayerCategory
-      objectReference: {fileID: 0}
-    - target: {fileID: 3515590921023842451, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: volume
-      value: 
-      objectReference: {fileID: 1904256710}
-    - target: {fileID: 5346482904669399683, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
-      propertyPath: field of view
-      value: 60.000004
       objectReference: {fileID: 0}
     - target: {fileID: 5572484209019780262, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1508,8 +1456,12 @@ MonoBehaviour:
   spawnEnemies:
   - spawnInfos:
     - enemy: {fileID: 1344055792727759508, guid: 039ef463e7718f84389c3d1ae749ff85, type: 3}
+      delay: 0
       spawnPosition: {fileID: 733411235}
+  enemySpawnParticle: {fileID: 0}
   waveCount: 0
+  nodeList: {fileID: 0}
+  portalTrm: []
 --- !u!1001 &1256280019
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2759,55 +2711,6 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 6bbccd96d25d4e84faf4f981dbe8e58e, type: 2}
   m_BuildHeightMesh: 0
---- !u!1 &1904256709
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1904256711}
-  - component: {fileID: 1904256710}
-  m_Layer: 0
-  m_Name: Global Volume
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1904256710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1904256709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: be1f7899c497c26489b840087b62323f, type: 2}
---- !u!4 &1904256711
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1904256709}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5426221, y: -3.5122814, z: -3.206173}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1973628283
 GameObject:
   m_ObjectHideFlags: 0
@@ -3297,7 +3200,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1973628286}
-  - {fileID: 1904256711}
   - {fileID: 1256280019}
   - {fileID: 614181327}
   - {fileID: 717631822}

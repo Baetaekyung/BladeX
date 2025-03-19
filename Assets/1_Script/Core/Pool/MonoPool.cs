@@ -5,7 +5,6 @@ namespace Swift_Blade.Pool
     internal class MonoPool<T> : UnityObjectPool<T>
         where T : MonoBehaviour, IPoolable
     {
-        //protected override string PoolParentName => $"MonoPool_{typeof(T)}";
         public MonoPool(T prefab, int initialPoolCapacity = 100, int maxCapacity = 1000, int preCreate = 10) : base(prefab, initialPoolCapacity, maxCapacity, preCreate)
         {
             UnityObjectPool.SceneChangePoolDestroyEvent += base.Clear;
@@ -30,7 +29,7 @@ namespace Swift_Blade.Pool
         public override T Pop()
         {
             T instance = base.Pop();
-            instance.OnPopInitialize();
+            instance.OnPop();
             instance.gameObject.hideFlags = HideFlags.None;
             instance.gameObject.SetActive(true);
             return instance;
@@ -38,6 +37,7 @@ namespace Swift_Blade.Pool
         public override void Push(T instance)
         {
             instance.gameObject.hideFlags = HideFlags.HideInHierarchy;
+            instance.OnPush();
             instance.gameObject.SetActive(false);
             base.Push(instance);
         }

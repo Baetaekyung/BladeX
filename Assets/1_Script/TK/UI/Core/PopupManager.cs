@@ -17,16 +17,6 @@ namespace Swift_Blade
         public bool IsRemainPopup => _popupList.Count > 0;
         public event Action OnPopUpOpenOrClose;
         
-        protected override void Awake()
-        {
-            base.Awake();
-            
-            if (popups.ContainsKey(PopupType.LevelClear) == false)
-            {
-                popups.Add(PopupType.LevelClear, FindObjectOfType<LevelUIController>());
-            }
-        }
-        
         private void Start()
         {
             InitPopups();
@@ -179,6 +169,14 @@ namespace Swift_Blade
             }
         }
 
+        public void AllPopDown()
+        {
+            while (_popupList.Count != 0)
+            {
+                PopDown();
+            }
+        }
+        
         public PopupUI GetPopupUI(PopupType type)
         {
             if (popups.TryGetValue(type, out var popup) == false)

@@ -1,7 +1,5 @@
 using System;
-using System.Text;
 using DG.Tweening;
-using Swift_Blade.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,9 +7,9 @@ using UnityEngine.UI;
 
 namespace Swift_Blade.Level
 {
-    public class LevelUIController : PopupUI
+    public class LevelUIController : MonoBehaviour
     {
-        public LevelClearEventSO levelEvent;
+        public SceneManagerSO levelEvent;
         
         [Header("Fade info")]
         [SerializeField] private Image fadeImage;
@@ -26,13 +24,10 @@ namespace Swift_Blade.Level
         
         [SerializeField] private float elementsFadeInTime;
         [Range(0.1f ,2)] [SerializeField] private float headerSizeUpDuration;
-                
-
-        private StringBuilder currentSceneName = new StringBuilder();
         
-        protected override void Awake()
+        
+        protected void Awake()
         {
-            base.Awake();
             
             LevelUIController existingInstance = FindObjectOfType<LevelUIController>();
 
@@ -46,51 +41,24 @@ namespace Swift_Blade.Level
         
         private void Start()
         {
-            levelEvent.SceneMoveEvent += StartFade;
-            levelEvent.LevelClearEvent += Popup;
-            levelEvent.SceneChangeEvent += NextOtherScene;
+            levelEvent.SceneLoadEvent += StartFade;
             
             ResetClearPanel();
         }
 
-        private void OnDestroy()
+        protected  void OnDestroy()
         {
-            levelEvent.SceneMoveEvent -= StartFade;
-            levelEvent.LevelClearEvent -= Popup;
-            levelEvent.SceneChangeEvent -= NextOtherScene;
+            levelEvent.SceneLoadEvent -= StartFade;
         }
-
-        public override void Popup()
-        {
-            SetActiveClearPanel();
-        }
-
-        public override void PopDown()
-        {
-            ResetClearPanel();
-        }
-
         private void StartFade(string sceneName,Action onComplete)
         {
             if (isFading) return;
-
-            currentSceneName.Clear();
-            currentSceneName.Append(sceneName);
             
             isFading = true;
             fadeImage.DOFade(1, fadeInTime).OnComplete(() =>
             {
-                if (IsVailedScene(sceneName))
-                {
-                    SceneManager.LoadScene(sceneName);
-                    FadeOut(onComplete);
-                }
-                else
-                {
-                    SceneManager.LoadScene("LevelMenu");
-                    FadeOut(onComplete);
-                }
-                
+                SceneManager.LoadScene(sceneName);
+                FadeOut(onComplete);
             });
         }
         private void FadeOut(Action onComplete)
@@ -111,7 +79,7 @@ namespace Swift_Blade.Level
             
             sequence.Append(header.rectTransform.DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x, 20), headerSizeUpDuration).SetDelay(1.2f))
                 .Append(header.rectTransform.DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x, 930), headerSizeUpDuration))
-                .OnComplete(() => FadeInElements());
+                .OnComplete(FadeInElements);
 
             sequence.SetUpdate(UpdateType.Normal);
         }
@@ -119,7 +87,7 @@ namespace Swift_Blade.Level
         private void ResetClearPanel()
         {
             header.DOKill();
-
+            
             Sequence sequence = DOTween.Sequence();
             sequence.Append(FadeOutElements());
             sequence.Append(header.rectTransform.DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x, 0),headerSizeUpDuration));
@@ -177,46 +145,6 @@ namespace Swift_Blade.Level
             return fadeSequence;
         }
 
-
-
-        public void NextScene()
-        {
-            ResetClearPanel();
-            
-            char lastChar = currentSceneName[currentSceneName.Length - 1];
-
-            if (char.IsDigit(lastChar))
-            {
-                int lastNumber = lastChar - '0'; 
-                lastNumber++; 
-
-                currentSceneName.Remove(currentSceneName.Length - 1, 1).Append(lastNumber);
-            }
-            
-            StartFade(currentSceneName.ToString() , () => { });
-            
-        }
-        
-        private void NextOtherScene(string sceneName)
-        {
-            StartFade(sceneName, () => {}); 
-        }
-
-        private bool IsVailedScene(string sceneName)
-        {
-            if (string.IsNullOrEmpty(sceneName))
-                return false;
-            
-            for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
-            {
-                string path = SceneUtility.GetScenePathByBuildIndex(i);
-                string scenePath = System.IO.Path.GetFileNameWithoutExtension(path);
-                if (scenePath == sceneName)
-                    return true;
-            }
-            
-            return false;
-        }
         
     }
 }

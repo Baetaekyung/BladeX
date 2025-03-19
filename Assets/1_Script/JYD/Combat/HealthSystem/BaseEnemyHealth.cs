@@ -21,8 +21,7 @@ namespace Swift_Blade.Combat.Health
         [SerializeField] protected BehaviorGraphAgent BehaviorGraphAgent;
         [SerializeField] protected ChangeBossState changeBossState;
 
-        public static event System.Action OnAnyEnemyDead;
-
+                
         protected virtual void Start()
         {
             currentHealth = maxHealth;
@@ -66,7 +65,7 @@ namespace Swift_Blade.Combat.Health
         {
             isDead = true;
             OnDeadEvent?.Invoke();
-            OnAnyEnemyDead?.Invoke();
+            
         }
         
         protected void TriggerState(BossState state)
@@ -77,7 +76,7 @@ namespace Swift_Blade.Combat.Health
         
         protected float GetHealthPercent()
         {
-            print("ÀÀ¾î¾ÆÀÕ");
+            print("???????");
             return currentHealth / maxHealth;
         }
 

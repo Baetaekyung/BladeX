@@ -27,10 +27,13 @@ namespace Swift_Blade.Combat.Projectile
         {
             if ((whatIsGround & (1 << other.gameObject.layer)) != 0 ||
                 (whatIsTarget & (1 << other.gameObject.layer)) != 0)
+            {
                 if (canExplosion)
+                {
                     Explosion(other.contacts[0].point);
-                else
-                    Destroy(this.gameObject);
+                }
+            }
+                   
         }
 
         private void OnDrawGizmosSelected()
@@ -45,12 +48,12 @@ namespace Swift_Blade.Combat.Projectile
             if (colliders.Length > 0)
             {
                 var actionData = new ActionData();
-                actionData.damageAmount = 40;
+                actionData.damageAmount = 1;
                 colliders[0].GetComponentInChildren<IDamageble>().TakeDamage(actionData);
             }
 
             CameraShakeManager.Instance.DoShake(shakeType);
-
+            
             var e = MonoGenericPool<Explosion>.Pop();
             e.transform.position = explosionPoint;
 

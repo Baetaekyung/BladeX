@@ -5,6 +5,12 @@ using UnityEngine.Scripting;
 
 namespace Swift_Blade
 {
+    public enum EAudioType
+    {
+        Swing,
+        Roll
+    }
+
     public class AnimationTriggers : MonoBehaviour
     {
         public event Action OnAttackTriggerEvent;
@@ -21,6 +27,7 @@ namespace Swift_Blade
         public event Action OnRotateDisallowSetEvent;
 
         public event Action<AudioSO> OnAudioPlayEvent;
+        public event Action<EAudioType> OnAudioPlayEventWithType;
 
         [Preserve]
         private void OnAnimationEndTrigger()
@@ -30,55 +37,24 @@ namespace Swift_Blade
             OnRotateAllowSetEvent?.Invoke();
         }
         [Preserve]
-        private void OnAnimationEndableTrigger()
-        {
-            OnAnimationEndableEvent?.Invoke();
-        }
+        private void OnAnimationEndableTrigger() => OnAnimationEndableEvent?.Invoke();
         [Preserve]
-        private void OnAnimationEndableListenTrigger()
-        {
-            OnAnimationEndTriggeristenEvent?.Invoke();
-        }
+        private void OnAnimationEndableListenTrigger() => OnAnimationEndTriggeristenEvent?.Invoke();
         [Preserve]
-        private void OnAnimationEndableStopListenTrigger()
-        {
-            OnAnimationEndTriggerStopListenEvent?.Invoke();
-        }
+        private void OnAnimationEndableStopListenTrigger() => OnAnimationEndTriggerStopListenEvent?.Invoke();
         [Preserve]
-        private void OnForceEventTrigger(float force)
-        {
-            OnForceEvent?.Invoke(force);
-        }
+        private void OnForceEventTrigger(float force) => OnForceEvent?.Invoke(force);
         [Preserve]
-        private void OnSpeedMultiplierDefaultTrigger(float set)
-        {
-            OnSpeedMultiplierDefaultEvent?.Invoke(set);
-        }
+        private void OnSpeedMultiplierDefaultTrigger(float set) => OnSpeedMultiplierDefaultEvent?.Invoke(set);
         [Preserve]
-        private void OnAttackTrigger()
-        {
-            OnAttackTriggerEvent?.Invoke();
-        }
+        private void OnAttackTrigger() => OnAttackTriggerEvent?.Invoke();
         [Preserve]
-        private void OnRotateAllowTrigger()
-        {
-            OnRotateAllowSetEvent?.Invoke();
-        }
+        private void OnRotateAllowTrigger() => OnRotateAllowSetEvent?.Invoke();
         [Preserve]
-        private void OnRotateDisallowTrigger()
-        {
-            OnRotateDisallowSetEvent?.Invoke();
-        }
+        private void OnRotateDisallowTrigger() => OnRotateDisallowSetEvent?.Invoke();
         [Preserve]
-        private void OnAudioPlay(AudioSO audio)
-        {
-            OnAudioPlayEvent?.Invoke(audio);
-        }
-
-        //[Preserve]
-        //private void OnMovementSet(float set)
-        //{
-        //    OnMovementSetEvent?.Invoke(new Vector3(set, 0, set));
-        //}
+        private void OnAudioPlay(AudioSO audio) => OnAudioPlayEvent?.Invoke(audio);
+        [Preserve]
+        private void OnAudioPlayCollection(AudioSOCollection audioSOCollection) => OnAudioPlay(audioSOCollection.GetRandomAudio);
     }
 }

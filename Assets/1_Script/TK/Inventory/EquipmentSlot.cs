@@ -1,92 +1,65 @@
-using System;
-using Swift_Blade.UI;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
     public class EquipmentSlot : ItemSlot
     {
+        [SerializeField] private EquipmentSlotType slotType;
+        [SerializeField] private Sprite infoIcon;
+        
+        public EquipmentSlotType GetSlotType => slotType;
+        public Sprite            GetInfoIcon => infoIcon;
+
         public override void OnPointerEnter(PointerEventData eventData)
         {
-            if (inventoryManager.SelectedItem == null) 
+            transform.DOKill();
+            transform.DOScale(1.05f, 0.2f);
+
+            if (_itemDataSO == null)
                 return;
             
-            if (inventoryManager.SelectedItem.IsEquipment() == false) 
+            _inventoryManager.UpdateInfoUI(_itemDataSO);
+        }
+
+        public override void OnPointerExit(PointerEventData eventData)
+        {
+            transform.DOKill();
+            transform.DOScale(1f, 0.2f);
+            
+            if (_itemDataSO == null)
                 return;
             
-            if (_itemDataSO != null)
-                return;
-            
-            base.OnPointerEnter(eventData);
-            //
-            // inventoryManager.Inventory.currentEquipment.Add(_itemDataSO.equipmentData);
-            // inventoryManager.Inventory.itemInventory.Remove(_itemDataSO);
-            //
-            // inventoryManager.UpdateEquipInfoUI();
-            //
-            // BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
-            // baseEquip?.OnEquipment();
-            //
-            // inventoryManager.UpdateAllSlots();
-            // inventoryManager.DeselectItem();
+            _inventoryManager.UpdateInfoUI(null);
         }
 
         public override void OnPointerDown(PointerEventData eventData)
         {
-            if (_itemDataSO != null)
+            if (_itemDataSO == null)
+                return;
+            
+            if (eventData.button != PointerEventData.InputButton.Right)
+                return;
+            
+            if (InventoryManager.Inventory.currentEquipment.Contains(_itemDataSO.equipmentData))
             {
-                if (eventData.button == PointerEventData.InputButton.Right)
-                {
-                    if (inventoryManager.Inventory.currentEquipment.Contains(_itemDataSO.equipmentData))
-                    {
-                        BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
-                        baseEquip?.OffEquipment();
+                BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
+                baseEquip?.OffEquipment();
+
+                InventoryManager.EquipmentDatas.Remove(_itemDataSO);
+                InventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);
                         
-                        inventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);
-                        inventoryManager.UpdateEquipInfoUI();
-                        
-                        inventoryManager.AddItemToEmptySlot(_itemDataSO);
-                        SetItemData(null);
-                        SetItemImage(null);
-                    }
-                }
+                _inventoryManager.AddItemToEmptySlot(_itemDataSO);
+                _itemDataSO = null;
+                _inventoryManager.UpdateAllSlots();
             }
         }
-        
-        public override void OnPointerExit(PointerEventData eventData)
+
+        public override void SetItemData(ItemDataSO newItemData)
         {
-            if (inventoryManager.SelectedItem == null) 
-                return;
-            
-            if(inventoryManager.SelectedItem.IsEquipment() == false) 
-                return;
-            
-            if(!inventoryManager.IsDragging) 
-                return;
-            
-            if (inventoryManager.isSlotChanged == false)
-                return;
-            
-            if (inventoryManager.Inventory.currentEquipment.Contains(inventoryManager.SelectedItem.equipmentData))
-            {
-                Debug.Log("이미 장착중인 아이템" + inventoryManager.SelectedItem.itemName);
-                return; //중복 장착 방지
-            }
-            
-            BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
-            baseEquip?.OffEquipment();
-            
-            inventoryManager.isSlotChanged = false;
-            inventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);
-            inventoryManager.Inventory.itemInventory.Add(_itemDataSO);
-            SetItemData(null);
-            
-            inventoryManager.UpdateEquipInfoUI();
+            _itemDataSO = newItemData;
+            _inventoryManager.UpdateAllSlots();
         }
-
-
-        public override void OnPointerUp(PointerEventData eventData) {}
     }
 }

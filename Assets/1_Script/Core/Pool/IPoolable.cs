@@ -6,6 +6,7 @@ namespace Swift_Blade.Pool
         /// set object state created inside pool
         /// </summary>
         void OnCreate() { }
-        void OnPopInitialize();
+        void OnPush() { }
+        void OnPop();
     }
 }

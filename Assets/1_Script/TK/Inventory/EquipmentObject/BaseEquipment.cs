@@ -4,39 +4,36 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    //Object�� ���� �����ϴ� Equipment
-    public abstract class BaseEquipment : ItemObject, IInteractable
+    public abstract class BaseEquipment : ItemObject
     {
         [SerializeField] protected EquipmentData equipData;
         protected PlayerStatCompo _playerStat;
-        protected PlayerInventory Inventory => InventoryManager.Instance.Inventory;
         
-        //������ ������ ȿ��
         public virtual void OnEquipment()
         {
             HandleStatAdder();
+            
             EquipmentChannelSO channel = equipData.EventChannel;
             if(channel != null)
                 channel.OnEquipped += ItemEffect;
             
-            Debug.Log(equipData.name);
+            // Debug.Log(equipData.name);
         }
         
-        //������ ������ ȿ��
         public virtual void OffEquipment()
         {
             HandleStatRemover();
+            
             EquipmentChannelSO channel = equipData.EventChannel;
             if (channel != null)
                 channel.OnEquipped -= ItemEffect;
 
-            Debug.Log(equipData.name);
+            // Debug.Log(equipData.name);
         }
         
         public void HandleStatAdder()
         {
-            //�̰� �� ĳ���ؼ� ���� �ڲ� null�� �Ǵ� ����;;
-            _playerStat = FindFirstObjectByType<PlayerStatCompo>();
+            _playerStat = Player.Instance?.GetEntityComponent<PlayerStatCompo>();
             
             if (_playerStat == null)
             {
@@ -50,18 +47,23 @@ namespace Swift_Blade
             
             foreach (var stat in equipData.statModifier)
             {
-                //Key�� StatType, Value�� ModifyValue
+                //Key is StatType, Value is ModifyValue
                 _playerStat.AddModifier(stat.Key, equipData.itemSerialCode, stat.Value);
+
+                if (stat.Key == StatType.HEALTH)
+                {
+                    PlayerHealth playerHealth = Player.Instance?.GetEntityComponent<PlayerHealth>();
+                    //playerHealth?.TakeHeal(stat.Value);
+                    playerHealth?.HealthUpdate();
+                }
                 
-                Debug.Log($"{stat.Key.ToString()}�� {stat.Value}��ŭ �����Ͽ���! " +
-                          $"SerialNum: {equipData.itemSerialCode}");
+                Debug.Log($"{stat.Key.ToString()} Stat increase amount {stat.Value}!)");
             }
         }
 
         public void HandleStatRemover()
         {
-            //�̰� �� ĳ���ؼ� ���� �ڲ� null�� �Ǵ� ����;;
-            _playerStat = FindFirstObjectByType<PlayerStatCompo>();
+            _playerStat = Player.Instance?.GetEntityComponent<PlayerStatCompo>();
             
             if (_playerStat == null)
             {
@@ -70,19 +72,23 @@ namespace Swift_Blade
                 return;
             }
 
-            if (equipData.statModifier.Count == 0)
+            if (equipData.statModifier.Count == 0) //is not upgrade stats
                 return;
             
             foreach (var stat in equipData.statModifier)
             {
-                //Key�� StatType
+                //Key is StatType
                 _playerStat.RemoveModifier(stat.Key, equipData.itemSerialCode);
                 
-                Debug.Log($"{stat.Key.ToString()}�� {stat.Value}��ŭ �����Ͽ���! " +
-                          $"SerialNum: {equipData.itemSerialCode}");
+                if (stat.Key == StatType.HEALTH)
+                {
+                    PlayerHealth playerHealth = Player.Instance?.GetEntityComponent<PlayerHealth>();
+                    //playerHealth?.TakeHeal(-stat.Value);
+                    playerHealth?.HealthUpdate();
+                }
+                
+                Debug.Log($"{stat.Key.ToString()} Stat decrease amount {stat.Value}!)");
             }
         }
-        
-        public abstract void Interact(); //�����۰��� ��ȣ�ۿ�
     }
 }

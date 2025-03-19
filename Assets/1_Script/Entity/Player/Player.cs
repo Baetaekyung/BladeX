@@ -6,8 +6,8 @@ using Swift_Blade.Combat;
 using Swift_Blade.Combat.Caster;
 using UnityEngine;
 using DG.Tweening;
-using Swift_Blade.Combat.Health;
 using Swift_Blade.Audio;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade
 {
@@ -18,18 +18,34 @@ namespace Swift_Blade
         Roll,
         Parry,
         Dead,
-        HitStun
+        HitStun,
+        Interact
     }
     public class Player : Entity
     {
-        public static Entity Instance { get; private set; }
+        public static Player Instance { get; private set; }
+        public static event Action OnDead;
+        public bool IsPlayerDead { get; private set; }
+
+        public static event Action Debug_Updt;
+        private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
+        private PlayerAttackState playerAttackState;
+        
+        public static LevelStat level = new LevelStat();
+        
+        private readonly RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
+        
+        private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
+        private GameObject interactable;
+        private Tween playerInvincibleTween;
+
         [Header("General")]
         [SerializeField] private Transform playerTransform;
+        [SerializeField] private Transform mousePosition;
         [SerializeField] private LayerMask lm_interactable;
 
-
         [Header("Audio")]
-        [SerializeField] private AudioCollection audioCollection;
+        [SerializeField] private AudioSOCollection audioCollection;
 
         [Header("EventChannels")]
         [SerializeField] private EquipmentChannelSO onHitChannel;
@@ -47,47 +63,20 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO anim_dbg;
         
         [Header("Combo")]
-        [SerializeField] protected AttackComboSO[] comboList;
-        public EComboState[] dbg_comboHistory;
+        [SerializeField] protected List<AttackComboSO> comboList;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
 
-        public class LevelStat
+        [Header("SceneManager")] 
+        [SerializeField] private SceneManagerSO SceneManagerSO;
+        
+        public void AddCombo(AttackComboSO attackComboSO)
         {
-            public static event Action<LevelStat> OnLevelUp;
-            public int Experience { get; private set; }
-            public int Level { get; private set; }
-            public int StatPoint { get; set; }
-            public LevelStat()
-            {
-                BaseEnemyHealth.OnAnyEnemyDead += OnEnemyDead;
-            }
-            ~LevelStat()
-            {
-                BaseEnemyHealth.OnAnyEnemyDead -= OnEnemyDead;
-            }
-            private void OnEnemyDead()
-            {
-                Experience++;
-                const int maxRequiredExperience = 2;
-                if (Experience >= maxRequiredExperience)
-                {
-                    Experience = Experience - maxRequiredExperience;
-                    Level++;
-                    StatPoint += Level;
-                    OnLevelUp?.Invoke(this);
-                }
-            }
+            comboList.Add(attackComboSO);
         }
-
-        //[SerializeField] private AnimationParameterSO[] comboParamHash;
-        //[SerializeField] private Vector3[] comboForceList;
-        //[SerializeField] private float[] periods;
-        //
-        //public IReadOnlyList<AnimationParameterSO> GetComboHashAtk => comboParamHash;
-        //public IReadOnlyList<Vector3> GetComboForceList => comboForceList;
-        //public IReadOnlyList<float> GetPeriods => periods;
-        public bool IsPlayerDead { get; private set; }
-        public bool IsInteractable { get; private set; }
+        public void RemoveCombo(AttackComboSO attackComboSO)
+        {
+            comboList.Remove(attackComboSO);
+        }
         #region PlayerComponentGetter
         public PlayerCamera GetPlayerCamera => GetEntityComponent<PlayerCamera>();
         public PlayerMovement GetPlayerMovement => GetEntityComponent<PlayerMovement>();
@@ -99,26 +88,45 @@ namespace Swift_Blade
         public PlayerHealth GetPlayerHealth => GetEntityComponent<PlayerHealth>();
         #endregion
 
-        public static event Action Debug_Updt;
-        private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
-        private PlayerAttackState playerAttackState;
+        public class LevelStat
+        {
+            public static event Action<LevelStat> OnLevelUp;
+            public int Experience { get; private set; }
+            public int Level { get; private set; }
+            public int StatPoint { get; set; }
 
-        public static LevelStat level = new LevelStat();
+            private SceneManagerSO sceneManager;
 
-        private RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
+            public void Init(SceneManagerSO sceneManagerSo)
+            {
+                sceneManager = sceneManagerSo;
+                sceneManager.LevelClearEvent += OnLevelClear;
+            }
+            ~LevelStat()
+            {
+                sceneManager.LevelClearEvent -= OnLevelClear;
+            }
+            private void OnLevelClear()
+            {
+                const int maxRequiredExperience = 2;
+                Experience++;
+                                
+                if (Experience >= maxRequiredExperience)
+                {
+                    Experience = Experience - maxRequiredExperience;
+                    Level++;
+                    StatPoint += 3;
+                    OnLevelUp?.Invoke(this);
+                }
+            }
+        }
 
-        private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
-        private GameObject interactable;
-        private Tween playerInvincibleTween;
         protected override void Awake()
         {
             base.Awake();
             if (Instance == null)
                 Instance = this;
-        }
-        protected override void Start()
-        {
-            base.Start();
+            level.Init(SceneManagerSO);
             Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator.GetAnimator;
 
             playerStateMachine.AddState(PlayerStateEnum.Move, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
@@ -127,61 +135,64 @@ namespace Swift_Blade
             PlayerRollState playerRollState = new PlayerRollState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_roll);
             playerStateMachine.AddState(PlayerStateEnum.Roll, playerRollState);
             playerStateMachine.AddState(PlayerStateEnum.Parry, new PlayerParryState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_parry));
-            PlayerDeadState playerDeadState = new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death);
-            playerStateMachine.AddState(PlayerStateEnum.Dead, playerDeadState);
+            playerStateMachine.AddState(PlayerStateEnum.Dead, new PlayerDeadState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_death));
             playerStateMachine.AddState(PlayerStateEnum.HitStun, new PlayerHitStunState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_hitStun));
+            playerStateMachine.AddState(PlayerStateEnum.Interact, new PlayerInteractState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
             playerStateMachine.SetStartState(PlayerStateEnum.Move);
-            playerDeadState.OnPlayerDead += () =>
-            {
-                IsPlayerDead = true;
-            };
-            playerRollState.OnRollEnd += () =>
-            {
-                GetPlayerHealth.IsPlayerInvincible = true;
-                StatSO dashInvincibleTimeStat = GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DASH_INVINCIBLE_TIME);
-                float delay = dashInvincibleTimeStat.Value;
-                playerInvincibleTween = DOVirtual.DelayedCall(delay,
-                    () =>
+            playerRollState.OnRollEnd +=
+                () =>
                 {
-                    GetPlayerHealth.IsPlayerInvincible = false;
-                }, false);
-            };
+                    GetPlayerHealth.IsPlayerInvincible = true;
+                    StatSO dashInvincibleTimeStat = GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DASH_INVINCIBLE_TIME);
+                    float delay = dashInvincibleTimeStat.Value;
+                    delay = Mathf.Max(delay, 0.2f);
+                    Debug.Log(delay);
+                    playerInvincibleTween = DOVirtual.DelayedCall(delay,
+                        () =>
+                        {
+                            GetPlayerHealth.IsPlayerInvincible = false;
+                        }, false);
+                };
 
             PlayerHealth playerHealth = GetPlayerHealth;
 
-            playerHealth.OnHitEvent.AddListener((data) =>
-            {
-                if (IsPlayerDead) return;
-                bool isHitStun = data.stun;
-                AudioManager.PlayWithInit(audioCollection.GetRandomAudio, true);
-                if (isHitStun)
-                    playerStateMachine.ChangeState(PlayerStateEnum.HitStun);
-            });
+            playerHealth.OnHitEvent.AddListener(
+                (ActionData data) =>
+                {
+                    if (IsPlayerDead) return;
+                    bool isHitStun = data.stun;
+                    AudioManager.PlayWithInit(audioCollection.GetRandomAudio, true);
+                    if (isHitStun)
+                        playerStateMachine.ChangeState(PlayerStateEnum.HitStun);
+                });
             playerHealth.OnDeadEvent.AddListener(
                 () =>
                 {
                     playerStateMachine.ChangeState(PlayerStateEnum.Dead);
+                    IsPlayerDead = true;
                 });
             playerStateMachine.OnChangeState +=
-                (type) =>
-            {
-                if (type == PlayerStateEnum.Roll || type == PlayerStateEnum.HitStun)
+                (PlayerStateEnum type) =>
                 {
-                    playerInvincibleTween?.Kill();
-                }
-            };
+                    if (type == PlayerStateEnum.Roll || type == PlayerStateEnum.HitStun)
+                    {
+                        playerInvincibleTween?.Kill();
+                    }
+                };
             GetEntityComponent<PlayerDamageCaster>().OnCastDamageEvent.AddListener(
                 (action) =>
                 {
-                    onHitChannel.RaiseEvent();
+                    onHitChannel.RaiseEvent(this);
                 });
         }
         private void Update()
         {
             playerStateMachine.UpdateState();
 
-            if (Input.GetKeyDown(KeyCode.Z))
-                AudioEmitter.Dbg2();
+            //if (Input.GetKeyDown(KeyCode.Z))
+            //    AudioEmitter.Dbg2();
+            
+            mousePosition.position = GetPlayerInput.GetMousePositionWorld;
 
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
@@ -193,21 +204,28 @@ namespace Swift_Blade
                 IInteractable interactable = GetClosestInteractable;
                 if (interactable != null)
                 {
-                    print("int");
-                    interactable.Interact();
+                    if (false && Input.GetKey(KeyCode.LeftShift))
+                    {
+                        interactable.OnEndCallbackUnsubscribe(OnEndCallback);
+                        Debug.Log("unsub");
+                    }
+                    else
+                    {
+                        interactable.Interact();
+                        interactable.OnEndCallbackSubscribe(OnEndCallback);
+                        //playerStateMachine.ChangeState(PlayerStateEnum.Interact);
+                    }
+                    void OnEndCallback()
+                    {
+                        interactable.OnEndCallbackUnsubscribe(OnEndCallback);
+                        //playerStateMachine.ChangeState(PlayerStateEnum.Move);
+                    }
                 }
             }
-
 
             Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))
                 UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
-            //UI_DebugPlayer.DebugText(0, playerStateMachine.CurrentState.ToString(), "cs", DBG_UI_KEYS.Keys_PlayerAction);
-            //if (Input.GetKeyDown(KeyCode.F))
-            //{
-            //    GetPlayerAnimator.GetAnimator.Rebind();
-            //    GetPlayerAnimator.GetAnimator.Play(anim_death.GetAnimationHash, -1);
-            //}
         }
         private void FixedUpdate()
         {

@@ -12,7 +12,9 @@ namespace Swift_Blade
         
         private void Awake()
         {
-            _shop = FindFirstObjectByType<Shop>(FindObjectsInactive.Include);//todo : change this
+            _shop = FindFirstObjectByType<Shop>(FindObjectsInactive.Include);
+            shopItems = shopItems.Clone();
+            _isRewarded = false;
         }
 
         [ContextMenu("Interact")]
@@ -24,6 +26,7 @@ namespace Swift_Blade
         private void HandleOpenShop()
         {
             _shop.SetItems(shopItems);
+            Debug.Log("handle open shop");
             
             PopupManager.Instance.PopUp(PopupType.Shop);
         }

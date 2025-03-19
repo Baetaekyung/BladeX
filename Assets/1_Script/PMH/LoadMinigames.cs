@@ -8,10 +8,10 @@ namespace Swift_Blade
         [SerializeField] private Transform[] spawnPoints;
         private void Start()
         {
-            int n = Random.Range(0, spawnPoints.Length);
+            int n = Random.Range(0, 2);
             PlayerTrm.position = spawnPoints[n].position;
 
-            Debug.Log("講馬馬馬馬馬馬馬");
+            Debug.Log(spawnPoints[n].position);
         }
     }
 }
