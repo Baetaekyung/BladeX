@@ -13,14 +13,6 @@ namespace Swift_Blade.Enemy.Boss.Golem
             golemAnimatorController =  (baseAnimationController as GolemAnimatorController);
             golemAnimatorController.target = target;
         }
-        
-        
-        public override void DeadEvent()
-        {
-            base.DeadEvent();
-                        
-            golemAnimatorController.SetStone(null);
-        }
-        
+                
     }
 }

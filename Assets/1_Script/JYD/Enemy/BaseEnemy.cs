@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using Swift_Blade.Combat.Health;
+﻿using Swift_Blade.Combat.Health;
 using Swift_Blade.Level;
 using Unity.Behavior;
-using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine;
+using System.Linq;
 
 namespace Swift_Blade.Enemy
 {
@@ -25,13 +25,12 @@ namespace Swift_Blade.Enemy
         
         [Header("Weapon info")]
         public GameObject weapon;
-        
-        
+                
         protected Vector3 attackDestination;
-        private Vector3 nextPathPoint;
         protected Collider collider;
         protected BehaviorGraphAgent btAgent;
         protected NavMeshAgent NavmeshAgent;
+        private Vector3 nextPathPoint;
         
         protected BaseEnemyAnimationController baseAnimationController;
         protected BaseEnemyHealth baseHealth;
@@ -90,7 +89,7 @@ namespace Swift_Blade.Enemy
                 
                 if (distance > stopDistance)
                 {
-                    attackDestination = transform.position + transform.forward;
+                    attackDestination = transform.position + transform.forward * 1;
                     attackDestination.y = RaycastHit.point.y;
                     
                     transform.position = Vector3.MoveTowards(transform.position, attackDestination,

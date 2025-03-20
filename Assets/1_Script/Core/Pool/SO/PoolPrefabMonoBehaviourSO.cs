@@ -14,7 +14,7 @@ namespace Swift_Blade.Pool
             {
                 if (mono.gameObject != prefab)
                 {
-                    mono = null;
+                    mono.GetComponent<MonoBehaviour>();
                     Debug.LogError($"Mono and prefab GameObjects are different. {name}");
                 }
             }

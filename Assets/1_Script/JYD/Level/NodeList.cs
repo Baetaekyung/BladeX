@@ -101,7 +101,7 @@ public class NodeDictionary : IEnumerable<Node>
             if (IsValidScene(selectedNode.nodeName))
                 return selectedNode;
 
-            Debug.LogError("sceneName이 sceneList에 없습니다!");
+            Debug.LogError($"{selectedNode.nodeName}는 sceneList에 없습니다!");
             return null;
         }
 

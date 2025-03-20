@@ -1,4 +1,6 @@
 using System;
+using Swift_Blade.Pool;
+using Swift_Blade.Skill;
 using Swift_Blade.UI;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,13 +12,16 @@ namespace Swift_Blade
     {
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
+      
         
-        private float _maxHealth;
         public static float _currentHealth;
+        
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
+        public UnityEvent OnHealEvent;
+        
         public event Action<float, float> OnHealthUpdateEvent;
-
+        
         public float GetCurrentHealth => _currentHealth;
         public StatSO GetHealthStat => _healthStat;
         
@@ -24,16 +29,22 @@ namespace Swift_Blade
         private float lastDamageTime;
         //private float _maxHealth;
         private bool isDead;
+        private float _maxHealth;
         
         public bool IsPlayerInvincible { get; set; }
-        //private Player _player;
+        private Player _player;
         
-        public void EntityComponentAwake(Entity entity) { }
+        
+        public void EntityComponentAwake(Entity entity)
+        {
+            _player = entity as Player;
+        }
         
         public void EntityComponentStart(Entity entity)
         {
             _healthStat = _statCompo.GetStat(StatType.HEALTH);
             _maxHealth = _healthStat.Value;
+            
             
             HealthUpdate();
         }
@@ -56,18 +67,22 @@ namespace Swift_Blade
 
             lastDamageTime = Time.time;
             
+            _player.GetSkillController.UseSkill(SkillType.Hit);
             OnHitEvent?.Invoke(actionData);
-
+            
             if (_currentHealth <= 0)
             {
                 Dead();
+                _player.GetSkillController.UseSkill(SkillType.Dead);
             }
         }
         
         public void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
         {
             _currentHealth += healAmount;
-            _currentHealth = Mathf.Clamp(_currentHealth, _healthStat.MinValue, _healthStat.MaxValue);
+            _currentHealth = Mathf.Min(_currentHealth, _healthStat.Value);
+            
+            OnHealEvent?.Invoke();
             
             HealthUpdate();
         }
