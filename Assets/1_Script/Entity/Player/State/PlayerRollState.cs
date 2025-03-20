@@ -73,7 +73,7 @@ namespace Swift_Blade.FSM.States
         {
             player.GetPlayerMovement.AllowInputMove = true;
             //anim_inputLocalLerp = Vector3.zero;
-            playerHealth.IsPlayerInvincible = false;
+            //playerHealth.IsPlayerInvincible = false;
             OnRollEnd?.Invoke();
             base.Exit();
         }

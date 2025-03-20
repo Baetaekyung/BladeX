@@ -235,9 +235,9 @@ namespace Swift_Blade.Audio
         }
         private void OnDestroy()
         {
-            if (!isInPool && shouldDecraseCountOnDestroy)//remove shdcod
+            if (!isInPool)// && shouldDecraseCountOnDestroy)//remove shdcod
             {
-                print("destroy runtime aud" + audioSource.clip.name);
+                //print("destroy runtime aud" + audioSource.clip.name);
                 OnAudioStop();
             }
 
