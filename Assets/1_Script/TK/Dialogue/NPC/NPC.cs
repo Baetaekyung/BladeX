@@ -27,7 +27,7 @@ namespace Swift_Blade
             // DialogueManager.Instance.Desubscribe(onEndCallback);
             //ad -= onEndCallback;
         }
-        protected void TalkWithNPC(Action dialogueEndEvent = null)
+        protected virtual void TalkWithNPC(Action dialogueEndEvent = null)
         {
             //이미 보상을 받았음
             if (_isRewarded)

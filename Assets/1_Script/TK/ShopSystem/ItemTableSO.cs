@@ -22,23 +22,24 @@ namespace Swift_Blade
 
         public ItemTableSO Clone()
         {
-            ItemTableSO itemTable = Instantiate(this);
+            ItemTableSO table = Instantiate(this);
 
-            return itemTable;
+            return table;
         }
 
         public List<ItemSet> GetRandomItemTable()
         {
-            int current = 0;
-
+            ItemTableSO tableSo = Clone();
             List<ItemSet> randomTable = new List<ItemSet>();
+            
+            int current = 0;
             
             while (shopItemCount > current)
             {
-                var index = Random.Range(0, itemTable.Count);
+                var index = Random.Range(0, tableSo.itemTable.Count);
                 
-                randomTable.Add(itemTable[index]);
-                itemTable.RemoveAt(index);
+                randomTable.Add(tableSo.itemTable[index]);
+                tableSo.itemTable.RemoveAt(index);
                 
                 current++;
             }

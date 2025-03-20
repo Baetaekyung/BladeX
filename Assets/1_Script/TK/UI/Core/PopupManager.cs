@@ -34,7 +34,6 @@ namespace Swift_Blade
         {
             OpenCloseInventory();
             PopDownInput();
-            StatusOpen();
 
             // if (Keyboard.current.tKey.wasPressedThisFrame
             //     && !DialogueManager.Instance.IsDialogOpen)
@@ -53,24 +52,6 @@ namespace Swift_Blade
                 && !DialogueManager.Instance.IsDialogueOpen)
             {
                 PopDown();
-            }
-        }
-
-        private void StatusOpen()
-        {
-            if (popups.ContainsKey(PopupType.Status) == false)
-                return;
-            
-            if (Keyboard.current.oKey.wasPressedThisFrame)
-            {
-                if (GetRemainPopup(PopupType.Status) != null)
-                {
-                    PopDown(PopupType.Status);
-                }
-                else
-                {
-                    PopUp(PopupType.Status);
-                }
             }
         }
 
