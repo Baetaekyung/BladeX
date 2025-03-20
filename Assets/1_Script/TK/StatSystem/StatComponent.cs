@@ -7,31 +7,40 @@ namespace Swift_Blade
     public abstract class StatComponent : MonoBehaviour
     {
         [SerializeField] protected StatSO[] _stats;
-        public static StatSO[] myStats;
+        protected static StatSO[] _statDatas;
         public static bool InitOnce = false;
         
         protected virtual void Initialize()
         {
             if (InitOnce == false)
             {
-                myStats = new StatSO[_stats.Length];
+                StatSO[] tempStatSO = new StatSO[_stats.Length];
                 
                 for (int i = 0; i < _stats.Length; i++)
                 {
-                    myStats[i] = _stats[i].Clone();
-
-                    //no more thing...
-                    if (myStats[i].statType == StatType.HEALTH)
-                        PlayerHealth._currentHealth = myStats[i].Value;
+                    tempStatSO[i] = _stats[i].Clone();
+                    
+                    if (tempStatSO[i].statType == StatType.HEALTH)
+                        PlayerHealth._currentHealth = tempStatSO[i].Value;
                 }
 
+                _stats = tempStatSO;
+                _statDatas = _stats;
                 InitOnce = true;
             }
+
+            _stats = _statDatas;
+        }
+
+        private void OnDestroy()
+        {
+            Debug.Log("Save stat datas");
+            _statDatas = _stats;
         }
 
         public StatSO GetStat(StatSO stat)
         {
-            StatSO findStat = myStats.FirstOrDefault(x => x.statName == stat.statName);
+            StatSO findStat = _stats.FirstOrDefault(x => x.statName == stat.statName);
             Debug.Assert(findStat != null, "stat can't find");
 
             return findStat;
@@ -39,7 +48,7 @@ namespace Swift_Blade
 
         public StatSO GetStat(StatType statType)
         {
-            StatSO findStat = myStats.FirstOrDefault(x => x.statType == statType);
+            StatSO findStat = _stats.FirstOrDefault(x => x.statType == statType);
             Debug.Assert(findStat != null, "stat can't find");
             
             return findStat;
@@ -68,7 +77,7 @@ namespace Swift_Blade
 
         public void ClearAllModifiers()
         {
-            foreach (StatSO stat in myStats)
+            foreach (StatSO stat in _stats)
             {
                 stat.ClearModifier();
             }

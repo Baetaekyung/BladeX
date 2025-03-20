@@ -29,11 +29,15 @@ namespace Swift_Blade
         [SerializeField] private TextMeshProUGUI itemName;
         [SerializeField] private TextMeshProUGUI itemDescription;
         [SerializeField] private TextMeshProUGUI itemTypeInfo;
+
+        [SerializeField] private TextMeshProUGUI  titleText;
+        [SerializeField] private SlotChangeButton inventoryButton;
+        [SerializeField] private SlotChangeButton skillButton;
+        [SerializeField] private GameObject       inventoryUI;
+        [SerializeField] private GameObject       skillUI;
         
         //-------------------------------------------------------------
         
-        [HideInInspector] 
-        public bool  isSlotChanged = false; 
         private bool _isDragging = false;
 
         [SerializeField] private List<ItemSlot>  itemSlots = new List<ItemSlot>();
@@ -47,6 +51,10 @@ namespace Swift_Blade
         public static List<ItemDataSO> EquipmentDatas = new List<ItemDataSO>();
         public static bool IsAfterInit = false;
 
+        private void OnEnable()
+        {
+            ChangeToInventory();
+        }
         
         private void Start()
         {
@@ -109,18 +117,6 @@ namespace Swift_Blade
             
             UpdateAllSlots();
         }
-
-        // private void Start()
-        // {
-        //     Player.Instance.GetEntityComponent<PlayerHealth>()
-        //         .OnDeadEvent.AddListener(Inventory.Initialize);
-        // }
-        //
-        // private void OnDisable()
-        // {
-        //     Player.Instance.GetEntityComponent<PlayerHealth>()
-        //         .OnDeadEvent.AddListener(Inventory.Initialize);
-        // }
 
         private void Update()
         {
@@ -198,6 +194,22 @@ namespace Swift_Blade
         public void UpdateInfoUI(ItemDataSO itemData)
         {
             SetInfoUI(itemData);
+        }
+
+        public void ChangeToInventory()
+        {
+            inventoryUI.SetActive(true);
+            skillUI.SetActive(false);
+
+            titleText.text = "인벤토리";
+        }
+
+        public void ChangeToSkill()
+        {
+            skillUI.SetActive(true);
+            inventoryUI.SetActive(false);
+            
+            titleText.text = "스킬 슬롯";
         }
 
         private void SetInfoUI(ItemDataSO itemData)

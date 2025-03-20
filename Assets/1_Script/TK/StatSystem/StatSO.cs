@@ -10,12 +10,11 @@ namespace Swift_Blade
     {
         HEALTH,
         DAMAGE,
-        AGILITY,
+        MINATTACK_INC, //최소 공격력 보정
+        ATTACKSPEED,
+        MOVESPEED,
         DASH_INVINCIBLE_TIME,
         PARRY_CHANCE,
-        STYLE_METER_INCREASE_INCREMENT,
-        STYLE_METER_DECREASE_DECREMENT,
-        STYLE_METER_ADDITIONAL_BUFF
     }
     
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]
@@ -23,9 +22,7 @@ namespace Swift_Blade
     {
         public delegate void ValueChangeHandler(StatSO stat, float current, float prev);
         public ValueChangeHandler OnValueChange;
-
-        [FormerlySerializedAs("stlyeMeter")] [SerializeField] private StyleMeter styleMeter;
-
+        
         public StatType statType;
         public string statName;
         [TextArea(4, 5)] public string description;

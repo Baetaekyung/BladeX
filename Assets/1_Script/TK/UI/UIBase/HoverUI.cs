@@ -14,10 +14,12 @@ namespace Swift_Blade
         protected RectTransform _rectTrm;
         protected Tween _currentTween;
         private bool _isHovering;
+        private Vector3 _originScale;
 
         protected virtual void Awake()
         {
             _rectTrm = GetComponent<RectTransform>();
+            _originScale = transform.localScale;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -35,7 +37,7 @@ namespace Swift_Blade
 
         protected virtual void HoverAnimation()
         {
-            _rectTrm.DOScale(Vector3.one * animationScale, 1 / _hoverAnimationSpeed)
+            _rectTrm.DOScale(_originScale * animationScale, 1 / _hoverAnimationSpeed)
                 .SetEase(Ease.InSine);
         }
 
@@ -54,7 +56,7 @@ namespace Swift_Blade
 
         protected virtual void HoverAnimationEnd()
         {
-            _rectTrm.DOScale(Vector3.one, 1 / _hoverAnimationSpeed)
+            _rectTrm.DOScale(_originScale, 1 / _hoverAnimationSpeed)
                 .SetEase(Ease.OutSine);
         }
 

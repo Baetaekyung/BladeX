@@ -26,8 +26,22 @@ namespace Swift_Blade.UI
             {
                 _playerHealth.OnHitEvent.AddListener(HandleSetHealthUI);
                 _playerHealth.OnHealthUpdateEvent += SetHealthUI;
+                StatInfoUI.OnHealthStatUp += SetHealthUIIfStatUp;
+                StatInfoUI.OnHealthStatDown += SetHealthUIIfStatDown;
+                
                 SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth._currentHealth);
             }
+        }
+
+        private void SetHealthUIIfStatDown()
+        {
+            if (_playerHealth == null)
+            {
+                Debug.Log("Player health compo is null, PlayerHealthUI.cs line: 35");
+                return;
+            }
+            
+            SetHealthUI(_playerHealth.GetHealthStat.Value, --PlayerHealth._currentHealth);
         }
 
         private void OnDestroy()
@@ -35,6 +49,9 @@ namespace Swift_Blade.UI
             if (_playerHealth != null)
             {
                 _playerHealth.OnHitEvent.RemoveListener(HandleSetHealthUI);
+                _playerHealth.OnHealthUpdateEvent -= SetHealthUI;
+                StatInfoUI.OnHealthStatUp -= SetHealthUIIfStatUp;
+                StatInfoUI.OnHealthStatDown -= SetHealthUIIfStatDown;
             }
         }
 
@@ -47,6 +64,17 @@ namespace Swift_Blade.UI
             }
             
             SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth);
+        }
+        
+        private void SetHealthUIIfStatUp()
+        {
+            if (_playerHealth == null)
+            {
+                Debug.Log("Player health compo is null, PlayerHealthUI.cs line: 35");
+                return;
+            }
+            
+            SetHealthUI(_playerHealth.GetHealthStat.Value, ++PlayerHealth._currentHealth);
         }
         
         public void SetHealthUI(float maxHealth, float currentHealth)

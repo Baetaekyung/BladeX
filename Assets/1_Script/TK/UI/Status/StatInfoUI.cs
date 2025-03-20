@@ -11,6 +11,8 @@ namespace Swift_Blade
     {
         public static int UsedStatPoint = 0;
         public static event Action OnStatChanged;
+        public static event Action OnHealthStatUp;
+        public static event Action OnHealthStatDown;
 
         private static Dictionary<StatSO, int> _statRecords = new Dictionary<StatSO, int>();
         [SerializeField] private StatSO stat;
@@ -56,6 +58,11 @@ namespace Swift_Blade
             UsedStatPoint++;
             stat.BaseValue += stat.increaseAmount;
 
+            if (stat.statType == StatType.HEALTH)
+            {
+                OnHealthStatUp?.Invoke();
+            }
+            
             RecordAddedStat();
             SetStatInfoUI();
             
@@ -82,6 +89,11 @@ namespace Swift_Blade
             foreach (var statRecord in _statRecords)
             {
                 statRecord.Key.BaseValue -= statRecord.Value * statRecord.Key.increaseAmount;
+
+                if (statRecord.Key.statType == StatType.HEALTH)
+                {
+                    OnHealthStatDown?.Invoke();
+                }
             }
 
             UsedStatPoint = 0;
