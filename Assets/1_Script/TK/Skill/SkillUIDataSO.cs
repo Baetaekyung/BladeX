@@ -1,3 +1,4 @@
+using Swift_Blade.Skill;
 using UnityEngine;
 
 namespace Swift_Blade
