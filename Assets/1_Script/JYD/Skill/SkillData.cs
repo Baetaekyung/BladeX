@@ -8,13 +8,14 @@ namespace Swift_Blade.Skill
         public string skillName;
         public SkillType type;
         public Sprite skillIcon;
-        [TextArea]public string skillDescription;
+        [TextArea] public string skillDescription;
         
         [Space(40)]
         public PoolPrefabMonoBehaviourSO SkillEffectPrefab;
         
-        public abstract void UseSkill(Transform transform);
+        public virtual void Initialize(){}
         
+        public abstract void UseSkill(Transform transform);
         
     }
 }
