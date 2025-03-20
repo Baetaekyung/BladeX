@@ -18,10 +18,11 @@ namespace Swift_Blade.Combat.Caster
         public bool Cast()
         {
             Arrow arrow = MonoGenericPool<Arrow>.Pop();
-                        
-            arrow.transform.position = firePos.transform.position + new Vector3(0,1,0);
+
+            arrow.transform.position = firePos.transform.position;
             Vector3 targetDir = (target.position - firePos.position).normalized;
-            arrow.transform.rotation = Quaternion.LookRotation(targetDir);
+            Vector3 rot = firePos.forward;
+            arrow.transform.rotation = Quaternion.LookRotation(new Vector3(rot.x, targetDir.y, rot.z));
             
             arrow.Shot();
             

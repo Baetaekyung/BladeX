@@ -36907,7 +36907,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 1.5}
+  m_Size: {x: 1.2, y: 2, z: 1.5}
   m_Center: {x: 0, y: 1, z: 0.25}
 --- !u!54 &2100252439773354100
 Rigidbody:
@@ -48933,6 +48933,19 @@ MonoBehaviour:
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1242151410863998905}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Boss.Golem.GolemAnimatorController,
+          Assembly-CSharp
+        m_MethodName: StopAllAnimationEvents
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 3206993069913618120}
         m_TargetAssemblyTypeName: Swift_Blade.Boss.BossBase, Assembly-CSharp
         m_MethodName: DeadEvent
@@ -48945,7 +48958,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  maxHealth: 13
+  maxHealth: 9
   currentHealth: 0
   isDead: 0
   BehaviorGraphAgent: {fileID: 350781294163898496}

@@ -76,7 +76,7 @@ namespace Swift_Blade.Enemy
             StopManualRotate();
             StopApplyRootMotion();
         }
-                        
+        
         public void Rebind()
         {
             Animator.Rebind();

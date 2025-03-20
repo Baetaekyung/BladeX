@@ -67,7 +67,7 @@ namespace Swift_Blade
         public void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
         {
             _currentHealth += healAmount;
-            _currentHealth = Mathf.Clamp(_currentHealth, _healthStat.MinValue, _healthStat.MaxValue);
+            _currentHealth = Mathf.Min(_currentHealth, _healthStat.Value);
             
             HealthUpdate();
         }

@@ -90,7 +90,7 @@ namespace Swift_Blade.Enemy
                 
                 if (distance > stopDistance)
                 {
-                    attackDestination = transform.position + transform.forward;
+                    attackDestination = transform.forward * 1;
                     attackDestination.y = RaycastHit.point.y;
                     
                     transform.position = Vector3.MoveTowards(transform.position, attackDestination,

@@ -43,13 +43,14 @@ namespace Swift_Blade.Enemy.Boss.Golem
         {
             DOVirtual.Float(rig.weight, 0f, 0.3f, value => { rig.weight = value; });
         }
-
+        
         public override void StopAllAnimationEvents()
         {
-            base.StopAllAnimationEvents();
-
+            SetStone(null);
             StopManualLook();
             StopManualCollider();
+            
+            base.StopAllAnimationEvents();
         }
 
         public void CreateGroundCrack(int _direction)
