@@ -1,18 +1,19 @@
 using System;
+using Swift_Blade.Skill;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Swift_Blade
 {
-    public enum SkillType
+    /*public enum SkillType
     {
         Attack,
         Parry,
         Rolling,
         Grow,
         Debuff
-    }
+    }*/
     
     public class SkillSlot : Slot
     {
@@ -61,10 +62,10 @@ namespace Swift_Blade
                 slotSkillType = SkillType.Parry;
             else if (gameObject.name.Contains("rolling"))
                 slotSkillType = SkillType.Rolling;
-            else if (gameObject.name.Contains("debuff"))
-                slotSkillType = SkillType.Debuff;
-            else if (gameObject.name.Contains("grow"))
-                slotSkillType = SkillType.Grow;
+            else if (gameObject.name.Contains("hit"))
+                slotSkillType = SkillType.Hit;
+            else if (gameObject.name.Contains("dead"))
+                slotSkillType = SkillType.Dead;
         }
     }
 }
