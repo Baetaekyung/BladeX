@@ -196,7 +196,7 @@ namespace Swift_Blade
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
             UI_DebugPlayer.DebugText(2, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DAMAGE).Value, "atkBase");
-            UI_DebugPlayer.DebugText(3, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).Value, "dec");
+            //UI_DebugPlayer.DebugText(3, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).Value, "dec");
 
             if (Input.GetKeyDown(KeyCode.E))
             {
