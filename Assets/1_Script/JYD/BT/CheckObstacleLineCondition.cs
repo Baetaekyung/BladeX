@@ -12,7 +12,7 @@ public partial class CheckObstacleLineCondition : Condition
     [SerializeReference] public BlackboardVariable<bool> CheckObstacleLine;
     
     private LayerMask whatIsTarget;
-        
+    
     public override bool IsTrue()
     {
         if(CheckObstacleLine.Value == false)

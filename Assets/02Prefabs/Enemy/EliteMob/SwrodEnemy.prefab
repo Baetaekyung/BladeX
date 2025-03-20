@@ -31896,7 +31896,7 @@ MonoBehaviour:
   animationEnd: 0
   isManualRotate: 0
   isManualMove: 0
-  maxAnimationSpeed: 1.4
+  maxAnimationSpeed: 1.2
   minAnimationSpeed: 1.1
 --- !u!114 &3789115119428442451
 MonoBehaviour:
@@ -32089,7 +32089,19 @@ MonoBehaviour:
         m_CallState: 2
   unParriableAttack:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8022966292899397068}
+        m_TargetAssemblyTypeName: Swift_Blade.EnemyVFXPlayer, Assembly-CSharp
+        m_MethodName: PlayUnParrySign
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3956682385208674645
 GameObject:
   m_ObjectHideFlags: 0
@@ -37460,6 +37472,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.4649703, y: 0.0054618716, z: -0.003291063}
     m_Extent: {x: 0.15899473, y: 0.095593385, z: 0.08273442}
   m_DirtyAABB: 0
+--- !u!1 &4528393672909490500
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5308743986634109377}
+  m_Layer: 7
+  m_Name: UnParrySignTrm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5308743986634109377
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4528393672909490500}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.7, z: 0.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1861828440522044926}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4535845300553611798
 GameObject:
   m_ObjectHideFlags: 0
@@ -58792,6 +58835,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1861828440522044926}
   - component: {fileID: 2840029255627781192}
+  - component: {fileID: 8022966292899397068}
   m_Layer: 7
   m_Name: Feedback
   m_TagString: Untagged
@@ -58811,7 +58855,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5308743986634109377}
   m_Father: {fileID: 9142303646647914277}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2840029255627781192
@@ -58831,6 +58876,20 @@ MonoBehaviour:
   flashCount: 1
   _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
   _meshRenderers: []
+--- !u!114 &8022966292899397068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7555956772869858807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29d8eac160ca8d541aa04fb07de245b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unParrySignParticle: {fileID: 11400000, guid: 20064daeee3755345b0548c8124c1439, type: 2}
+  unParrySignParticleTrm: {fileID: 5308743986634109377}
 --- !u!1 &7572378662027066068
 GameObject:
   m_ObjectHideFlags: 0

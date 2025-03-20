@@ -13104,6 +13104,7 @@ GameObject:
   - component: {fileID: 5704459122665910530}
   - component: {fileID: 5558562310119497924}
   - component: {fileID: 478187616852031256}
+  - component: {fileID: 687009253773412077}
   m_Layer: 6
   m_Name: PlayerCategory
   m_TagString: Untagged
@@ -13178,12 +13179,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f799d164b4993f4f8b3f7dd0a3b272e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTrm: {fileID: 1547652066911575172}
   dustParticle: {fileID: 11400000, guid: 9948a7b5594f97746b8a52465d6ba870, type: 2}
   hitSlashParticle: {fileID: 11400000, guid: 78344e406fd969349aecc415910520cd, type: 2}
   parryParticle: {fileID: 11400000, guid: d40b8b3b53d73dc4f839d65878943be2, type: 2}
   parryParticleTrm: {fileID: 8632028477375930125}
   levelUpParticle: {fileID: 11400000, guid: cac137e626bf9e34da4536541946621c, type: 2}
   levelUpEffectTrm: {fileID: 5781057234805245007}
+  healParticle: {fileID: 11400000, guid: 72a323dcb6d20b740afe5d71a3445ef2, type: 2}
+--- !u!114 &687009253773412077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2777080882551110989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a48517d15f7d5dd418d053d4b3ad4cdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testSkillSO:
+  - {fileID: 11400000, guid: 4bb404a16964a174298e668592d113d9, type: 2}
 --- !u!1 &2777974626546988096
 GameObject:
   m_ObjectHideFlags: 0
@@ -37568,6 +37585,21 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.CameraFocusFeedback,
           Assembly-CSharp
         m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnHealEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 478187616852031256}
+        m_TargetAssemblyTypeName: Swift_Blade.PlayerVFXPlayer, Assembly-CSharp
+        m_MethodName: PlayHealEffect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -1,5 +1,8 @@
+using System;
+using Swift_Blade.Skill;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat
 {
@@ -13,7 +16,7 @@ namespace Swift_Blade.Combat
         public float ParryTime => parryTime;
 
         public UnityEvent ParryEvents;
-
+        
         public void EntityComponentAwake(Entity entity)
         {
             player = entity as Player;
@@ -22,8 +25,14 @@ namespace Swift_Blade.Combat
         public void EntityComponentStart(Entity entity)
         {
             playerStatCompo = player.GetEntityComponent<PlayerStatCompo>();
+            ParryEvents.AddListener(()=>player.GetSkillController.UseSkill(SkillType.Parry));
         }
 
+        private void OnDestroy()
+        {
+            ParryEvents.RemoveAllListeners();
+        }
+        
         public void SetParry(bool _active)
         {
             canParry = _active;

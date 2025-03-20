@@ -16020,8 +16020,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 1.5}
-  m_Center: {x: 0, y: 1, z: 0.25}
+  m_Size: {x: 1.3, y: 2, z: 0.5}
+  m_Center: {x: 0, y: 1, z: -0.05}
 --- !u!54 &1643853142932683801
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -16104,9 +16104,9 @@ MonoBehaviour:
   unParriableAttack:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7100759460544313217}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.FlashFeedback, Assembly-CSharp
-        m_MethodName: PlayFeedback
+      - m_Target: {fileID: 7106238370346037696}
+        m_TargetAssemblyTypeName: Swift_Blade.EnemyVFXPlayer, Assembly-CSharp
+        m_MethodName: PlayUnParrySign
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -36019,7 +36019,10 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Neck'\n\tTransform 'Head'\n\tTransform 'Neck'\n\tTransform
+    'Head'\n\tTransform 'Neck'\n\tTransform 'Head'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -36217,7 +36220,7 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 6144
-  maxDistance: 1.4
+  maxDistance: 3
   showGizmo: 1
   weapon: {fileID: 0}
 --- !u!114 &7497389155446239979
@@ -38790,7 +38793,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4863362397484142210}
   - component: {fileID: 361599536718045817}
-  - component: {fileID: 7100759460544313217}
+  - component: {fileID: 7106238370346037696}
   m_Layer: 7
   m_Name: Feedback
   m_TagString: Untagged
@@ -38810,7 +38813,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7442157803624396116}
   m_Father: {fileID: 5667943476977376147}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &361599536718045817
@@ -38830,7 +38834,7 @@ MonoBehaviour:
   flashCount: 1
   _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
   _meshRenderers: []
---- !u!114 &7100759460544313217
+--- !u!114 &7106238370346037696
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -38839,14 +38843,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4851012242843853865}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02036a99bd8ba114c8f8b11d6a8b11ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 29d8eac160ca8d541aa04fb07de245b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  root: {fileID: 5667943476977376147}
-  flashDuration: 0.8
-  flashCount: 3
-  _flashMat: {fileID: 2100000, guid: 39a2ecab3726c0a41a122e688fe73d4d, type: 2}
-  _meshRenderers: []
+  unParrySignParticle: {fileID: 11400000, guid: 20064daeee3755345b0548c8124c1439, type: 2}
+  unParrySignParticleTrm: {fileID: 7442157803624396116}
 --- !u!1 &4866602840818991925
 GameObject:
   m_ObjectHideFlags: 0
@@ -49634,6 +49635,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 27.773327, y: 3.3755093, z: -8.131887}
     m_Extent: {x: 19.309196, y: 8.524604, z: 15.818064}
   m_DirtyAABB: 0
+--- !u!1 &6228269116229199968
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7442157803624396116}
+  m_Layer: 7
+  m_Name: UnParrySign
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7442157803624396116
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6228269116229199968}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.189, z: 0.4827}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4863362397484142210}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6229830294119361443
 GameObject:
   m_ObjectHideFlags: 0

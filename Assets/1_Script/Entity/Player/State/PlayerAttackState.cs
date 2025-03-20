@@ -39,13 +39,13 @@ namespace Swift_Blade.FSM.States
             base.Enter();
             if (!IsContinuousComboAllowed)
                 comboStateHistory.Clear();
-
+            
             if (NonImmediateComboState != EComboState.None)
             {
                 comboStateHistory.Add(NonImmediateComboState);
                 NonImmediateComboState = EComboState.None;
             }
-
+            
             comboStateHistory.Add(PreviousComboState);
             bool matchFound = GetMatchingComboSO(out currentComboData);
             if (matchFound)
