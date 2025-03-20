@@ -1,4 +1,3 @@
-using System;
 using Swift_Blade.Pool;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -7,15 +6,17 @@ namespace Swift_Blade
 {
     public class PlayerVFXPlayer : MonoBehaviour,IEntityComponent
     {
+        [SerializeField] private Transform playerTrm;
+        [Space]
         [SerializeField] private PoolPrefabMonoBehaviourSO dustParticle;
         [SerializeField] private PoolPrefabMonoBehaviourSO hitSlashParticle;
         [SerializeField] private PoolPrefabMonoBehaviourSO parryParticle;
         [SerializeField] private Transform parryParticleTrm;
         [SerializeField] private PoolPrefabMonoBehaviourSO levelUpParticle;
         [SerializeField] private Transform levelUpEffectTrm;
+        [SerializeField] private PoolPrefabMonoBehaviourSO healParticle;
         
-        private PlayerStatCompo _statCompo;
-
+        
         private void Start()
         {
             Player.LevelStat.OnLevelUp += LevelUpEffect;
@@ -32,6 +33,7 @@ namespace Swift_Blade
             MonoGenericPool<HitSlash>.Initialize(hitSlashParticle);
             MonoGenericPool<ParryParticle>.Initialize(parryParticle);
             MonoGenericPool<LevelUpParticle>.Initialize(levelUpParticle);
+            MonoGenericPool<PlayerHealParticle>.Initialize(healParticle);
         }
                 
         public void PlayDamageEffect(ActionData actionData)
@@ -58,7 +60,15 @@ namespace Swift_Blade
         {
             LevelUpParticle levelUpParticle = MonoGenericPool<LevelUpParticle>.Pop();
             levelUpParticle.transform.position = levelUpEffectTrm.position;
+        }
+
+        public void PlayHealEffect()
+        {
+            PlayerHealParticle healParticle = MonoGenericPool<PlayerHealParticle>.Pop();
+            healParticle.transform.position = playerTrm.position + new Vector3(0,0.5f , 0);
             
         }
+        
+        
     }
 }

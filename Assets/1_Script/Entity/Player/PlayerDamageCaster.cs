@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Swift_Blade.Skill;
 using UnityEngine;
 
 namespace Swift_Blade.Combat.Caster
@@ -54,6 +55,8 @@ namespace Swift_Blade.Combat.Caster
                     ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, transform, true);
                     
                     OnCastDamageEvent?.Invoke(actionData);
+                    _player.GetSkillController.UseSkill(SkillType.Attack);
+                    
                     health.TakeDamage(actionData);
                 }
             }

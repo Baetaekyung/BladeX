@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 10540283764570815}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1739,6 +1739,7 @@ MonoBehaviour:
   - rid: 6383923182837433314
   - rid: 6383923182837433315
   - rid: 6383923194080788735
+  - rid: 6383923293464560368
   references:
     version: 2
     RefIds:
@@ -1773,7 +1774,7 @@ MonoBehaviour:
           m_Value0: 16842789263302442139
           m_Value1: 15124673902740489662
         Name: AttackDistance
-        m_Value: 9
+        m_Value: 7
     - rid: 6383923194080788735
       type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -1782,6 +1783,14 @@ MonoBehaviour:
           m_Value1: 9138209511253205768
         Name: EnemyHealth
         m_Value: {fileID: 3549838609332126204}
+    - rid: 6383923293464560368
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 6189539945904516646
+          m_Value1: 17608454477406427091
+        Name: CheckForward
+        m_Value: {fileID: 413465339040550145}
 --- !u!114 &6260689719838969344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1933,7 +1942,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   moveSpeed: 3.1
-  rotateSpeed: 16
+  rotateSpeed: 2
   stopDistance: 3.54
   whatIsGround:
     serializedVersion: 2
