@@ -7,6 +7,7 @@ using Swift_Blade.FSM;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using Swift_Blade.Skill;
 
 namespace Swift_Blade
 {
@@ -37,7 +38,7 @@ namespace Swift_Blade
         private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
         private GameObject interactable;
         private Tween playerInvincibleTween;
-
+        
         [Header("General")]
         [SerializeField] private Transform playerTransform;
         [SerializeField] private Transform mousePosition;
@@ -48,7 +49,7 @@ namespace Swift_Blade
 
         [Header("EventChannels")]
         [SerializeField] private EquipmentChannelSO onHitChannel;
-
+        
         [Header("Anim_Param")]
         [SerializeField] private AnimationTriggers animEndTrigger;
         [SerializeField, Space(10)] private AnimationParameterSO anim_idle;
@@ -85,6 +86,8 @@ namespace Swift_Blade
         public PlayerDamageCaster GetPlayerDamageCaster => GetEntityComponent<PlayerDamageCaster>();
         public PlayerParryController GetPlayerParryController => GetEntityComponent<PlayerParryController>();
         public PlayerHealth GetPlayerHealth => GetEntityComponent<PlayerHealth>();
+        public PlayerSkillController GetSkillController => GetEntityComponent<PlayerSkillController>();
+        
         #endregion
 
         public class LevelStat

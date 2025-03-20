@@ -1,4 +1,5 @@
 using System;
+using Swift_Blade.Skill;
 using UnityEngine;
 
 namespace Swift_Blade.FSM.States
@@ -45,6 +46,8 @@ namespace Swift_Blade.FSM.States
             entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirectionRawRotated.normalized, 10);
 
             playerHealth.IsPlayerInvincible = true;
+            
+            player.GetSkillController.UseSkill(SkillType.Rolling);
         }
         public override void Update()
         {
