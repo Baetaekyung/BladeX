@@ -5,30 +5,21 @@ using UnityEngine.UI;
 
 namespace Swift_Blade
 {
-    public enum SkillType
-    {
-        Attack,
-        Parry,
-        Rolling,
-        Grow,
-        Debuff
-    }
-    
     public class SkillSlot : Slot
     {
         [SerializeField] private Sprite    originalImage;
         [SerializeField] private Image     skillIcon;
-        [SerializeField] private SkillType slotSkillType;
+        //[SerializeField] private SkillType slotSkillType;
         
         private SkillUIDataSO _skillUIData;
 
-        public SkillType GetSkillType => slotSkillType;
+        //public SkillType GetSkillType => slotSkillType;
 
         public override void SetSlotImage(Sprite sprite)
         {
             if (sprite == null)
             {
-                skillIcon.color = new Color(1, 1, 1, 0.03f);
+                skillIcon.color = new Color(1, 1, 1, 0.3f);
                 skillIcon.sprite = originalImage;
                 return;
             }
@@ -55,16 +46,16 @@ namespace Swift_Blade
 
         private void OnValidate()
         {
-            if (gameObject.name.Contains("attack"))
-                slotSkillType = SkillType.Attack;
-            else if (gameObject.name.Contains("parry"))
-                slotSkillType = SkillType.Parry;
-            else if (gameObject.name.Contains("rolling"))
-                slotSkillType = SkillType.Rolling;
-            else if (gameObject.name.Contains("debuff"))
-                slotSkillType = SkillType.Debuff;
-            else if (gameObject.name.Contains("grow"))
-                slotSkillType = SkillType.Grow;
+            // if (gameObject.name.Contains("attack"))
+            //     slotSkillType = SkillType.Attack;
+            // else if (gameObject.name.Contains("parry"))
+            //     slotSkillType = SkillType.Parry;
+            // else if (gameObject.name.Contains("rolling"))
+            //     slotSkillType = SkillType.Rolling;
+            // else if (gameObject.name.Contains("debuff"))
+            //     slotSkillType = SkillType.Debuff;
+            // else if (gameObject.name.Contains("grow"))
+            //     slotSkillType = SkillType.Grow;
         }
     }
 }

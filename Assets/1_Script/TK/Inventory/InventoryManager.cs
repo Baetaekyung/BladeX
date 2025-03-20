@@ -50,6 +50,8 @@ namespace Swift_Blade
         public static PlayerInventory Inventory { get; set; }
         public static List<ItemDataSO> EquipmentDatas = new List<ItemDataSO>();
         public static bool IsAfterInit = false;
+        
+        [SerializeField] private PlayerInventory playerInv;
 
         private void OnEnable()
         {
@@ -59,7 +61,11 @@ namespace Swift_Blade
         private void Start()
         {
             if (IsAfterInit == false)
-                return;
+            {
+                Inventory = playerInv.Clone();
+                Instance.InitializeSlots();
+                IsAfterInit = true;
+            }
             
             InitializeSlots();
         }
@@ -112,8 +118,11 @@ namespace Swift_Blade
                 Inventory.itemInventory[i].ItemSlot = emptySlot;
             }
 
-            QuickSlotItem = _itemTable[_currentItemIndex];
-            UpdateQuickSlotUI(QuickSlotItem);
+            if (_itemTable.Count != 0)
+            {
+                QuickSlotItem = _itemTable[_currentItemIndex];
+                UpdateQuickSlotUI(QuickSlotItem);
+            }
             
             UpdateAllSlots();
         }
@@ -171,16 +180,16 @@ namespace Swift_Blade
         {
             for (int i = 0; i < itemSlots.Count; i++)
             {
-                //빈 슬롯이면 empty 이미지
                 if (itemSlots[i].GetSlotItemData() == null
+                    && itemSlots[i] is EquipmentSlot equipSlot)
+                {
+                    itemSlots[i].SetItemImage(equipSlot.GetInfoIcon);
+                }
+                //빈 슬롯이면 empty 이미지
+                else if (itemSlots[i].GetSlotItemData() == null
                     && itemSlots[i] is not EquipmentSlot)
                 {
                     itemSlots[i].SetItemImage(null);
-                }
-                else if (itemSlots[i].GetSlotItemData() == null
-                         && itemSlots[i] is EquipmentSlot equipSlot)
-                {
-                    itemSlots[i].SetItemImage(equipSlot.GetInfoIcon);
                 }
                 else //아이템이 존재하면 itemImage 넣어주기
                 {

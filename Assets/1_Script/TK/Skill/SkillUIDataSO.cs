@@ -9,12 +9,12 @@ namespace Swift_Blade
         [SerializeField] private string    description;
         [SerializeField] private string    skillName;
         [SerializeField] private Sprite    skillIcon;
-        [SerializeField] private SkillType skillType;
+        // [SerializeField] private SkillType skillType;
                                       
         //SO 데이터 수정 못하고 가져오기만 하게끔
         public string    GetDescription => description;
         public string    GetSkillName   => skillName;
         public Sprite    GetSkillIcon   => skillIcon;
-        public SkillType GetSkillType   => skillType;
+        // public SkillType GetSkillType   => skillType;
     }                                   
 }                                       

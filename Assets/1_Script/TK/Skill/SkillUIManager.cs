@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,39 +15,51 @@ namespace Swift_Blade
         private static SkillUISaveSO saveDatas;
         private static bool          InitOnce = false;
 
-        protected override void Awake()
+        private void OnEnable()
         {
-            base.Awake();
-
-            if (!InitOnce)
+            if (InitOnce == false)
             {
                 saveDatas = skillUISaveData.Clone();
                 InitOnce = true;
             }
-
+            
             InitializeSlots();
         }
 
         private void InitializeSlots()
         {
-            InitializeSlot(inv_slots);
+            InitializeSlot(inv_slots); 
             InitializeSlot(skill_slots);
             
-            //Load
-            for (short i = 0; i < saveDatas.invUiData.Count; i++)
-                GetEmptyInvSlot().SetSlotData(saveDatas.invUiData[i]);
-            for (short i = 0; i < saveDatas.skillSlotUiData.Count; i++)
+            //초기화 후에 가져오기
+            LoadUIData();
+        }
+
+        private void LoadUIData()
+        {
+            if (saveDatas.invUiData.Count > 0)
             {
-                SkillType type = saveDatas.skillSlotUiData[i].GetSkillType;
-                GetEmptySkillSlot(type).SetSlotData(saveDatas.skillSlotUiData[i]);
+                for (short i = 0; i < saveDatas.invUiData.Count; i++)
+                    GetEmptyInvSlot().SetSlotData(saveDatas.invUiData[i]);
+            }
+
+            if (saveDatas.skillSlotUiData.Count > 0)
+            {
+                for (short i = 0; i < saveDatas.skillSlotUiData.Count; i++)
+                {
+                    // SkillType type = saveDatas.skillSlotUiData[i].GetSkillType;
+                    // GetEmptySkillSlot(type).SetSlotData(saveDatas.skillSlotUiData[i]);
+                }
             }
         }
 
         private void InitializeSlot<T>(List<T> slots) where T : Slot
         {
             foreach (var slot in slots)
+            {
                 if (slot.IsEmptySlot())
                     slot.SetSlotImage(null);
+            }
         }
 
         public Skill_InventorySlot GetEmptyInvSlot()
@@ -62,19 +75,19 @@ namespace Swift_Blade
             return invSlot;
         }
 
-        public SkillSlot GetEmptySkillSlot(SkillType skillType)
-        {
-            var skillSlot = skill_slots
-                .FindAll(slot => slot.IsEmptySlot()) //빈 스킬 슬롯 찾아서
-                .FirstOrDefault(slot => slot.GetSkillType == skillType); //그 중 같은 타입의 슬롯으로
-
-            if (skillSlot == default)
-            {
-                Debug.Log($"{skillType.ToString()} type skill slot is Full");
-                return default;
-            }
-
-            return skillSlot;
-        }
+        // public SkillSlot GetEmptySkillSlot(SkillType skillType)
+        // {
+        //     var skillSlot = skill_slots
+        //         .FindAll(slot => slot.IsEmptySlot()) //빈 스킬 슬롯 찾아서
+        //         .FirstOrDefault(slot => slot.GetSkillType == skillType); //그 중 같은 타입의 슬롯으로
+        //
+        //     if (skillSlot == default)
+        //     {
+        //         Debug.Log($"{skillType.ToString()} type skill slot is Full");
+        //         return default;
+        //     }
+        //
+        //     return skillSlot;
+        // }
     }
 }

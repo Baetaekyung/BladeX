@@ -8,8 +8,6 @@ namespace Swift_Blade
         [SerializeField]
         private Image         skillIconImage;
         private SkillUIDataSO _skillUIData;
-
-        public bool HasSkill => false;
         
         public override void SetSlotData<T>(T data)
         {
