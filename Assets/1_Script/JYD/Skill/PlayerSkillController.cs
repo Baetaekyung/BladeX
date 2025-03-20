@@ -21,6 +21,9 @@ namespace Swift_Blade.Skill
         public event Action<Transform> OnDeadEventSkill;
 
         [SerializeField] private SkillData[] testSkillSO;
+
+        private ushort maxSlotCount = 4;
+        private ushort slotCount = 0;
         
         private void Start()
         {
@@ -32,7 +35,7 @@ namespace Swift_Blade.Skill
         
         private void OnDestroy()
         {
-            foreach (SkillType item in Enum.GetValues(typeof(SkillType)))
+            foreach (var item in testSkillSO)
             {
                 RemoveSkill(item);
             }
@@ -42,46 +45,51 @@ namespace Swift_Blade.Skill
         
         public void AddSkill(SkillData skillData)
         {
+            if(slotCount >= maxSlotCount)return;   
+            
             switch (skillData.type)
             {
                 case SkillType.Attack:
-                    OnAttackEventSkill = skillData.UseSkill;
+                    OnAttackEventSkill += skillData.UseSkill;
                     break;
                 case SkillType.Rolling:
-                    OnRollingEventSkill = skillData.UseSkill;
+                    OnRollingEventSkill += skillData.UseSkill;
                     break;
                 case SkillType.Parry:
-                    OnParryEventSkill = skillData.UseSkill;
+                    OnParryEventSkill += skillData.UseSkill;
                     break;
                 case SkillType.Hit:
-                    OnHitEventSkill = skillData.UseSkill;
+                    OnHitEventSkill += skillData.UseSkill;
                     break;
                 case SkillType.Dead:
-                    OnDeadEventSkill = skillData.UseSkill;
+                    OnDeadEventSkill += skillData.UseSkill;
                     break;
             }
+            ++slotCount;
         }
         
-        public void RemoveSkill(SkillType type)
+        public void RemoveSkill(SkillData skillData)
         {
-            switch (type)
+            switch (skillData.type)
             {
                 case SkillType.Attack:
-                    OnAttackEventSkill = null;
+                    OnAttackEventSkill -= skillData.UseSkill;
                     break;
                 case SkillType.Rolling:
-                    OnRollingEventSkill = null;
+                    OnRollingEventSkill-= skillData.UseSkill;
                     break;
                 case SkillType.Parry:
-                    OnParryEventSkill = null;
+                    OnParryEventSkill-= skillData.UseSkill;
                     break;
                 case SkillType.Hit:
-                    OnHitEventSkill = null;
+                    OnHitEventSkill-= skillData.UseSkill;
                     break;
                 case SkillType.Dead:
-                    OnDeadEventSkill = null;
+                    OnDeadEventSkill -= skillData.UseSkill;
                     break;
             }
+            
+            --slotCount;
         }
         
         public void UseSkill(SkillType type)
