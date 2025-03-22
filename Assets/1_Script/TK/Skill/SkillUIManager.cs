@@ -23,8 +23,8 @@ namespace Swift_Blade
             {
                 saveDatas = skillUISaveData.Clone();
                 InitOnce = true;
-            }
-
+            }   
+            
             InitializeSlots();
         }
 

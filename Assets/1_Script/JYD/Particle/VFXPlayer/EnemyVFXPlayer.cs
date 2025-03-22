@@ -1,4 +1,3 @@
-using System;
 using Swift_Blade.Pool;
 using UnityEngine;
 

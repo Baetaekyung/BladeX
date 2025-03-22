@@ -9,17 +9,17 @@ namespace Swift_Blade.Pool
         [SerializeField] private float pushTime;
         private float pushTimer = 0;
         
-        public void OnPop()
+        public virtual void OnPop()
         {
             if (_particle == null)
                 _particle = GetComponent<ParticleSystem>();
-
+            
             pushTimer = 0;
             _particle.Simulate(0);
             _particle.Play();
         }
-
-        private void Update()
+        
+        protected virtual void Update()
         {
             pushTimer += Time.deltaTime;
 
