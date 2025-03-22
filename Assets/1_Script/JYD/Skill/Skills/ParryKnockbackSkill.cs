@@ -1,0 +1,47 @@
+using System.Linq;
+using Swift_Blade.Combat.Health;
+using Swift_Blade.Pool;
+using UnityEngine;
+
+namespace Swift_Blade.Skill
+{
+    [CreateAssetMenu(fileName = "ParryknockbackSkill", menuName = "SO/Skill/Parry/Knockback")]
+    public class ParryKnockbackSkill : SkillData
+    {
+        [SerializeField] private float knockbackForce;
+        [SerializeField] private float knockbackRadius;
+        [SerializeField] private LayerMask whatIsTarget;
+        
+        public override void Initialize()
+        {
+            MonoGenericPool<CircleWindParticle>.Initialize(skillParticle);
+        }
+
+        public override void UseSkill(Player player, Transform[] targets = null)
+        {
+            if (targets == null)
+            {
+                targets = Physics.OverlapSphere(player.GetPlayerTransform.position , knockbackRadius ,whatIsTarget).Select(x => x.transform).ToArray();
+            }
+            
+            foreach (var item in targets)
+            {
+                if (item.TryGetComponent(out BaseEnemyHealth health))
+                {
+                    ActionData actionData = new ActionData();
+                    actionData.knockbackForce = knockbackForce;
+                    actionData.knockbackDirection = (item.position - player.GetPlayerTransform.position).normalized;
+                    
+                    health.TakeDamage(actionData);
+                    health.ChangeParryState();
+                }
+            }
+            
+            CircleWindParticle circleWindParticle = MonoGenericPool<CircleWindParticle>.Pop();
+            circleWindParticle.transform.position = player.GetPlayerTransform.position;
+            
+            
+        }
+                
+    }
+}

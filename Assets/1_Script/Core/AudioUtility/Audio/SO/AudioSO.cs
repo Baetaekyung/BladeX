@@ -17,13 +17,13 @@ namespace Swift_Blade.Audio
         public int maxCount = 5;
 
         [Header("Global Values, StartValue")]
-        [Range(0, 256)]     [field: SerializeField] public int Priority { get; private set; } = 128;
-        [Range(0, 1)]       [field: SerializeField] public float Volume { get; private set; } = 1;
-        [Range(-3, 3)]      [field: SerializeField] public float Pitch { get; private set; } = 1;
-        [Range(-1, 1)]      [field: SerializeField] public float StreoPan { get; private set; } = 0;
-        [SerializeField]                            private bool is3D = true;   // this was float but i changed it to bool. (do we need 2.5D?
-        [Range(0, 1.1f)]    [field: SerializeField] public float ReverbZoneMix { get; private set; } = 1;
-        [Range(0, 5)]       [field: SerializeField] public float DopplerLevel { get; private set; } = 0;
+        [field: Range(0, 256)]     [field: SerializeField] public int Priority { get; private set; } = 128;
+        [field: Range(0, 1)]       [field: SerializeField] public float Volume { get; private set; } = 1;
+        [field: Range(-3, 3)]      [field: SerializeField] public float Pitch { get; private set; } = 1;
+        [field: Range(-1, 1)]      [field: SerializeField] public float StreoPan { get; private set; } = 0;
+        [field: SerializeField]                            private bool is3D = true;   // this was float but i changed it to bool. (do we need 2.5D?
+        [field: Range(0, 1.1f)]    [field: SerializeField] public float ReverbZoneMix { get; private set; } = 1;
+        [field: Range(0, 5)]       [field: SerializeField] public float DopplerLevel { get; private set; } = 0;
 
         [Header("3D Sound Settings")]
         [Range(0, 360)]     public int spread;

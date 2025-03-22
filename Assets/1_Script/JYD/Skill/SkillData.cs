@@ -7,26 +7,16 @@ namespace Swift_Blade.Skill
     public abstract class SkillData : ScriptableObject
     {
         public string skillName;
-        [FormerlySerializedAs("type")] public SkillType skillType;
+        public SkillType type;
         public Sprite skillIcon;
-        [TextArea]public string skillDescription;
+        [TextArea] public string skillDescription;
         
         [Space(40)]
-        public PoolPrefabMonoBehaviourSO SkillEffectPrefab;
+        public PoolPrefabMonoBehaviourSO skillParticle;
         
-        public abstract void UseSkill(Transform transform);
-
-        //For deep copy
-        public SkillData Clone()
-        {
-            var skillData = Instantiate(this);
-            skillData.skillName = skillName;
-            skillData.skillType = skillType;
-            skillData.skillIcon = skillIcon;
-            skillData.skillDescription = skillDescription;
-            skillData.SkillEffectPrefab = SkillEffectPrefab;
-
-            return skillData;
-        }
+        public virtual void Initialize(){}
+        
+        public abstract void UseSkill(Player player,Transform[] targets = null);
+        
     }
 }
