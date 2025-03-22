@@ -8,32 +8,30 @@ namespace Swift_Blade.Skill
     [CreateAssetMenu(fileName = "AttackThunderSkill", menuName = "SO/Skill/Attack/Thunder")]
     public class AttackThunderSkill : SkillData
     {
+        [Tooltip("몇번 때리면 기절할게 할것인지.")] 
         [SerializeField] private ushort attackCount = 3;
         private float attackCounter = 0;
-        
-        [SerializeField] private LayerMask whatIsTarget;
-        [SerializeField] private float skillRadius;
-        [SerializeField] private int skillDamage;
+       
+        [SerializeField] private int skillDamage = 0;
 
         public override void Initialize()
         {
-            if (SkillEffectPrefab == null || SkillEffectPrefab.GetMono == null)
+            if (skillParticle == null || skillParticle.GetMono == null)
             {
                 Debug.LogError("SkillEffectPrefab or its MonoBehaviour is null.");
                 return;
             }
 
             attackCounter = 0;
-            MonoGenericPool<ThunderParticle>.Initialize(SkillEffectPrefab);
+            MonoGenericPool<ThunderParticle>.Initialize(skillParticle);
         }
 
-        public override void UseSkill(Transform transform)
+        public override void UseSkill(Player player,Transform[] targets = null)
         {
             ++attackCounter;
-            Debug.Log(attackCounter);
+            //Debug.Log(attackCounter);
             if (attackCounter >= attackCount)
             {
-                Collider[] targets = Physics.OverlapSphere(transform.position , skillRadius , whatIsTarget);
                 foreach (var item in targets)
                 {
                     if(item.TryGetComponent(out BaseEnemyHealth health))
@@ -46,8 +44,6 @@ namespace Swift_Blade.Skill
                         
                         ThunderParticle th = MonoGenericPool<ThunderParticle>.Pop();
                         th.transform.position = item.transform.position + new Vector3(0,1,0);
-                        
-                        
                     }
                 }
 

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Skill
 {
-    [CreateAssetMenu(fileName = "ParryHeal", menuName = "SO/Skill/Hit/Heal")]
+    [CreateAssetMenu(fileName = "HitHealSkill", menuName = "SO/Skill/Hit/Heal")]
     public class HitHealSkill : SkillData
     {
         [Range(1, 10)] public int healAmount;
@@ -10,10 +10,10 @@ namespace Swift_Blade.Skill
         
         private PlayerHealth playerHealth;
         
-        public override void UseSkill(Transform player)
+        public override void UseSkill(Player player,Transform[] targets = null)
         {
-            if(playerHealth == null)
-                playerHealth = player.GetComponentInChildren<PlayerHealth>();
+            if (playerHealth == null)
+                playerHealth = player.GetPlayerHealth;
             
             if(Random.Range(1, 100) < randomAmount)
                 playerHealth.TakeHeal(healAmount);

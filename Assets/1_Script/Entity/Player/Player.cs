@@ -26,7 +26,6 @@ namespace Swift_Blade
         public static Player Instance { get; private set; }
         public static event Action OnDead;
         public bool IsPlayerDead { get; private set; }
-        
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
         private PlayerAttackState playerAttackState;
@@ -87,6 +86,8 @@ namespace Swift_Blade
         public PlayerParryController GetPlayerParryController => GetEntityComponent<PlayerParryController>();
         public PlayerHealth GetPlayerHealth => GetEntityComponent<PlayerHealth>();
         public PlayerSkillController GetSkillController => GetEntityComponent<PlayerSkillController>();
+        public Transform GetPlayerTransform => playerTransform;
+        
         
         #endregion
 

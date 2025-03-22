@@ -1,5 +1,6 @@
 using Swift_Blade.Pool;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Swift_Blade.Skill
 {
@@ -11,11 +12,11 @@ namespace Swift_Blade.Skill
         [TextArea] public string skillDescription;
         
         [Space(40)]
-        public PoolPrefabMonoBehaviourSO SkillEffectPrefab;
+        public PoolPrefabMonoBehaviourSO skillParticle;
         
         public virtual void Initialize(){}
         
-        public abstract void UseSkill(Transform transform);
+        public abstract void UseSkill(Player player,Transform[] targets = null);
         
     }
 }

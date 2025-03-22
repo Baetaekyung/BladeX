@@ -18,23 +18,25 @@ public enum SkillType
     {
         public class PlayerSkillController : MonoBehaviour, IEntityComponent,IEntityComponentStart
         {
-            public event Action<Transform> OnAttackEventSkill;
-            public event Action<Transform> OnRollingEventSkill;
-            public event Action<Transform> OnParryEventSkill;
-            public event Action<Transform> OnHitEventSkill;
-            public event Action<Transform> OnDeadEventSkill;
+            private Player _player;
+            
+            public event Action<Player,Transform[]> OnAttackEventSkill;
+            public event Action<Player,Transform[]> OnRollingEventSkill;
+            public event Action<Player,Transform[]> OnParryEventSkill;
+            public event Action<Player,Transform[]> OnHitEventSkill;
+            public event Action<Player,Transform[]> OnDeadEventSkill;
 
             [SerializeField] private SkillData[] skillDatas;
             
             [SerializeField] private List<SkillData> currentSkillList;
             
-            private Dictionary<SkillType, Action<Transform>> skillEvents;
+            private Dictionary<SkillType, Action<Player,Transform[]>> skillEvents;
             private ushort maxSlotCount = 4;
             private ushort slotCount = 0;
             
             private void Awake()
             {
-                skillEvents = new Dictionary<SkillType, Action<Transform>>()
+                skillEvents = new Dictionary<SkillType, Action<Player,Transform[]>>()
                 {
                     { SkillType.Attack, OnAttackEventSkill },
                     { SkillType.Rolling, OnRollingEventSkill },
@@ -60,6 +62,7 @@ public enum SkillType
             
             public void EntityComponentAwake(Entity entity)
             {
+                _player = entity as Player;
             }
             
             public void EntityComponentStart(Entity entity)
@@ -92,14 +95,14 @@ public enum SkillType
                 }
             }
                 
-            public void UseSkill(SkillType type)
+            public void UseSkill(SkillType type,Transform[] targets = null)
             {
                 if (skillEvents.ContainsKey(type))
                 {
-                    skillEvents[type]?.Invoke(transform);
+                    skillEvents[type]?.Invoke(_player,targets);
                 }
             }
-
+            
             
         }
     
