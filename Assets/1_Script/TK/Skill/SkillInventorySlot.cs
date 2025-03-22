@@ -45,7 +45,7 @@ namespace Swift_Blade
             if (_skillData == null)
                 return;
 
-            var slot = SkillManager.Instance.GetEmptySkillSlot(_skillData.skillType);
+            var slot = SkillManager.Instance.GetEmptySkillSlot(_skillData.type);
 
             //ΩΩ∑‘¿Ã ∞°µÊ¬¸
             if (slot == default)
@@ -57,7 +57,6 @@ namespace Swift_Blade
                 SkillManager.saveDatas.AddSkillToSlot(_skillData);
                 SkillManager.saveDatas.RemoveInvenSkillData(_skillData);
                 
-                Player.Instance.GetEntityComponent<PlayerSkillController>().AddSkill(_skillData);
                 slot.SetSlotData(_skillData);
                 SetSlotData(null);
             }

@@ -31,12 +31,9 @@ namespace Swift_Blade
         {
             InitializeSlot(inv_slots); 
             InitializeSlot(skill_slots);
-            
-            //초기화 후에 가져오기
-            LoadUIData();
         }
 
-        private void LoadUIData()
+        private void LoadData()
         {
             if (saveDatas.inventoryData.Count > 0)
             {
@@ -51,10 +48,16 @@ namespace Swift_Blade
             {
                 for (ushort i = 0; i < saveDatas.skillSlotData.Count; i++)
                 {
-                    SkillType type = saveDatas.skillSlotData[i].skillType;
+                    SkillType type = saveDatas.skillSlotData[i].type;
                     GetEmptySkillSlot(type).SetSlotData(saveDatas.skillSlotData[i]);
                 }
             }
+        }
+
+        //Call after player initialized
+        public void LoadSkillData()
+        {
+            LoadData();
         }
 
         private void InitializeSlot<T>(List<T> slots) where T : SkillSlotBase

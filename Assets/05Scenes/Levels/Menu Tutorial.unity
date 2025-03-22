@@ -2385,6 +2385,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 687009253773412077, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: skillDatas.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 687009253773412077, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: 'skillDatas.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 5928e7100740cc14888ac5303a4da99f, type: 2}
+    - target: {fileID: 687009253773412077, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: 'skillDatas.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 5928e7100740cc14888ac5303a4da99f, type: 2}
     - target: {fileID: 2777080882551110989, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_Name
       value: PlayerCategory
@@ -3811,6 +3823,12 @@ MonoBehaviour:
       value: {fileID: 11400000, guid: 99530bf665802df49ac3e1abf046ecc8, type: 2}
     - key: 5
       value: {fileID: 11400000, guid: b49cdb053e1782a4eab124ddbb43e26a, type: 2}
+    - key: 6
+      value: {fileID: 11400000, guid: 21180c1f12743484a9ab541382864490, type: 2}
+    - key: 7
+      value: {fileID: 11400000, guid: 5245a8f355597034ab4590a16820b4b1, type: 2}
+    - key: 8
+      value: {fileID: 11400000, guid: d52ce7cc099857443a26a4d81312154a, type: 2}
 --- !u!1001 &1645716717
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8562,20 +8580,9 @@ MonoBehaviour:
   m_Graph: {fileID: -8100337668574242599, guid: d0ee565f66287234b906569329b87ff7, type: 2}
   m_BlackboardVariableOverridesList:
   - rid: 2285474097556357490
-  - rid: 1607273377352123009
-  - rid: 2781718363940586415
-  - rid: 2781718363940586416
   references:
     version: 2
     RefIds:
-    - rid: 1607273377352123009
-      type: {class: 'BlackboardVariable`1[[ChangeBossState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 11937102824706042065
-          m_Value1: 10486772480902912100
-        Name: ChangeBossState
-        m_Value: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
     - rid: 2285474097556357490
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -8584,22 +8591,6 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 4213204643426615944}
-    - rid: 2781718363940586415
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 6734034036057306792
-          m_Value1: 8025144667599098049
-        Name: Animator
-        m_Value: {fileID: 9107611316546068806}
-    - rid: 2781718363940586416
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Enemy.BaseEnemyAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 17003141457256015539
-          m_Value1: 18031931821477734673
-        Name: AnimatorController
-        m_Value: {fileID: 9107611316546068807}
 --- !u!1 &490622614770920250
 GameObject:
   m_ObjectHideFlags: 0
@@ -35708,7 +35699,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &4218268444400255999
 GameObject:
   m_ObjectHideFlags: 0
@@ -76053,6 +76044,7 @@ MonoBehaviour:
   isDead: 0
   BehaviorGraphAgent: {fileID: 484260806889953545}
   changeBossState: {fileID: 0}
+  isKnockback: 0
 --- !u!1 &9109961222736845884
 GameObject:
   m_ObjectHideFlags: 0
