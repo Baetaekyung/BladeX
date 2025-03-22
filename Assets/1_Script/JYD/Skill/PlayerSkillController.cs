@@ -47,7 +47,7 @@ namespace Swift_Blade.Skill
         {
             if(slotCount >= maxSlotCount)return;   
             
-            switch (skillData.type)
+            switch (skillData.skillType)
             {
                 case SkillType.Attack:
                     OnAttackEventSkill += skillData.UseSkill;
@@ -70,7 +70,7 @@ namespace Swift_Blade.Skill
         
         public void RemoveSkill(SkillData skillData)
         {
-            switch (skillData.type)
+            switch (skillData.skillType)
             {
                 case SkillType.Attack:
                     OnAttackEventSkill -= skillData.UseSkill;

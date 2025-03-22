@@ -1,34 +1,15 @@
-using System;
 using Swift_Blade.Skill;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Swift_Blade
 {
-    public class SkillSlot : SkillSlotBase
+    public class SkillInventorySlot : SkillSlotBase
     {
-        [SerializeField] private Sprite    originalImage;
-        [SerializeField] private Image     skillIcon;
-        [SerializeField] private SkillType slotSkillType;
-        
+        [SerializeField]
+        private Image     skillIconImage;
         private SkillData _skillData;
-
-        public SkillType GetSkillType => slotSkillType;
-
-        public override void SetSlotImage(Sprite sprite)
-        {
-            if (sprite == null)
-            {
-                skillIcon.color = new Color(1, 1, 1, 0.3f);
-                skillIcon.sprite = originalImage;
-                return;
-            }
-
-            skillIcon.sprite = sprite;
-            skillIcon.color  = Color.white;
-        }
         
         public override void SetSlotData(SkillData data)
         {
@@ -40,7 +21,20 @@ namespace Swift_Blade
             }
             
             _skillData = data;
-            SetSlotImage(_skillData.skillIcon);
+            SetSlotImage(data?.skillIcon);
+        }
+
+        public override void SetSlotImage(Sprite sprite)
+        {
+            if (sprite == null)
+            {
+                skillIconImage.color = Color.clear;
+            }
+            else
+            {
+                skillIconImage.color = Color.white;
+                skillIconImage.sprite = sprite;
+            }
         }
 
         public override void OnPointerDown(PointerEventData eventData)
@@ -51,7 +45,7 @@ namespace Swift_Blade
             if (_skillData == null)
                 return;
 
-            var slot = SkillManager.Instance.GetEmptyInvSlot();
+            var slot = SkillManager.Instance.GetEmptySkillSlot(_skillData.skillType);
 
             //ΩΩ∑‘¿Ã ∞°µÊ¬¸
             if (slot == default)
@@ -60,13 +54,15 @@ namespace Swift_Blade
             }
             else
             {
-                SkillManager.saveDatas.AddSkillToInventory(_skillData);
-                SkillManager.saveDatas.RemoveSlotSkillData(_skillData);
+                SkillManager.saveDatas.AddSkillToSlot(_skillData);
+                SkillManager.saveDatas.RemoveInvenSkillData(_skillData);
+                
+                Player.Instance.GetEntityComponent<PlayerSkillController>().AddSkill(_skillData);
                 slot.SetSlotData(_skillData);
                 SetSlotData(null);
             }
         }
-
+        
         public override bool IsEmptySlot() => _skillData == null;
     }
 }
