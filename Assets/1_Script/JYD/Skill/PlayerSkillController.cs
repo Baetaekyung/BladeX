@@ -67,6 +67,8 @@ public enum SkillType
             
             public void EntityComponentStart(Entity entity)
             {
+                SkillManager.Instance.LoadSkillData();
+                
                 foreach (var skill in currentSkillList)
                 {
                     skill.Initialize();

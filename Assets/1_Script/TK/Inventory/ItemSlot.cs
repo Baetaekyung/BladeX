@@ -129,7 +129,7 @@ namespace Swift_Blade
             {
                 if (sprite == equipmentSlot.GetInfoIcon)
                 {
-                    itemImage.color = new Color(1,1,1, 0.02f);
+                    itemImage.color = new Color(1,1,1, 0.2f);
                     itemImage.sprite = sprite;
                 }
                 else

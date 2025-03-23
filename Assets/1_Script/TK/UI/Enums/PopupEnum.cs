@@ -12,6 +12,5 @@ namespace Swift_Blade.UI
         GameOver,
         Status,
         None,
-        Help
     }
 }
