@@ -43,7 +43,7 @@ namespace Swift_Blade.FSM.States
             playerRenderer.LookAtDirection(direction);
 
             player.GetPlayerMovement.AllowInputMove = false;
-            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirectionRawRotated.normalized, 10);
+            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirectionRawRotated.normalized, 8.7f);
 
             playerHealth.IsPlayerInvincible = true;
             

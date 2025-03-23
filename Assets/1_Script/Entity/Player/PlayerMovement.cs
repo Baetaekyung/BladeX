@@ -16,7 +16,7 @@ namespace Swift_Blade
         private float yVal;
 
         [Header("Collisin Settings")]
-        private float bottomYOffset = 0.4f; //const 0.4f
+        private const float bottomYOffset = 0.3f; //lower than 0.4
         private ContactPoint? lowerstContactPoint;
         private ContactPoint? lowestContactPointBottom;
 
@@ -86,7 +86,9 @@ namespace Swift_Blade
                 yVal += Time.fixedDeltaTime * gravitiy * gravitiyMultiplier;
             }
 
-            //UI_DebugPlayer.DebugText(5, lowestContactPointBottom.HasValue, "ONGROUND", DBG_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.DebugText(5, lowestContactPointBottom.HasValue, "ONGROUND", DBG_UI_KEYS.Keys_PlayerMovement);
+            if (lowestContactPointBottom.HasValue)
+                Debug.DrawRay(lowestContactPointBottom.Value.point, Vector3.right, Color.magenta, 0.1f);
             //UI_DebugPlayer.DebugText(0, yVal, "yVal", DBG_UI_KEYS.Keys_PlayerMovement);
 
             lowerstContactPoint = null;
@@ -193,9 +195,9 @@ namespace Swift_Blade
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, transform.position + Vector3.up * bottomYOffset);
             Vector3 pointYOffset = transform.position + Vector3.up * bottomYOffset;
-            Gizmos.DrawLine(pointYOffset, pointYOffset + Vector3.right);
+            Gizmos.DrawLine(transform.position, pointYOffset);
+            Gizmos.DrawRay(pointYOffset, Vector3.right);
         }
     }
 }
