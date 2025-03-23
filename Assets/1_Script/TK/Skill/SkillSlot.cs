@@ -1,27 +1,19 @@
 using System;
 using Swift_Blade.Skill;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Swift_Blade
 {
-    /*public enum SkillType
-    {
-        Attack,
-        Parry,
-        Rolling,
-        Grow,
-        Debuff
-    }*/
-    
-    public class SkillSlot : Slot
+    public class SkillSlot : SkillSlotBase
     {
         [SerializeField] private Sprite    originalImage;
         [SerializeField] private Image     skillIcon;
         [SerializeField] private SkillType slotSkillType;
         
-        private SkillUIDataSO _skillUIData;
+        private SkillData _skillData;
 
         public SkillType GetSkillType => slotSkillType;
 
@@ -29,7 +21,7 @@ namespace Swift_Blade
         {
             if (sprite == null)
             {
-                skillIcon.color = new Color(1, 1, 1, 0.03f);
+                skillIcon.color = new Color(1, 1, 1, 0.3f);
                 skillIcon.sprite = originalImage;
                 return;
             }
@@ -38,34 +30,51 @@ namespace Swift_Blade
             skillIcon.color  = Color.white;
         }
         
-                
-        public override void SetSlotData<T>(T data)
+        public override void SetSlotData(SkillData data)
         {
-            _skillUIData = data as SkillUIDataSO;
-            
-            if (_skillUIData == default)
+            if (data == null)
             {
-                Debug.LogWarning("not matched data type, correct type is SkillUIDataSO");
+                _skillData = null;
+                SetSlotImage(null);
                 return;
             }
             
-            SetSlotImage(_skillUIData.GetSkillIcon);
+            _skillData = data;
+            SetSlotImage(_skillData.skillIcon);
+
+            if (data != null)
+            {
+                Player.Instance.GetEntityComponent<PlayerSkillController>().AddSkill(_skillData);
+            }
         }
 
-        public override bool IsEmptySlot() => _skillUIData == null;
-
-        private void OnValidate()
+        public override void OnPointerDown(PointerEventData eventData)
         {
-            if (gameObject.name.Contains("attack"))
-                slotSkillType = SkillType.Attack;
-            else if (gameObject.name.Contains("parry"))
-                slotSkillType = SkillType.Parry;
-            else if (gameObject.name.Contains("rolling"))
-                slotSkillType = SkillType.Rolling;
-            else if (gameObject.name.Contains("hit"))
-                slotSkillType = SkillType.Hit;
-            else if (gameObject.name.Contains("dead"))
-                slotSkillType = SkillType.Dead;
+            if (eventData.button != PointerEventData.InputButton.Right)
+                return;
+            
+            if (_skillData == null)
+                return;
+
+            var slot = SkillManager.Instance.GetEmptyInvSlot();
+
+            //ΩΩ∑‘¿Ã ∞°µÊ¬¸
+            if (slot == default)
+            {
+                Debug.Log("Slot is full");
+            }
+            else
+            {
+                Player.Instance.GetEntityComponent<PlayerSkillController>().RemoveSkill(_skillData);
+                
+                SkillManager.saveDatas.AddSkillToInventory(_skillData);
+                SkillManager.saveDatas.RemoveSlotSkillData(_skillData);
+                
+                slot.SetSlotData(_skillData);
+                SetSlotData(null);
+            }
         }
+
+        public override bool IsEmptySlot() => _skillData == null;
     }
 }

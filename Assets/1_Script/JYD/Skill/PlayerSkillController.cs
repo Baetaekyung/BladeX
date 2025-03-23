@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace Swift_Blade.Skill
-{
-    public enum SkillType
+
+public enum SkillType
     {
         Attack,
         Rolling,
@@ -11,110 +12,102 @@ namespace Swift_Blade.Skill
         Hit,
         Dead
     }
-    
-    public class PlayerSkillController : MonoBehaviour,IEntityComponent
+
+
+    namespace Swift_Blade.Skill
     {
-        public event Action<Transform> OnAttackEventSkill;
-        public event Action<Transform> OnRollingEventSkill;
-        public event Action<Transform> OnParryEventSkill;
-        public event Action<Transform> OnHitEventSkill;
-        public event Action<Transform> OnDeadEventSkill;
-
-        [SerializeField] private SkillData[] testSkillSO;
-
-        private ushort maxSlotCount = 4;
-        private ushort slotCount = 0;
-        
-        private void Start()
+        public class PlayerSkillController : MonoBehaviour, IEntityComponent,IEntityComponentStart
         {
-            foreach (var item in testSkillSO)
-            {
-                AddSkill(item);
-            }
-        }
-        
-        private void OnDestroy()
-        {
-            foreach (var item in testSkillSO)
-            {
-                RemoveSkill(item);
-            }
-        }
-
-        public void EntityComponentAwake(Entity entity) { }
-        
-        public void AddSkill(SkillData skillData)
-        {
-            if(slotCount >= maxSlotCount)return;   
+            private Player _player;
             
-            switch (skillData.type)
+            public event Action<Player,Transform[]> OnAttackEventSkill;
+            public event Action<Player,Transform[]> OnRollingEventSkill;
+            public event Action<Player,Transform[]> OnParryEventSkill;
+            public event Action<Player,Transform[]> OnHitEventSkill;
+            public event Action<Player,Transform[]> OnDeadEventSkill;
+
+            [SerializeField] private SkillData[] skillDatas;
+            
+            [SerializeField] private List<SkillData> currentSkillList;
+            
+            private Dictionary<SkillType, Action<Player,Transform[]>> skillEvents;
+            private ushort maxSlotCount = 4;
+            private ushort slotCount = 0;
+            
+            private void Awake()
             {
-                case SkillType.Attack:
-                    OnAttackEventSkill += skillData.UseSkill;
-                    break;
-                case SkillType.Rolling:
-                    OnRollingEventSkill += skillData.UseSkill;
-                    break;
-                case SkillType.Parry:
-                    OnParryEventSkill += skillData.UseSkill;
-                    break;
-                case SkillType.Hit:
-                    OnHitEventSkill += skillData.UseSkill;
-                    break;
-                case SkillType.Dead:
-                    OnDeadEventSkill += skillData.UseSkill;
-                    break;
+                skillEvents = new Dictionary<SkillType, Action<Player,Transform[]>>()
+                {
+                    { SkillType.Attack, OnAttackEventSkill },
+                    { SkillType.Rolling, OnRollingEventSkill },
+                    { SkillType.Parry, OnParryEventSkill },
+                    { SkillType.Hit, OnHitEventSkill },
+                    { SkillType.Dead, OnDeadEventSkill }
+                };
+                //currentSkillList = new List<SkillData>();
             }
-            ++slotCount;
-        }
-        
-        public void RemoveSkill(SkillData skillData)
-        {
-            switch (skillData.type)
+
+            private void Start()
             {
-                case SkillType.Attack:
-                    OnAttackEventSkill -= skillData.UseSkill;
-                    break;
-                case SkillType.Rolling:
-                    OnRollingEventSkill-= skillData.UseSkill;
-                    break;
-                case SkillType.Parry:
-                    OnParryEventSkill-= skillData.UseSkill;
-                    break;
-                case SkillType.Hit:
-                    OnHitEventSkill-= skillData.UseSkill;
-                    break;
-                case SkillType.Dead:
-                    OnDeadEventSkill -= skillData.UseSkill;
-                    break;
+                foreach (var item in skillDatas)
+                {
+                    AddSkill(item);
+                }
+            }
+
+            private void OnDestroy()
+            {
+                
             }
             
-            --slotCount;
-        }
-        
-        public void UseSkill(SkillType type)
-        {
-            switch (type)
+            public void EntityComponentAwake(Entity entity)
             {
-                case SkillType.Attack:
-                    OnAttackEventSkill?.Invoke(transform);
-                    break;
-                case SkillType.Rolling:
-                    OnRollingEventSkill?.Invoke(transform);
-                    break;
-                case SkillType.Parry:
-                    OnParryEventSkill?.Invoke(transform);;
-                    break;
-                case SkillType.Hit:
-                    OnHitEventSkill?.Invoke(transform);
-                    break;
-                case SkillType.Dead:
-                    OnDeadEventSkill?.Invoke(transform);
-                    break;
+                _player = entity as Player;
             }
-        }
-        
+            
+            public void EntityComponentStart(Entity entity)
+            {
+                SkillManager.Instance.LoadSkillData();
+                
+                foreach (var skill in currentSkillList)
+                {
+                    skill.Initialize();
+                }
+            }
+            
+            public void AddSkill(SkillData skillData)
+            {
+                if (slotCount >= maxSlotCount) return;
+            
+                if (skillEvents.ContainsKey(skillData.type))
+                {
+                    skillEvents[skillData.type] += skillData.UseSkill;
+                    currentSkillList.Add(skillData);
+                    ++slotCount;
+                }
+            }
 
-        
-    }
+            public void RemoveSkill(SkillData skillData)
+            {
+                if (skillEvents.ContainsKey(skillData.type) && skillEvents[skillData.type] != null)
+                {
+                    skillEvents[skillData.type] -= skillData.UseSkill;
+                    currentSkillList.Remove(skillData);
+                    --slotCount;
+                }
+            }
+                
+            public void UseSkill(SkillType type,Transform[] targets = null)
+            {
+                if (skillEvents.ContainsKey(type))
+                {
+                    skillEvents[type]?.Invoke(_player,targets);
+                }
+            }
+            
+            
+        }
+    
 }
+        
+

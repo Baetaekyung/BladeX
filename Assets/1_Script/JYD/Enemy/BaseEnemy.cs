@@ -25,7 +25,7 @@ namespace Swift_Blade.Enemy
         
         [Header("Weapon info")]
         public GameObject weapon;
-                
+        
         protected Vector3 attackDestination;
         protected Collider collider;
         protected BehaviorGraphAgent btAgent;

@@ -1,5 +1,6 @@
 using Swift_Blade.Pool;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Swift_Blade.Skill
 {
@@ -8,13 +9,14 @@ namespace Swift_Blade.Skill
         public string skillName;
         public SkillType type;
         public Sprite skillIcon;
-        [TextArea]public string skillDescription;
+        [TextArea] public string skillDescription;
         
         [Space(40)]
-        public PoolPrefabMonoBehaviourSO SkillEffectPrefab;
+        public PoolPrefabMonoBehaviourSO skillParticle;
         
-        public abstract void UseSkill(Transform transform);
+        public virtual void Initialize(){}
         
+        public abstract void UseSkill(Player player,Transform[] targets = null);
         
     }
 }
