@@ -93,7 +93,7 @@ namespace Swift_Blade
             return skillSlot;
         }
 
-        //If player get skill, skill needs to go to inv right? 
+        //If player get skill, skill needs to go to inv 
         public bool TryAddSkillToInventory(SkillData skillData)
         {
             var inventorySlot = GetEmptyInvSlot();

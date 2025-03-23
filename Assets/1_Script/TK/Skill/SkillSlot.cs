@@ -41,11 +41,7 @@ namespace Swift_Blade
             
             _skillData = data;
             SetSlotImage(_skillData.skillIcon);
-
-            if (data != null)
-            {
-                Player.Instance.GetEntityComponent<PlayerSkillController>().AddSkill(_skillData);
-            }
+            Player.Instance.GetEntityComponent<PlayerSkillController>().AddSkill(_skillData);
         }
 
         public override void OnPointerDown(PointerEventData eventData)

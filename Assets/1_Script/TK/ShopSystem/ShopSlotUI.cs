@@ -18,10 +18,13 @@ namespace Swift_Blade
         [SerializeField] private TextMeshProUGUI _buttonText;
         
         [SerializeField] private GameObject soldOutPanel;
-
+        private CanvasGroup _canvasGroup;
+        
         private ItemDataSO _currentItem;
         private int _itemCount;
         private int _itemCost;
+
+        public CanvasGroup GetCanvasGroup => _canvasGroup;
         
         public void SetSlotItem(ItemDataSO newItem, int count, int cost)
         {
@@ -38,6 +41,7 @@ namespace Swift_Blade
         
         private void OnEnable()
         {
+            _canvasGroup = GetComponent<CanvasGroup>();
             buyButton.onClick.AddListener(Buy);
         }
 

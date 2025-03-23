@@ -57,7 +57,6 @@ public enum SkillType
 
             private void OnDestroy()
             {
-                
             }
             
             public void EntityComponentAwake(Entity entity)
@@ -69,12 +68,17 @@ public enum SkillType
             {
                 SkillManager.Instance.LoadSkillData();
                 
+                InitializeSkill();
+            }
+
+            private void InitializeSkill()
+            {
                 foreach (var skill in currentSkillList)
                 {
                     skill.Initialize();
                 }
             }
-            
+
             public void AddSkill(SkillData skillData)
             {
                 if (slotCount >= maxSlotCount) return;
@@ -84,6 +88,8 @@ public enum SkillType
                     skillEvents[skillData.type] += skillData.UseSkill;
                     currentSkillList.Add(skillData);
                     ++slotCount;
+                    
+                    skillData.Initialize();
                 }
             }
 
