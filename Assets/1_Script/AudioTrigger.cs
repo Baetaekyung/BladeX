@@ -1,5 +1,4 @@
 using Swift_Blade.Audio;
-using System;
 using UnityEngine;
 
 namespace Swift_Blade

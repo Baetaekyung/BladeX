@@ -8,6 +8,7 @@ namespace Swift_Blade
     public enum EAudioType
     {
         Swing,
+        QSwing,
         Roll
     }
 
