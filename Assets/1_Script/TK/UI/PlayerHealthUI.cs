@@ -22,6 +22,10 @@ namespace Swift_Blade.UI
 
             _playerHealth = FindFirstObjectByType<PlayerHealth>();
             
+            RectTransform rTrm = transform as RectTransform;
+            rTrm.sizeDelta = new Vector2(800f, rTrm.sizeDelta.y);
+            
+            
             if (_playerHealth != null)
             {
                 _playerHealth.OnHitEvent.AddListener(HandleSetHealthUI);
