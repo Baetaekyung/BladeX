@@ -1,6 +1,5 @@
 using Swift_Blade.Pool;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
@@ -65,7 +64,7 @@ namespace Swift_Blade
         public void PlayHealEffect()
         {
             PlayerHealParticle healParticle = MonoGenericPool<PlayerHealParticle>.Pop();
-            healParticle.transform.position = playerTrm.position + new Vector3(0,0.5f , 0);
+            healParticle.transform.position = playerTrm.position + new Vector3(0,1,0);
             
         }
         
