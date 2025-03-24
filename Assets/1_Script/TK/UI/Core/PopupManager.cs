@@ -21,7 +21,14 @@ namespace Swift_Blade
         {
             InitPopups();
         }
-        
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            //PopDownInput();
+            
+        }
+
         private void InitPopups()
         {
             foreach (var popupUI in popups.Values)
