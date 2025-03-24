@@ -34,7 +34,6 @@ namespace Swift_Blade
 
         private void OnDestroy()
         {
-            Debug.Log("Save stat datas");
             _statDatas = _stats;
         }
 

@@ -152,8 +152,6 @@ namespace Swift_Blade
 
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                quickSlotUI.transform.DOKill();
-                quickSlotUI.transform.DOShakeScale(0.2f, Vector3.one * 1.03f);
                 ChangeQuickSlotItem();
             }
         }

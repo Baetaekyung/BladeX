@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Swift_Blade.Skill;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,6 +13,15 @@ namespace Swift_Blade
         [SerializeField] private List<SkillSlot>           skill_slots;
         [SerializeField] private List<SkillInventorySlot>  inv_slots;
         [SerializeField] private SkillSaveSO               skillSaveData;
+        [SerializeField] private RectTransform             rootRect;
+        [SerializeField] private SkillInfoUI               infoUI;
+        [SerializeField] private TextMeshProUGUI           maxSkillText;
+        [SerializeField] private Vector2                   skillInfoOffset;
+
+        public int currentSkillCount = 0;
+        public int maxSkillCount = 4;
+
+        public bool CanAddSkill => currentSkillCount < maxSkillCount;
         
         public static SkillSaveSO  saveDatas;
         private static bool        InitOnce = false;
@@ -23,8 +33,30 @@ namespace Swift_Blade
                 saveDatas = skillSaveData.Clone();
                 InitOnce = true;
             }
-            
+
+            SkillSlotBase.OnPointerEnterAction += HandleCreateInfoUI;
+            HandleCreateInfoUI(Vector2.zero, null);
             InitializeSlots();
+        }
+
+        private void HandleCreateInfoUI(Vector2 screenPosition, SkillData skillData)
+        {
+            if (screenPosition == Vector2.zero || skillData == null)
+            {
+                infoUI.SetSkillInfo(skillData);
+                infoUI.gameObject.SetActive(false);
+                return;
+            }
+            
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rootRect,
+                screenPosition,
+                null,
+                out var localPosition);
+
+            infoUI.transform.localPosition = localPosition + skillInfoOffset;
+            infoUI.SetSkillInfo(skillData);
+            infoUI.gameObject.SetActive(true);
         }
 
         private void InitializeSlots()
@@ -66,6 +98,11 @@ namespace Swift_Blade
                 slot.SetSlotData(null);
         }
 
+        public void SetSkillCountUI(int current, int max)
+        {
+            maxSkillText.text = $"{current} / {max}";
+        }
+        
         public SkillInventorySlot GetEmptyInvSlot()
         {
             var invSlot = inv_slots.FirstOrDefault(slot => slot.IsEmptySlot());

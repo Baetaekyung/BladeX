@@ -47,18 +47,6 @@ public enum SkillType
                 //currentSkillList = new List<SkillData>();
             }
 
-            private void Start()
-            {
-                foreach (var item in skillDatas)
-                {
-                    AddSkill(item);
-                }
-            }
-
-            private void OnDestroy()
-            {
-            }
-            
             public void EntityComponentAwake(Entity entity)
             {
                 _player = entity as Player;
@@ -82,7 +70,7 @@ public enum SkillType
             public void AddSkill(SkillData skillData)
             {
                 if (slotCount >= maxSlotCount) return;
-            
+                
                 if (skillEvents.ContainsKey(skillData.type))
                 {
                     skillEvents[skillData.type] += skillData.UseSkill;
