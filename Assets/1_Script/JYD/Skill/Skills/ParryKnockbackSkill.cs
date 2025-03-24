@@ -31,9 +31,10 @@ namespace Swift_Blade.Skill
                     ActionData actionData = new ActionData();
                     actionData.knockbackForce = knockbackForce;
                     actionData.knockbackDirection = (item.position - player.GetPlayerTransform.position).normalized;
+                    actionData.stun = true;
                     
                     health.TakeDamage(actionData);
-                    health.ChangeParryState();
+                    
                 }
             }
             

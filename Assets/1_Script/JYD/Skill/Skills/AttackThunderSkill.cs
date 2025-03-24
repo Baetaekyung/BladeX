@@ -38,8 +38,8 @@ namespace Swift_Blade.Skill
                     {
                         ActionData actionData= new ActionData();
                         actionData.damageAmount = skillDamage;
+                        actionData.stun = true;
                         
-                        health.ChangeParryState();
                         health.TakeDamage(actionData);
                         
                         ThunderParticle th = MonoGenericPool<ThunderParticle>.Pop();

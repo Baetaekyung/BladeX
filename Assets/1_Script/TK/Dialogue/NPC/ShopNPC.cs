@@ -36,9 +36,7 @@ namespace Swift_Blade
 
         private void HandleOpenShop()
         {
-            _shop.SetItems(shopItems);
-            
-            PopupManager.Instance.PopUp(PopupType.Shop);
+            PopupManager.Instance.DelayPopup(PopupType.Shop, 0.5f, () => _shop.SetItems(shopItems));
         }
     }
 }

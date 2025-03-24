@@ -56,9 +56,12 @@ namespace Swift_Blade.Combat.Health
         public virtual void TakeDamage(ActionData actionData)
         {
             if(isDead)return;
-
+            
             currentHealth -= actionData.damageAmount;
             OnChangeHealthEvent?.Invoke(GetHealthPercent());
+            
+            if(actionData.stun)
+                ChangeParryState();
             
             if (currentHealth <= 0)
             {
