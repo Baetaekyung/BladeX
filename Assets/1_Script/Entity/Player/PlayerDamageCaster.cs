@@ -52,7 +52,7 @@ namespace Swift_Blade.Combat.Caster
                     Vector3 hitNormal = (hitPoint - hitCollider.transform.position).normalized;
                     
                     float damageAmount = _statCompo.GetStat(damageStat).Value;
-                    ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, true);
+                    ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, false);
                     
                     OnCastDamageEvent?.Invoke(actionData);
                     

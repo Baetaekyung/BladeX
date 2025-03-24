@@ -37,8 +37,9 @@ namespace Swift_Blade
         private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
         private GameObject interactable;
         private Tween playerInvincibleTween;
-        
-        [Header("General")]
+
+        [Header("General")] 
+        [SerializeField] private Transform visualTransform;
         [SerializeField] private Transform playerTransform;
         [SerializeField] private Transform mousePosition;
         [SerializeField] private LayerMask lm_interactable;
@@ -86,8 +87,7 @@ namespace Swift_Blade
         public PlayerParryController GetPlayerParryController => GetEntityComponent<PlayerParryController>();
         public PlayerHealth GetPlayerHealth => GetEntityComponent<PlayerHealth>();
         public PlayerSkillController GetSkillController => GetEntityComponent<PlayerSkillController>();
-        public Transform GetPlayerTransform => playerTransform;
-        
+        public Transform GetPlayerTransform => visualTransform;
         
         #endregion
 
