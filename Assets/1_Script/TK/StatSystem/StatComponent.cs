@@ -7,17 +7,34 @@ namespace Swift_Blade
     public abstract class StatComponent : MonoBehaviour
     {
         [SerializeField] protected StatSO[] _stats;
+        protected static StatSO[] _statDatas;
+        public static bool InitOnce = false;
         
         protected virtual void Initialize()
         {
-            StatSO[] _tempStats = new StatSO[_stats.Length];
-
-            for (int i = 0; i < _stats.Length; i++)
+            if (InitOnce == false)
             {
-                _tempStats[i] = _stats[i].Clone();
+                StatSO[] tempStatSO = new StatSO[_stats.Length];
+                
+                for (int i = 0; i < _stats.Length; i++)
+                {
+                    tempStatSO[i] = _stats[i].Clone();
+                    
+                    if (tempStatSO[i].statType == StatType.HEALTH)
+                        PlayerHealth._currentHealth = tempStatSO[i].Value;
+                }
+
+                _stats = tempStatSO;
+                _statDatas = _stats;
+                InitOnce = true;
             }
 
-            _stats = _tempStats;
+            _stats = _statDatas;
+        }
+
+        private void OnDestroy()
+        {
+            _statDatas = _stats;
         }
 
         public StatSO GetStat(StatSO stat)

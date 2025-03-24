@@ -1,11 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Swift_Blade.Audio
 {
     [CreateAssetMenu(fileName = "AudioCollection", menuName = "Scriptable Objects/Audio/AudioCollection")]
-    public class AudioSOCollection : ScriptableObject
+    public class AudioSOCollection : BaseAudioSO
     {
-        [field: SerializeField] public AudioSO[] AudioList { get; private set; }
-        public AudioSO GetRandomAudio => AudioList[Random.Range(0, AudioList.Length)];
+        [SerializeField] private AudioSO[] audioList;
+        public AudioSO GetRandomAudio => audioList[Random.Range(0, audioList.Length)];
+        public override AudioSO GetAudio()
+        {
+            return GetRandomAudio;
+        }
     }
 }

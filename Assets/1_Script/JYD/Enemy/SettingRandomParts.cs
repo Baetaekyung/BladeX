@@ -96,8 +96,7 @@ namespace Swift_Blade.Enemy
         
         private void SetRandomWeapon()
         {
-            if(weaponName.Length == 0)
-                return;
+            if(weapons.Length == 0)return;
             
             foreach (var weapon in weapons)
             {
@@ -111,7 +110,7 @@ namespace Swift_Blade.Enemy
             enemy.weapon.name = weaponName;
             
             animatorController.Rebind();
-                        
+            
         }
     }
 }

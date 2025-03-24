@@ -6,13 +6,12 @@ namespace Swift_Blade
 {
     public class ShopNPC : NPC
     {
-        private Shop _shop;
-
         [SerializeField] private ItemTableSO shopItems;
+        [SerializeField] private Shop shop;
         
         private void Awake()
         {
-            _shop = FindFirstObjectByType<Shop>(FindObjectsInactive.Include);
+            shopItems = shopItems.Clone();
             _isRewarded = false;
         }
 
@@ -22,11 +21,21 @@ namespace Swift_Blade
             TalkWithNPC(HandleOpenShop);
         }
 
+        protected override void TalkWithNPC(Action dialogueEndEvent = null)
+        {
+            DialogueManager.Instance.DoDialogue(dialogueData).Subscribe(HandleDialogueEndEvent);
+            
+            void HandleDialogueEndEvent()
+            {
+                dialogueEndEvent?.Invoke();
+                OnDialogueEndEvent?.Invoke();
+            }
+        }
+
         private void HandleOpenShop()
         {
-            _shop.SetItems(shopItems);
-            
             PopupManager.Instance.PopUp(PopupType.Shop);
+            shop.SetItems(shopItems);
         }
     }
 }

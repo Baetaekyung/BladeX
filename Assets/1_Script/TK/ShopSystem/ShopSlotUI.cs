@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Swift_Blade
@@ -10,6 +11,7 @@ namespace Swift_Blade
     {
         [SerializeField] private PlayerInventory inventory;
         
+        [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private Image itemIcon;
         [SerializeField] private TextMeshProUGUI itemNameText;
         [SerializeField] private TextMeshProUGUI itemDescriptionText;
@@ -18,10 +20,12 @@ namespace Swift_Blade
         [SerializeField] private TextMeshProUGUI _buttonText;
         
         [SerializeField] private GameObject soldOutPanel;
-
+        
         private ItemDataSO _currentItem;
         private int _itemCount;
         private int _itemCost;
+
+        public CanvasGroup GetCanvasGroup => canvasGroup;
         
         public void SetSlotItem(ItemDataSO newItem, int count, int cost)
         {
@@ -38,11 +42,14 @@ namespace Swift_Blade
         
         private void OnEnable()
         {
+            canvasGroup = GetComponent<CanvasGroup>();
+            canvasGroup.alpha = 0;
             buyButton.onClick.AddListener(Buy);
         }
 
         private void OnDestroy()
         {
+            canvasGroup.alpha = 0;
             buyButton.onClick.RemoveListener(Buy);
         }
 

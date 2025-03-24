@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Swift_Blade.Combat.Caster
@@ -51,11 +52,18 @@ namespace Swift_Blade.Combat.Caster
                     Vector3 hitNormal = (hitPoint - hitCollider.transform.position).normalized;
                     
                     float damageAmount = _statCompo.GetStat(damageStat).Value;
-                    ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, transform, true);
+                    ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, false);
                     
                     OnCastDamageEvent?.Invoke(actionData);
+                    
+                    
                     health.TakeDamage(actionData);
                 }
+            }
+
+            if (isHit)
+            {
+                _player.GetSkillController.UseSkill(SkillType.Attack,hitColliders.Select(x => x.transform).ToArray());
             }
             
             return isHit;

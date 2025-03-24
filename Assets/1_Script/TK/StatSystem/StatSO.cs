@@ -10,12 +10,11 @@ namespace Swift_Blade
     {
         HEALTH,
         DAMAGE,
-        AGILITY,
+        MINATTACK_INC, //최소 공격력 보정
+        ATTACKSPEED,
+        MOVESPEED,
         DASH_INVINCIBLE_TIME,
         PARRY_CHANCE,
-        STYLE_METER_INCREASE_INCREMENT,
-        STYLE_METER_DECREASE_DECREMENT,
-        STYLE_METER_ADDITIONAL_BUFF
     }
     
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]
@@ -23,9 +22,7 @@ namespace Swift_Blade
     {
         public delegate void ValueChangeHandler(StatSO stat, float current, float prev);
         public ValueChangeHandler OnValueChange;
-
-        [FormerlySerializedAs("stlyeMeter")] [SerializeField] private StyleMeter styleMeter;
-
+        
         public StatType statType;
         public string statName;
         [TextArea(4, 5)] public string description;
@@ -53,15 +50,6 @@ namespace Swift_Blade
         {
             get
             {
-                bool isStyleMeterTargetStat = styleMeter.GetTargetStats().Contains(statType);
-
-                if (isStyleMeterTargetStat)
-                {
-                    //현재 스타일 미터 계수에 따라서 적용되는 스텟 다르게 하기
-                    float val = _baseValue + _modifiedValue;// + styleMeter.PlayerStat.GetStat(StatType.STYLE_METER_ADDITIONAL_BUFF).Value;
-                    return Mathf.Clamp(val * styleMeter.appliedMultiplier , MinValue, MaxValue);
-                }
-                
                 return Mathf.Clamp((_baseValue + _modifiedValue), MinValue, MaxValue);
             }
         }

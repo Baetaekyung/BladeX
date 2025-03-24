@@ -48,7 +48,11 @@ namespace Swift_Blade.Enemy.Throw
         {
             bodyCollider.enabled = false;
         }
-        
-        
+
+        public override void StopAllAnimationEvents()
+        {
+            StopManualCollider();
+            base.StopAllAnimationEvents();
+        }
     }
 }

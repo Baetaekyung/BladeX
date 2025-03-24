@@ -10,7 +10,10 @@ namespace Swift_Blade.Feeling
         ParryShake,
         Weak,
         Middle,
-        Strong
+        Strong,
+        PlayerAttack,
+        PlayerDamage,
+        PlayerParry
     }
     
     /// <summary>

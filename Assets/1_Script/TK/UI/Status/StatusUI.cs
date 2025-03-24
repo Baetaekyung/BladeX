@@ -39,7 +39,7 @@ namespace Swift_Blade
             }
         }
         
-        private void HandleInfoChange()
+        public void HandleInfoChange()
         {
             foreach (var statText in statPointText)
             {

@@ -19,7 +19,7 @@ namespace Swift_Blade.Combat.Caster
             {
                 if (hitCollider.TryGetComponent(out IDamageble health))
                 {
-                    ActionData actionData = new ActionData(Vector3.zero,Vector3.zero,1 , transform,true);
+                    ActionData actionData = new ActionData(Vector3.zero,Vector3.zero,1 , true);
                     
                     health.TakeDamage(actionData);
                 }

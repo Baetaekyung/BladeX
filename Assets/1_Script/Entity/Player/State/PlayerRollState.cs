@@ -1,4 +1,5 @@
 using System;
+using Swift_Blade.Skill;
 using UnityEngine;
 
 namespace Swift_Blade.FSM.States
@@ -42,9 +43,11 @@ namespace Swift_Blade.FSM.States
             playerRenderer.LookAtDirection(direction);
 
             player.GetPlayerMovement.AllowInputMove = false;
-            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirectionRawRotated.normalized, 10);
+            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirectionRawRotated.normalized, 8.7f);
 
             playerHealth.IsPlayerInvincible = true;
+            
+            player.GetSkillController.UseSkill(SkillType.Rolling);
         }
         public override void Update()
         {
@@ -73,7 +76,7 @@ namespace Swift_Blade.FSM.States
         {
             player.GetPlayerMovement.AllowInputMove = true;
             //anim_inputLocalLerp = Vector3.zero;
-            playerHealth.IsPlayerInvincible = false;
+            //playerHealth.IsPlayerInvincible = false;
             OnRollEnd?.Invoke();
             base.Exit();
         }

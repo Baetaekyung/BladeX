@@ -13,10 +13,9 @@ namespace Swift_Blade.Audio
         public event Action OnEndCallback;
 
         [Header("Preplaced")]
-        [SerializeField] private AudioSO defaultAudioSO;
+        [SerializeField] private BaseAudioSO defaultAudioSO;
         [SerializeField] private bool overrideVolume;
-        private bool prePlaced = true;
-
+        private bool isPrePlaced = true;
 
         [Header("General")]
         private AudioSource audioSource;
@@ -33,17 +32,17 @@ namespace Swift_Blade.Audio
         }
         private void Start()    //black magick, this is delayed when pooled.
         {
-            if (prePlaced)      //not initialized until IPoolable.OnCreate
+            if (isPrePlaced)      //not initialized until IPoolable.OnCreate
             {
                 bool flag = defaultAudioSO != null;
                 Debug.Assert(flag, "emitter is preplaced but defaultAudioSO is null", this);
-                Initialize(defaultAudioSO);
+                Initialize(defaultAudioSO.GetAudio());
             }
         }
         void IPoolable.OnCreate()
         {
             isInPool = true;
-            prePlaced = false;
+            isPrePlaced = false;
         }
         void IPoolable.OnPop()
         {
@@ -52,11 +51,11 @@ namespace Swift_Blade.Audio
         }
         void IPoolable.OnPush()
         {
-            OnEndCallback = null;
-            currentAudioSO = null;
-
             isInPool = true;
             shouldDecraseCountOnDestroy = false;
+
+            OnEndCallback = null;
+            currentAudioSO = null;
         }
         public static void Dbg(AudioSO audioSO)
         {
@@ -98,7 +97,7 @@ namespace Swift_Blade.Audio
         {
             if (isInPool) throw new InvalidOperationException("audio emitter is already killed");
             if (!IsInitialized) throw new InvalidOperationException("playing without init");
-
+                
             if (audioSource.isPlaying)
                 StopAudio();
 
@@ -127,6 +126,13 @@ namespace Swift_Blade.Audio
                     KillAudio();
             }
         }
+        public void PlayWithInitDefaultAudio(bool killOnEnd = false)
+        {
+            if (audioSource.isPlaying)
+                StopAudio();
+            Initialize(defaultAudioSO.GetAudio());
+            Play(killOnEnd);
+        }
         public void PlayWithInit(AudioSO audioSO, bool killOnEnd = false)
         {
             if (audioSource.isPlaying) //can't initialize without stopping audio
@@ -142,7 +148,14 @@ namespace Swift_Blade.Audio
             if (isInPool) throw new Exception("audio emitter is already killed");
             if (!IsInitialized) throw new Exception("playing without init");
 
-            audioSource.PlayOneShot(currentAudioSO.clip, currentAudioSO.volume);
+            audioSource.PlayOneShot(currentAudioSO.clip, currentAudioSO.Volume);
+        }
+        public void PlayOneShotWithInitDefaultAudio(bool killOnEnd = false)
+        {
+            if (audioSource.isPlaying)
+                StopAudio();
+            Initialize(defaultAudioSO.GetAudio());
+            PlayOneShot();
         }
         public void PlayOneShotWithInit(AudioSO audioSO)
         {
@@ -160,20 +173,20 @@ namespace Swift_Blade.Audio
 
             StopAllCoroutines();
 
-            //OnEndCallback?.Invoke();
-            //DecreaseDictionaryInstance(currentAudioSO);
-            //shouldDecraseCountOnDestroy = false;
             OnAudioStop();
 
             audioSource.Stop();
         }
+        /// <summary>
+        /// return audio to pool
+        /// </summary>
+        /// <exception cref="InvalidOperationException">instance is already in pool</exception>
         public void KillAudio()
         {
             if (isInPool) throw new InvalidOperationException("audio emitter is already killed");
 
             StopAudio();
             MonoGenericPool<AudioEmitter>.Push(this);   //deactivate gameObject, auto cancel Coroutine.
-            shouldDecraseCountOnDestroy = false;        //Stop Audio has early exit
         }
         public void Initialize(AudioSO audioSO)
         {
@@ -191,17 +204,17 @@ namespace Swift_Blade.Audio
 
             //preplaced settings
             if(!overrideVolume)
-                audioSource.volume = audioSO.volume;
-            if (prePlaced) return;
+                audioSource.volume = audioSO.Volume;
+            if (isPrePlaced) return;
 
-            audioSource.priority = audioSO.priority;
-            audioSource.pitch = audioSO.pitch;
-            audioSource.panStereo = audioSO.streoPan;
+            audioSource.priority = audioSO.Priority;
+            audioSource.pitch = audioSO.Pitch;
+            audioSource.panStereo = audioSO.StreoPan;
             audioSource.spatialBlend = audioSO.GetSpatialBlend;
-            audioSource.reverbZoneMix = audioSO.reverbZoneMix;
+            audioSource.reverbZoneMix = audioSO.ReverbZoneMix;
 
             //3DSOUND SETTINGS
-            audioSource.dopplerLevel = audioSO.dopplerLevel;
+            audioSource.dopplerLevel = audioSO.DopplerLevel;
             audioSource.spread = audioSO.spread;
             audioSource.rolloffMode = audioSO.audioRolloffMode;
             audioSource.minDistance = audioSO.minDistance;
@@ -209,17 +222,22 @@ namespace Swift_Blade.Audio
             if (audioSO.audioRolloffMode == AudioRolloffMode.Custom)
                 audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, audioSO.curve);
         }
+        /// <summary>
+        /// call this when audio is stopped
+        /// </summary>
+        /// <param name="decraseDictionaryInstance"></param>
         private void OnAudioStop()
         {
             OnEndCallback?.Invoke();
-            DecreaseDictionaryInstance(currentAudioSO);
+            if(shouldDecraseCountOnDestroy)
+                DecreaseDictionaryInstance(currentAudioSO);
             shouldDecraseCountOnDestroy = false;
         }
         private void OnDestroy()
         {
-            if (!isInPool && shouldDecraseCountOnDestroy)
+            if (!isInPool)// && shouldDecraseCountOnDestroy)//remove shdcod
             {
-                print("destroy runtime aud" + audioSource.clip.name);
+                //print("destroy runtime aud" + audioSource.clip.name);
                 OnAudioStop();
             }
 

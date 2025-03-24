@@ -17,8 +17,8 @@ namespace Swift_Blade.FSM.States
         protected virtual bool BaseAllowParryInput { get; } = true;
         protected virtual bool BaseAllowDashInput { get; } = true;
 
-        private const float delayParry = 1;
-        private const float delayDash = 1.5f;
+        private const float delayParry = 0.8f;
+        private const float delayDash = 1f;
 
         private static float nextDelayTime_AllowParry;
         private static float nextDelayTime_AllowDash;
@@ -37,6 +37,8 @@ namespace Swift_Blade.FSM.States
         }
         public override void Update()
         {
+            if (PopupManager.Instance.IsRemainPopup) return;
+
             if (Input.GetKeyDown(KeyCode.Mouse0) && BaseAllowAttackInput)
                 OnAttackInput(EComboState.LightAttack);
             if (Input.GetKeyDown(KeyCode.Mouse1) && BaseAllowAttackInput)
@@ -103,7 +105,7 @@ namespace Swift_Blade.FSM.States
         {
             if (player.GetPlayerDamageCaster.Cast())
             {
-                player.GetEntityComponent<PlayerStatCompo>().GetStyleMeter.SuccessHit();
+                //player.GetEntityComponent<PlayerStatCompo>().GetStyleMeter.SuccessHit();
             }
         }
     }

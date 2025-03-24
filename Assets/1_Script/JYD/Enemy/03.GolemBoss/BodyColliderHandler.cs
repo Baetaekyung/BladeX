@@ -10,7 +10,8 @@ namespace Swift_Blade.Combat
             {
                 if (other.TryGetComponent(out IDamageble health))
                 {
-                    ActionData actionData = new ActionData(Vector3.zero,  Vector3.zero,  1, transform,true);
+                    ActionData actionData = new ActionData();
+                    actionData.damageAmount = 1;
                     
                     health.TakeDamage(actionData);
                 }

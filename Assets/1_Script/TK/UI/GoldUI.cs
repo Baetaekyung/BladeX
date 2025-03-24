@@ -1,10 +1,11 @@
 using TMPro;
 using UnityEngine;
+using Debug = Utility.Debug;
 using Random = UnityEngine.Random;
 
 namespace Swift_Blade
 {
-    public class GoldUI : MonoBehaviour,IUIExecute
+    public class GoldUI : MonoBehaviour
     {
         [SerializeField] private InventoryManager playerInventory;
         [SerializeField] private TextMeshProUGUI coinText;
@@ -12,8 +13,9 @@ namespace Swift_Blade
         
         private void Start()
         {
-            coinText.text = "0 内牢";
             sceneManagerSo.LevelClearEvent += AddRandomGold;
+            
+            SetGoldUI();
         }
         
         private void OnDestroy()
@@ -21,21 +23,21 @@ namespace Swift_Blade
             sceneManagerSo.LevelClearEvent -= AddRandomGold;
         }
         
-        public void Execute()
-        {
-            SetGoldUI();
-        }
-        
         private void SetGoldUI()
         {
-            coinText.text = $"{InventoryManager.Inventory.Coin.ToString()} 内牢";
-            print(InventoryManager.Inventory.Coin);
+            if(InventoryManager.Inventory != null)                        
+                coinText.text = $"{InventoryManager.Inventory.Coin.ToString()} 内牢";
+            else
+            {
+                coinText.text = "0 内牢";
+            }
         }
-
+        
         private void AddRandomGold()
         {
-            int randomGold = Random.Range(50, 100);
-            InventoryManager.Inventory.Coin += randomGold;
+            /*int randomGold = Random.Range(50, 100);
+            print(InventoryManager.Inventory);
+            InventoryManager.Inventory.Coin += randomGold;*/
             
             SetGoldUI();
         }

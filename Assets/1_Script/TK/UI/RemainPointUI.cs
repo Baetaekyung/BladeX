@@ -1,13 +1,14 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class RemainPointUI : MonoBehaviour,IUIExecute
+    public class RemainPointUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI remainText;
-        
-        public void Execute()
+
+        private void Start()
         {
             HandleUpdateRemainUI(Player.level);
         }

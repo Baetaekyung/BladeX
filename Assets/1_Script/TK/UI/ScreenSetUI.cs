@@ -7,6 +7,10 @@ namespace Swift_Blade
 {
     public class ScreenSetUI : MonoBehaviour
     {
+        private const string FullScreenKey = "FullScreen";
+        private const string ResolutionKey = "Resolution";
+        private const string FPSKey        = "Fps";
+        
         [SerializeField] private Toggle       fullScreenToggle;
         [SerializeField] private TMP_Dropdown resolutionDropdown;
         [SerializeField] private TMP_Dropdown fpsDropdown;
@@ -23,7 +27,7 @@ namespace Swift_Blade
         private void InitializeFullScreen()
         {
             Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
-            _isFullScreen = Screen.fullScreen;
+            _isFullScreen = PlayerPrefs.GetInt(FullScreenKey, 1) == 1;
             
             fullScreenToggle.onValueChanged.AddListener(HandleFullScreenChanged);
             fullScreenToggle.isOn = _isFullScreen;
@@ -32,19 +36,21 @@ namespace Swift_Blade
         private void InitializeResolution()
         {
             resolutionDropdown.onValueChanged.AddListener(HandleResolutionChanged);
-            resolutionDropdown.value = 1;
+            resolutionDropdown.value = PlayerPrefs.GetInt(ResolutionKey, 1);
         }
         
         private void InitializeFPS()
         {
             fpsDropdown.onValueChanged.AddListener(HandleFPSChanged);
-            fpsDropdown.value = 2;
+            fpsDropdown.value = PlayerPrefs.GetInt(FPSKey, 2);
         }
 
         private void HandleFullScreenChanged(bool isOn)
         {
             Screen.fullScreenMode = isOn ?
                 FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+            
+            PlayerPrefs.SetInt(FullScreenKey, Screen.fullScreen ? 1 : 0);
         }
         
         private void HandleResolutionChanged(int index)
@@ -63,6 +69,8 @@ namespace Swift_Blade
                 default:
                     throw new ArgumentException("드롭다운의 범위를 벗어난 인덱스");
             }
+            
+            PlayerPrefs.SetInt(ResolutionKey, index);
         }
         
         private void HandleFPSChanged(int index)
@@ -81,6 +89,8 @@ namespace Swift_Blade
                 default:
                     throw new ArgumentException("드롭다운의 범위를 벗어난 index");
             }
+            
+            PlayerPrefs.SetInt(FPSKey, index);
         }
     }
 }
