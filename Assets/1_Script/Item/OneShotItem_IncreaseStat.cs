@@ -8,10 +8,8 @@ namespace Swift_Blade
         [SerializeField] private StatType targetStat;
         public override void ItemEffect(Player player)
         {
-            // PlayerStatCompo psc = Player.Instance.GetEntityComponent<PlayerStatCompo>();
-            // StatSO targetStatSO = psc.GetStat(targetStat);
-            // psc.IncreaseBaseValue(targetStatSO, value);
-            Debug.Log("Item Use");
+            PlayerHealth playerHealth = player.GetEntityComponent<PlayerHealth>();
+            playerHealth.TakeHeal(value);
         }
     }
 }
