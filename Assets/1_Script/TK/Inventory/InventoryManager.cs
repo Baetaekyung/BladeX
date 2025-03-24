@@ -292,6 +292,7 @@ namespace Swift_Blade
 
         public int GetItemCount(ItemDataSO itemData)
         {
+            Debug.Log(itemData);
             if (_itemDatas.ContainsKey(itemData))
             {
                 return _itemDatas[itemData];
