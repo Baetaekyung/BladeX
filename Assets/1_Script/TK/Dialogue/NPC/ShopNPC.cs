@@ -6,13 +6,11 @@ namespace Swift_Blade
 {
     public class ShopNPC : NPC
     {
-        private Shop _shop;
-
         [SerializeField] private ItemTableSO shopItems;
+        [SerializeField] private Shop shop;
         
         private void Awake()
         {
-            _shop = FindFirstObjectByType<Shop>(FindObjectsInactive.Include);
             shopItems = shopItems.Clone();
             _isRewarded = false;
         }
@@ -36,7 +34,8 @@ namespace Swift_Blade
 
         private void HandleOpenShop()
         {
-            PopupManager.Instance.DelayPopup(PopupType.Shop, 0.5f, () => _shop.SetItems(shopItems));
+            PopupManager.Instance.PopUp(PopupType.Shop);
+            shop.SetItems(shopItems);
         }
     }
 }
