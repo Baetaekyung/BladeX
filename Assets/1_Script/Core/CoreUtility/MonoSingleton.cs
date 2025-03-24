@@ -12,6 +12,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         {
             if (_instance is null)
             {
+                //tood : if scene transitinoing, throw error
                 if (IsShuttingDown) return null;
 
                 _instance = RuntimeInitialize();
