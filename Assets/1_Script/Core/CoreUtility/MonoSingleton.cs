@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Reflection;
+using System;
 
 public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
     private static MonoSingletonFlags? singletonFlag;
     private static T _instance = null;
+    public static event Action OnSingletonDestroy;
 
     public static T Instance
     {
@@ -58,7 +60,12 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     }
     protected virtual void OnDestroy()
     {
-        if (_instance == this) _instance = null;
+        if (_instance == this)
+        {
+            OnSingletonDestroy?.Invoke();
+            _instance = null;
+        }
+
     }
     protected virtual void OnApplicationQuit()
     {
