@@ -27,10 +27,10 @@ public partial class CheckObstacleLineCondition : Condition
 
         if (Physics.Raycast(LayTrm.Value.position, direction, out RaycastHit hit, Mathf.Infinity, whatIsTarget))
         {
-            return CheckObstacleLine.Value;
+            return !CheckObstacleLine.Value;
         }
         
-        return CheckObstacleLine.Value;
+        return !CheckObstacleLine.Value;
     }
 
 

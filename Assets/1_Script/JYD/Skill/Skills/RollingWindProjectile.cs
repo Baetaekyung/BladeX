@@ -7,12 +7,11 @@ namespace Swift_Blade.Skill
     public class RollingWindProjectile : SkillData
     {
         [SerializeField] private int skillCount;
-        private int skillCounter = 0;
         [Range(1,4)][SerializeField] private int projectileCount = 1;
         
-        private Vector3[] directions = new Vector3[4];
-         
-        
+        private readonly Vector3[] directions = new Vector3[4];
+        private int skillCounter = 0;
+                
         public override void Initialize()
         {
             MonoGenericPool<WindProjectileParticle>.Initialize(skillParticle);
@@ -27,7 +26,6 @@ namespace Swift_Blade.Skill
                 directions[1] = player.GetPlayerTransform.right;
                 directions[2] = -player.GetPlayerTransform.right;
                 directions[3] = -player.GetPlayerTransform.forward;
-                
             }
             
             ++skillCounter;
@@ -43,5 +41,6 @@ namespace Swift_Blade.Skill
                 skillCounter = 0;
             }
         }
+        
     }
 }
