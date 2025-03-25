@@ -29,16 +29,16 @@ namespace Swift_Blade
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
         private PlayerAttackState playerAttackState;
-        
+
         public static LevelStat level = new LevelStat();
-        
+
         private readonly RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
-        
+
         private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
         private GameObject interactable;
         private Tween playerInvincibleTween;
 
-        [Header("General")] 
+        [Header("General")]
         [SerializeField] private Transform visualTransform;
         [SerializeField] private Transform playerTransform;
         [SerializeField] private Transform mousePosition;
@@ -49,7 +49,7 @@ namespace Swift_Blade
 
         [Header("EventChannels")]
         [SerializeField] private EquipmentChannelSO onHitChannel;
-        
+
         [Header("Anim_Param")]
         [SerializeField] private AnimationTriggers animEndTrigger;
         [SerializeField, Space(10)] private AnimationParameterSO anim_idle;
@@ -61,14 +61,14 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO anim_hitStun;
 
         [SerializeField] private AnimationParameterSO anim_dbg;
-        
+
         [Header("Combo")]
         [SerializeField] protected List<AttackComboSO> comboList;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
 
-        [Header("SceneManager")] 
+        [Header("SceneManager")]
         [SerializeField] private SceneManagerSO SceneManagerSO;
-        
+
         public void AddCombo(AttackComboSO attackComboSO)
         {
             comboList.Add(attackComboSO);
@@ -88,7 +88,7 @@ namespace Swift_Blade
         public PlayerHealth GetPlayerHealth => GetEntityComponent<PlayerHealth>();
         public PlayerSkillController GetSkillController => GetEntityComponent<PlayerSkillController>();
         public Transform GetPlayerTransform => visualTransform;
-        
+
         #endregion
 
         public class LevelStat
@@ -105,23 +105,25 @@ namespace Swift_Blade
                 sceneManager = sceneManagerSo;
                 sceneManager.LevelClearEvent += OnLevelClear;
             }
-            ~LevelStat()
-            {
-                sceneManager.LevelClearEvent -= OnLevelClear;
-            }
+            //~LevelStat()
+            //{
+            //    sceneManager.LevelClearEvent -= OnLevelClear;
+            //}
             private void OnLevelClear()
             {
                 const int maxRequiredExperience = 2;
                 Experience++;
-                                
+
                 if (Experience >= maxRequiredExperience)
                 {
-                    Experience = Experience - maxRequiredExperience;
+                    int m = Experience / maxRequiredExperience;
+                    Experience = Experience - m * maxRequiredExperience;
                     Level++;
-                    StatPoint += 3;
+                    StatPoint += 1;
                     OnLevelUp?.Invoke(this);
                 }
             }
+
         }
 
         protected override void Awake()
@@ -194,9 +196,9 @@ namespace Swift_Blade
 
             //if (Input.GetKeyDown(KeyCode.Z))
             //    AudioEmitter.Dbg2();
-            
+
             mousePosition.position = GetPlayerInput.GetMousePositionWorld;
-            
+
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
             UI_DebugPlayer.DebugText(2, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DAMAGE).Value, "atkBase");
