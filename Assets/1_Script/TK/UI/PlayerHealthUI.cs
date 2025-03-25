@@ -20,18 +20,20 @@ namespace Swift_Blade.UI
         {
             _healthIcons = new List<GameObject>();
 
-            _playerHealth = FindFirstObjectByType<PlayerHealth>();
+            _playerHealth = Player.Instance.GetEntityComponent<PlayerHealth>();
             
             RectTransform rTrm = transform as RectTransform;
             rTrm.sizeDelta = new Vector2(800f, rTrm.sizeDelta.y);
-            
             
             if (_playerHealth != null)
             {
                 _playerHealth.OnHitEvent.AddListener(HandleSetHealthUI);
                 _playerHealth.OnHealthUpdateEvent += SetHealthUI;
+
                 StatInfoUI.OnHealthStatUp += SetHealthUIIfStatUp;
                 StatInfoUI.OnHealthStatDown += SetHealthUIIfStatDown;
+
+                Player.Instance.GetEntityComponent<PlayerStatCompo>().OnStatChanged += SetHealthUI;
                 
                 SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth._currentHealth);
             }
@@ -54,6 +56,9 @@ namespace Swift_Blade.UI
             {
                 _playerHealth.OnHitEvent.RemoveListener(HandleSetHealthUI);
                 _playerHealth.OnHealthUpdateEvent -= SetHealthUI;
+                
+                Player.Instance.GetEntityComponent<PlayerStatCompo>().OnStatChanged -= SetHealthUI;
+
                 StatInfoUI.OnHealthStatUp -= SetHealthUIIfStatUp;
                 StatInfoUI.OnHealthStatDown -= SetHealthUIIfStatDown;
             }
@@ -79,6 +84,17 @@ namespace Swift_Blade.UI
             }
             
             SetHealthUI(_playerHealth.GetHealthStat.Value, ++PlayerHealth._currentHealth);
+        }
+        
+        private void SetHealthUI()
+        {
+            if (_playerHealth == null)
+            {
+                Debug.Log("Player health compo is null, PlayerHealthUI.cs line: 35");
+                return;
+            }
+
+            SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth);
         }
         
         public void SetHealthUI(float maxHealth, float currentHealth)

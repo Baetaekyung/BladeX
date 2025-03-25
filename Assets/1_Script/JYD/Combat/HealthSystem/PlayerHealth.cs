@@ -12,7 +12,6 @@ namespace Swift_Blade
     {
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
-      
         
         public static float _currentHealth;
         
@@ -44,7 +43,6 @@ namespace Swift_Blade
         {
             _healthStat = _statCompo.GetStat(StatType.HEALTH);
             _maxHealth = _healthStat.Value;
-            
             
             HealthUpdate();
         }
