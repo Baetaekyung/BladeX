@@ -56,7 +56,8 @@ namespace Swift_Blade
 
             Player.level.StatPoint -= 1;
             UsedStatPoint++;
-            stat.BaseValue += stat.increaseAmount;
+            Player.Instance.GetEntityComponent<PlayerStatCompo>().
+                GetStat(stat).BaseValue += stat.increaseAmount;
 
             if (stat.statType == StatType.HEALTH)
             {
@@ -72,7 +73,7 @@ namespace Swift_Blade
         private void RecordAddedStat()
         {
             if (!_statRecords.TryAdd(stat, 1))
-                _statRecords[stat] += 1;
+                _statRecords[Player.Instance.GetEntityComponent<PlayerStatCompo>().GetStat(stat)] += 1;
         }
 
         public void InitializeStat()
