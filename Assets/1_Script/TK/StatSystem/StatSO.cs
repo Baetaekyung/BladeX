@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -84,6 +85,16 @@ namespace Swift_Blade
         {
             StatSO statSo = Instantiate(this);
 
+            Dictionary<object, float> modTemp = new();
+            foreach (var mod in _modifyValueByKeys)
+            {
+                object modeKey = mod.Key;
+                float modeValue = mod.Value;
+                modTemp.Add(modeKey,modeValue);
+            }
+
+            statSo._modifyValueByKeys = modTemp;
+            
             return statSo;
         }
     }
