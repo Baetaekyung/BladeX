@@ -39,20 +39,20 @@ namespace Swift_Blade
 
         private void Update()
         {
-            if (IsRemainPopup)
-            {
-                if (Player.Instance?.GetPlayerMovement != null)
-                {
-                    Player.Instance.GetPlayerMovement.AllowInputMove = false;
-                }
-            }
-            else
-            {
-                if (Player.Instance?.GetPlayerMovement != null)
-                {
-                    Player.Instance.GetPlayerMovement.AllowInputMove = true;
-                }
-            }
+            // if (IsRemainPopup)
+            // {
+            //     if (Player.Instance?.GetPlayerMovement != null)
+            //     {
+            //         Player.Instance.GetPlayerMovement.AllowInputMove = false;
+            //     }
+            // }
+            // else
+            // {
+            //     if (Player.Instance?.GetPlayerMovement != null)
+            //     {
+            //         Player.Instance.GetPlayerMovement.AllowInputMove = true;
+            //     }
+            // }
             
             OpenCloseInventory();
             PopDownInput();
