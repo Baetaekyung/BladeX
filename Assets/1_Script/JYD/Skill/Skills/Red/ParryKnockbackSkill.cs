@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Skill
 {
-    [CreateAssetMenu(fileName = "ParryknockbackSkill", menuName = "SO/Skill/Parry/Knockback")]
+    [CreateAssetMenu(fileName = "ParryknockbackSkill", menuName = "SO/Skill/Red/ParryKnockback")]
     public class ParryKnockbackSkill : SkillData
     {
         [SerializeField] private float knockbackForce;
@@ -19,6 +19,8 @@ namespace Swift_Blade.Skill
 
         public override void UseSkill(Player player, Transform[] targets = null)
         {
+            if(CheckSkill() == false)return;
+            
             if (targets == null)
             {
                 targets = Physics.OverlapSphere(player.GetPlayerTransform.position , knockbackRadius ,whatIsTarget).Select(x => x.transform).ToArray();
