@@ -125,10 +125,12 @@ namespace Swift_Blade
             }
 
         }
-
+        private Quaternion d;
         protected override void Awake()
         {
             base.Awake();
+
+
             if (Instance == null)
                 Instance = this;
             level.Init(SceneManagerSO);
@@ -198,6 +200,19 @@ namespace Swift_Blade
             //    AudioEmitter.Dbg2();
 
             mousePosition.position = GetPlayerInput.GetMousePositionWorld;
+
+            //Vector3 rr = GetPlayerTransform.InverseTransformDirection(GetPlayerInput.GetInputDirectionRawRotated);
+            //Debug.DrawRay(Vector3.zero + Vector3.up * 0.7f, rr, Color.red);
+
+            d = GetPlayerTransform.rotation;
+            Quaternion originQuat = d;
+            d = Quaternion.Inverse(d);
+            Quaternion quat = d;
+            Vector3 rrr = quat * GetPlayerInput.GetInputDirectionRawRotated;
+            rrr.z = 0;
+            Vector3 finalRr = originQuat * rrr;
+            //Debug.DrawRay(Vector3.zero + Vector3.up * 0.9f, rrr, Color.red);
+            //Debug.DrawRay(Vector3.zero + Vector3.up * 1.2f, finalRr, Color.blue);
 
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
@@ -272,9 +287,9 @@ namespace Swift_Blade
             playerAttackState.ClearComboHistory();
         }
         public PlayerStateEnum GetCurrentState() => playerStateMachine.GetState();
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawWireSphere(playerTransform.position, 2);
-        }
+        //private void OnDrawGizmos()
+        //{
+        //    Gizmos.DrawWireSphere(playerTransform.position, 2);
+        //}
     }
 }

@@ -87,8 +87,8 @@ namespace Swift_Blade
             }
 
             UI_DebugPlayer.DebugText(5, lowestContactPointBottom.HasValue, "ONGROUND", DBG_UI_KEYS.Keys_PlayerMovement);
-            if (lowestContactPointBottom.HasValue)
-                Debug.DrawRay(lowestContactPointBottom.Value.point, Vector3.right, Color.magenta, 0.1f);
+            //if (lowestContactPointBottom.HasValue)
+            //    Debug.DrawRay(lowestContactPointBottom.Value.point, Vector3.right, Color.magenta, 0.1f);
             //UI_DebugPlayer.DebugText(0, yVal, "yVal", DBG_UI_KEYS.Keys_PlayerMovement);
 
             lowerstContactPoint = null;
@@ -132,6 +132,7 @@ namespace Swift_Blade
             Vector3 result = input * speed + addition;
             result.y += yVal;
             controller.linearVelocity = result;
+
             //Debug.DrawRay(transform.position + Vector3.up * 0.5f, input, Color.cyan, 1);
         }
         public void AddForceFacingDirection(Vector3 force, float multiplier = 1)
@@ -144,7 +145,7 @@ namespace Swift_Blade
         public void Dash(Vector3 dir, float force)
         {
             Vector3 result = dir * force;
-            Debug.DrawRay(transform.position, result, Color.black, 1);
+            //Debug.DrawRay(transform.position, result, Color.black, 1);
             rollValue = 0;
             currentRollStamina = 0;
             DashVelocity = result;
@@ -192,12 +193,12 @@ namespace Swift_Blade
             }
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Vector3 pointYOffset = transform.position + Vector3.up * bottomYOffset;
-            Gizmos.DrawLine(transform.position, pointYOffset);
-            Gizmos.DrawRay(pointYOffset, Vector3.right);
-        }
+        //private void OnDrawGizmos()
+        //{
+        //    Gizmos.color = Color.red;
+        //    Vector3 pointYOffset = transform.position + Vector3.up * bottomYOffset;
+        //    Gizmos.DrawLine(transform.position, pointYOffset);
+        //    Gizmos.DrawRay(pointYOffset, Vector3.right);
+        //}
     }
 }
