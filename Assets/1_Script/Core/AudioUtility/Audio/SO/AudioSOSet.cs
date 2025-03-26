@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace Swift_Blade.Audio
 {
-    [CreateAssetMenu(fileName = "AudioSOSet", menuName = "Scriptable Objects/AudioSOSet")]
+    [CreateAssetMenu(fileName = "AudioSOSet", menuName = "SO/AudioSOSet")]
     public class AudioSOSet : BaseAudioSO
     {
-        [SerializeField] private AudioSOCollection[] audioCollections;
+        [SerializeField] private AudioCollectionSO[] audioCollections;
         public override AudioSO GetAudio()
         {
             throw new NotSupportedException();

@@ -8,6 +8,7 @@ using Swift_Blade.FSM;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
@@ -44,8 +45,9 @@ namespace Swift_Blade
         [SerializeField] private Transform mousePosition;
         [SerializeField] private LayerMask lm_interactable;
 
+        [FormerlySerializedAs("audioCollection")]
         [Header("Audio")]
-        [SerializeField] private AudioSOCollection audioCollection;
+        [SerializeField] private AudioCollectionSO audioCollection;
 
         [Header("EventChannels")]
         [SerializeField] private EquipmentChannelSO onHitChannel;

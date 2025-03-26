@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    [CreateAssetMenu(fileName = "AnimationParameterSO", menuName = "Scriptable Objects/AnimationParameterSO", order = int.MinValue)]
+    [CreateAssetMenu(fileName = "AnimationParameterSO", menuName = "SO/AnimationParameterSO", order = int.MinValue)]
     public class AnimationParameterSO : ScriptableObject
     {
         [SerializeField] private string paramName;
