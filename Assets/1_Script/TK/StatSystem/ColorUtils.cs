@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 
 namespace Swift_Blade
 {
     public static class ColorUtils
     {
-        public ColorType GetColor(List<ColorType> colors)
+        public static ColorType GetColor(List<ColorType> colors)
         {
             int redColor;
             int greenColor;
@@ -26,12 +27,12 @@ namespace Swift_Blade
                 }
             }
 
-            return 
+            return ColorType.RED;
         }
 
-        public ColorType GetRGBColorType(int r, int g, int b)
+        public static ColorType GetRGBColorType((int r, int g, int b)rgb)
         {
-
+            return ColorType.RED;
         }
     }
 }
