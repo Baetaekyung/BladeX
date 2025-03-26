@@ -3,22 +3,27 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    [CreateAssetMenu(fileName = "AttackHealSkill", menuName = "SO/Skill/Attack/Heal")]
+    [CreateAssetMenu(fileName = "AttackHealSkill", menuName = "SO/Skill/Red/AttackHeal")]
     public class AttackHealSkill : SkillData
     {
         [SerializeField] private int skillCount;
+        [SerializeField] private int healAmount;
+              
         private int skillCounter;
         
-        [SerializeField] private int healAmount;
         public override void UseSkill(Player player, Transform[] targets = null)
         {
             ++skillCounter;
             if (skillCounter >= skillCount)
             {
+                float randomValue = UnityEngine.Random.Range(0,100);
+                if (randomValue < random)
+                {
+                    player.GetPlayerHealth.TakeHeal(healAmount);    
+                }
+                
                 skillCounter = 0;
-                player.GetPlayerHealth.TakeHeal(healAmount);
             }
-            
         }
     }
 }
