@@ -16,6 +16,17 @@ namespace Swift_Blade
         DASH_INVINCIBLE_TIME,
         PARRY_CHANCE,
     }
+
+    public enum ColorType
+    {
+        RED,
+        GREEN,
+        BLUE,
+        YELLOW, //RED + GREEN
+        TURQUOISE, //BLUE + GREEN
+        PURPLE, //RED + BLUE
+        BLACK //RED + BLUE + GREEN
+    }
     
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]
     public class StatSO : ScriptableObject
