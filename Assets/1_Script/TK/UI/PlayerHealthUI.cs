@@ -39,15 +39,16 @@ namespace Swift_Blade.UI
             }
         }
 
-        private void SetHealthUIIfStatDown()
+        private void SetHealthUIIfStatDown(float decreaseAmount)
         {
             if (_playerHealth == null)
             {
                 Debug.Log("Player health compo is null, PlayerHealthUI.cs line: 35");
                 return;
             }
-            
-            SetHealthUI(_playerHealth.GetHealthStat.Value, --PlayerHealth._currentHealth);
+
+            PlayerHealth._currentHealth -= decreaseAmount;
+            SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth._currentHealth);
         }
 
         private void OnDestroy()
