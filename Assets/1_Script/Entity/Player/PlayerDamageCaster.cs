@@ -75,17 +75,17 @@ namespace Swift_Blade.Combat.Caster
                    + _visualTrm.forward * (-_casterInterpolation * 2);
         }
         
-        protected void OnDrawGizmosSelected()
-        {
-            if (_visualTrm == null) return;
-            if (_playerMovement == null) return;
-            
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(GetStartPosition(), _casterRadius);
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(GetStartPosition() + _visualTrm.forward * _castingRange, _casterRadius);
-            Gizmos.color = Color.white;
-        }
+        //protected void OnDrawGizmosSelected()
+        //{
+        //    if (_visualTrm == null) return;
+        //    if (_playerMovement == null) return;
+        //    
+        //    Gizmos.color = Color.green;
+        //    Gizmos.DrawWireSphere(GetStartPosition(), _casterRadius);
+        //    Gizmos.color = Color.red;
+        //    Gizmos.DrawWireSphere(GetStartPosition() + _visualTrm.forward * _castingRange, _casterRadius);
+        //    Gizmos.color = Color.white;
+        //}
 
         
     }
