@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-namespace Swift_Blade
+namespace Swift_Blade.Level
 {
     public enum ChestType //에 따라서 나올 아이템 확률 조작? (예정)
     {
@@ -10,113 +10,92 @@ namespace Swift_Blade
         Gold
     }
 
-    public class ChestManager : MonoBehaviour, IInteractable
+    public class Chest : MonoBehaviour, IInteractable
     {
         [SerializeField] private Transform playerTrm;
-
+        
         [SerializeField] private ItemOrb itemOrb;
         [SerializeField] private float shootAngle = -15f;
         [SerializeField] private float shootPower = 5f;
-
-        [Header("ParticleSet")]
-        [SerializeField] private int particleCount;
-
+        
         [SerializeField] private ItemTableSO itemTableSO;
-
+        
         [SerializeField] private Transform[] chestVisual;
+        
         private Transform chestLid;
-
         private ChestType chestType;
+        private Rigidbody rigidbody;
 
-        private void OnEnable()
+        private bool isOpen = false;
+        
+        private void Start()
         {
+            rigidbody = GetComponent<Rigidbody>();
+                        
             SetRandomChestType();
-            SetChestLidTrm();
         }
 
         private void SetRandomChestType()
         {
-            int i = 0;
-            foreach(Transform t in transform)
+            foreach(var t in chestVisual)
             {
-                chestVisual[i] = t;
-                chestVisual[i++].gameObject.SetActive(false);
+                t.gameObject.SetActive(false);
             }
-            //비주얼배열에 자식상자들넣어주기, 모두 셋엑티브팔스
-            
-            int n = Random.Range(0, chestVisual.Length - 1);
-
-            if (n == 0)
-            {
-                chestType = ChestType.Bronze;
-            }
-            else if (n == 1)
-            {
-                chestType = ChestType.Silver;
-            }
-            else if (n == 2)
-            {
-                chestType = ChestType.Gold;
-            }
-
+                        
+            int n = Random.Range(0, chestVisual.Length);
+            chestType = (ChestType)n;
             chestVisual[n].gameObject.SetActive(true);
+            chestLid = chestVisual[n].GetChild(0);
+            
         }
 
-        private void SetChestLidTrm()
+        private void OpenChest()
         {
-            if (chestType == ChestType.Bronze) chestLid = chestVisual[0].GetChild(0);
-            else if (chestType == ChestType.Silver) chestLid = chestVisual[1].GetChild(0);
-            else if (chestType == ChestType.Gold) chestLid = chestVisual[2].GetChild(0);
-        }
-
-        public void OpenChest()
-        {
-            OpenChestLid();
+            if (isOpen) return;
+            
+            isOpen = true;
+            
+            OpenChestAnimations();
             InstItemOrb();
             GetRandomItem();
         }
 
-        private void OpenChestLid()
+        private void OpenChestAnimations()
         {
-            Vector3 openLidAngle = new Vector3(-90, transform.eulerAngles.y, transform.eulerAngles.z);
-            chestLid.DORotate(openLidAngle, 0.5f);
-        }
+            //rigidbody.isKinematic = true; 
 
+            Vector3 openLidAngle = new Vector3(-90, transform.eulerAngles.y, transform.eulerAngles.z);
+            chestLid.DORotate(openLidAngle, 0.3f).SetEase(Ease.OutQuad).SetUpdate(UpdateType.Fixed);
+
+            rigidbody.DOJump(rigidbody.position + Vector3.up * 0.25f, 0.05f, 1, 0.15f);
+            rigidbody.DORotate(rigidbody.rotation.eulerAngles + new Vector3(5, 0, 0), 0.1f);
+            
+            //DOVirtual.DelayedCall(0.4f, () => rigidbody.isKinematic = false);
+        }
+        
         private void InstItemOrb()
         {
-            /*
-            for (int i = 0; i < particleCount; i++)
-            {
-                Vector3 spawnPos = transform.localPosition + new Vector3(i, 0.2f, 0);
-                ItemOrb orb = Instantiate(itemOrb, spawnPos, Quaternion.identity);
-
-                orb.ItemData = GetRandomItem();
-
-                float zAngle = (Vector3.forward * 360 * (i + 1) / particleCount).z;
-
-                orb.transform.eulerAngles = new Vector3(shootAngle, 0, zAngle);
-                orb.GetComponent<Rigidbody>().AddForce(transform.up * shootPower, ForceMode.Impulse);
-            }*/
             Vector3 spawnPos = transform.localPosition + new Vector3(0, 0.2f, 0);
             ItemOrb orb = Instantiate(itemOrb, spawnPos, Quaternion.identity);
             orb.transform.eulerAngles = new Vector3(shootAngle, 0, 0);
+            
             Vector3 shootForce = Vector3.up * shootPower + (playerTrm.position - transform.position) * (shootPower / 13);
             orb.GetComponent<Rigidbody>().AddForce(shootForce, ForceMode.Impulse);
         }
         private ItemDataSO GetRandomItem()
         {
             int itemCount = itemTableSO.itemTable.Count;
-            int radoamIndex = Random.Range(0, itemCount);
+            int randomIndex = Random.Range(0, itemCount);
 
-            return itemTableSO.itemTable[radoamIndex].itemData;
-
+            return itemTableSO.itemTable[randomIndex].itemData;
+            
             //InventoryManager.Instance.AddItemToEmptySlot(item.itemData);
             //인벤토리SO에 add엠티
         }
 
         public void Interact()
         {
-            Debug.Log("열려라참깨");
+            //Debug.Log("열려라참깨");
             OpenChest();
         }
 
