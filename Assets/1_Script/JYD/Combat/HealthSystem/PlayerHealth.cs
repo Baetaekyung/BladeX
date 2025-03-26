@@ -12,7 +12,6 @@ namespace Swift_Blade
     {
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
-      
         
         public static float _currentHealth;
         
@@ -44,7 +43,6 @@ namespace Swift_Blade
         {
             _healthStat = _statCompo.GetStat(StatType.HEALTH);
             _maxHealth = _healthStat.Value;
-            
             
             HealthUpdate();
         }
@@ -95,6 +93,7 @@ namespace Swift_Blade
             OnDeadEvent?.Invoke();
             isDead = true;
 
+            StatComponent.InitOnce = false;
             _currentHealth = 4; //기본 체력 4로 하드 코딩 해놓을게
             
             PopupManager.Instance.AllPopDown();

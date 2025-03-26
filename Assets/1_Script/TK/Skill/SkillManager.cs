@@ -14,10 +14,10 @@ namespace Swift_Blade
         [SerializeField] private List<SkillInventorySlot>  inv_slots;
         [SerializeField] private SkillSaveSO               skillSaveData;
         [SerializeField] private RectTransform             rootRect;
-        [SerializeField] private SkillInfoUI               infoUI;
         [SerializeField] private TextMeshProUGUI           maxSkillText;
         [SerializeField] private Vector2                   skillInfoOffset;
-
+        [SerializeField] private SkillInfoUI               infoUI;
+        
         public int currentSkillCount = 0;
         public int maxSkillCount = 4;
 
@@ -39,11 +39,16 @@ namespace Swift_Blade
             InitializeSlots();
         }
 
+        private void OnDisable()
+        {
+            SkillSlotBase.OnPointerEnterAction -= HandleCreateInfoUI;
+        }
+
         private void HandleCreateInfoUI(Vector2 screenPosition, SkillData skillData)
         {
             if (screenPosition == Vector2.zero || skillData == null)
             {
-                infoUI.SetSkillInfo(skillData);
+                infoUI.SetSkillInfo(null);
                 infoUI.gameObject.SetActive(false);
                 return;
             }

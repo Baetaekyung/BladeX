@@ -12,7 +12,7 @@ namespace Swift_Blade
         public static int UsedStatPoint = 0;
         public static event Action OnStatChanged;
         public static event Action OnHealthStatUp;
-        public static event Action OnHealthStatDown;
+        public static event Action<float> OnHealthStatDown;
 
         private static Dictionary<StatSO, int> _statRecords = new Dictionary<StatSO, int>();
         [SerializeField] private StatSO stat;
@@ -31,7 +31,10 @@ namespace Swift_Blade
 
         private void Start()
         {
+            stat = Player.Instance.GetEntityComponent<PlayerStatCompo>().GetStat(stat);
+
             SetStatInfoUI();
+            Player.level.StatPoint = 10;
         }
 
         private void OnDisable()
@@ -71,8 +74,14 @@ namespace Swift_Blade
 
         private void RecordAddedStat()
         {
-            if (!_statRecords.TryAdd(stat, 1))
+            if (!_statRecords.ContainsKey(stat))
+            {
+                _statRecords.Add(stat, 1);
+            }
+            else
+            {
                 _statRecords[stat] += 1;
+            }
         }
 
         public void InitializeStat()
@@ -92,7 +101,8 @@ namespace Swift_Blade
 
                 if (statRecord.Key.statType == StatType.HEALTH)
                 {
-                    OnHealthStatDown?.Invoke();
+                    Debug.Log(statRecord.Value * statRecord.Key.increaseAmount);
+                    OnHealthStatDown?.Invoke(statRecord.Value * statRecord.Key.increaseAmount);
                 }
             }
 

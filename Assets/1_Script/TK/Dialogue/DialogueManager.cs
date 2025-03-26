@@ -32,9 +32,6 @@ namespace Swift_Blade
         private void Update()
         {
             SkipDialogueMessage();
-
-            if (Input.GetKeyDown(KeyCode.L))
-                DoDialogue(testDialogue);
         }
 
         public DialogueManager DoDialogue(DialogueDataSO dialogueData)
