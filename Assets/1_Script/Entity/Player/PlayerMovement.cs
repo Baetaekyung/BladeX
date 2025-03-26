@@ -1,8 +1,4 @@
-using DG.Tweening;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -20,7 +16,7 @@ namespace Swift_Blade
         private float yVal;
 
         [Header("Collisin Settings")]
-        private float bottomYOffset = 0.4f; //const 0.4f
+        private const float bottomYOffset = 0.3f; //lower than 0.4
         private ContactPoint? lowerstContactPoint;
         private ContactPoint? lowestContactPointBottom;
 
@@ -90,7 +86,9 @@ namespace Swift_Blade
                 yVal += Time.fixedDeltaTime * gravitiy * gravitiyMultiplier;
             }
 
-            //UI_DebugPlayer.DebugText(5, lowestContactPointBottom.HasValue, "ONGROUND", DBG_UI_KEYS.Keys_PlayerMovement);
+            UI_DebugPlayer.DebugText(5, lowestContactPointBottom.HasValue, "ONGROUND", DBG_UI_KEYS.Keys_PlayerMovement);
+            //if (lowestContactPointBottom.HasValue)
+            //    Debug.DrawRay(lowestContactPointBottom.Value.point, Vector3.right, Color.magenta, 0.1f);
             //UI_DebugPlayer.DebugText(0, yVal, "yVal", DBG_UI_KEYS.Keys_PlayerMovement);
 
             lowerstContactPoint = null;
@@ -134,6 +132,7 @@ namespace Swift_Blade
             Vector3 result = input * speed + addition;
             result.y += yVal;
             controller.linearVelocity = result;
+
             //Debug.DrawRay(transform.position + Vector3.up * 0.5f, input, Color.cyan, 1);
         }
         public void AddForceFacingDirection(Vector3 force, float multiplier = 1)
@@ -146,7 +145,7 @@ namespace Swift_Blade
         public void Dash(Vector3 dir, float force)
         {
             Vector3 result = dir * force;
-            Debug.DrawRay(transform.position, result, Color.black, 1);
+            //Debug.DrawRay(transform.position, result, Color.black, 1);
             rollValue = 0;
             currentRollStamina = 0;
             DashVelocity = result;
@@ -194,12 +193,12 @@ namespace Swift_Blade
             }
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, transform.position + Vector3.up * bottomYOffset);
-            Vector3 pointYOffset = transform.position + Vector3.up * bottomYOffset;
-            Gizmos.DrawLine(pointYOffset, pointYOffset + Vector3.right);
-        }
+        //private void OnDrawGizmos()
+        //{
+        //    Gizmos.color = Color.red;
+        //    Vector3 pointYOffset = transform.position + Vector3.up * bottomYOffset;
+        //    Gizmos.DrawLine(transform.position, pointYOffset);
+        //    Gizmos.DrawRay(pointYOffset, Vector3.right);
+        //}
     }
 }

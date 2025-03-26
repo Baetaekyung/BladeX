@@ -13,6 +13,9 @@ namespace Swift_Blade.Combat.Caster
         [Space(10)] public UnityEvent parryEvents;
         public UnityEvent unParriableAttack;
         
+        private const float parryInterval = 0.5f;
+        private float lastParryTime;
+        
         public override bool Cast()
         {
             OnCastEvent?.Invoke();
@@ -28,7 +31,7 @@ namespace Swift_Blade.Combat.Caster
             
             if (isHit && hit.collider.TryGetComponent(out IDamageble health))
             {
-                ActionData actionData = new ActionData(hit.point, hit.normal, 1,transform , true);
+                ActionData actionData = new ActionData(hit.point, hit.normal, 1, true);
                 
                 if (CanCurrentAttackParry && hit.collider.TryGetComponent(out PlayerParryController parryController))
                 {
@@ -38,11 +41,14 @@ namespace Swift_Blade.Combat.Caster
                     float angle = Vector3.Angle(playerForward, attacker);
                     bool isLookingAtAttacker = angle < 70;*/
                     bool isLookingAtAttacker = true;
+                    bool canInterval = Time.time > lastParryTime + parryInterval;
                     
-                    if (parryController.CanParry() && isLookingAtAttacker)
+                    if (parryController.CanParry() && isLookingAtAttacker && canInterval)
                     {
                         parryEvents?.Invoke();//적 쪽
                         parryController.ParryEvents?.Invoke();//플레이어쪽
+                        
+                        lastParryTime = Time.time;
                     }
                     else
                     {

@@ -16,12 +16,14 @@ namespace Swift_Blade.FSM.States
         protected virtual bool BaseAllowAttackInput { get; } = true;
         protected virtual bool BaseAllowParryInput { get; } = true;
         protected virtual bool BaseAllowDashInput { get; } = true;
+        protected Vector3 GetResultVector => playerInput.CameraRotationOnlyY * playerInput.GetInputDirectionRaw;
 
-        private const float delayParry = 1;
-        private const float delayDash = 1.5f;
+        private const float delayParry = 0.8f;
+        private const float delayDash = 1f;
 
         private static float nextDelayTime_AllowParry;
         private static float nextDelayTime_AllowDash;
+
 
         protected BasePlayerState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
@@ -37,6 +39,8 @@ namespace Swift_Blade.FSM.States
         }
         public override void Update()
         {
+            if (PopupManager.Instance.IsRemainPopup) return;
+
             if (Input.GetKeyDown(KeyCode.Mouse0) && BaseAllowAttackInput)
                 OnAttackInput(EComboState.LightAttack);
             if (Input.GetKeyDown(KeyCode.Mouse1) && BaseAllowAttackInput)
@@ -47,26 +51,30 @@ namespace Swift_Blade.FSM.States
             if (Input.GetKeyDown(KeyCode.Space) && BaseAllowDashInput && playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f && playerMovement.CanRoll)
                 OnDashInput();
 
-            //if (Input.GetKeyDown(KeyCode.N))
-            //    GetOwnerFsm.ChangeState(PlayerStateEnum.Dead);
-
             //movement
             Quaternion CameraRotation = playerInput.CameraRotationOnlyY;
             Vector3 localInput = playerInput.GetInputDirectionRaw;
             Vector3 resultVector = CameraRotation * localInput;
-            player.GetPlayerMovement.InputDirection = resultVector;
+
+            UI_DebugPlayer.DebugText(0, resultVector, "res", DBG_UI_KEYS.Keys_PlayerMovement);
+            OnApplyMovement(resultVector);
 
             //animator
             Vector3 resultAnimatorInput = resultVector;
             anim_inputLocalLerp = Vector3.MoveTowards(anim_inputLocalLerp, resultAnimatorInput, Time.deltaTime * 8);
             Transform playerTransform = player.GetPlayerRenderer.GetPlayerVisualTrasnform;
             Vector3 anim_inputLocal = playerTransform.InverseTransformDirection(anim_inputLocalLerp);
-            Debug.DrawRay(Vector3.zero, anim_inputLocal, Color.red, 0.1f);
+            //Debug.DrawRay(Vector3.zero, anim_inputLocal, Color.red, 0.1f);
+
             player.GetPlayerAnimator.GetAnimator.SetFloat("X", anim_inputLocal.x);
-
             player.GetPlayerAnimator.GetAnimator.SetFloat("Z", anim_inputLocal.z);
-
-            UI_DebugPlayer.DebugText(7, anim_inputLocalLerp, "animLocalLerp");
+        }
+        /// <summary>
+        /// </summary>
+        /// <param name="resultVector">not normalized</param>
+        protected virtual void OnApplyMovement(Vector3 resultVector)
+        {
+            player.GetPlayerMovement.InputDirection = resultVector;
         }
         /// <summary>
         /// </summary>

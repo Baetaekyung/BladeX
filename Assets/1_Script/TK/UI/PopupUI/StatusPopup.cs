@@ -1,13 +1,22 @@
-using DG.Tweening;
-using Swift_Blade.Feeling;
+using System;
 using Swift_Blade.UI;
-using Unity.Cinemachine;
-using UnityEngine;
+
 
 namespace Swift_Blade
 {
     public class StatusPopup : PopupUI
     {
-        
+        private StatusUI statusUI;
+
+        private void Start()
+        {
+            statusUI = GetComponent<StatusUI>();
+        }
+
+        public override void Popup()
+        {
+            base.Popup();
+            statusUI.HandleInfoChange();
+        }
     }
 }

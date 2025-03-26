@@ -1,13 +1,14 @@
-using Swift_Blade.FSM;
-using Swift_Blade.FSM.States;
-using System;
-using System.Collections.Generic;
-using Swift_Blade.Combat;
 using Swift_Blade.Combat.Caster;
+using System.Collections.Generic;
+using Swift_Blade.FSM.States;
+using Swift_Blade.Combat;
+using Swift_Blade.Audio;
+using Swift_Blade.Skill;
+using Swift_Blade.FSM;
 using UnityEngine;
 using DG.Tweening;
-using Swift_Blade.Audio;
-using Random = UnityEngine.Random;
+using System;
+using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
@@ -26,26 +27,27 @@ namespace Swift_Blade
         public static Player Instance { get; private set; }
         public static event Action OnDead;
         public bool IsPlayerDead { get; private set; }
-
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
         private PlayerAttackState playerAttackState;
-        
+
         public static LevelStat level = new LevelStat();
-        
+
         private readonly RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
-        
+
         private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
         private GameObject interactable;
         private Tween playerInvincibleTween;
 
         [Header("General")]
+        [SerializeField] private Transform visualTransform;
         [SerializeField] private Transform playerTransform;
         [SerializeField] private Transform mousePosition;
         [SerializeField] private LayerMask lm_interactable;
 
+        [FormerlySerializedAs("audioCollection")]
         [Header("Audio")]
-        [SerializeField] private AudioSOCollection audioCollection;
+        [SerializeField] private AudioCollectionSO audioCollection;
 
         [Header("EventChannels")]
         [SerializeField] private EquipmentChannelSO onHitChannel;
@@ -61,14 +63,14 @@ namespace Swift_Blade
         [SerializeField] private AnimationParameterSO anim_hitStun;
 
         [SerializeField] private AnimationParameterSO anim_dbg;
-        
+
         [Header("Combo")]
         [SerializeField] protected List<AttackComboSO> comboList;
         public IReadOnlyList<AttackComboSO> GetComboList => comboList;
 
-        [Header("SceneManager")] 
+        [Header("SceneManager")]
         [SerializeField] private SceneManagerSO SceneManagerSO;
-        
+
         public void AddCombo(AttackComboSO attackComboSO)
         {
             comboList.Add(attackComboSO);
@@ -86,6 +88,9 @@ namespace Swift_Blade
         public PlayerDamageCaster GetPlayerDamageCaster => GetEntityComponent<PlayerDamageCaster>();
         public PlayerParryController GetPlayerParryController => GetEntityComponent<PlayerParryController>();
         public PlayerHealth GetPlayerHealth => GetEntityComponent<PlayerHealth>();
+        public PlayerSkillController GetSkillController => GetEntityComponent<PlayerSkillController>();
+        public Transform GetPlayerTransform => visualTransform;
+
         #endregion
 
         public class LevelStat
@@ -102,28 +107,32 @@ namespace Swift_Blade
                 sceneManager = sceneManagerSo;
                 sceneManager.LevelClearEvent += OnLevelClear;
             }
-            ~LevelStat()
-            {
-                sceneManager.LevelClearEvent -= OnLevelClear;
-            }
+            //~LevelStat()
+            //{
+            //    sceneManager.LevelClearEvent -= OnLevelClear;
+            //}
             private void OnLevelClear()
             {
                 const int maxRequiredExperience = 2;
                 Experience++;
-                                
+
                 if (Experience >= maxRequiredExperience)
                 {
-                    Experience = Experience - maxRequiredExperience;
+                    int m = Experience / maxRequiredExperience;
+                    Experience = Experience - m * maxRequiredExperience;
                     Level++;
-                    StatPoint += 3;
+                    StatPoint += 1;
                     OnLevelUp?.Invoke(this);
                 }
             }
-        }
 
+        }
+        private Quaternion d;
         protected override void Awake()
         {
             base.Awake();
+
+
             if (Instance == null)
                 Instance = this;
             level.Init(SceneManagerSO);
@@ -191,13 +200,26 @@ namespace Swift_Blade
 
             //if (Input.GetKeyDown(KeyCode.Z))
             //    AudioEmitter.Dbg2();
-            
+
             mousePosition.position = GetPlayerInput.GetMousePositionWorld;
+
+            //Vector3 rr = GetPlayerTransform.InverseTransformDirection(GetPlayerInput.GetInputDirectionRawRotated);
+            //Debug.DrawRay(Vector3.zero + Vector3.up * 0.7f, rr, Color.red);
+
+            d = GetPlayerTransform.rotation;
+            Quaternion originQuat = d;
+            d = Quaternion.Inverse(d);
+            Quaternion quat = d;
+            Vector3 rrr = quat * GetPlayerInput.GetInputDirectionRawRotated;
+            rrr.z = 0;
+            Vector3 finalRr = originQuat * rrr;
+            //Debug.DrawRay(Vector3.zero + Vector3.up * 0.9f, rrr, Color.red);
+            //Debug.DrawRay(Vector3.zero + Vector3.up * 1.2f, finalRr, Color.blue);
 
             UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
             UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
             UI_DebugPlayer.DebugText(2, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DAMAGE).Value, "atkBase");
-            UI_DebugPlayer.DebugText(3, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).Value, "dec");
+            //UI_DebugPlayer.DebugText(3, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).Value, "dec");
 
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -267,9 +289,9 @@ namespace Swift_Blade
             playerAttackState.ClearComboHistory();
         }
         public PlayerStateEnum GetCurrentState() => playerStateMachine.GetState();
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawWireSphere(playerTransform.position, 2);
-        }
+        //private void OnDrawGizmos()
+        //{
+        //    Gizmos.DrawWireSphere(playerTransform.position, 2);
+        //}
     }
 }

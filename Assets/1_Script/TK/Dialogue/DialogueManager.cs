@@ -13,7 +13,7 @@ namespace Swift_Blade
 
         private Coroutine _dialogueRoutine;
         private WaitForSeconds _waitForSeconds;
-        private StringBuilder _sb = new StringBuilder(2);
+        private StringBuilder _sb = new StringBuilder();
 
         #endregion
         
@@ -32,9 +32,6 @@ namespace Swift_Blade
         private void Update()
         {
             SkipDialogueMessage();
-
-            if (Input.GetKeyDown(KeyCode.L))
-                DoDialogue(testDialogue);
         }
 
         public DialogueManager DoDialogue(DialogueDataSO dialogueData)

@@ -29,11 +29,15 @@ namespace Swift_Blade
         [SerializeField] private TextMeshProUGUI itemName;
         [SerializeField] private TextMeshProUGUI itemDescription;
         [SerializeField] private TextMeshProUGUI itemTypeInfo;
+
+        [SerializeField] private TextMeshProUGUI  titleText;
+        [SerializeField] private SlotChangeButton inventoryButton;
+        [SerializeField] private SlotChangeButton skillButton;
+        [SerializeField] private GameObject       inventoryUI;
+        [SerializeField] private GameObject       skillUI;
         
         //-------------------------------------------------------------
         
-        [HideInInspector] 
-        public bool  isSlotChanged = false; 
         private bool _isDragging = false;
 
         [SerializeField] private List<ItemSlot>  itemSlots = new List<ItemSlot>();
@@ -46,12 +50,22 @@ namespace Swift_Blade
         public static PlayerInventory Inventory { get; set; }
         public static List<ItemDataSO> EquipmentDatas = new List<ItemDataSO>();
         public static bool IsAfterInit = false;
+        
+        [SerializeField] private PlayerInventory playerInv;
 
+        private void OnEnable()
+        {
+            ChangeToInventory();
+        }
         
         private void Start()
         {
             if (IsAfterInit == false)
-                return;
+            {
+                Inventory = playerInv.Clone();
+                Instance.InitializeSlots();
+                IsAfterInit = true;
+            }
             
             InitializeSlots();
         }
@@ -104,23 +118,14 @@ namespace Swift_Blade
                 Inventory.itemInventory[i].ItemSlot = emptySlot;
             }
 
-            QuickSlotItem = _itemTable[_currentItemIndex];
-            UpdateQuickSlotUI(QuickSlotItem);
+            if (_itemTable.Count != 0)
+            {
+                QuickSlotItem = _itemTable[_currentItemIndex];
+                UpdateQuickSlotUI(QuickSlotItem);
+            }
             
             UpdateAllSlots();
         }
-
-        // private void Start()
-        // {
-        //     Player.Instance.GetEntityComponent<PlayerHealth>()
-        //         .OnDeadEvent.AddListener(Inventory.Initialize);
-        // }
-        //
-        // private void OnDisable()
-        // {
-        //     Player.Instance.GetEntityComponent<PlayerHealth>()
-        //         .OnDeadEvent.AddListener(Inventory.Initialize);
-        // }
 
         private void Update()
         {
@@ -147,8 +152,6 @@ namespace Swift_Blade
 
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                quickSlotUI.transform.DOKill();
-                quickSlotUI.transform.DOShakeScale(0.2f, Vector3.one * 1.03f);
                 ChangeQuickSlotItem();
             }
         }
@@ -175,16 +178,16 @@ namespace Swift_Blade
         {
             for (int i = 0; i < itemSlots.Count; i++)
             {
-                //빈 슬롯이면 empty 이미지
                 if (itemSlots[i].GetSlotItemData() == null
+                    && itemSlots[i] is EquipmentSlot equipSlot)
+                {
+                    itemSlots[i].SetItemImage(equipSlot.GetInfoIcon);
+                }
+                //빈 슬롯이면 empty 이미지
+                else if (itemSlots[i].GetSlotItemData() == null
                     && itemSlots[i] is not EquipmentSlot)
                 {
                     itemSlots[i].SetItemImage(null);
-                }
-                else if (itemSlots[i].GetSlotItemData() == null
-                         && itemSlots[i] is EquipmentSlot equipSlot)
-                {
-                    itemSlots[i].SetItemImage(equipSlot.GetInfoIcon);
                 }
                 else //아이템이 존재하면 itemImage 넣어주기
                 {
@@ -198,6 +201,22 @@ namespace Swift_Blade
         public void UpdateInfoUI(ItemDataSO itemData)
         {
             SetInfoUI(itemData);
+        }
+
+        public void ChangeToInventory()
+        {
+            inventoryUI.SetActive(true);
+            skillUI.SetActive(false);
+
+            titleText.text = "인벤토리";
+        }
+
+        public void ChangeToSkill()
+        {
+            skillUI.SetActive(true);
+            inventoryUI.SetActive(false);
+            
+            titleText.text = "스킬 슬롯";
         }
 
         private void SetInfoUI(ItemDataSO itemData)
@@ -299,6 +318,7 @@ namespace Swift_Blade
 
         public int GetItemCount(ItemDataSO itemData)
         {
+            Debug.Log(itemData);
             if (_itemDatas.ContainsKey(itemData))
             {
                 return _itemDatas[itemData];

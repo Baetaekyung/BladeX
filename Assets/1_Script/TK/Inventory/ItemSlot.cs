@@ -107,11 +107,11 @@ namespace Swift_Blade
                 return;
             }
 
-            itemImage.color = Color.white;
-            itemImage.sprite = sprite;
-
             if (this is not EquipmentSlot)
             {
+                itemImage.color = Color.white;
+                itemImage.sprite = sprite;
+                
                 if (_itemDataSO.itemType == ItemType.EQUIPMENT)
                 {
                     countText.text = string.Empty;
@@ -123,6 +123,19 @@ namespace Swift_Blade
                 {
                     SetItemImage(null);
                     countText.text = string.Empty;
+                }
+            }
+            else if (this is EquipmentSlot equipmentSlot)
+            {
+                if (sprite == equipmentSlot.GetInfoIcon)
+                {
+                    itemImage.color = new Color(1,1,1, 0.2f);
+                    itemImage.sprite = sprite;
+                }
+                else
+                {
+                    itemImage.color = Color.white;
+                    itemImage.sprite = sprite;
                 }
             }
         }

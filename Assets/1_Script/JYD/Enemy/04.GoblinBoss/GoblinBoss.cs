@@ -14,11 +14,14 @@ namespace Swift_Blade.Enemy.Boss.Goblin
         [SerializeField] private int minSummonCount;
         [SerializeField] private float summonRadius;
         private List<GoblinEnemyInBoss> summons;
+
+        private GoblinBossVFXPlayer goblinBossVFXPlayer;
         
         protected override void Start()
         {
             base.Start();
             summons = new List<GoblinEnemyInBoss>();
+            goblinBossVFXPlayer = GetComponent<GoblinBossVFXPlayer>();
         }
 
         public void Summon()
@@ -34,6 +37,8 @@ namespace Swift_Blade.Enemy.Boss.Goblin
                 var newGoblin = Instantiate(summonPrefab, spawnPosition, Quaternion.identity);
                 newGoblin.Init(this);
 
+                goblinBossVFXPlayer.PlaySpawnEffect(spawnPosition);
+                
                 summons.Add(newGoblin);
             }
         }

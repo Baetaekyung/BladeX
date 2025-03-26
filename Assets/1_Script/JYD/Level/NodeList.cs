@@ -16,7 +16,7 @@ public enum NodeType
     
     //level Up
     Point,
-    Challange,
+    Challenge,
     Store,
     
     //boss
@@ -101,7 +101,7 @@ public class NodeDictionary : IEnumerable<Node>
             if (IsValidScene(selectedNode.nodeName))
                 return selectedNode;
 
-            Debug.LogError("sceneName이 sceneList에 없습니다!");
+            Debug.LogError($"{selectedNode.nodeName}는 sceneList에 없습니다!");
             return null;
         }
 
@@ -113,7 +113,7 @@ public class NodeDictionary : IEnumerable<Node>
     {
         List<NodeType> nodes = new List<NodeType>();
         
-        if (currentNodeIndex % 6 == 0)
+        if (currentNodeIndex % 3 == 0)
         {
             nodes.Add(NodeType.Boss);
         }
@@ -121,7 +121,7 @@ public class NodeDictionary : IEnumerable<Node>
         {
             nodes.Add(NodeType.Point);
             nodes.Add(NodeType.Store);
-            nodes.Add(NodeType.Challange);
+            nodes.Add(NodeType.Challenge);
         }
         else
         {
@@ -187,7 +187,7 @@ namespace Swift_Blade.Level
                     case NodeType.Point:
                         item.SetPortalPrefab(pointPortal);
                         break;
-                    case NodeType.Challange:
+                    case NodeType.Challenge:
                         item.SetPortalPrefab(challangePortal);
                         break;
                     case NodeType.Store:

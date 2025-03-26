@@ -21,7 +21,14 @@ namespace Swift_Blade
         {
             InitPopups();
         }
-        
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            //PopDownInput();
+            
+        }
+
         private void InitPopups()
         {
             foreach (var popupUI in popups.Values)
@@ -32,9 +39,23 @@ namespace Swift_Blade
 
         private void Update()
         {
+            // if (IsRemainPopup)
+            // {
+            //     if (Player.Instance?.GetPlayerMovement != null)
+            //     {
+            //         Player.Instance.GetPlayerMovement.AllowInputMove = false;
+            //     }
+            // }
+            // else
+            // {
+            //     if (Player.Instance?.GetPlayerMovement != null)
+            //     {
+            //         Player.Instance.GetPlayerMovement.AllowInputMove = true;
+            //     }
+            // }
+            
             OpenCloseInventory();
             PopDownInput();
-            StatusOpen();
 
             // if (Keyboard.current.tKey.wasPressedThisFrame
             //     && !DialogueManager.Instance.IsDialogOpen)
@@ -53,24 +74,6 @@ namespace Swift_Blade
                 && !DialogueManager.Instance.IsDialogueOpen)
             {
                 PopDown();
-            }
-        }
-
-        private void StatusOpen()
-        {
-            if (popups.ContainsKey(PopupType.Status) == false)
-                return;
-            
-            if (Keyboard.current.oKey.wasPressedThisFrame)
-            {
-                if (GetRemainPopup(PopupType.Status) != null)
-                {
-                    PopDown(PopupType.Status);
-                }
-                else
-                {
-                    PopUp(PopupType.Status);
-                }
             }
         }
 

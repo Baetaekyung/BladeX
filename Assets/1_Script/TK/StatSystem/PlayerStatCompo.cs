@@ -5,27 +5,16 @@ using UnityEngine.Rendering;
 
 namespace Swift_Blade
 {
-    public class PlayerStatCompo : StatComponent, IEntityComponent
+    public class PlayerStatCompo : StatComponent, IEntityComponent, IEntityComponentStart
     {
-        [SerializeField] private StyleMeter styleMeter;
-        //todo why ref here? 어디서 쓰고 있어서 일단 놔둠;;
-        private Player _player;
-        
         public void EntityComponentAwake(Entity entity)
         {
             Initialize();
-
-            _player = entity as Player;
         }
 
-        private void Start()
+        public void EntityComponentStart(Entity entity)
         {
-            _player.GetEntityComponent<PlayerHealth>().OnDeadEvent.AddListener(Initialize);
-        }
-
-        private void OnDestroy()
-        {
-            _player.GetEntityComponent<PlayerHealth>().OnDeadEvent.RemoveListener(Initialize);
+            
         }
     }
 }
