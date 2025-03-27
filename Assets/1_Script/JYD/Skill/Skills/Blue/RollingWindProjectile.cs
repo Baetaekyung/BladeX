@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Skill
 {
-    [CreateAssetMenu(fileName = "RollingWindProjectileSkill", menuName = "SO/Skill/Rolling/WindProjectile")]
+    [CreateAssetMenu(fileName = "RollingWindProjectileSkill", menuName = "SO/Skill/Blue/WindProjectile")]
     public class RollingWindProjectile : SkillData
     {
         [SerializeField] private int skillCount;
@@ -15,11 +15,12 @@ namespace Swift_Blade.Skill
         public override void Initialize()
         {
             MonoGenericPool<WindProjectileParticle>.Initialize(skillParticle);
-           
         }
         
         public override void UseSkill(Player player, Transform[] targets = null)
         {
+            if(CheckSkill() == false)return;
+            
             if (directions == null || directions.Length != skillCount)
             {
                 directions[0] = player.GetPlayerTransform.forward;

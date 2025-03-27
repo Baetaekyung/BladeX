@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -8,6 +9,9 @@ namespace Swift_Blade
     {
         [SerializeField] protected StatSO[] _stats;
         protected static StatSO[] _statDatas;
+
+        public static Dictionary<ColorType, float> colorModValues = new();
+
         public static bool InitOnce = false;
 
         public event Action OnStatChanged;
@@ -63,21 +67,21 @@ namespace Swift_Blade
             return findStat;
         }
 
-        public void SetBaseValue(StatSO stat, float value)
+        public void SetColorValue(StatSO stat, int value)
         {
-            GetStat(stat).BaseValue = value;
+            GetStat(stat).ColorValue = value;
             OnStatChanged?.Invoke();
         }
         
-        public float GetBaseValue(StatSO stat)
-            => GetStat(stat).BaseValue;
+        public float GetColorValue(StatSO stat)
+            => GetStat(stat).ColorValue;
 
-        public float IncreaseBaseValue(StatSO stat, float value)
+        public float IncreaseColorValue(StatSO stat, int value)
         {
-            GetStat(stat).BaseValue += value;
+            GetStat(stat).ColorValue += value;
             OnStatChanged?.Invoke();
             
-            return GetStat(stat).BaseValue;
+            return GetStat(stat).ColorValue;
         }
 
         public void AddModifier(StatSO stat, object key, float value)

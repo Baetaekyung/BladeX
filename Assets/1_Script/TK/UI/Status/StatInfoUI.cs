@@ -51,7 +51,7 @@ namespace Swift_Blade
                 return;
             }
 
-            if (Mathf.Approximately(stat.BaseValue, stat.MaxValue))
+            if (Mathf.Approximately(stat.ColorValue, stat.MaxValue))
             {
                 Debug.Log("스텟이 최대이다.");
                 return;
@@ -59,7 +59,7 @@ namespace Swift_Blade
 
             Player.level.StatPoint -= 1;
             UsedStatPoint++;
-            stat.BaseValue += stat.increaseAmount;
+            //stat.ColorValue += stat.increaseAmount;
 
             if (stat.statType == StatType.HEALTH)
             {
@@ -97,7 +97,7 @@ namespace Swift_Blade
             Player.level.StatPoint += UsedStatPoint;
             foreach (var statRecord in _statRecords)
             {
-                statRecord.Key.BaseValue -= statRecord.Value * statRecord.Key.increaseAmount;
+                //statRecord.Key.ColorValue -= statRecord.Value * statRecord.Key.increaseAmount;
 
                 if (statRecord.Key.statType == StatType.HEALTH)
                 {
@@ -120,12 +120,12 @@ namespace Swift_Blade
 
             if (stat.statType != StatType.HEALTH)
             {
-                _sb.Append((Mathf.Clamp(stat.BaseValue, stat.MinValue, stat.MaxValue)).ToString("0.00"))
+                _sb.Append((Mathf.Clamp(stat.ColorValue, stat.MinValue, stat.MaxValue)).ToString("0.00"))
                     .Append(" / ").Append(stat.MaxValue);
             }
             else
             {
-                _sb.Append((Mathf.Clamp(Mathf.RoundToInt(stat.BaseValue), stat.MinValue, stat.MaxValue))
+                _sb.Append((Mathf.Clamp(Mathf.RoundToInt(stat.ColorValue), stat.MinValue, stat.MaxValue))
                         .ToString("N"))
                         .Append(" / ").Append(stat.MaxValue);
             }

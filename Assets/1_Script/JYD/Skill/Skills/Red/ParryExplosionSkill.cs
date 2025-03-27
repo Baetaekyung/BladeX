@@ -5,15 +5,14 @@ using UnityEngine;
 
 namespace Swift_Blade.Skill
 {
-    [CreateAssetMenu(fileName = "ParryExplosionSkill", menuName = "SO/Skill/Parry/Explosion")]
+    [CreateAssetMenu(fileName = "ParryExplosionSkill", menuName = "SO/Skill/Red/ParryExplosion")]
     public class ParryExplosionSkill : SkillData
     {
         public int skillDamage;
         public Vector2 explosionAdjustment;
         public float skillRadius;
         public LayerMask whatIsTarget;
-        
-        [Range(0,100)]public float random;
+                
         
         public override void Initialize()
         {
@@ -33,8 +32,7 @@ namespace Swift_Blade.Skill
             
             foreach (var item in targets)
             {
-                float randomValue = Random.Range(0, 100);
-                if (randomValue < random && item.TryGetComponent(out BaseEnemyHealth health))
+                if (CheckSkill() && item.TryGetComponent(out BaseEnemyHealth health))
                 {
                     ActionData actionData = new ActionData();
                     actionData.damageAmount = skillDamage;

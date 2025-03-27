@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
@@ -20,19 +17,21 @@ namespace Swift_Blade
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]
     public class StatSO : ScriptableObject
     {
-        public delegate void ValueChangeHandler(StatSO stat, float current, float prev);
-        public ValueChangeHandler OnValueChange;
-        
-        public StatType statType;
-        public string statName;
+        public StatType  statType;
+        public ColorType colorType;
+        public string    statName;
         [TextArea(4, 5)] public string description;
         public string displayName;
-        [SerializeField] private float _baseValue, _minValue, _maxValue;
+        private int   _colorValue;
+        [SerializeField] private float _minValue, _maxValue, _baseValue;
         public float increaseAmount;
+        public float colorMultiplier; //if color value == 1, value increase 1 * colorMultiplier
+
+        public float debugVal;
         
         private Dictionary<object, float> _modifyValueByKeys = new Dictionary<object, float>();
         
-        public float _modifiedValue = 0;
+        public float modifiedValue = 0;
 
         public float MaxValue
         {
@@ -46,22 +45,22 @@ namespace Swift_Blade
             set => _minValue = value;
         }
 
-        public float Value => Mathf.Clamp((_baseValue + _modifiedValue), MinValue, MaxValue);
+        public float Value => Mathf.Clamp((GetCalculatedValue(ColorValue) + modifiedValue), MinValue, MaxValue);
         
         public bool IsMax => Mathf.Approximately(Value, MaxValue);
         public bool IsMin => Mathf.Approximately(Value, MinValue);
 
-        public float BaseValue
+        public int ColorValue
         {
-            get => _baseValue;
-            set => _baseValue = Mathf.Clamp(value, MinValue, MaxValue);
+            get => _colorValue;
+            set => _colorValue = value;
         }
 
         public void AddModifier(object key, float value)
         {
             if (_modifyValueByKeys.ContainsKey(key)) return;
 
-            _modifiedValue += value;
+            modifiedValue += value;
             _modifyValueByKeys.Add(key, value);
         }
 
@@ -69,7 +68,7 @@ namespace Swift_Blade
         {
             if (_modifyValueByKeys.TryGetValue(key, out float value))
             {
-                _modifiedValue -= value; 
+                modifiedValue -= value; 
                 _modifyValueByKeys.Remove(key);
             }
         }
@@ -77,8 +76,21 @@ namespace Swift_Blade
         public void ClearModifier()
         {
             _modifyValueByKeys.Clear();
-            _modifiedValue = 0;
+            modifiedValue = 0;
         }
+
+        private float GetCalculatedValue(int colorVal)
+        {
+            if(statType == StatType.HEALTH)
+            {
+                float amount = (colorVal * colorMultiplier);
+
+                return (Mathf.RoundToInt(amount / 1) + _baseValue); //(amount / 1) is make 5.38 to 5
+            }
+
+            return ((colorVal * colorMultiplier) + _baseValue);
+        }
+
 
         public StatSO Clone()
         {
