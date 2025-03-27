@@ -18,6 +18,9 @@ namespace Swift_Blade.FSM.States
         private Vector3 movementVectorInterpolated;
         private Quaternion initialQuaternion;
         private Quaternion initialInverseQuaternion;
+
+        private float timeEntered = 0;
+        public float TimeSinceEntered => Time.time - timeEntered;
         public PlayerRollState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
             playerRenderer = player.GetPlayerRenderer;
@@ -34,11 +37,13 @@ namespace Swift_Blade.FSM.States
         public override void Enter()
         {
             base.Enter();
+            timeEntered = Time.time;
             player.GetPlayerRenderer.LookAtDirection(playerInput.GetInputDirectionRawRotated);
+            player.GetPlayerMovement.SetAngleMultiplier(PlayerMovement.EAngleMultiplier.Slow);
             //Vector3 worldEuler = playerRenderer.GetPlayerVisualTrasnform.eulerAngles;
             //worldEuler.x = 0;
             //worldEuler.z = 0;
-            movementVectorInterpolated = player.GetPlayerTransform.forward;
+            movementVectorInterpolated = Vector3.zero;//player.GetPlayerTransform.forward;
             initialInverseQuaternion = player.GetPlayerTransform.rotation;
             initialQuaternion = initialInverseQuaternion;
             initialInverseQuaternion = Quaternion.Inverse(initialInverseQuaternion);
@@ -64,35 +69,26 @@ namespace Swift_Blade.FSM.States
 
             player.GetSkillController.UseSkill(SkillType.Rolling);
         }
-        public override void Update()
-        {
-            base.Update();
-
-        }
         protected override void OnApplyMovement(Vector3 resultVector)
         {
-            //Vector3 targetVector = resultVector.normalized;
-            //Debug.DrawRay(playerMovement.transform.position + Vector3.up * 0.1f, movementVectorInterpolated, Color.red, 0.1f);
-            //Debug.DrawRay(playerMovement.transform.position + Vector3.up * 0.2f, targetVector, Color.blue, 0.1f);
-            //UI_DebugPlayer.DebugText(3, movementVectorInterpolated, "mvInt", DBG_UI_KEYS.Keys_PlayerMovement);
-            //UI_DebugPlayer.DebugText(4, movementVectorInterpolated.magnitude, "length", DBG_UI_KEYS.Keys_PlayerMovement);
+            Vector3 localInput = initialInverseQuaternion * resultVector;
+            Vector3 inputClamped = localInput;
+            inputClamped.z = 0;
+            float movementPenalty = Mathf.Abs(inputClamped.x) * 1.2f;
+            inputClamped.Normalize();
 
-            //Transform visualTransform = player.GetPlayerTransform;
+            inputClamped = initialQuaternion * inputClamped;
 
-            //Vector3 result = visualTransform.InverseTransformDirection(resultVector);
+            // 0 ~ 0.4 (roll anim time)
+            float delta = TimeSinceEntered * 2.5f;
+            //delta = Mathf.Min(delta, 1);//doesntmatter
+            float multiplier = Mathf.Lerp(0.25f, 0.1f, delta);
 
-            //initialInverseQuaternion = player.GetPlayerTransform.rotation;
-            //initialQuaternion = initialInverseQuaternion;
-            //initialInverseQuaternion = Quaternion.Inverse(initialInverseQuaternion);
-            Vector3 result2 = initialInverseQuaternion * player.GetPlayerInput.GetInputDirectionRawRotated;
-            result2.z = 0;
-            Debug.DrawRay(Vector3.zero + Vector3.up * 1.5f, result2, Color.blue);
-            result2 = player.GetPlayerTransform.TransformDirection(result2);  
-            Debug.DrawRay(Vector3.zero + Vector3.up * 1.3f, result2, Color.red);
-            Vector3 targetVector = result2;
-            movementVectorInterpolated = Vector3.RotateTowards(movementVectorInterpolated, targetVector, 2f * Time.deltaTime, 6);
-            Debug.DrawRay(Vector3.zero + Vector3.up * 1, movementVectorInterpolated, Color.magenta);
-            base.OnApplyMovement(Vector3.zero);
+            Vector3 targetVector = inputClamped;
+            movementVectorInterpolated = Vector3.MoveTowards(movementVectorInterpolated, targetVector, multiplier * Time.deltaTime);
+            Vector3 inversedForward = -player.GetPlayerTransform.forward;
+            playerMovement.SetAdditionalVelocity(inversedForward * movementPenalty);
+            base.OnApplyMovement(movementVectorInterpolated);
         }
         protected override void OnAttackInput(EComboState previousState, EComboState nonImeediateState = EComboState.None)
         {
@@ -118,6 +114,7 @@ namespace Swift_Blade.FSM.States
             //player.GetPlayerMovement.AllowInputMove = true;
             //anim_inputLocalLerp = Vector3.zero;
             //playerHealth.IsPlayerInvincible = false;
+            player.GetPlayerMovement.SetAngleMultiplier(PlayerMovement.EAngleMultiplier.Normal);
             OnRollEnd?.Invoke();
             base.Exit();
         }

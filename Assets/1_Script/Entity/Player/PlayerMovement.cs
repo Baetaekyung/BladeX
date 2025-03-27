@@ -29,7 +29,23 @@ namespace Swift_Blade
         private float currentRollStamina;
 
         [Header("Angle Multiplier")]
-        [SerializeField] private float angleMultiplier = 20f;
+        [SerializeField] private float angleMultiplier = ANGLE_MULTIPLIER_NORMAL;
+        private const float ANGLE_MULTIPLIER_SLOW = 4f;
+        private const float ANGLE_MULTIPLIER_NORMAL = 12;
+        public enum EAngleMultiplier
+        {
+            Slow,
+            Normal
+        }
+
+        public void SetAngleMultiplier(EAngleMultiplier angleOptions)
+        {
+            if (angleOptions == EAngleMultiplier.Slow)
+            {
+                angleMultiplier = ANGLE_MULTIPLIER_SLOW;
+            }
+            else angleMultiplier = ANGLE_MULTIPLIER_NORMAL;
+        }
 
         [Header("Debug")]
         [SerializeField] private float db_speedMulti;
