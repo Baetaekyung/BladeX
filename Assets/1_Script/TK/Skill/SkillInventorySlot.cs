@@ -1,5 +1,4 @@
 using Swift_Blade.Skill;
-using Swift_Blade.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -32,12 +31,12 @@ namespace Swift_Blade
             if (skillData == null)
                 return;
 
-            var slot = SkillManager.Instance.GetEmptySkillSlot(skillData.type);
+            var slot = SkillManager.Instance.GetEmptySkillSlot(skillData.SkillType);
 
             //½½·ÔÀÌ °¡µæÂü
             if (slot == default)
             {
-                string typeToKorean = skillData.type switch
+                string typeToKorean = skillData.SkillType switch
                 {
                     SkillType.Attack  => "°ø°Ý",
                     SkillType.Dead    => "»ç¸Á",
