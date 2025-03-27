@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine.Rendering.Universal;
 
 namespace Swift_Blade
 {
@@ -15,14 +14,15 @@ namespace Swift_Blade
         BLACK //RED + BLUE + GREEN
     }
 
-    //I feel sad cause it is dont need to!
     public static class ColorUtils
     {
+        private static List<ColorType> remainColors = new List<ColorType>();
+
         public static ColorType GetColor(List<ColorType> colors)
         {
-            int redColor = 0;
+            int redColor   = 0;
             int greenColor = 0;
-            int blueColor = 0;
+            int blueColor  = 0;
 
             foreach (var color in colors)
             {
@@ -45,26 +45,40 @@ namespace Swift_Blade
 
         public static List<ColorType> GetCotainColors(ColorType myType)
         {
+            remainColors.Clear();
+
             switch (myType)
             {
                 case ColorType.RED:
-                    return new List<ColorType>() { ColorType.RED };
+                    remainColors.Add(ColorType.RED);
+                    break;
                 case ColorType.GREEN:
-                    return new List<ColorType>() { ColorType.GREEN };
+                    remainColors.Add(ColorType.GREEN);
+                    break;
                 case ColorType.BLUE:
-                    return new List<ColorType>() { ColorType.BLUE };
+                    remainColors.Add(ColorType.BLUE);
+                    break;
                 case ColorType.YELLOW:
-                    return new List<ColorType>() { ColorType.RED, ColorType.GREEN };
+                    remainColors.Add(ColorType.RED);
+                    remainColors.Add(ColorType.GREEN);
+                    break;
                 case ColorType.TURQUOISE:
-                    return new List<ColorType>() { ColorType.BLUE, ColorType.GREEN };
+                    remainColors.Add(ColorType.BLUE);
+                    remainColors.Add(ColorType.GREEN);
+                    break;
                 case ColorType.PURPLE:
-                    return new List<ColorType>() { ColorType.RED, ColorType.BLUE };
+                    remainColors.Add(ColorType.RED);
+                    remainColors.Add(ColorType.BLUE);
+                    break;
                 case ColorType.BLACK:
-                    return new List<ColorType>() { ColorType.RED, ColorType.GREEN, ColorType.BLUE };
+                    remainColors.Add(ColorType.RED);
+                    remainColors.Add(ColorType.GREEN);
+                    remainColors.Add(ColorType.BLUE);
+                    break;
             }
 
             //if do not input type get empty list.
-            return default;
+            return remainColors;
         }
 
         public static ColorType GetRGBColorType((int r, int g, int b) rgb)
@@ -82,6 +96,23 @@ namespace Swift_Blade
             };
 
             return type;
+        }
+
+        public static (int r, int g, int b) GetRGBColor(ColorType colorType)
+        {
+            (int, int, int) rgb = colorType switch
+            {
+                ColorType.RED       => (1, 0, 0),
+                ColorType.GREEN     => (0, 1, 0),
+                ColorType.BLUE      => (0, 0, 1),
+                ColorType.YELLOW    => (1, 1, 0),
+                ColorType.PURPLE    => (1, 0, 1),
+                ColorType.TURQUOISE => (0, 1, 1),
+                ColorType.BLACK     => (1, 1, 1),
+                _ => throw new Exception("rgb each value must be 1 or 0")
+            };
+
+            return rgb;
         }
     }
 }

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Swift_Blade
 {
@@ -13,54 +11,77 @@ namespace Swift_Blade
         public int colorValue;
     }
 
-    public class PlayerStatCompo : StatComponent, IEntityComponent, IEntityComponentStart
+    public class PlayerStatCompo : StatComponent, IEntityComponent
     {
-        public List<ColorStat> defaultColorStat = new List<ColorStat>();
+        public List<ColorStat>        defaultColorStat = new List<ColorStat>();
         public static List<ColorStat> colorStats = new List<ColorStat>();
 
         private static bool InitOnce = false;
 
+        public event Action ColorChangedAction;
+
         public void EntityComponentAwake(Entity entity)
         {
             if(InitOnce == false)
-            {
                 colorStats = defaultColorStat;
-            }
 
             Initialize();
-        }
-
-        public void EntityComponentStart(Entity entity)
-        {
-            
         }
 
         protected override void Initialize()
         {
             base.Initialize();
 
-            foreach(StatSO stat in _stats)
-            {
-                foreach(ColorStat colorStat in colorStats)
-                {
-                    if(ColorUtils.GetCotainColors(colorStat.colorType).Contains(stat.colorType))
-                    {
-                        //hmm...no way..
+            UpdateColorValueToStat();
+        }
 
+        private void UpdateColorValueToStat()
+        {
+            //Init value
+            foreach (var stat in _stats)
+                stat.ColorValue = 0;
+
+            //hmm...no way..
+            foreach (var stat in _stats)
+            {
+                foreach (ColorStat colorStat in colorStats)
+                {
+                    if (ColorUtils.GetCotainColors(colorStat.colorType).Contains(stat.colorType))
                         stat.ColorValue += colorStat.colorValue;
-                    }
                 }
             }
 
+#if UNITY_EDITOR
+
             foreach(StatSO stat in _stats)
-            {
-                stat.debugVal = stat.Value;
-            }
+                stat.dbgValue = stat.Value;
+
+#endif
         }
 
-        public int GetColorStat(ColorType colorType)
+        public void IncreaseColorValue(ColorType colorType, int increaseAmount)
         {
-            return _stats.FirstOrDefault(stat => stat.colorType == colorType).ColorValue;
+            var colorStat = GetColorStat(colorType);
+
+            colorStat.colorValue += increaseAmount;
+            ColorChange();
         }
+
+        public void DecreaseColorValue(ColorType colorType, int decreaseAmount)
+        {
+            var colorStat = GetColorStat(colorType);
+
+            colorStat.colorValue -= decreaseAmount;
+            ColorChange();
+        }
+
+        private void ColorChange()
+        {
+            UpdateColorValueToStat();
+            ColorChangedAction?.Invoke();
+        }
+
+        public int GetColorStatValue(ColorType colorType) => GetColorStat(colorType).colorValue;
+        public ColorStat GetColorStat(ColorType colorType) => colorStats.FirstOrDefault(stat => stat.colorType == colorType);
     }
 }

@@ -6,36 +6,62 @@ namespace Swift_Blade
 {
     public class ShopNPC : NPC
     {
+        private readonly int talk1AnimationHash = Animator.StringToHash("Talk1");
+        private readonly int talk2AnimationHash = Animator.StringToHash("Talk2");
+
         [SerializeField] private ItemTableSO shopItems;
-        [SerializeField] private Shop shop;
+        [SerializeField] private Shop        shop;
+        [SerializeField] private int         itemCount = 6;
+
+        private Animator animator;
         
         private void Awake()
         {
-            shopItems = shopItems.Clone();
-            _isRewarded = false;
+            animator = transform.GetChild(0).GetComponent<Animator>();
+
+            shopItems = shopItems.GetClonedItemTable();
         }
 
-        [ContextMenu("Interact")]
         public override void Interact()
         {
             TalkWithNPC(HandleOpenShop);
+            PlayRandomAnimation();
         }
 
         protected override void TalkWithNPC(Action dialogueEndEvent = null)
         {
-            DialogueManager.Instance.DoDialogue(dialogueData).Subscribe(HandleDialogueEndEvent);
+            DialogueManager.Instance.StartDialogue(dialogueData).Subscribe(HandleDialogueEndEvent);
             
             void HandleDialogueEndEvent()
             {
                 dialogueEndEvent?.Invoke();
                 OnDialogueEndEvent?.Invoke();
             }
+
+            animator.Play("Talk");
         }
 
         private void HandleOpenShop()
         {
             PopupManager.Instance.PopUp(PopupType.Shop);
-            shop.SetItems(shopItems);
+            ClearAnimation();
+
+            shop.SetItems(shopItems, itemCount);
+        }
+
+        private void PlayRandomAnimation()
+        {
+            ClearAnimation();
+            int randAnimation = UnityEngine.Random.Range(0, 2);
+            int hash = randAnimation == 0 ? talk1AnimationHash : talk2AnimationHash;
+
+            animator.SetBool(hash, true);
+        }
+
+        private void ClearAnimation()
+        {
+            animator.SetBool(talk1AnimationHash, false);
+            animator.SetBool(talk2AnimationHash, false);
         }
     }
 }

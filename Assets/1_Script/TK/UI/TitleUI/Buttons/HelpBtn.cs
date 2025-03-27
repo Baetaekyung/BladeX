@@ -6,7 +6,7 @@ namespace Swift_Blade.UI
     {
         protected override void ClickEvent()
         {
-            PopupManager.Instance.PopUp(PopupType.Text);
+            PopupManager.Instance.LogMessage("아직 구현되지 않은 기능");
         }
     }
 }

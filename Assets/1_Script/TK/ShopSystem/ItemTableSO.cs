@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Swift_Blade
 {
     [Serializable]
-    public class ItemSet
+    public class ItemGoods
     {
         public ItemDataSO itemData;
+
         public int itemCount;
         public int itemCost;
     }
@@ -17,24 +17,23 @@ namespace Swift_Blade
     [CreateAssetMenu(fileName = "ItemTableSO", menuName = "SO/Item/Table")]
     public class ItemTableSO : ScriptableObject
     {
-        public List<ItemSet> itemTable = new List<ItemSet>();
-        public int shopItemCount;
+        public List<ItemGoods> itemTable = new List<ItemGoods>();
 
-        public ItemTableSO Clone()
+        public ItemTableSO GetClonedItemTable()
         {
             ItemTableSO table = Instantiate(this);
 
             return table;
         }
 
-        public List<ItemSet> GetRandomItemTable()
+        public List<ItemGoods> GetRandomItemTable(int count)
         {
-            ItemTableSO tableSo = Clone();
-            List<ItemSet> randomTable = new List<ItemSet>();
+            ItemTableSO tableSo = GetClonedItemTable();
+            List<ItemGoods> randomTable = new List<ItemGoods>();
             
             int current = 0;
             
-            while (shopItemCount > current)
+            while (count > current)
             {
                 var index = Random.Range(0, tableSo.itemTable.Count);
                 

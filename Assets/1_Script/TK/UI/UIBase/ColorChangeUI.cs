@@ -23,7 +23,6 @@ namespace Swift_Blade
             _defaultColor = _targetImage.color;
         }
 
-
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (_isPointerEnter is true)

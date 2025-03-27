@@ -9,22 +9,27 @@ namespace Swift_Blade
     public class HoverUI : MonoBehaviour
         ,IPointerEnterHandler, IPointerExitHandler
     {
-        [FormerlySerializedAs("_hoverTargetSize")] [SerializeField] protected float animationScale;
-        [SerializeField, Tooltip("1 / 애니메이션 속도")] protected float _hoverAnimationSpeed;
+        [SerializeField] 
+        protected float animationScale;
+        [SerializeField, Tooltip("1 / 애니메이션 속도")]
+        protected float _hoverAnimationSpeed;
+
         protected RectTransform _rectTrm;
-        protected Tween _currentTween;
-        private bool _isHovering;
+        protected Tween         _currentTween;
+
+        private bool    _isHovering;
         private Vector3 _originScale;
 
         protected virtual void Awake()
         {
             _rectTrm = GetComponent<RectTransform>();
+
             _originScale = transform.localScale;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (_isHovering is true)
+            if (_isHovering == true)
                 return;
             
             if (_currentTween != null)
@@ -43,7 +48,7 @@ namespace Swift_Blade
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (_isHovering is false)
+            if (_isHovering == false)
                 return;
             
             if (_currentTween != null)
