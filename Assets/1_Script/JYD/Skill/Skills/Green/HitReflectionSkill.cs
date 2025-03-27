@@ -6,10 +6,9 @@ using UnityEngine.Serialization;
 
 namespace Swift_Blade.Skill
 {
-    [CreateAssetMenu(fileName = "HitReflectionSkill", menuName = "SO/Skill/Hit/Reflection")]
+    [CreateAssetMenu(fileName = "HitReflectionSkill", menuName = "SO/Skill/Green/HitReflection")]
     public class HitReflectionSkill : SkillData
     {
-        [SerializeField][Range(1,100)] private float random;
         [SerializeField] private float knockbackForce;
         [SerializeField] private LayerMask whatIsTarget;
         private float skillRadius = 10;
@@ -41,8 +40,7 @@ namespace Swift_Blade.Skill
                 }
             }
             
-            float randomValue = Random.Range(0f, 100f); 
-            if (randomValue < random)
+            if (CheckSkill())
             {
                 if (closeTarget != null && closeTarget.TryGetComponent(out BaseEnemyHealth health))
                 {

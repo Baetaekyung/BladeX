@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class DisplayLevel : MonoBehaviour
+    public class DisplayObject : MonoBehaviour
     {
         [SerializeField] private float moveDistance = 2f;
         [SerializeField] private float moveSpeed = 1f;
         private Vector3 startPos;
-
+        
         void Start()
         {
             startPos = transform.position;

@@ -86,7 +86,7 @@ namespace Swift_Blade
             {
                 for (ushort i = 0; i < saveDatas.skillSlotData.Count; i++)
                 {
-                    SkillType type = saveDatas.skillSlotData[i].type;
+                    SkillType type = saveDatas.skillSlotData[i].SkillType;
                     GetEmptySkillSlot(type).SetSlotData(saveDatas.skillSlotData[i]);
                 }
             }
