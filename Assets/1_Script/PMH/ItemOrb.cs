@@ -14,7 +14,7 @@ namespace Swift_Blade
         [SerializeField] private float duration;
         
         [SerializeField] private Material[] colors;
-        private MeshRenderer renderer;
+        private MeshRenderer itemRenderer;
         
         private void Start()
         {
@@ -45,10 +45,10 @@ namespace Swift_Blade
 
         public void SetColor(ColorType color)
         {
-            if(renderer == null)
-                renderer = GetComponent<MeshRenderer>();
+            if(itemRenderer == null)
+                itemRenderer = GetComponent<MeshRenderer>();
             
-            renderer.material = colors[(int)color];
+            itemRenderer.material = colors[(int)color];
         }
         
     }

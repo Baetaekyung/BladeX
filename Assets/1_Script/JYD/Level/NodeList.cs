@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Swift_Blade.Level.Portal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum NodeType
@@ -164,8 +165,11 @@ namespace Swift_Blade.Level
         [SerializeField] private Portal.Portal eventPortal;
         [SerializeField] private Portal.Portal storePortal;
         [SerializeField] private Portal.Portal pointPortal;
-        [SerializeField] private Portal.Portal challangePortal;
+        [SerializeField] private Portal.Portal challengePortal;
         [SerializeField] private Portal.Portal bossPortal;
+        
+        [Header("Chest")]
+        [SerializeField] private Chest chest;
         
         private int currentNodeIndex = 0;
          
@@ -188,7 +192,7 @@ namespace Swift_Blade.Level
                         item.SetPortalPrefab(pointPortal);
                         break;
                     case NodeType.Challenge:
-                        item.SetPortalPrefab(challangePortal);
+                        item.SetPortalPrefab(challengePortal);
                         break;
                     case NodeType.Store:
                         item.SetPortalPrefab(storePortal);
@@ -220,6 +224,11 @@ namespace Swift_Blade.Level
         public string GetNodeName(NodeType nodeType)
         {
             return nodeDictionary[nodeType];
+        }
+
+        public Chest GetChest()
+        {
+            return chest;
         }
     }
 }

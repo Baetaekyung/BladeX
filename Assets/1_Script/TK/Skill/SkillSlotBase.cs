@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using Swift_Blade.Skill;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Swift_Blade

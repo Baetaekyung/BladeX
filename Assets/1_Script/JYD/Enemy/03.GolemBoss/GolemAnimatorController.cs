@@ -21,11 +21,11 @@ namespace Swift_Blade.Enemy.Boss.Golem
         
         private GolemBossCaster damageCaster;
 
-        protected void Start()
+        protected override void Start()
         {
             base.Start();
             damageCaster = caster as GolemBossCaster;
-
+            
             MonoGenericPool<GroundCrack>.Initialize(groundCrackSO);
         }
         

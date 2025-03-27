@@ -12,7 +12,7 @@ namespace Swift_Blade.Feeling
         [SerializeField] private SerializableDictionary<CameraShakeType, CameraShakeSO> impulseDictionary;
         private Coroutine _cameraShakeCoroutine;
         private CameraShakePriority _currentPriority = CameraShakePriority.LAST;
-
+        
         private Action _onCompleteEvent = null;
         
         public CameraShakeManager DoShake(CameraShakeType shakeType, CameraShakePriority priority = CameraShakePriority.NONE)
@@ -56,5 +56,7 @@ namespace Swift_Blade.Feeling
         {
             _onCompleteEvent = onComplete;
         }
+                
+        
     }
 }

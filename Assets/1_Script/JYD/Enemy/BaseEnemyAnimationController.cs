@@ -34,7 +34,7 @@ namespace Swift_Blade.Enemy
             caster = GetComponentInChildren<ICasterAble>();
         }
         
-        protected void Start()
+        protected virtual void Start()
         {
             float animationSpeed = Random.Range(minAnimationSpeed, maxAnimationSpeed);
             Animator.SetFloat("Speed" ,animationSpeed);

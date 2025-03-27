@@ -13,7 +13,8 @@ namespace Swift_Blade.Feeling
         Strong,
         PlayerAttack,
         PlayerDamage,
-        PlayerParry
+        PlayerParry,
+        EnterDoor
     }
     
     /// <summary>

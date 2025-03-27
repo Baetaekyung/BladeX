@@ -6,25 +6,23 @@ namespace Swift_Blade.Pool
     public class WindProjectileParticle : ParticlePoolAble<WindProjectileParticle>
     {
         private Vector3 direction;
-        private Rigidbody rigidbody;
+        private Rigidbody windRigidbody;
         [SerializeField] private float speed;
-        
-        
-
+                
         public override void OnPop()
         {
             base.OnPop();
-            if(rigidbody == null)
-                rigidbody = GetComponent<Rigidbody>();
-                
-            rigidbody.linearVelocity = Vector3.zero;
-            rigidbody.angularVelocity = Vector3.zero;
+            if(windRigidbody == null)
+                windRigidbody = GetComponent<Rigidbody>();
+            
+            windRigidbody.linearVelocity = Vector3.zero;
+            windRigidbody.angularVelocity = Vector3.zero;
         }
         
         protected override void Update()
         {
             base.Update();
-            rigidbody.linearVelocity = direction * speed;
+            GetComponent<Rigidbody>().linearVelocity = direction * speed;
             
         }
 
