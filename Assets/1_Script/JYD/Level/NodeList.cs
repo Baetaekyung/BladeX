@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Swift_Blade.Level.Portal;
+using Swift_Blade.Level.Door;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum NodeType
@@ -31,16 +30,16 @@ public class Node
 {
     public NodeType nodeType;
     public string nodeName;
-    private Portal portalPrefab;
+    private Door doorPrefab;
 
-    public void SetPortalPrefab(Portal prefab)
+    public void SetPortalPrefab(Door prefab)
     {
-        portalPrefab = prefab;
+        doorPrefab = prefab;
     }
 
-    public Portal GetPortalPrefab()
+    public Door GetPortalPrefab()
     {
-        return portalPrefab;
+        return doorPrefab;
     }
 }
 
@@ -161,12 +160,12 @@ namespace Swift_Blade.Level
         [SerializeField] private Node[] nodelist;
         private NodeDictionary nodeDictionary;
         
-        [SerializeField] private Portal.Portal expPortal;
-        [SerializeField] private Portal.Portal eventPortal;
-        [SerializeField] private Portal.Portal storePortal;
-        [SerializeField] private Portal.Portal pointPortal;
-        [SerializeField] private Portal.Portal challengePortal;
-        [SerializeField] private Portal.Portal bossPortal;
+        [SerializeField] private Door.Door expDoor;
+        [SerializeField] private Door.Door eventDoor;
+        [SerializeField] private Door.Door storeDoor;
+        [SerializeField] private Door.Door pointDoor;
+        [SerializeField] private Door.Door challengeDoor;
+        [SerializeField] private Door.Door bossDoor;
         
         [Header("Chest")]
         [SerializeField] private Chest chest;
@@ -183,22 +182,22 @@ namespace Swift_Blade.Level
                 switch (item.nodeType)
                 {
                     case NodeType.Exp:
-                        item.SetPortalPrefab(expPortal);
+                        item.SetPortalPrefab(expDoor);
                         break;
                     case NodeType.Event:
-                        item.SetPortalPrefab(eventPortal);
+                        item.SetPortalPrefab(eventDoor);
                         break;
                     case NodeType.Point:
-                        item.SetPortalPrefab(pointPortal);
+                        item.SetPortalPrefab(pointDoor);
                         break;
                     case NodeType.Challenge:
-                        item.SetPortalPrefab(challengePortal);
+                        item.SetPortalPrefab(challengeDoor);
                         break;
                     case NodeType.Store:
-                        item.SetPortalPrefab(storePortal);
+                        item.SetPortalPrefab(storeDoor);
                         break;
                     case NodeType.Boss:
-                        item.SetPortalPrefab(bossPortal);
+                        item.SetPortalPrefab(bossDoor);
                         break;
                     case NodeType.None:
                         break;
