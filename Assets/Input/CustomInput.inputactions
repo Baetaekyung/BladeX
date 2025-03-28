@@ -1,5 +1,5 @@
 {
-    "name": "Controls",
+    "name": "CustomInput",
     "maps": [
         {
             "name": "Player",
@@ -9,6 +9,15 @@
                     "name": "Movement",
                     "type": "Value",
                     "id": "9b0ed88b-8017-4686-8117-2ef73845fb86",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MousePos",
+                    "type": "Value",
+                    "id": "e7ab56ff-30a7-4f73-a19d-4f0b6e4a8770",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -208,6 +217,17 @@
                     "processors": "",
                     "groups": ";KeyboardAndMouse",
                     "action": "Attack2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c62c7981-ec79-4ef3-8c60-2450625f877f",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardAndMouse",
+                    "action": "MousePos",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
