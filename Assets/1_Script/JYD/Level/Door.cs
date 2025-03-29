@@ -23,7 +23,7 @@ namespace Swift_Blade.Level.Door
         [SerializeField] private Transform door;
         [SerializeField] private CinemachineCamera cinemachineCamera;
         
-        private string sceneName;
+        [SerializeField] private string sceneName;
         
         private void Start()
         {

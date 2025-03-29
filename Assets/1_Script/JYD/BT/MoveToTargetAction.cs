@@ -73,9 +73,9 @@ public class MoveToTargetAction : Action
         
         //Debug.DrawRay(start, direction * 100, Color.red);
         
-        if (Physics.Raycast(start, direction.normalized,out  RaycastHit hit,direction.magnitude, whatIsObstacle))
+        if (Physics.Raycast(start, direction.normalized,direction.magnitude, whatIsObstacle))
         {
-            Debug.Log(hit.collider.gameObject.name);
+            //Debug.Log(hit.collider.gameObject.name);
             return false;
         }
         

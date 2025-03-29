@@ -87,7 +87,8 @@ namespace Swift_Blade
         public PlayerHealth GetPlayerHealth => GetEntityComponent<PlayerHealth>();
         public PlayerSkillController GetSkillController => GetEntityComponent<PlayerSkillController>();
         public Transform GetPlayerTransform => visualTransform;
-
+        public PlayerStatCompo GetPlayerStat => GetEntityComponent<PlayerStatCompo>();
+        
         #endregion
 
         public class LevelStat

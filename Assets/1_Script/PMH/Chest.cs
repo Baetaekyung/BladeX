@@ -61,7 +61,9 @@ namespace Swift_Blade.Level
         {
             if (isOpen) return;
             isOpen = true;
-
+            
+            gameObject.layer = LayerMask.NameToLayer("Default");
+            
             ShinyParticle shinyParticle = MonoGenericPool<ShinyParticle>.Pop();
             shinyParticle.transform.position = shinyParticleTrm.position;
             
