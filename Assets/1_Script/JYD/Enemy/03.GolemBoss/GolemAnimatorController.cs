@@ -1,10 +1,10 @@
-using DG.Tweening;
+using UnityEngine.Animations.Rigging;
 using Swift_Blade.Combat.Caster;
 using Swift_Blade.Enemy.Throw;
 using Swift_Blade.Feeling;
 using Swift_Blade.Pool;
-using UnityEngine.Animations.Rigging;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Swift_Blade.Enemy.Boss.Golem
 {
@@ -21,11 +21,11 @@ namespace Swift_Blade.Enemy.Boss.Golem
         
         private GolemBossCaster damageCaster;
 
-        protected void Start()
+        protected override void Start()
         {
             base.Start();
             damageCaster = caster as GolemBossCaster;
-
+            
             MonoGenericPool<GroundCrack>.Initialize(groundCrackSO);
         }
         

@@ -12,7 +12,7 @@ namespace Swift_Blade.Enemy.Boss.Reaper
         protected override void Start()
         {
             base.Start();
-            collider = GetComponent<Collider>();
+            enemyCollider = GetComponent<Collider>();
             _reaperAnimatorController = baseAnimationController as ReaperBossAnimatorController;;
         }
 

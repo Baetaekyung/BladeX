@@ -12,14 +12,14 @@ namespace Swift_Blade.Feeling
         private const float DEFAULT_CAMERA_FOV = 46f; //기본 FOV
 
         [Header("포커스 할 카메라")]
-        [SerializeField] private CinemachineCamera _camera;
+        [SerializeField]
+        private CinemachineCamera _camera;
         private CinemachineCamera _targetCamera;
         
         [Header("코루틴 변수들")]
         private Coroutine _focusRoutine;
-        private readonly WaitForEndOfFrame _waitFrame = new(); //코루틴 최적화 변수
 
-        private Action _onCompleteEvent;
+        private event Action _onCompleteEvent;
 
         private void Start()
         {
@@ -57,13 +57,10 @@ namespace Swift_Blade.Feeling
         }
 
         //포커스 실행
-        public CameraFocusManager DoFocus(CameraFocusSO focusData)
+        public CameraFocusManager StartFocus(CameraFocusSO focusData)
         {
             if (_focusRoutine != null) //코루틴이 현재 실행중이면
-            {
                 StopCoroutine(_focusRoutine); //코루틴 중지하고
-                _targetCamera.Lens.FieldOfView = DEFAULT_CAMERA_FOV; //기본 FOV로 변경
-            }
 
             _focusRoutine = StartCoroutine(FocusRoutine(focusData)); //포커스 진행
 
@@ -81,8 +78,8 @@ namespace Swift_Blade.Feeling
             float focusProgress = 0; //포커스 진행도
 
             //FOV (클 수록 멀리보고, 작을 수록 가까이 본다)
-            var lensFOV = DEFAULT_CAMERA_FOV;
-            var currentFOV = 0f;
+            float lensFOV = _targetCamera.Lens.FieldOfView;
+            float currentFOV = 0f;
 
             //클 수록 멀리 보기 때문에 플레이어 쪽으로 당기면 -, 아니면 +이다.
             var targetFOV = focusData.isFront
@@ -94,10 +91,9 @@ namespace Swift_Blade.Feeling
                 focusProgress += focusData.increaseSpeed * Time.deltaTime;
                 currentFOV = Mathf.Lerp(lensFOV, targetFOV, focusProgress);
                 _targetCamera.Lens.FieldOfView = currentFOV;
-                yield return _waitFrame;
+                yield return null;
             }
-
-            _targetCamera.Lens.FieldOfView = targetFOV; //focusProgress가 1이 아닐 수도 있으니 마지막에 대입
+            _targetCamera.Lens.FieldOfView = targetFOV; //focusProgress가 1이 아닐 수도 있으니 마지막에
 
             yield return focusData.FocusWait; //포커스 지속시간 동안 지속
 
@@ -108,15 +104,14 @@ namespace Swift_Blade.Feeling
             else //아니면 포커스 속도에 따라서 변경
             {
                 focusProgress = 0; //시간 초기화
+
                 while (focusProgress < 1)
                 {
                     focusProgress += focusData.decreaseSpeed * Time.deltaTime;
-                    currentFOV = Mathf.Lerp(currentFOV, lensFOV, focusProgress);
+                    currentFOV = Mathf.Lerp(currentFOV, DEFAULT_CAMERA_FOV, focusProgress);
                     _targetCamera.Lens.FieldOfView = currentFOV;
-                    yield return _waitFrame;
+                    yield return null;
                 }
-
-                //혹시 모르니까 마지막에 원래 사이즈로 변경하기
                 _targetCamera.Lens.FieldOfView = DEFAULT_CAMERA_FOV;
             }
 

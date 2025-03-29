@@ -1,20 +1,17 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 public enum SkillType
-    {
-        Attack,
-        Rolling,
-        Parry,
-        Hit,
-        Dead
-    }
-
-
-    namespace Swift_Blade.Skill
+{
+    Attack,
+    Rolling,
+    Parry,
+    Hit,
+    Dead
+}
+namespace Swift_Blade.Skill
     {
         public class PlayerSkillController : MonoBehaviour, IEntityComponent,IEntityComponentStart
         {
@@ -71,9 +68,9 @@ public enum SkillType
             {
                 if (slotCount >= maxSlotCount) return;
                 
-                if (skillEvents.ContainsKey(skillData.type))
+                if (skillEvents.ContainsKey(skillData.SkillType))
                 {
-                    skillEvents[skillData.type] += skillData.UseSkill;
+                    skillEvents[skillData.SkillType] += skillData.UseSkill;
                     currentSkillList.Add(skillData);
                     ++slotCount;
                     
@@ -83,9 +80,9 @@ public enum SkillType
 
             public void RemoveSkill(SkillData skillData)
             {
-                if (skillEvents.ContainsKey(skillData.type) && skillEvents[skillData.type] != null)
+                if (skillEvents.ContainsKey(skillData.SkillType) && skillEvents[skillData.SkillType] != null)
                 {
-                    skillEvents[skillData.type] -= skillData.UseSkill;
+                    skillEvents[skillData.SkillType] -= skillData.UseSkill;
                     currentSkillList.Remove(skillData);
                     --slotCount;
                 }
@@ -101,7 +98,6 @@ public enum SkillType
             
             
         }
-    
 }
         
 

@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
@@ -15,84 +12,106 @@ namespace Swift_Blade
         MOVESPEED,
         DASH_INVINCIBLE_TIME,
         PARRY_CHANCE,
+        CRITICAL_CHANCE,
+        CRITICAL_DAMAGE
     }
     
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]
     public class StatSO : ScriptableObject
     {
-        public delegate void ValueChangeHandler(StatSO stat, float current, float prev);
-        public ValueChangeHandler OnValueChange;
-        
-        public StatType statType;
-        public string statName;
-        [TextArea(4, 5)] public string description;
-        public string displayName;
-        [SerializeField] private float _baseValue, _minValue, _maxValue;
-        public float increaseAmount;
-        
-        private Dictionary<object, float> _modifyValueByKeys = new Dictionary<object, float>();
-        
-        public float _modifiedValue = 0;
+        public StatType  statType;
+        public ColorType colorType;
 
+        [TextArea(4, 5)]
+        public string description;
+        public string statName;
+        public string displayName;
+        private int   _colorValue;
+
+        [SerializeField] private float _minValue;
+        [SerializeField] private float _maxValue;
+        [SerializeField] private float _baseValue;
+
+        public float increaseAmount;
+        public float colorMultiplier; //if color value == 1, value increase 1 * colorMultiplier
+        public float modifiedValue = 0;
+        public float dbgValue = 0;
+        
+        private Dictionary<object, float> modifyValueByKeys = new Dictionary<object, float>();
+
+        public int ColorValue
+        {
+            get => _colorValue;
+            set => _colorValue = value;
+        }
+        
         public float MaxValue
         {
             get => _maxValue;
             set => _maxValue = value;
         }
-
         public float MinValue
         {
             get => _minValue;
             set => _minValue = value;
         }
-
-        public float Value => Mathf.Clamp((_baseValue + _modifiedValue), MinValue, MaxValue);
+        public float Value => Mathf.Clamp((GetCalculatedValue(ColorValue) + modifiedValue), MinValue, MaxValue);
         
         public bool IsMax => Mathf.Approximately(Value, MaxValue);
         public bool IsMin => Mathf.Approximately(Value, MinValue);
 
-        public float BaseValue
-        {
-            get => _baseValue;
-            set => _baseValue = Mathf.Clamp(value, MinValue, MaxValue);
-        }
-
         public void AddModifier(object key, float value)
         {
-            if (_modifyValueByKeys.ContainsKey(key)) return;
+            if (modifyValueByKeys.ContainsKey(key))
+                return;
 
-            _modifiedValue += value;
-            _modifyValueByKeys.Add(key, value);
+            modifiedValue += value;
+            modifyValueByKeys.Add(key, value);
         }
 
         public void RemoveModifier(object key)
         {
-            if (_modifyValueByKeys.TryGetValue(key, out float value))
+            if (modifyValueByKeys.TryGetValue(key, out float value))
             {
-                _modifiedValue -= value; 
-                _modifyValueByKeys.Remove(key);
+                modifiedValue -= value; 
+                modifyValueByKeys.Remove(key);
             }
         }
 
         public void ClearModifier()
         {
-            _modifyValueByKeys.Clear();
-            _modifiedValue = 0;
+            modifyValueByKeys.Clear();
+            modifiedValue = 0;
         }
+
+        private float GetCalculatedValue(int colorVal)
+        {
+            if(statType == StatType.HEALTH)
+            {
+                float amount = colorVal * colorMultiplier;
+
+                return Mathf.RoundToInt(amount / 1) + _baseValue; //(amount / 1) is make 5.38 to 5
+            }
+
+            return (colorVal * colorMultiplier) + _baseValue;
+        }
+
 
         public StatSO Clone()
         {
             StatSO statSo = Instantiate(this);
 
             Dictionary<object, float> modTemp = new();
-            foreach (var mod in _modifyValueByKeys)
+
+            foreach (var mod in modifyValueByKeys)
             {
-                object modeKey = mod.Key;
+                var   modeKey   = mod.Key;
                 float modeValue = mod.Value;
-                modTemp.Add(modeKey,modeValue);
+
+                modTemp.Add(modeKey, modeValue);
             }
 
-            statSo._modifyValueByKeys = modTemp;
+            statSo.modifyValueByKeys = modTemp;
             
             return statSo;
         }

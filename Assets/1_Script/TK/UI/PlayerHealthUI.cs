@@ -10,9 +10,10 @@ namespace Swift_Blade.UI
     public class PlayerHealthUI : MonoBehaviour
     {
         private PlayerHealth _playerHealth;
+
         [SerializeField] private RectTransform healthUI;
-        [SerializeField] private GameObject fullHealthPrefab;
-        [SerializeField] private GameObject burnHealthPrefab;
+        [SerializeField] private GameObject    fullHealthPrefab;
+        [SerializeField] private GameObject    burnHealthPrefab;
 
         private List<GameObject> _healthIcons;
 
@@ -35,8 +36,34 @@ namespace Swift_Blade.UI
 
                 Player.Instance.GetEntityComponent<PlayerStatCompo>().OnStatChanged += SetHealthUI;
                 
-                SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth._currentHealth);
+                SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth.CurrentHealth);
             }
+        }
+
+        private void OnDestroy()
+        {
+            if (_playerHealth != null)
+            {
+                _playerHealth.OnHitEvent.RemoveListener(HandleSetHealthUI);
+                _playerHealth.OnHealthUpdateEvent -= SetHealthUI;
+
+                Player.Instance.GetEntityComponent<PlayerStatCompo>().OnStatChanged -= SetHealthUI;
+
+                StatInfoUI.OnHealthStatUp -= SetHealthUIIfStatUp;
+                StatInfoUI.OnHealthStatDown -= SetHealthUIIfStatDown;
+            }
+        }
+
+        private void SetHealthUIIfStatUp(float increaseAmount)
+        {
+            if (_playerHealth == null)
+            {
+                Debug.Log("Player health compo is null, PlayerHealthUI.cs line: 35");
+                return;
+            }
+
+            PlayerHealth.CurrentHealth += increaseAmount;
+            SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth.CurrentHealth);
         }
 
         private void SetHealthUIIfStatDown(float decreaseAmount)
@@ -47,22 +74,8 @@ namespace Swift_Blade.UI
                 return;
             }
 
-            PlayerHealth._currentHealth -= decreaseAmount;
-            SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth._currentHealth);
-        }
-
-        private void OnDestroy()
-        {
-            if (_playerHealth != null)
-            {
-                _playerHealth.OnHitEvent.RemoveListener(HandleSetHealthUI);
-                _playerHealth.OnHealthUpdateEvent -= SetHealthUI;
-                
-                Player.Instance.GetEntityComponent<PlayerStatCompo>().OnStatChanged -= SetHealthUI;
-
-                StatInfoUI.OnHealthStatUp -= SetHealthUIIfStatUp;
-                StatInfoUI.OnHealthStatDown -= SetHealthUIIfStatDown;
-            }
+            PlayerHealth.CurrentHealth -= decreaseAmount;
+            SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth.CurrentHealth);
         }
 
         private void HandleSetHealthUI(ActionData actionData)
@@ -74,17 +87,6 @@ namespace Swift_Blade.UI
             }
             
             SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth);
-        }
-        
-        private void SetHealthUIIfStatUp()
-        {
-            if (_playerHealth == null)
-            {
-                Debug.Log("Player health compo is null, PlayerHealthUI.cs line: 35");
-                return;
-            }
-            
-            SetHealthUI(_playerHealth.GetHealthStat.Value, ++PlayerHealth._currentHealth);
         }
         
         private void SetHealthUI()

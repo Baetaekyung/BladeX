@@ -1,10 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
+using Swift_Blade.Level.Door;
+using System.Collections;
 using Swift_Blade.Enemy;
 using Swift_Blade.Level;
-using Swift_Blade.Level.Portal;
 using Swift_Blade.Pool;
 using UnityEngine;
 
@@ -50,8 +49,8 @@ namespace Swift_Blade
                 Node[] node = nodeList.GetNode();
                 for (int i = 0; i < node.Length; i++)
                 {
-                     Portal portal = Instantiate(node[i].GetPortalPrefab() , portalTrm[i].position,Quaternion.identity);
-                     portal.SetScene(node[i].nodeName);
+                     Door door = Instantiate(node[i].GetPortalPrefab() , portalTrm[i].position,Quaternion.identity);
+                     door.SetScene(node[i].nodeName);
                 }
             }
         }

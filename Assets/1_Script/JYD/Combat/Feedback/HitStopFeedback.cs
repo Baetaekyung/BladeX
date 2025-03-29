@@ -10,7 +10,7 @@ namespace Swift_Blade.Combat.Feedback
         public override void PlayFeedback()
         {
             
-            HitStopManager.Instance.DoHitStop(hitStopData);
+            HitStopManager.Instance.StartHitStop(hitStopData);
         }
 
         public override void ResetFeedback()

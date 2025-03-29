@@ -42,15 +42,17 @@ namespace Swift_Blade
         private void InitializeFPS()
         {
             fpsDropdown.onValueChanged.AddListener(HandleFPSChanged);
+
             fpsDropdown.value = PlayerPrefs.GetInt(FPSKey, 2);
         }
 
         private void HandleFullScreenChanged(bool isOn)
         {
             Screen.fullScreenMode = isOn ?
-                FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+                FullScreenMode.FullScreenWindow :
+                FullScreenMode.Windowed;
             
-            PlayerPrefs.SetInt(FullScreenKey, Screen.fullScreen ? 1 : 0);
+            PlayerPrefs.SetInt(FullScreenKey, isOn ? 1 : 0);
         }
         
         private void HandleResolutionChanged(int index)

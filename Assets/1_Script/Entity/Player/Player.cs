@@ -49,9 +49,6 @@ namespace Swift_Blade
         [Header("Audio")]
         [SerializeField] private AudioCollectionSO audioCollection;
 
-        [Header("EventChannels")]
-        [SerializeField] private EquipmentChannelSO onHitChannel;
-
         [Header("Anim_Param")]
         [SerializeField] private AnimationTriggers animEndTrigger;
         [SerializeField, Space(10)] private AnimationParameterSO anim_idle;
@@ -191,7 +188,7 @@ namespace Swift_Blade
             GetEntityComponent<PlayerDamageCaster>().OnCastDamageEvent.AddListener(
                 (action) =>
                 {
-                    onHitChannel.RaiseEvent(this);
+                    //onHitChannel.RaiseEvent(this);
                 });
         }
         private void Update()

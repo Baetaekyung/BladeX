@@ -1,11 +1,29 @@
+using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade
 {
     public class ItemOrb : MonoBehaviour
     {
         [SerializeField] private ItemTableSO itemTables;
-        public ItemDataSO ItemData;
+        [SerializeField] private ItemDataSO ItemData;
+
+        [SerializeField] private float size;
+        [SerializeField] private float duration;
+        
+        [SerializeField] private Material[] colors;
+        private MeshRenderer itemRenderer;
+        
+        private void Start()
+        {
+            transform.DOScale(size,0.5f);
+        }
+
+        private void OnDestroy()
+        {
+            DOTween.Kill(gameObject);
+        }
 
         private void Collected()
         {
@@ -23,5 +41,14 @@ namespace Swift_Blade
                 Destroy(gameObject);
             }
         }
+
+        public void SetColor(ColorType color)
+        {
+            if(itemRenderer == null)
+                itemRenderer = GetComponent<MeshRenderer>();
+            
+            itemRenderer.material = colors[(int)color];
+        }
+        
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    [CreateAssetMenu(fileName = "RollingThunderSkill", menuName = "SO/Skill/Rolling/Thunder")]
+    [CreateAssetMenu(fileName = "RollingThunderSkill", menuName = "SO/Skill/Blue/RollingThunder")]
     public class RollingThunderSkill : SkillData
     {
         [SerializeField] private int skillCount;
@@ -31,24 +31,26 @@ namespace Swift_Blade
             if (skillCounter >= skillCount)
             {
                 skillCounter = 0;
-                
-                foreach (var item in targets)
+            
+                if (CheckSkill())
                 {
-                    if (item.TryGetComponent(out BaseEnemyHealth health))
+                    foreach (var item in targets)
                     {
-                        ActionData actionData = new ActionData();
-                        actionData.damageAmount = skillDamage;
-                        actionData.stun = true;
+                        if (item.TryGetComponent(out BaseEnemyHealth health))
+                        {
+                            ActionData actionData = new ActionData();
+                            actionData.damageAmount = skillDamage;
+                            actionData.stun = true;
                         
-                        health.TakeDamage(actionData);
-                    }
+                            health.TakeDamage(actionData);
+                        }
                 
-                    ThunderParticle th = MonoGenericPool<ThunderParticle>.Pop();
-                    th.transform.position = item.transform.position + new Vector3(0,1,0);
+                        ThunderParticle th = MonoGenericPool<ThunderParticle>.Pop();
+                        th.transform.position = item.transform.position + new Vector3(0,1,0);
+                    }
                 }
+                
             }
-            
-            
         }
     }
 }

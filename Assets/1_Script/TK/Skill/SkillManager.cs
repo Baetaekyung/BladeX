@@ -10,16 +10,16 @@ namespace Swift_Blade
 {
     public class SkillManager : MonoSingleton<SkillManager>
     {
-        [SerializeField] private List<SkillSlot>           skill_slots;
-        [SerializeField] private List<SkillInventorySlot>  inv_slots;
-        [SerializeField] private SkillSaveSO               skillSaveData;
-        [SerializeField] private RectTransform             rootRect;
-        [SerializeField] private TextMeshProUGUI           maxSkillText;
-        [SerializeField] private Vector2                   skillInfoOffset;
-        [SerializeField] private SkillInfoUI               infoUI;
+        [SerializeField] private List<SkillSlot>          skill_slots;
+        [SerializeField] private List<SkillInventorySlot> inv_slots;
+        [SerializeField] private SkillSaveSO              skillSaveData;
+        [SerializeField] private RectTransform            rootRect;
+        [SerializeField] private TextMeshProUGUI          maxSkillText;
+        [SerializeField] private Vector2                  skillInfoOffset;
+        [SerializeField] private SkillInfoUI              infoUI;
         
         public int currentSkillCount = 0;
-        public int maxSkillCount = 4;
+        public int maxSkillCount     = 4;
 
         public bool CanAddSkill => currentSkillCount < maxSkillCount;
         
@@ -35,6 +35,7 @@ namespace Swift_Blade
             }
 
             SkillSlotBase.OnPointerEnterAction += HandleCreateInfoUI;
+
             HandleCreateInfoUI(Vector2.zero, null);
             InitializeSlots();
         }
@@ -42,6 +43,12 @@ namespace Swift_Blade
         private void OnDisable()
         {
             SkillSlotBase.OnPointerEnterAction -= HandleCreateInfoUI;
+        }
+
+        private void InitializeSlots()
+        {
+            InitializeSlot(inv_slots);
+            InitializeSlot(skill_slots);
         }
 
         private void HandleCreateInfoUI(Vector2 screenPosition, SkillData skillData)
@@ -64,12 +71,6 @@ namespace Swift_Blade
             infoUI.gameObject.SetActive(true);
         }
 
-        private void InitializeSlots()
-        {
-            InitializeSlot(inv_slots); 
-            InitializeSlot(skill_slots);
-        }
-
         private void LoadData()
         {
             if (saveDatas.inventoryData.Count > 0)
@@ -85,7 +86,7 @@ namespace Swift_Blade
             {
                 for (ushort i = 0; i < saveDatas.skillSlotData.Count; i++)
                 {
-                    SkillType type = saveDatas.skillSlotData[i].type;
+                    SkillType type = saveDatas.skillSlotData[i].SkillType;
                     GetEmptySkillSlot(type).SetSlotData(saveDatas.skillSlotData[i]);
                 }
             }
@@ -114,7 +115,7 @@ namespace Swift_Blade
 
             if (invSlot == default)
             {
-                Debug.Log("Skill Inventory is Full!!");
+                PopupManager.Instance.LogMessage("스킬 인벤토리가 가득 찼습니다.");
                 return default;
             }
 
@@ -127,10 +128,7 @@ namespace Swift_Blade
                 slot.GetSkillType == skillType && slot.IsEmptySlot()); 
         
             if (skillSlot == default)
-            {
-                Debug.Log($"{skillType.ToString()} type skill slot is Full");
                 return default;
-            }
         
             return skillSlot;
         }
@@ -141,14 +139,11 @@ namespace Swift_Blade
             var inventorySlot = GetEmptyInvSlot();
 
             if (inventorySlot == default)
-            {
-                Debug.Log("inventory is full");
                 return false;
-            }
             
             inventorySlot.SetSlotData(skillData);
             saveDatas.AddSkillToInventory(skillData);
-            Debug.Log("Added Item");
+
             return true;
         }
     }
