@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Swift_Blade.Pool;
 using System.Linq;
 using UnityEngine;
 
@@ -15,6 +16,11 @@ namespace Swift_Blade.Skill
         
         private bool isUpgrade;
         
+        public override void Initialize()
+        {
+            MonoGenericPool<AttackReflectionParticle>.Initialize(skillParticle);
+        }
+
         public override void SkillUpdate(Player player, List<Transform> targets = null)
         {
             targets = Physics.OverlapSphere(player.GetPlayerTransform.position, radius, whatIsTarget)
@@ -24,17 +30,20 @@ namespace Swift_Blade.Skill
             {
                 isUpgrade = true;
                 
-                Debug.Log("°­ÇØÁü");
+                //Debug.Log("°­ÇØÁü");
                 
-                player.GetPlayerStat.GetStat(StatType).AddModifier("Damage" , increaseValue);
+                AttackReflectionParticle attackReflectionParticle = MonoGenericPool<AttackReflectionParticle>.Pop();
+                attackReflectionParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,1,0);
+                
+                player.GetPlayerStat.GetStat(StatType).AddModifier("PowerUpSkill" , increaseValue);
             }
             else if(isUpgrade && targets.Count < targetCount)
             {
                 isUpgrade = false;
                 
-                Debug.Log("¾àÇØÁü");
+                //Debug.Log("¾àÇØÁü");
                 
-                player.GetPlayerStat.GetStat(StatType).RemoveModifier("Damage");
+                player.GetPlayerStat.GetStat(StatType).RemoveModifier("PowerUpSkill");
             }
             
         }

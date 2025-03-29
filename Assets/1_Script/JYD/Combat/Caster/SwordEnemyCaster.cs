@@ -2,7 +2,7 @@
 
 namespace Swift_Blade.Combat.Caster
 {
-    public class SwordEnemyCaster : BaseBossCaster
+    public class SwordEnemyCaster : BaseEnemyCaster
     {
         
     }

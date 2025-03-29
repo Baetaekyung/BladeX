@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace Swift_Blade.Combat.Caster
 {
-    public class BaseBossCaster : LayerCaster
+    public class BaseEnemyCaster : LayerCaster
     {
         [SerializeField] [Range(0.5f, 10f)] protected float _casterRadius = 1f;
         [SerializeField] [Range(0f, 10f)] protected float _casterInterpolation = 0.5f;
@@ -13,8 +13,8 @@ namespace Swift_Blade.Combat.Caster
         [Space(10)] public UnityEvent parryEvents;
         public UnityEvent unParriableAttack;
         
-        private const float parryInterval = 0.5f;
-        private float lastParryTime;
+        protected const float parryInterval = 0.5f;
+        protected float lastParryTime;
         
         public override bool Cast()
         {

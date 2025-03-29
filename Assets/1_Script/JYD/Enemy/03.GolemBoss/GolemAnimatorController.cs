@@ -19,12 +19,12 @@ namespace Swift_Blade.Enemy.Boss.Golem
         [SerializeField] private Transform leftGroundCrackTrm;
         [SerializeField] private Transform forwardGroundCrackTrm;
         
-        private GolemBossCaster damageCaster;
+        private GolemEnemyCaster damageCaster;
 
         protected override void Start()
         {
             base.Start();
-            damageCaster = caster as GolemBossCaster;
+            damageCaster = caster as GolemEnemyCaster;
             
             MonoGenericPool<GroundCrack>.Initialize(groundCrackSO);
         }
