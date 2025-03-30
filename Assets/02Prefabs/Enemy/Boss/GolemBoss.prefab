@@ -36116,9 +36116,8 @@ MonoBehaviour:
   - rid: 2640862034972902092
   - rid: 2640862034972902093
   - rid: 2781718364316238367
-  - rid: 2781718364316238368
-  - rid: 2781718408877048666
-  - rid: 6383923194033864839
+  - rid: 6383923532824838166
+  - rid: 6383923532824838167
   references:
     version: 2
     RefIds:
@@ -36170,23 +36169,7 @@ MonoBehaviour:
           m_Value1: 37797387952317297
         Name: AnimatorController
         m_Value: {fileID: 6198602165125838848}
-    - rid: 2781718364316238368
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Caster.BaseBossCaster, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15737492742483077491
-          m_Value1: 16839332317643058106
-        Name: DamageCaster
-        m_Value: {fileID: 640242306549050685}
-    - rid: 2781718408877048666
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15450045059901313231
-          m_Value1: 15826921796212577334
-        Name: MoveSpeed
-        m_Value: 3
-    - rid: 6383923194033864839
+    - rid: 6383923532824838166
       type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -36194,6 +36177,14 @@ MonoBehaviour:
           m_Value1: 4933287102960887248
         Name: EnemyHealth
         m_Value: {fileID: 7497389155446239979}
+    - rid: 6383923532824838167
+      type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Caster.BaseEnemyCaster, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 17117509026122649057
+          m_Value1: 17297207929302338606
+        Name: EnemyCaster
+        m_Value: {fileID: 640242306549050685}
 --- !u!114 &6024012862813766767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36209,7 +36200,7 @@ MonoBehaviour:
   target: {fileID: 0}
   moveSpeed: 2.8
   rotateSpeed: 10
-  stopDistance: 1
+  stopDistance: 2.44
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
@@ -36217,7 +36208,7 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 22528
-  maxDistance: 3
+  maxDistance: 1.73
   showGizmo: 1
   weapon: {fileID: 0}
 --- !u!114 &7497389155446239979

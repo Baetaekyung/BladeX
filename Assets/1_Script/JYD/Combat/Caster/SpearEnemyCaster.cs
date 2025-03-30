@@ -21,7 +21,7 @@ namespace Swift_Blade.Enemy
             if (isHit)
             {
                 Collider hit = hitColliders[0];
-
+                
                 if (hit.TryGetComponent(out IDamageble health))
                 {
                     Vector3 hitPoint = hit.ClosestPoint((startPos + endPos) / 2);
@@ -31,12 +31,8 @@ namespace Swift_Blade.Enemy
 
                     if (CanCurrentAttackParry && hit.TryGetComponent(out PlayerParryController parryController))
                     {
-                        /*Vector3 attacker = (hit.transform.position - transform.position).normalized;
-                        Vector3 playerForward = hit.transform.forward;
-
-                        float angle = Vector3.Angle(playerForward, attacker);
-                        bool isLookingAtAttacker = angle < 70;*/
-                        bool isLookingAtAttacker = true;
+                        bool isLookingAtAttacker = IsFacingEachOther(hit.GetComponent<Player>().GetPlayerTransform , transform);
+                        
                         bool canInterval = Time.time > lastParryTime + parryInterval;
                         
                         if (parryController.CanParry() && isLookingAtAttacker && canInterval)
@@ -72,6 +68,9 @@ namespace Swift_Blade.Enemy
             Gizmos.DrawWireSphere(endPos, _casterRadius);
             Gizmos.DrawLine(startPos, endPos);
         }
+        
+        
+        
     }
     
 }

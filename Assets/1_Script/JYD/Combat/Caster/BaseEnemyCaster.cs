@@ -35,12 +35,7 @@ namespace Swift_Blade.Combat.Caster
                 
                 if (CanCurrentAttackParry && hit.collider.TryGetComponent(out PlayerParryController parryController))
                 {
-                    /*Vector3 attacker = (hit.transform.position - transform.position).normalized;
-                    Vector3 playerForward = hit.transform.forward;
-                    
-                    float angle = Vector3.Angle(playerForward, attacker);
-                    bool isLookingAtAttacker = angle < 70;*/
-                    bool isLookingAtAttacker = true;
+                    bool isLookingAtAttacker = IsFacingEachOther(hit.transform.GetComponentInParent<Player>().GetPlayerTransform , transform);
                     bool canInterval = Time.time > lastParryTime + parryInterval;
                     
                     if (parryController.CanParry() && isLookingAtAttacker && canInterval)
@@ -81,6 +76,17 @@ namespace Swift_Blade.Combat.Caster
         {
             unParriableAttack?.Invoke();
             CanCurrentAttackParry = false;
+        }
+        
+        protected bool IsFacingEachOther(Transform player, Transform enemy)
+        {
+            Vector3 playerToEnemy = (enemy.position - player.position).normalized;
+            Vector3 enemyToPlayer = -playerToEnemy;
+
+            float playerDot = Vector3.Dot(player.forward, playerToEnemy);
+            float enemyDot = Vector3.Dot(enemy.forward, enemyToPlayer);
+
+            return playerDot > 0.7f && enemyDot > 0.7f;
         }
         
         protected virtual void OnDrawGizmosSelected()
