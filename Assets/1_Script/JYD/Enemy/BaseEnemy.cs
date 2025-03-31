@@ -27,7 +27,7 @@ namespace Swift_Blade.Enemy
         public GameObject weapon;
         
         protected Vector3 attackDestination;
-        protected Collider collider;
+        protected Collider enemyCollider;
         protected BehaviorGraphAgent btAgent;
         protected NavMeshAgent NavmeshAgent;
         private Vector3 nextPathPoint;
@@ -42,7 +42,7 @@ namespace Swift_Blade.Enemy
             btAgent = GetComponent<BehaviorGraphAgent>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
             baseHealth = GetComponent<BaseEnemyHealth>();
-            collider = GetComponent<Collider>();
+            enemyCollider = GetComponent<Collider>();
             baseAnimationController = GetComponentInChildren<BaseEnemyAnimationController>();
             
             InitBtAgent();
@@ -113,7 +113,7 @@ namespace Swift_Blade.Enemy
             
             NavmeshAgent.isStopped = true;
             NavmeshAgent.velocity = Vector3.zero;
-                        
+            
         }
 
         public Vector3 GetNextPathPoint()
@@ -138,11 +138,11 @@ namespace Swift_Blade.Enemy
 
         public virtual void DeadEvent()
         {
-            owner?.TryNextEnemyCanSpawn();
+            owner?.TryNextEnemyCanSpawn(transform.localPosition,transform.forward);
             
             StopImmediately();
             
-            collider.enabled = false;
+            enemyCollider.enabled = false;
             
             if(weapon != null)
                 weapon.AddComponent<EnemyWeapon>();

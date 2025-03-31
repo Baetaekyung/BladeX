@@ -13,7 +13,7 @@ namespace Swift_Blade.Feeling
 
         private Coroutine           _cameraShakeCoroutine;
         private CameraShakePriority _currentPriority = CameraShakePriority.LAST;
-
+        
         private Action _onCompleteEvent = null;
         
         public CameraShakeManager DoShake(
@@ -62,5 +62,7 @@ namespace Swift_Blade.Feeling
         {
             _onCompleteEvent = onComplete;
         }
+                
+        
     }
 }
