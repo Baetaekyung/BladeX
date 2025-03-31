@@ -58,10 +58,21 @@ namespace Swift_Blade.Save
             _jsonDictionary.Add(key, value);
         }
 
+        public bool IsPlayed()
+        {
+            string isPlayed = GetData<string>("IsPlayed");
+
+            if(string.IsNullOrEmpty(isPlayed))
+                return false;
+
+            return isPlayed == "1";
+        }
+
         #if UNITY_EDITOR
 
         [ContextMenu("Save Test")]
-        private void SaveTest() {
+        private void SaveTest()
+        {
             AddData("6equal0", "1008");
             Save();
             Load();
