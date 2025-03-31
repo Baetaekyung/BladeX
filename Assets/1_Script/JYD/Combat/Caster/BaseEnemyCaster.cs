@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
+using UnityEngine;
 
 namespace Swift_Blade.Combat.Caster
 {
-    public class BaseBossCaster : LayerCaster
+    public class BaseEnemyCaster : LayerCaster
     {
         [SerializeField] [Range(0.5f, 10f)] protected float _casterRadius = 1f;
         [SerializeField] [Range(0f, 10f)] protected float _casterInterpolation = 0.5f;
@@ -13,8 +13,8 @@ namespace Swift_Blade.Combat.Caster
         [Space(10)] public UnityEvent parryEvents;
         public UnityEvent unParriableAttack;
         
-        private const float parryInterval = 0.5f;
-        private float lastParryTime;
+        protected const float parryInterval = 0.5f;
+        protected float lastParryTime;
         
         public override bool Cast()
         {
@@ -35,25 +35,7 @@ namespace Swift_Blade.Combat.Caster
                 
                 if (CanCurrentAttackParry && hit.collider.TryGetComponent(out PlayerParryController parryController))
                 {
-                    /*Vector3 attacker = (hit.transform.position - transform.position).normalized;
-                    Vector3 playerForward = hit.transform.forward;
-                    
-                    float angle = Vector3.Angle(playerForward, attacker);
-                    bool isLookingAtAttacker = angle < 70;*/
-                    bool isLookingAtAttacker = true;
-                    bool canInterval = Time.time > lastParryTime + parryInterval;
-                    
-                    if (parryController.CanParry() && isLookingAtAttacker && canInterval)
-                    {
-                        parryEvents?.Invoke();//적 쪽
-                        parryController.ParryEvents?.Invoke();//플레이어쪽
-                        
-                        lastParryTime = Time.time;
-                    }
-                    else
-                    {
-                        ApplyDamage(health,actionData);
-                    }
+                    TryParry(hit, parryController, health, actionData);
                 }
                 else
                 {
@@ -64,6 +46,24 @@ namespace Swift_Blade.Combat.Caster
             CanCurrentAttackParry = true;
 
             return isHit;
+        }
+
+        private void TryParry(RaycastHit hit, PlayerParryController parryController, IDamageble health, ActionData actionData)
+        {
+            bool isLookingAtAttacker = IsFacingEachOther(hit.transform.GetComponentInParent<Player>().GetPlayerTransform , transform);
+            bool canInterval = Time.time > lastParryTime + parryInterval;
+                    
+            if (parryController.CanParry() && isLookingAtAttacker && canInterval)
+            {
+                parryEvents?.Invoke();//적 쪽
+                parryController.ParryEvents?.Invoke();//플레이어쪽
+                        
+                lastParryTime = Time.time;
+            }
+            else
+            {
+                ApplyDamage(health,actionData);
+            }
         }
 
         protected virtual void ApplyDamage(IDamageble health,ActionData actionData)
@@ -81,6 +81,14 @@ namespace Swift_Blade.Combat.Caster
         {
             unParriableAttack?.Invoke();
             CanCurrentAttackParry = false;
+        }
+        
+        protected bool IsFacingEachOther(Transform player, Transform enemy)
+        {
+            /*Vector3 playerToEnemy = (enemy.position - player.position).normalized;
+            float playerDot = Vector3.Dot(player.forward, playerToEnemy);
+            return playerDot < 0;*/
+            return true;
         }
         
         protected virtual void OnDrawGizmosSelected()
