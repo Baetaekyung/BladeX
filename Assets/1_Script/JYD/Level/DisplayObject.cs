@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -12,6 +13,7 @@ namespace Swift_Blade
         {
             startPos = transform.position;
         }
+
 
         void Update()
         {

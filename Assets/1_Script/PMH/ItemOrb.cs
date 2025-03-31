@@ -20,11 +20,6 @@ namespace Swift_Blade
             transform.DOScale(size,0.5f);
         }
 
-        private void OnDestroy()
-        {
-            DOTween.Kill(gameObject);
-        }
-        
         public void SetColor(ColorType color)
         {
             if(itemRenderer == null)
@@ -35,6 +30,7 @@ namespace Swift_Blade
 
         public void Interact()
         {
+            DOTween.Kill(gameObject);
             transform.DOScale(0 , duration).SetEase(Ease.OutSine).OnComplete(() =>
             {
                 int n = Random.Range(0, itemTables.itemTable.Count);
