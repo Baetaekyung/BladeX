@@ -7,7 +7,7 @@ namespace Swift_Blade
     public class EquipmentSlot : ItemSlot
     {
         [SerializeField] private EquipmentSlotType slotType;
-        [SerializeField] private Sprite infoIcon;
+        [SerializeField] private Sprite            infoIcon;
         
         public EquipmentSlotType GetSlotType => slotType;
         public Sprite            GetInfoIcon => infoIcon;
@@ -17,10 +17,10 @@ namespace Swift_Blade
             transform.DOKill();
             transform.DOScale(1.05f, 0.2f);
 
-            if (_itemDataSO == null)
+            if (!_itemDataSO)
                 return;
             
-            _inventoryManager.UpdateInfoUI(_itemDataSO);
+            InvenManager.UpdateItemInformationUI(_itemDataSO);
         }
 
         public override void OnPointerExit(PointerEventData eventData)
@@ -28,38 +28,43 @@ namespace Swift_Blade
             transform.DOKill();
             transform.DOScale(1f, 0.2f);
             
-            if (_itemDataSO == null)
+            if (!_itemDataSO)
                 return;
             
-            _inventoryManager.UpdateInfoUI(null);
+            InvenManager.UpdateItemInformationUI(null);
         }
 
         public override void OnPointerDown(PointerEventData eventData)
         {
-            if (_itemDataSO == null)
+            if (!_itemDataSO)
                 return;
             
             if (eventData.button != PointerEventData.InputButton.Right)
                 return;
             
             if (InventoryManager.Inventory.currentEquipment.Contains(_itemDataSO.equipmentData))
-            {
-                BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
-                baseEquip?.OffEquipment();
+                OffEquipment();
+        }
 
-                InventoryManager.EquipmentDatas.Remove(_itemDataSO);
-                InventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);
-                        
-                _inventoryManager.AddItemToEmptySlot(_itemDataSO);
-                _itemDataSO = null;
-                _inventoryManager.UpdateAllSlots();
-            }
+        private void OffEquipment()
+        {
+            var baseEquip = _itemDataSO.itemObject as Equipment;
+            baseEquip?.OffEquipment();
+
+            InventoryManager.EquipmentDatas.Remove(_itemDataSO);
+            InventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);
+
+            InvenManager.AddItemToEmptySlot(_itemDataSO);
+
+            _itemDataSO = null;
+            InvenManager.UpdateAllSlots();
         }
 
         public override void SetItemData(ItemDataSO newItemData)
         {
             _itemDataSO = newItemData;
-            _inventoryManager.UpdateAllSlots();
+
+            InvenManager.UpdateAllSlots();
         }
     }
 }

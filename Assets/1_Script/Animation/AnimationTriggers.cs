@@ -56,7 +56,7 @@ namespace Swift_Blade
         [Preserve]
         private void OnAudioPlay(AudioSO audio) => OnAudioPlayEvent?.Invoke(audio);
         [Preserve]
-        private void OnAudioPlayCollection(AudioSOCollection audioSOCollection) => OnAudioPlay(audioSOCollection.GetRandomAudio);
+        private void OnAudioPlayCollection(AudioCollectionSO audioCollectionSo) => OnAudioPlay(audioCollectionSo.GetRandomAudio);
         [Preserve]
         private void OnAudioPlayWithType(EAudioType type) => OnAudioPlayWithTypeEvent?.Invoke(type);
     }

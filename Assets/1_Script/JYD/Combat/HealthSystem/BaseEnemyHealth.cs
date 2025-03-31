@@ -25,7 +25,7 @@ namespace Swift_Blade.Combat.Health
         [SerializeField] protected ChangeBossState changeBossState;
 
         public bool isKnockback = false;
-        private Rigidbody rigidbody;
+        private Rigidbody enemyRigidbody;
         private NavMeshAgent navMeshAgent;
                 
         protected virtual void Start()
@@ -33,7 +33,7 @@ namespace Swift_Blade.Combat.Health
             currentHealth = maxHealth;
 
             navMeshAgent = GetComponent<NavMeshAgent>();
-            rigidbody = GetComponent<Rigidbody>();
+            enemyRigidbody = GetComponent<Rigidbody>();
             BehaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
             
             BehaviorGraphAgent.GetVariable("ChangeBossState",out BlackboardVariable<ChangeBossState> state);
@@ -113,35 +113,35 @@ namespace Swift_Blade.Combat.Health
             isKnockback = true;
             
             navMeshAgent.enabled = false;
-            rigidbody.useGravity = true;
-            rigidbody.isKinematic = false;
-            rigidbody.freezeRotation = true;
+            enemyRigidbody.useGravity = true;
+            enemyRigidbody.isKinematic = false;
+            enemyRigidbody.freezeRotation = true;
     
-            rigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+            enemyRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
             
             yield return new WaitForFixedUpdate();
     
             float timeout = 0.5f; 
             float timer = 0f;
     
-            while (rigidbody.linearVelocity.sqrMagnitude > 0.01f && timer < timeout) 
+            while (enemyRigidbody.linearVelocity.sqrMagnitude > 0.01f && timer < timeout) 
             {
                 timer += Time.deltaTime;
                 yield return null;
             }
             
-            rigidbody.linearVelocity = Vector3.zero;
-            rigidbody.angularVelocity = Vector3.zero;
+            enemyRigidbody.linearVelocity = Vector3.zero;
+            enemyRigidbody.angularVelocity = Vector3.zero;
             
             yield return new WaitForFixedUpdate();
     
             transform.position = new Vector3(transform.position.x, navMeshAgent.nextPosition.y, transform.position.z);
             navMeshAgent.Warp(transform.position);
             
-            rigidbody.freezeRotation = false;
+            enemyRigidbody.freezeRotation = false;
             navMeshAgent.enabled = true;
-            rigidbody.useGravity = false;
-            rigidbody.isKinematic = true;
+            enemyRigidbody.useGravity = false;
+            enemyRigidbody.isKinematic = true;
     
             if (navMeshAgent.hasPath)
             {

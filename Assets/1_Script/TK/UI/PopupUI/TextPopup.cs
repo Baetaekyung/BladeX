@@ -17,13 +17,13 @@ namespace Swift_Blade.UI
         
         public override void Popup()
         {
-            transform.DOScaleX(1, _fadeTime)
+            transform.DOScaleX(1, fadeTime)
                 .SetEase(Ease.OutCirc);
         }
 
         public override void PopDown()
         {
-            transform.DOScaleX(0, _fadeTime)
+            transform.DOScaleX(0, fadeTime)
                 .SetEase(Ease.OutCirc);
         }
     }

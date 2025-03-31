@@ -10,19 +10,19 @@ namespace Swift_Blade
         public override void Popup()
         {
             cG.alpha = 1f;
-            cG.transform.DOScaleX(1, _fadeTime).SetEase(Ease.OutCirc);
+            cG.transform.DOScaleX(1, fadeTime)
+                .SetEase(Ease.OutCirc);
+
             _raycaster.enabled = true;
         }
 
         public override void PopDown()
         {
-            cG.transform.DOScaleX(0, _fadeTime).SetEase(Ease.OutCirc);
-            _raycaster.enabled = false;
-        }
+            cG.transform.DOScaleX(0, fadeTime)
+                .SetEase(Ease.OutCirc)
+                .OnComplete(() => InventoryManager.Instance.UpdateAllSlots());
 
-        private void OnDisable()
-        {
-            InventoryManager.Instance.UpdateAllSlots();
+            _raycaster.enabled = false;
         }
     }
 }

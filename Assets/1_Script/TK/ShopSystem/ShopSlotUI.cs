@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using Swift_Blade.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -9,8 +10,8 @@ namespace Swift_Blade
 {
     public class ShopSlotUI : MonoBehaviour
     {
-        [SerializeField] private PlayerInventory inventory;
-        
+        private PlayerInventory playerInventory = InventoryManager.Inventory;
+
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private Image itemIcon;
         [SerializeField] private TextMeshProUGUI itemNameText;
@@ -29,57 +30,68 @@ namespace Swift_Blade
         
         public void SetSlotItem(ItemDataSO newItem, int count, int cost)
         {
-            _itemCost = cost;
+            _itemCost    = cost;
             _currentItem = newItem;
-            _itemCount = count;
+            _itemCount   = count;
             
-            _buttonText.text = $"{_itemCost.ToString()}코인";
-            remainCount.text = $"남은 갯수: {count.ToString()}";
-            itemIcon.sprite = newItem.itemImage;
-            itemNameText.text = newItem.itemName;
+            _buttonText.text         = $"{_itemCost.ToString()}코인";
+            remainCount.text         = $"남은 갯수: {count.ToString()}";
+            itemIcon.sprite          = newItem.itemImage;
+            itemNameText.text        = newItem.itemName;
             itemDescriptionText.text = newItem.description;
         }
         
         private void OnEnable()
         {
             canvasGroup = GetComponent<CanvasGroup>();
+
             canvasGroup.alpha = 0;
-            buyButton.onClick.AddListener(Buy);
+            buyButton.onClick.AddListener(TryBuy);
         }
 
         private void OnDestroy()
         {
             canvasGroup.alpha = 0;
-            buyButton.onClick.RemoveListener(Buy);
+            buyButton.onClick.RemoveListener(TryBuy);
         }
 
-        public void Buy()
+        public void TryBuy()
         {
             if (_itemCount <= 0)
-                return;
-            
-            if (_currentItem == null)
-                return;
+            {
+                GetFailedMessage("아이템 매진");
 
-            if (inventory.Coin < _itemCost)
-            {
-                Debug.Log("소유중인 자원이 Item의 가격보다 적음");
                 return;
             }
             
-            if (inventory.currentInventoryCapacity == inventory.maxInventoryCapacity)
+            if (!_currentItem)
             {
-                Debug.Log("Inventory 가득참");
+                GetFailedMessage("아이템 없음");
+
+                return;
+            }
+
+            if (playerInventory.Coin < _itemCost)
+            {
+                GetFailedMessage("코인이 부족합니다.");
+
                 return;
             }
             
+            if (playerInventory.currentInventoryCapacity == playerInventory.maxInventoryCapacity)
+            {
+                GetFailedMessage("인벤토리 슬롯 부족");
+
+                return;
+            }
+
             BuyAnimation();
             
             _itemCount--;
             remainCount.text = $"남은 갯수: {_itemCount.ToString()}";
             
             InventoryManager.Instance.AddItemToMatchSlot(_currentItem);
-            inventory.currentInventoryCapacity++;
+            playerInventory.currentInventoryCapacity++;
             
             if(_itemCount <= 0)
                 soldOutPanel.SetActive(true);
@@ -92,5 +104,7 @@ namespace Swift_Blade
             buyButton.transform.DOShakeScale(0.3f, new Vector3(0.3f, 0.3f, 0));
             buyButton.transform.DOShakeRotation(0.3f, new Vector3(0, 0, 2.5f));
         }
+
+        private void GetFailedMessage(string message) => PopupManager.Instance.LogMessage(message);
     }
 }

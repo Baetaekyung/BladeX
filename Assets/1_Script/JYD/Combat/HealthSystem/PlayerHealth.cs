@@ -1,6 +1,4 @@
 using System;
-using Swift_Blade.Pool;
-using Swift_Blade.Skill;
 using Swift_Blade.UI;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,7 +11,7 @@ namespace Swift_Blade
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
         
-        public static float _currentHealth;
+        public static float CurrentHealth;
         
         public UnityEvent OnDeadEvent;
         public UnityEvent<ActionData> OnHitEvent;
@@ -21,7 +19,7 @@ namespace Swift_Blade
         
         public event Action<float, float> OnHealthUpdateEvent;
         
-        public float GetCurrentHealth => _currentHealth;
+        public float GetCurrentHealth => CurrentHealth;
         public StatSO GetHealthStat => _healthStat;
         
         private const float DamageInterval = 0.75f;
@@ -51,7 +49,7 @@ namespace Swift_Blade
         {
             _maxHealth = _healthStat.Value;
             
-            OnHealthUpdateEvent?.Invoke(_maxHealth, _currentHealth);
+            OnHealthUpdateEvent?.Invoke(_maxHealth, CurrentHealth);
         }
 
         public void TakeDamage(ActionData actionData)
@@ -61,14 +59,14 @@ namespace Swift_Blade
             if (IsPlayerInvincible) return;
             
             float damageAmount = actionData.damageAmount;
-            _currentHealth -= damageAmount;
+            CurrentHealth -= damageAmount;
 
             lastDamageTime = Time.time;
             
             _player.GetSkillController.UseSkill(SkillType.Hit);
             OnHitEvent?.Invoke(actionData);
             
-            if (_currentHealth <= 0)
+            if (CurrentHealth <= 0)
             {
                 Dead();
                 _player.GetSkillController.UseSkill(SkillType.Dead);
@@ -77,11 +75,11 @@ namespace Swift_Blade
         
         public void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
         {
-            if(Mathf.Approximately(_currentHealth, _healthStat.Value))
+            if(Mathf.Approximately(CurrentHealth, _healthStat.Value))
                 return;
             
-            _currentHealth += healAmount;
-            _currentHealth = Mathf.Min(_currentHealth, _healthStat.Value);
+            CurrentHealth += healAmount;
+            CurrentHealth = Mathf.Min(CurrentHealth, _healthStat.Value);
             
             OnHealEvent?.Invoke();
             
@@ -94,7 +92,7 @@ namespace Swift_Blade
             isDead = true;
 
             StatComponent.InitOnce = false;
-            _currentHealth = 4; //기본 체력 4로 하드 코딩 해놓을게
+            CurrentHealth = 4; //기본 체력 4로 하드 코딩 해놓을게
             
             PopupManager.Instance.AllPopDown();
             PopupManager.Instance.PopUp(PopupType.GameOver);

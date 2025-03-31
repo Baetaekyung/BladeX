@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 namespace Swift_Blade.Audio
 {
 
-    [CreateAssetMenu(fileName = "AudioSO", menuName = "Scriptable Objects/Audio/AudioSO")]
+    [CreateAssetMenu(fileName = "AudioSO", menuName = "SO/Audio/AudioSO")]
     public class AudioSO : BaseAudioSO
     {
 

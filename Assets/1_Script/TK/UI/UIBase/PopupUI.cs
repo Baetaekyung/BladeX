@@ -10,11 +10,12 @@ namespace Swift_Blade.UI
     public abstract class PopupUI : MonoBehaviour
     {
         [SerializeField] protected CanvasGroup cG;
-        protected GraphicRaycaster _raycaster;
-        [SerializeField] protected float _fadeTime;
-        
-        protected Coroutine _delayRoutine;
+        [SerializeField] protected float       fadeTime;
+
         public PopupType popupType;
+        
+        protected GraphicRaycaster _raycaster;
+        protected Coroutine        _delayRoutine;
 
         protected virtual void Awake()
         {
@@ -33,15 +34,17 @@ namespace Swift_Blade.UI
 
         public virtual void Popup()
         {
-            cG.DOFade(1, _fadeTime)
+            cG.DOFade(1, fadeTime)
                 .SetEase(Ease.OutCirc);
+
             _raycaster.enabled = true;
         }
         
         public virtual void PopDown()
         {
             _raycaster.enabled = false;
-            cG.DOFade(0, _fadeTime).SetEase(Ease.OutCirc);
+
+            cG.DOFade(0, fadeTime).SetEase(Ease.OutCirc);
         }
         
         //팝업하고 딜레이 이후 팝업 닫기

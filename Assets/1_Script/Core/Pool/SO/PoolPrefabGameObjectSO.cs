@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Pool
 {
-    [CreateAssetMenu(fileName = "PoolPrefabGameObjectSO", menuName = "Scriptable Objects/Pool/PrefabGameObjectSO")]
+    [CreateAssetMenu(fileName = "PoolPrefabGameObjectSO", menuName = "SO/Pool/PrefabGameObjectSO")]
     public class PoolPrefabGameObjectSO : ScriptableObject
     {
         [SerializeField] private int preCreateAmount;

@@ -27,7 +27,7 @@ namespace Swift_Blade
         public AnimationParameterSO GetAnimParam => comboData;
         public Vector3 GetComboForce => comboForce;
     }
-    [CreateAssetMenu(fileName = "AttackComboSO", menuName = "Scriptable Objects/AttackComboSO")]
+    [CreateAssetMenu(fileName = "AttackComboSO", menuName = "SO/AttackComboSO")]
     public class AttackComboSO : ScriptableObject
     {
         [SerializeField] private ComboData[] combos;

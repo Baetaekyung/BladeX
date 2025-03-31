@@ -11,7 +11,7 @@ namespace Swift_Blade
 
         public void SetSkillInfo(SkillData skillData)
         {
-            nameText.text = skillData ? skillData.skillName : string.Empty;
+            nameText.text        = skillData ? skillData.skillName : string.Empty;
             descriptionText.text = skillData ? skillData.skillDescription : string.Empty;
         }
     }

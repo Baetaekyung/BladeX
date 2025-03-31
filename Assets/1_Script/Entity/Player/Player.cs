@@ -8,6 +8,7 @@ using Swift_Blade.FSM;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
@@ -44,11 +45,9 @@ namespace Swift_Blade
         [SerializeField] private Transform mousePosition;
         [SerializeField] private LayerMask lm_interactable;
 
+        [FormerlySerializedAs("audioCollection")]
         [Header("Audio")]
-        [SerializeField] private AudioSOCollection audioCollection;
-
-        [Header("EventChannels")]
-        [SerializeField] private EquipmentChannelSO onHitChannel;
+        [SerializeField] private AudioCollectionSO audioCollection;
 
         [Header("Anim_Param")]
         [SerializeField] private AnimationTriggers animEndTrigger;
@@ -189,7 +188,7 @@ namespace Swift_Blade
             GetEntityComponent<PlayerDamageCaster>().OnCastDamageEvent.AddListener(
                 (action) =>
                 {
-                    onHitChannel.RaiseEvent(this);
+                    //onHitChannel.RaiseEvent(this);
                 });
         }
         private void Update()

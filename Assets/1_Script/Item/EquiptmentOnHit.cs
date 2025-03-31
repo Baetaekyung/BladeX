@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class EquiptmentOnHit : BaseEquipment
+    public class EquiptmentOnHit : Equipment
     {
         [SerializeField] private int cnt = 3;
         [SerializeField] private int healAmount;
