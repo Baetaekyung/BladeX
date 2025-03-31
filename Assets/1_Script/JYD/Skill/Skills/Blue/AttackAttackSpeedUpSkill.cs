@@ -25,7 +25,7 @@ namespace Swift_Blade.Skill
         { 
             decreaseTimer = 0; 
             BlueWaveParticle waveParticle = MonoGenericPool<BlueWaveParticle>.Pop();
-            waveParticle.transform.position = player.GetPlayerTransform.position;
+            waveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,1,0);
             
             currentIncreaseValue += increaseValue;
             currentIncreaseValue = Mathf.Min(currentIncreaseValue , increaseMaxValue);
