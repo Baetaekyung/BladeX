@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -14,7 +15,14 @@ namespace Swift_Blade
         public void EntityComponentAwake(Entity entity)
         {
             playerStatCompo = (entity as Player).GetPlayerStat;
+            playerStatCompo.GetStat(StatType.ATTACKSPEED).OnValueChanged += SetPlayerAttackSpeed;
         }
+
+        private void OnDestroy()
+        {
+            playerStatCompo.GetStat(StatType.ATTACKSPEED).OnValueChanged -= SetPlayerAttackSpeed;
+        }
+
         public void PlayAnimation(int hash, int layer = -1)
         {
             animator.Play(hash, layer);

@@ -8,25 +8,29 @@ namespace Swift_Blade.Skill
     public class AttackAttackSpeedUpSkill : SkillData
     {
         [Range(0f,0.2f)] [SerializeField] private float increaseValue;
-        [Range(0.1f,1f)] [SerializeField] private float increaseMaxValue;
+        [Range(0.1f,3f)] [SerializeField] private float increaseMaxValue;
         private float currentIncreaseValue;
         
         [Range(0.1f,1f)][SerializeField] private float decreaseTime;
+        
         private float decreaseTimer = 0;
+        private int devide;
+        
         
         public override void Initialize()
         {
             MonoGenericPool<BlueWaveParticle>.Initialize(skillParticle);
             
+            currentIncreaseValue = 0;
             decreaseTimer = 0;
         }
         
         public override void UseSkill(Player player, Transform[] targets = null)
         { 
-            decreaseTimer = 0; 
             BlueWaveParticle waveParticle = MonoGenericPool<BlueWaveParticle>.Pop();
             waveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,1,0);
             
+            decreaseTimer = 0; 
             currentIncreaseValue += increaseValue;
             currentIncreaseValue = Mathf.Min(currentIncreaseValue , increaseMaxValue);
             
