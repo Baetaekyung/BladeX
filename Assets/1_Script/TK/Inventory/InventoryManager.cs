@@ -189,18 +189,18 @@ namespace Swift_Blade
                 if (!itemSlots[i].GetSlotItemData()
                     && itemSlots[i] is EquipmentSlot equipSlot)
                 {
-                    itemSlots[i].SetItemImage(equipSlot.GetInfoIcon);
+                    itemSlots[i].SetItemUI(equipSlot.GetInfoIcon);
                 }
                 //빈 슬롯이면 empty 이미지
                 else if (!itemSlots[i].GetSlotItemData()
                     && itemSlots[i] is not EquipmentSlot)
                 {
-                    itemSlots[i].SetItemImage(null);
+                    itemSlots[i].SetItemUI(null);
                 }
                 else //아이템이 존재하면 itemImage 넣어주기
                 {
                     Sprite itemIcon = itemSlots[i].GetSlotItemData().itemImage;
-                    itemSlots[i].SetItemImage(itemIcon);
+                    itemSlots[i].SetItemUI(itemIcon);
                 }
             }
         }
