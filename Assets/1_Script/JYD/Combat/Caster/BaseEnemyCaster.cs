@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
+using UnityEngine;
 
 namespace Swift_Blade.Combat.Caster
 {
@@ -35,20 +35,7 @@ namespace Swift_Blade.Combat.Caster
                 
                 if (CanCurrentAttackParry && hit.collider.TryGetComponent(out PlayerParryController parryController))
                 {
-                    bool isLookingAtAttacker = IsFacingEachOther(hit.transform.GetComponentInParent<Player>().GetPlayerTransform , transform);
-                    bool canInterval = Time.time > lastParryTime + parryInterval;
-                    
-                    if (parryController.CanParry() && isLookingAtAttacker && canInterval)
-                    {
-                        parryEvents?.Invoke();//적 쪽
-                        parryController.ParryEvents?.Invoke();//플레이어쪽
-                        
-                        lastParryTime = Time.time;
-                    }
-                    else
-                    {
-                        ApplyDamage(health,actionData);
-                    }
+                    TryParry(hit, parryController, health, actionData);
                 }
                 else
                 {
@@ -59,6 +46,24 @@ namespace Swift_Blade.Combat.Caster
             CanCurrentAttackParry = true;
 
             return isHit;
+        }
+
+        private void TryParry(RaycastHit hit, PlayerParryController parryController, IDamageble health, ActionData actionData)
+        {
+            bool isLookingAtAttacker = IsFacingEachOther(hit.transform.GetComponentInParent<Player>().GetPlayerTransform , transform);
+            bool canInterval = Time.time > lastParryTime + parryInterval;
+                    
+            if (parryController.CanParry() && isLookingAtAttacker && canInterval)
+            {
+                parryEvents?.Invoke();//적 쪽
+                parryController.ParryEvents?.Invoke();//플레이어쪽
+                        
+                lastParryTime = Time.time;
+            }
+            else
+            {
+                ApplyDamage(health,actionData);
+            }
         }
 
         protected virtual void ApplyDamage(IDamageble health,ActionData actionData)
@@ -80,13 +85,10 @@ namespace Swift_Blade.Combat.Caster
         
         protected bool IsFacingEachOther(Transform player, Transform enemy)
         {
-            Vector3 playerToEnemy = (enemy.position - player.position).normalized;
-            Vector3 enemyToPlayer = -playerToEnemy;
-
+            /*Vector3 playerToEnemy = (enemy.position - player.position).normalized;
             float playerDot = Vector3.Dot(player.forward, playerToEnemy);
-            float enemyDot = Vector3.Dot(enemy.forward, enemyToPlayer);
-
-            return playerDot > 0.7f && enemyDot > 0.7f;
+            return playerDot < 0;*/
+            return true;
         }
         
         protected virtual void OnDrawGizmosSelected()

@@ -31,7 +31,7 @@ namespace Swift_Blade.Enemy
 
                     if (CanCurrentAttackParry && hit.TryGetComponent(out PlayerParryController parryController))
                     {
-                        bool isLookingAtAttacker = IsFacingEachOther(hit.GetComponent<Player>().GetPlayerTransform , transform);
+                        bool isLookingAtAttacker = IsFacingEachOther(hit.GetComponentInParent<Player>().GetPlayerTransform , transform);
                         
                         bool canInterval = Time.time > lastParryTime + parryInterval;
                         
