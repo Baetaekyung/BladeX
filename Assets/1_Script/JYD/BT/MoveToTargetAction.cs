@@ -68,14 +68,14 @@ public class MoveToTargetAction : Action
     
     private bool IsNotObstacleLine()
     {
-        Vector3 direction = (Target.Value.transform.position - Agent.Value.transform.position).normalized;
+        Vector3 direction = (Target.Value.transform.position - Agent.Value.transform.position);
         Vector3 start = Agent.Value.transform.position + new Vector3(0, 1f, 0);
         
-        Debug.DrawRay(start, direction * 100, Color.red);
+        //Debug.DrawRay(start, direction * 100, Color.red);
         
-        if (Physics.Raycast(start, direction,out  RaycastHit hit,100, whatIsObstacle))
+        if (Physics.Raycast(start, direction.normalized,direction.magnitude, whatIsObstacle))
         {
-            Debug.Log(hit.collider.gameObject.name);
+            //Debug.Log(hit.collider.gameObject.name);
             return false;
         }
         

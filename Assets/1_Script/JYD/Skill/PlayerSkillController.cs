@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,7 +42,29 @@ namespace Swift_Blade.Skill
                     { SkillType.Hit, OnHitEventSkill },
                     { SkillType.Dead, OnDeadEventSkill }
                 };
-                //currentSkillList = new List<SkillData>();
+                
+                //StartCoroutine(SKillUpdateRoutine());
+            }
+            
+            private IEnumerator SKillUpdateRoutine()
+            {
+                while (true)
+                {
+                    foreach (var item in currentSkillList)
+                    {
+                        item.SkillUpdate(_player);
+
+                        yield return new WaitForSeconds(0.01f);
+                    }
+                }
+            }
+
+            private void Update()
+            {
+                foreach (var item in currentSkillList)
+                {
+                    item.SkillUpdate(_player);
+                }
             }
 
             public void EntityComponentAwake(Entity entity)

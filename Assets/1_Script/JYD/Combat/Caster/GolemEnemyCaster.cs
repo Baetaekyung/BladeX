@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Combat.Caster
 {
-    public class GolemBossCaster : BaseBossCaster
+    public class GolemEnemyCaster : BaseEnemyCaster
     {
         [Range(1, 20)] [SerializeField] private float jumpAttackRadius;
                 
