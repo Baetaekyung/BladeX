@@ -27,8 +27,5 @@ namespace Swift_Blade
         {
             remainText.text = $"남은 스텟포인트: {levelStat.StatPoint.ToString()}";
         }
-
-      
-        
     }
 }

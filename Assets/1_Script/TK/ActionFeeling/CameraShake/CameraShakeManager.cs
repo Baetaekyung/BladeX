@@ -10,12 +10,15 @@ namespace Swift_Blade.Feeling
     {
         [Header("Camera Shaking")]
         [SerializeField] private SerializableDictionary<CameraShakeType, CameraShakeSO> impulseDictionary;
-        private Coroutine _cameraShakeCoroutine;
-        private CameraShakePriority _currentPriority = CameraShakePriority.LAST;
 
+        private Coroutine           _cameraShakeCoroutine;
+        private CameraShakePriority _currentPriority = CameraShakePriority.LAST;
+        
         private Action _onCompleteEvent = null;
         
-        public CameraShakeManager DoShake(CameraShakeType shakeType, CameraShakePriority priority = CameraShakePriority.NONE)
+        public CameraShakeManager DoShake(
+            CameraShakeType shakeType, 
+            CameraShakePriority priority = CameraShakePriority.NONE)
         {
             if (_cameraShakeCoroutine != null)
             {
@@ -29,15 +32,18 @@ namespace Swift_Blade.Feeling
             return this;
         }
         
-        private IEnumerator GenerateImpulseRoutine(CameraShakeType shakeType, CameraShakePriority priority = CameraShakePriority.NONE)
+        private IEnumerator GenerateImpulseRoutine(
+            CameraShakeType shakeType, 
+            CameraShakePriority priority = CameraShakePriority.NONE)
         {
             CinemachineImpulseManager.Instance.Clear(); //모든 흔들림을 초기화
-            float force = impulseDictionary[shakeType].strength;
-            impulseDictionary[shakeType].cinemachineImpulseSource.GenerateImpulse(force);
 
+            float force    = impulseDictionary[shakeType].strength;
             float duration = impulseDictionary[shakeType].cinemachineImpulseSource
                 .ImpulseDefinition.ImpulseDuration;
+
             _currentPriority = priority;
+            impulseDictionary[shakeType].cinemachineImpulseSource.GenerateImpulse(force);
             
             yield return new WaitForSeconds(duration);
             
@@ -56,5 +62,7 @@ namespace Swift_Blade.Feeling
         {
             _onCompleteEvent = onComplete;
         }
+                
+        
     }
 }

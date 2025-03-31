@@ -9,20 +9,21 @@ namespace Swift_Blade
 {
     public class Shop : MonoBehaviour
     {
-        public List<ShopSlotUI> shopSlots = new List<ShopSlotUI>();
+        private List<ShopSlotUI> shopSlots = new List<ShopSlotUI>();
+
         [SerializeField] private ShopSlotUI shopSlotPrefab;
         [SerializeField] private Transform parent;
 
-        public void SetItems(ItemTableSO itemTable)
+        public void SetItems(ItemTableSO itemTable, int itemCount)
         {
-            List<ItemSet> randomItemTable = itemTable.GetRandomItemTable();
+            List<ItemGoods> randomItemTable = itemTable.GetRandomItemTable(itemCount);
 
-            if (shopSlots.Count != 0)
+            if (shopSlots.Count > 0)
                 DeleteRemainSlot();
             
             for (int i = 0; i < randomItemTable.Count; i++)
             {
-                ItemSet currentItem = itemTable.itemTable[i];
+                ItemGoods currentItem = itemTable.itemTable[i];
                 ShopSlotUI shopSlot = Instantiate(shopSlotPrefab, parent);
                 shopSlot.GetCanvasGroup.DOFade(1, 1.5f);
                 

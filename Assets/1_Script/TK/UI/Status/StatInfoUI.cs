@@ -10,36 +10,40 @@ namespace Swift_Blade
     public class StatInfoUI : MonoBehaviour
     {
         public static int UsedStatPoint = 0;
-        public static event Action OnStatChanged;
-        public static event Action OnHealthStatUp;
+
+        public static event Action        OnStatChanged;
+        public static event Action<float> OnHealthStatUp;
         public static event Action<float> OnHealthStatDown;
 
         private static Dictionary<StatSO, int> _statRecords = new Dictionary<StatSO, int>();
-        [SerializeField] private StatSO stat;
 
         [Space(10)]
+        [SerializeField] private StatSO          stat;
         [SerializeField] private TextMeshProUGUI statInfoText;
-        [SerializeField] private Button upgradeButton;
+        [SerializeField] private Button          upgradeButton;
         
-        private readonly StringBuilder _sb = new(1);
+        private readonly StringBuilder _sb = new();
 
         private void OnEnable()
         {
             OnStatChanged += SetStatInfoUI;
+
             upgradeButton.onClick.AddListener(UpgradeStat);
         }
 
         private void Start()
         {
-            stat = Player.Instance.GetEntityComponent<PlayerStatCompo>().GetStat(stat);
+            stat = Player.Instance
+                .GetEntityComponent<PlayerStatCompo>()
+                .GetStat(stat);
 
             SetStatInfoUI();
-            Player.level.StatPoint = 10;
         }
 
         private void OnDisable()
         {
             OnStatChanged -= SetStatInfoUI;
+
             upgradeButton.onClick.RemoveAllListeners();
         }
 
@@ -47,24 +51,21 @@ namespace Swift_Blade
         {
             if (Player.level.StatPoint <= 0)
             {
-                Debug.Log("스텟포인트가 없다.");
+                PopupManager.Instance.LogMessage("스텟 포인트가 부족하다");
                 return;
             }
 
-            if (Mathf.Approximately(stat.BaseValue, stat.MaxValue))
+            if (Mathf.Approximately(stat.ColorValue, stat.MaxValue))
             {
-                Debug.Log("스텟이 최대이다.");
+                PopupManager.Instance.LogMessage("더 이상 올릴 수 없다");
                 return;
             }
 
             Player.level.StatPoint -= 1;
             UsedStatPoint++;
-            stat.BaseValue += stat.increaseAmount;
 
             if (stat.statType == StatType.HEALTH)
-            {
-                OnHealthStatUp?.Invoke();
-            }
+                OnHealthStatUp?.Invoke(1);
             
             RecordAddedStat();
             SetStatInfoUI();
@@ -75,15 +76,12 @@ namespace Swift_Blade
         private void RecordAddedStat()
         {
             if (!_statRecords.ContainsKey(stat))
-            {
                 _statRecords.Add(stat, 1);
-            }
             else
-            {
                 _statRecords[stat] += 1;
-            }
         }
 
+        //Button Event
         public void InitializeStat()
         {
             InitializeStatPoint();
@@ -97,7 +95,7 @@ namespace Swift_Blade
             Player.level.StatPoint += UsedStatPoint;
             foreach (var statRecord in _statRecords)
             {
-                statRecord.Key.BaseValue -= statRecord.Value * statRecord.Key.increaseAmount;
+                //statRecord.Key.ColorValue -= statRecord.Value * statRecord.Key.increaseAmount;
 
                 if (statRecord.Key.statType == StatType.HEALTH)
                 {
@@ -115,17 +113,17 @@ namespace Swift_Blade
         { 
             _sb.Clear();
             
-            _sb.Append(stat.displayName);
-            _sb.Append(": ");
+            _sb.Append(stat.displayName)
+                .Append(": ");
 
             if (stat.statType != StatType.HEALTH)
             {
-                _sb.Append((Mathf.Clamp(stat.BaseValue, stat.MinValue, stat.MaxValue)).ToString("0.00"))
+                _sb.Append((Mathf.Clamp(stat.ColorValue, stat.MinValue, stat.MaxValue)).ToString("0.00"))
                     .Append(" / ").Append(stat.MaxValue);
             }
             else
             {
-                _sb.Append((Mathf.Clamp(Mathf.RoundToInt(stat.BaseValue), stat.MinValue, stat.MaxValue))
+                _sb.Append((Mathf.Clamp(Mathf.RoundToInt(stat.ColorValue), stat.MinValue, stat.MaxValue))
                         .ToString("N"))
                         .Append(" / ").Append(stat.MaxValue);
             }

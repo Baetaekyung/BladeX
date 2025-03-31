@@ -1,47 +1,37 @@
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Swift_Blade
 {
     public class HealingStatue : MonoBehaviour, IInteractable
     {
-        [SerializeField] private int healAmount;
+        [SerializeField] private int            healAmount;
         [SerializeField] private DialogueDataSO dialogueData;
         [SerializeField] private DialogueDataSO afterRewardDialogueData;
 
         private bool _isRewarded = false;
 
-        [ContextMenu("Interact")]
+        private void OnEnable()
+        {
+            _isRewarded = false;
+        }
+
         public void Interact()
         {
             if (_isRewarded)
-            {
-                DialogueManager.Instance.DoDialogue(afterRewardDialogueData);
-            }
+                DialogueManager.Instance.StartDialogue(afterRewardDialogueData);
             else
-            {
-                DialogueManager.Instance.DoDialogue(dialogueData).Subscribe(Heal);
-                _isRewarded = true;
-            }
+                DialogueManager.Instance.StartDialogue(dialogueData).Subscribe(Heal);
         }
 
         private void Heal()
         {
             var health = Player.Instance.GetEntityComponent<PlayerHealth>();
-            
-            if (health == null)
-            {
-                Debug.Log("Player Health is missing");
-                return;
-            }
-            
-            health.TakeHeal(healAmount);
-        }
 
-        private void OnDisable()
-        {
-            _isRewarded = false;
+            Debug.Assert(health != null, "PlayerHealth Component is missing");
+            
+            health.TakeHeal(healAmount); 
+            _isRewarded = true;
         }
     }
 }

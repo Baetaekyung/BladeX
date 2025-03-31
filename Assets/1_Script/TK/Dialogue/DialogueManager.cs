@@ -7,20 +7,18 @@ namespace Swift_Blade
 {
     public class DialogueManager : MonoSingleton<DialogueManager>
     { 
-        [SerializeField] private DialogueUI _dialogueUI;
+        [SerializeField] private DialogueUI dialogueUI;
         
         #region For Optimization
 
-        private Coroutine _dialogueRoutine;
-        private WaitForSeconds _waitForSeconds;
-        private StringBuilder _sb = new StringBuilder();
+        private Coroutine      _dialogueRoutine;
+        private WaitForSeconds _dialougeWaitTime;
+        private StringBuilder  _sb = new StringBuilder();
 
         #endregion
-        
-        [SerializeField] private DialogueDataSO testDialogue;
 
-        private bool _isDialogueOpen = false;
-        private bool _isForcedCancel = false; //Esc로 다이얼로그를 중단하였는가?
+        private bool _isDialogueOpen      = false;
+        private bool _isForcedCancel      = false; //Esc로 다이얼로그를 중단하였는가?
         private bool _isForcedMessageSkip = false; //Enter를 눌러 내용을 한번에 출력하였는가?
         
         private string _currentDialogueMessage;
@@ -31,15 +29,20 @@ namespace Swift_Blade
         
         private void Update()
         {
+            if (IsDialogueOpen == false)
+                return;
+
             SkipDialogueMessage();
         }
 
-        public DialogueManager DoDialogue(DialogueDataSO dialogueData)
+        public DialogueManager StartDialogue(DialogueDataSO dialogueData)
         {
             ResetDialogue();
-            _dialogueUI.ShowDialog(() => { StartNewDialogue(dialogueData); });
+            dialogueUI.ShowDialogue(EventHandler);
 
             return this;
+
+            void EventHandler() => StartNewDialogue(dialogueData);
         }
 
         private void ResetDialogue()
@@ -50,10 +53,10 @@ namespace Swift_Blade
 
         private void StartNewDialogue(DialogueDataSO dialogueData)
         {
-            _dialogueUI.GetCancelButton.onClick.AddListener(CancelDialogue);
-            _dialogueUI.GetAcceptButton.onClick.RemoveAllListeners();
-            _dialogueUI.GetAcceptButton.gameObject.SetActive(false);
-            _dialogueUI.ClearMessageBox();
+            dialogueUI.GetCancelButton.onClick.AddListener(CancelDialogue);
+            dialogueUI.GetAcceptButton.onClick.RemoveAllListeners();
+            dialogueUI.GetAcceptButton.gameObject.SetActive(false);
+            dialogueUI.ClearMessageBox();
             _sb.Clear();
                 
             if(_dialogueRoutine != null)
@@ -68,74 +71,78 @@ namespace Swift_Blade
 
             _isDialogueOpen = false;
             _onAcceptEvent = null;
-            _dialogueUI.UnShowDialog();
+
+            dialogueUI.UnShowDialogue();
         }
 
         private IEnumerator DialogueRoutine(DialogueDataSO dialogueData)
         {
             _isDialogueOpen = true;
-            _waitForSeconds = new WaitForSeconds(dialogueData.dialogueSpeed);
-            
-            _dialogueUI.SetTalker(dialogueData.talker);
+            _dialougeWaitTime = new WaitForSeconds(dialogueData.dialogueWaitTime);
 
-            var messageLength = dialogueData.dialogueMessage.Count;
-            var dialogProcess = 0;
+            var messageLength   = dialogueData.dialougueDatas.Count;
+            var dialogueProcess = 0;
 
-            while (!_isForcedCancel && dialogProcess < messageLength)
+            while (!_isForcedCancel && dialogueProcess < messageLength)
             {
                 _isForcedMessageSkip = false;
-                
-                _dialogueUI.ClearMessageBox(); //기존 메세지 지워주기
+
+                dialogueUI.ClearMessageBox(); //기존 메세지 지워주기
                 _sb.Clear(); //기존 스트링 빌더 내용 지우기
 
-                _currentDialogueMessage = dialogueData.dialogueMessage[dialogProcess];
-                var maxMessageProcess = dialogueData.dialogueMessage[dialogProcess].Length;
-                var messageProcess = 0;
-                
-                while (!_isForcedMessageSkip && messageProcess < maxMessageProcess) //문자 하나씩 출력 (dialogSpeed 기반)
+                _currentDialogueMessage = dialogueData.dialougueDatas[dialogueProcess].dialogueMessage;
+                dialogueUI.SetTalker(dialogueData.dialougueDatas[dialogueProcess].talker);
+
+                bool isLastMessage    = dialogueProcess == messageLength - 1;
+                var maxMessageProcess = dialogueData.dialougueDatas[dialogueProcess].dialogueMessage.Length;
+                var messageProcess    = 0;
+
+                while (!_isForcedMessageSkip
+                    && messageProcess < maxMessageProcess) //문자 하나씩 출력 (dialogueSpeed based)
                 {
-                    _sb.Append(dialogueData.dialogueMessage[dialogProcess][messageProcess]);
+                    _sb.Append(dialogueData.dialougueDatas[dialogueProcess]
+                        .dialogueMessage[messageProcess]);
+
                     messageProcess++; //문자열 출력 진행상황 업데이트.
-                    _dialogueUI.SetMessage(_sb.ToString());
+                    dialogueUI.SetMessage(_sb.ToString());
 
-                    yield return _waitForSeconds;
+                    yield return _dialougeWaitTime;
                 }
-                
-                if (dialogProcess == messageLength - 1)
+
+                if (isLastMessage)
                 {
-                    ClickAcceptButton(dialogueData);
+                    Accept(dialogueData);
 
+                    //Press enter or click button is trigger of accept
                     yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Return));
-                    _dialogueUI.GetAcceptButton.onClick?.Invoke();
+                    dialogueUI.GetAcceptButton.onClick?.Invoke();
                 }
                 
-                yield return new WaitUntil(() 
-                        => _isForcedCancel || Input.GetKeyDown(KeyCode.Return));
+                yield return new WaitUntil(() => _isForcedCancel || Input.GetKeyDown(KeyCode.Return));
                 
-                ++dialogProcess; //다이얼 로그 진행상황 업데이트.
+                ++dialogueProcess;
             }
         }
 
-        private void ClickAcceptButton(DialogueDataSO dialogueData)
-        {
+        private void Accept(DialogueDataSO dialogueData)
+        {   
+            dialogueUI.GetAcceptButton.gameObject.SetActive(true);
+
+            dialogueUI.GetAcceptButton.onClick.AddListener(InvokeAcceptEvent);
+            dialogueUI.GetAcceptButton.onClick.AddListener(InvokeAllDialogueEvents);
+            dialogueUI.GetAcceptButton.onClick.AddListener(CancelDialogue);
+
             void InvokeAllDialogueEvents()
             {
                 foreach (DialogueEventSO dialogueEvent in dialogueData.dialogueEvent)
                     dialogueEvent?.InvokeEvent();
             }
-            
-            _dialogueUI.GetAcceptButton.gameObject.SetActive(true);
-            _dialogueUI.GetAcceptButton.onClick.AddListener(InvokeAcceptEvent);
-            _dialogueUI.GetAcceptButton.onClick.AddListener(InvokeAllDialogueEvents);
-            _dialogueUI.GetAcceptButton.onClick.AddListener(CancelDialogue);
         }
 
         private void InvokeAcceptEvent()
         {
             _onAcceptEvent?.Invoke();
             _onAcceptEvent = null;
-            
-            _dialogueUI.GetAcceptButton.onClick.RemoveAllListeners();
         }
 
         public void CancelDialogue()
@@ -143,9 +150,10 @@ namespace Swift_Blade
             if (_isDialogueOpen == false)
                 return;
             
-            _dialogueUI.GetCancelButton.onClick.RemoveAllListeners();
-            _dialogueUI.GetAcceptButton.onClick.RemoveAllListeners();
-            _dialogueUI.ClearMessageBox();
+            dialogueUI.GetCancelButton.onClick.RemoveAllListeners();
+            dialogueUI.GetAcceptButton.onClick.RemoveAllListeners();
+
+            dialogueUI.ClearMessageBox();
             _sb.Clear();
                     
             StopDialogue();
@@ -157,20 +165,18 @@ namespace Swift_Blade
             if (_isDialogueOpen == false)
                 return;
             
-            if(!Input.GetKeyDown(KeyCode.Return))
-                return;
-            
-            _isForcedMessageSkip = true; //강제 메세지 스킵
-            _dialogueUI.SetMessage(_currentDialogueMessage); //강제로 완성된 문자열 대입
+            if(Input.GetKeyDown(KeyCode.Return))
+            {
+                _isForcedMessageSkip = true; //강제 메세지 스킵
+
+                dialogueUI.SetMessage(_currentDialogueMessage); //강제로 완성된 문자열 대입
+            }
         }
 
         public void Subscribe(Action onAccept)
         {
+            //_onAcceptEvent will be cleared after invoke.
             _onAcceptEvent = onAccept;
-        }
-        public void Desubscribe(Action onAccept)
-        {
-            _onAcceptEvent -= onAccept;
         }
     }
 }

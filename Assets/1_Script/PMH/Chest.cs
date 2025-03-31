@@ -1,9 +1,10 @@
 using UnityEngine;
 using DG.Tweening;
+using Swift_Blade.Pool;
 
 namespace Swift_Blade.Level
 {
-    public enum ChestType //ø° µ˚∂Ûº≠ ≥™ø√ æ∆¿Ã≈€ »Æ∑¸ ¡∂¿€? (øπ¡§)
+    public enum ChestType //Ïóê Îî∞ÎùºÏÑú ÎÇòÏò¨ ÏïÑÏù¥ÌÖú ÌôïÎ•† Ï°∞Ïûë? (ÏòàÏ†ï)
     {
         Bronze,
         Silver,
@@ -12,75 +13,76 @@ namespace Swift_Blade.Level
 
     public class Chest : MonoBehaviour, IInteractable
     {
-        [SerializeField] private Transform playerTrm;
+        private Transform playerTrm;
         
         [SerializeField] private ItemOrb itemOrb;
         [SerializeField] private float shootAngle = -15f;
-        [SerializeField] private float shootPower = 5f;
+        [SerializeField] private Vector2 shootPower;
         
         [SerializeField] private ItemTableSO itemTableSO;
         
-        [SerializeField] private Transform[] chestVisual;
+        [SerializeField] private PoolPrefabMonoBehaviourSO shinyParticlePrefab;
+        [SerializeField] private Transform shinyParticleTrm;
+
+        [SerializeField] private Transform[] visuals;
         
         private Transform chestLid;
         private ChestType chestType;
         private Rigidbody rigidbody;
-
+        
         private bool isOpen = false;
         
         private void Start()
         {
+            MonoGenericPool<ShinyParticle>.Initialize(shinyParticlePrefab);
+            
             rigidbody = GetComponent<Rigidbody>();
-                        
             SetRandomChestType();
         }
 
         private void SetRandomChestType()
         {
-            foreach(var t in chestVisual)
+            for (int i = 0; i < visuals.Length; i++)
             {
-                t.gameObject.SetActive(false);
+                visuals[i].gameObject.SetActive(false);
             }
-                        
-            int n = Random.Range(0, chestVisual.Length);
+            
+            int n = Random.Range(0, 3);
             chestType = (ChestType)n;
-            chestVisual[n].gameObject.SetActive(true);
-            chestLid = chestVisual[n].GetChild(0);
+            visuals[n].gameObject.SetActive(true);
+            chestLid =  visuals[n].GetChild(0);
             
         }
-
         private void OpenChest()
         {
             if (isOpen) return;
-            
             isOpen = true;
+
+            ShinyParticle shinyParticle = MonoGenericPool<ShinyParticle>.Pop();
+            shinyParticle.transform.position = shinyParticleTrm.position;
             
             OpenChestAnimations();
             InstItemOrb();
             GetRandomItem();
         }
-
+        
         private void OpenChestAnimations()
         {
-            //rigidbody.isKinematic = true; 
-
             Vector3 openLidAngle = new Vector3(-90, transform.eulerAngles.y, transform.eulerAngles.z);
-            chestLid.DORotate(openLidAngle, 0.3f).SetEase(Ease.OutQuad).SetUpdate(UpdateType.Fixed);
-
-            rigidbody.DOJump(rigidbody.position + Vector3.up * 0.25f, 0.05f, 1, 0.15f);
-            rigidbody.DORotate(rigidbody.rotation.eulerAngles + new Vector3(5, 0, 0), 0.1f);
+            chestLid.DORotate(openLidAngle, 0.3f).SetEase(Ease.OutQuad);
             
-            //DOVirtual.DelayedCall(0.4f, () => rigidbody.isKinematic = false);
+            rigidbody.DOJump(rigidbody.position + Vector3.up * 0.4f, 0.1f, 1, 0.15f);
+            rigidbody.DORotate(rigidbody.rotation.eulerAngles + new Vector3(5, 0, 0), 0.1f);
         }
         
         private void InstItemOrb()
         {
-            Vector3 spawnPos = transform.localPosition + new Vector3(0, 0.2f, 0);
+            Vector3 spawnPos = transform.localPosition + new Vector3(0, 1f, 0);
             ItemOrb orb = Instantiate(itemOrb, spawnPos, Quaternion.identity);
-            orb.transform.eulerAngles = new Vector3(shootAngle, 0, 0);
+            orb.SetColor((ColorType)Random.Range(0 , 3));
             
-            Vector3 shootForce = Vector3.up * shootPower + (playerTrm.position - transform.position) * (shootPower / 13);
-            orb.GetComponent<Rigidbody>().AddForce(shootForce, ForceMode.Impulse);
+            orb.transform.DOMoveY(transform.position.y + 3f , 0.4f);
+
         }
         private ItemDataSO GetRandomItem()
         {
@@ -90,12 +92,12 @@ namespace Swift_Blade.Level
             return itemTableSO.itemTable[randomIndex].itemData;
             
             //InventoryManager.Instance.AddItemToEmptySlot(item.itemData);
-            //¿Œ∫•≈‰∏ÆSOø° addø•∆º
+            //Ïù∏Î≤§ÌÜ†Î¶¨SOÏóê addÏó†Ìã∞
         }
 
         public void Interact()
         {
-            //Debug.Log("ø≠∑¡∂Û¬¸±˙");
+            //Debug.Log("Ïó¥Î†§ÎùºÏ∞∏Íπ®");
             OpenChest();
         }
 

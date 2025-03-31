@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2338290467293885201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1667851964531563554}
+  m_Layer: 13
+  m_Name: ShinyPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1667851964531563554
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2338290467293885201}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.75, z: 0.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3164599430006350183}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2353512345551552340
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,8 +42,8 @@ GameObject:
   - component: {fileID: 3164599430006350183}
   - component: {fileID: 6590346336217955126}
   - component: {fileID: 2401671241048333200}
-  - component: {fileID: 8224207829032218450}
   - component: {fileID: 6161574239915306272}
+  - component: {fileID: 8466240937637302737}
   m_Layer: 13
   m_Name: Chest
   m_TagString: Untagged
@@ -36,6 +67,7 @@ Transform:
   - {fileID: 7756091554658805280}
   - {fileID: 464403543843367441}
   - {fileID: 8467139636293947826}
+  - {fileID: 1667851964531563554}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &6590346336217955126
@@ -50,12 +82,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ba0a98578595544dade4ace5379e25e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTrm: {fileID: 0}
   itemOrb: {fileID: -9058422231119184905, guid: d451827fa4db9a447a9358ba254328f3, type: 3}
   shootAngle: -30
-  shootPower: 7
+  shootPower: {x: 0.5, y: 12}
   itemTableSO: {fileID: 11400000, guid: 93af232c3341bf843a7d99994f31af5f, type: 2}
-  chestVisual:
+  shinyParticlePrefab: {fileID: 11400000, guid: c65c80797ea8446498807c33cda2f869, type: 2}
+  shinyParticleTrm: {fileID: 1667851964531563554}
+  visuals:
   - {fileID: 7756091554658805280}
   - {fileID: 464403543843367441}
   - {fileID: 8467139636293947826}
@@ -80,7 +113,34 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 1, z: 3}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!65 &8224207829032218450
+--- !u!54 &6161574239915306272
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2353512345551552340}
+  serializedVersion: 4
+  m_Mass: 100000000
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &8466240937637302737
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,35 +159,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.2, y: 0.95484006, z: 0.7342436}
-  m_Center: {x: -0, y: 0.47742003, z: -0.019523332}
---- !u!54 &6161574239915306272
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2353512345551552340}
-  serializedVersion: 4
-  m_Mass: 50
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 122
-  m_CollisionDetection: 0
+  m_Size: {x: 2, y: 1.7244006, z: 2}
+  m_Center: {x: 0, y: 0.8377997, z: 0}
 --- !u!1001 &464403543843003429
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -223,6 +256,10 @@ PrefabInstance:
     - target: {fileID: 133660, guid: 971412afe90b27640b1c78c0641deec9, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Chest_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 133660, guid: 971412afe90b27640b1c78c0641deec9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 414680, guid: 971412afe90b27640b1c78c0641deec9, type: 3}
       propertyPath: m_LocalScale.x

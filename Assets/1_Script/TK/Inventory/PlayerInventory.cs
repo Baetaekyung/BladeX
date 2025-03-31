@@ -12,35 +12,38 @@ namespace Swift_Blade
         
         public List<ItemDataSO> itemInventory;
 
-        [HideInInspector] public List<ItemSlot> itemSlots = new List<ItemSlot>();
-        public List<EquipmentData> currentEquipment = new List<EquipmentData>();
-        public List<EquipmentChannelSO> currentEquipmentEffects = new List<EquipmentChannelSO>();
+        [HideInInspector] 
+        public List<ItemSlot>      itemSlots        = new();
+        public List<EquipmentData> currentEquipment = new();
         
         public int Coin { get; set; }
         
-        public PlayerInventory Clone()
-        {
-            var inventory = Instantiate(this);
-            inventory.Initialize();
-            
-            return inventory;
-        }
-
-        public void Initialize()
+        private PlayerInventory Initialize()
         {
             PlayerInventory inventory = Instantiate(this);
 
             inventory.itemSlots = itemSlots;
-            inventory.itemInventory = new List<ItemDataSO>();
-            inventory.currentEquipmentEffects = new List<EquipmentChannelSO>();
-            
+
+            #region Deep copy
+
+            List<ItemDataSO> tempInventory = new List<ItemDataSO>();
+
+            foreach(var itemData in itemInventory)
+            {
+                tempInventory.Add(itemData);
+            }
+
+            #endregion
+            inventory.itemInventory = tempInventory;            
             inventory.Coin = 0;
             
             inventory.currentInventoryCapacity = itemInventory.Count;
             inventory.maxInventoryCapacity = itemSlots.Count - 5; // -5는 장비슬롯 때문에
             inventory.currentEquipment = new List<EquipmentData>();
+
+            return inventory;
         }
 
-
+        public PlayerInventory Clone() => Initialize();
     }
 }

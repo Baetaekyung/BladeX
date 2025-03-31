@@ -6,29 +6,28 @@ namespace Swift_Blade
 {
     public class InGameUIManager : MonoSingleton<InGameUIManager>
     {
-        [field: SerializeField] public GameObject BossHealthBarUI { get; private set; }
+        public GameObject bossHealthBarUI;
 
         [SerializeField] private SceneManagerSO sceneManagerSo;
         
-        [ContextMenu("Test")]
-        public void EnableBoss()
+        public void EnableBoss(bool enable)
         {
-            EnableBossUIs(true);
+            EnableBossUIs(enable);
         }
         
         public void EnableBossUIs(bool enable)
         {
             if (enable)
             {
-                BossHealthBarUI.gameObject.SetActive(true);
-                BossHealthBarUI.GetComponent<RectTransform>().DOAnchorPosY(-75, 0.7f)
+                bossHealthBarUI.gameObject.SetActive(true);
+                bossHealthBarUI.GetComponent<RectTransform>().DOAnchorPosY(-75, 0.7f)
                     .SetEase(Ease.OutBounce);
             }
             else
             {
-                BossHealthBarUI.GetComponent<RectTransform>().DOAnchorPosY(110, 0.7f)
+                bossHealthBarUI.GetComponent<RectTransform>().DOAnchorPosY(110, 0.7f)
                     .SetEase(Ease.Linear)
-                    .OnComplete(() => BossHealthBarUI.gameObject.SetActive(false));
+                    .OnComplete(() => bossHealthBarUI.gameObject.SetActive(false));
             }
         }
     }

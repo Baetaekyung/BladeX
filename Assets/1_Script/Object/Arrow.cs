@@ -31,14 +31,15 @@ namespace Swift_Blade.Pool
         private void OnTriggerEnter(Collider other)
         {
             if (deadFlag) return;
-            deadFlag = true;
-            //do dead arrow stuff here
+            
             
             if (other.gameObject.TryGetComponent(out PlayerHealth playerHealth))
             {
+                deadFlag = true;
                 playerHealth.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
                 MonoGenericPool<Arrow>.Push(this);
             }
+            
         }
                 
         public void Shot()

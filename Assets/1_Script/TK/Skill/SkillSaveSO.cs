@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Swift_Blade.Skill;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
@@ -39,11 +38,13 @@ namespace Swift_Blade
             so.skillSlotData = new List<SkillData>();
             so.inventoryData = new List<SkillData>();
             
+            //Deep copy...
             foreach (var skillData in skillSlotData)
             {
                 so.skillSlotData.Add(skillData);
             }
 
+            //Deep copy...
             foreach (var invenData in inventoryData)
             {
                 so.inventoryData.Add(invenData);

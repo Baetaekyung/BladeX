@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using Debug = Utility.Debug;
 using Random = UnityEngine.Random;
 
 namespace Swift_Blade
@@ -35,12 +34,7 @@ namespace Swift_Blade
         
         private void AddRandomGold()
         {
-            /*int randomGold = Random.Range(50, 100);
-            print(InventoryManager.Inventory);
-            InventoryManager.Inventory.Coin += randomGold;*/
-            
             SetGoldUI();
         }
-        
     }
 }

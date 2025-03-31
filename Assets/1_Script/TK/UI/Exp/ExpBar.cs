@@ -25,7 +25,5 @@ namespace Swift_Blade
             _currentGauge = Mathf.Lerp(_currentGauge, Player.level.Experience / 2f, Time.deltaTime * 4f);
             gauge.fillAmount = _currentGauge;
         }
-
-        
     }
 }
