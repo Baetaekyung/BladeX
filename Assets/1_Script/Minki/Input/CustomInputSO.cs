@@ -20,6 +20,8 @@ namespace Swift_Blade.Inputs
 
         private CustomInput _input;
 
+        public CustomInput CustomInput => _input;
+
         private void OnEnable()
         {
             if(_input == null)
