@@ -48,7 +48,7 @@ namespace Swift_Blade
 
         private void OffEquipment()
         {
-            var baseEquip = _itemDataSO.itemObject as BaseEquipment;
+            var baseEquip = _itemDataSO.itemObject as Equipment;
             baseEquip?.OffEquipment();
 
             InventoryManager.EquipmentDatas.Remove(_itemDataSO);

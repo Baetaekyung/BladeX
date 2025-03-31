@@ -55,7 +55,7 @@ namespace Swift_Blade
                     .GetMatchTypeEquipSlot(_itemDataSO.equipmentData.slotType)
                     .SetItemData(_itemDataSO);
 
-                var baseEquip = _itemDataSO.itemObject as BaseEquipment;
+                var baseEquip = _itemDataSO.itemObject as Equipment;
                 baseEquip.OnEquipment();
 
                 _itemDataSO = null;

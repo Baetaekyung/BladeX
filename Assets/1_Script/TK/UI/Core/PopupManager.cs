@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Swift_Blade.Level;
 using Swift_Blade.UI;
+using UnityEditor.XR;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Swift_Blade
 {
@@ -16,6 +15,10 @@ namespace Swift_Blade
         public event Action   OnPopUpOpenOrClose;
 
         public bool IsRemainPopup => _popupList.Count > 0;
+
+        [SerializeField] private float infoRemainTime = 2f;
+        private float infoTimer = 0f;
+        private bool  infoboxRemain = false;
 
         private void Start()
         {
@@ -29,10 +32,29 @@ namespace Swift_Blade
         }
 
         private void Update()
-        {   
+        {
             OpenCloseInventory();
-
             PopDownInput();
+            CheckInfoBox();
+        }
+
+        private void CheckInfoBox()
+        {
+            if (infoboxRemain)
+            {
+                if (infoTimer < infoRemainTime)
+                    infoTimer += Time.unscaledDeltaTime;
+                else
+                {
+                    infoTimer = 0f;
+
+                    if (GetRemainPopup(PopupType.InfoBox))
+                    {
+                        PopDown(PopupType.InfoBox);
+                        infoboxRemain = false;
+                    }
+                }
+            }
         }
 
         private void PopDownInput()
@@ -145,6 +167,25 @@ namespace Swift_Blade
             }
         }
 
+        public void PopDown(PopupUI popup)
+        {
+            if (_popupList.Count > 0)
+            {
+                if (popup != null)
+                {
+                    _popupList.Remove(popup);
+                    popup.PopDown();
+                    OnPopUpOpenOrClose?.Invoke();
+                }
+            }
+            else
+            {
+                PopUp(PopupType.Option);
+
+                OnPopUpOpenOrClose?.Invoke();
+            }
+        }
+
         public void LogMessage(string message)
         {
             PopupUI popup = GetPopupUI(UI.PopupType.Text);
@@ -152,6 +193,32 @@ namespace Swift_Blade
 
             textPopup.SetText(message);
             DelayPopup(PopupType.Text, 1f, () => PopDown(PopupType.Text));
+        }
+
+        public void LogInfoBox(string message)
+        {
+            //if popup remain in screen
+            if (GetRemainPopup(PopupType.InfoBox) != null)
+            {
+                PopupUI remain = GetRemainPopup(PopupType.InfoBox);
+                InfoBoxPopup remainInfobox = remain as InfoBoxPopup;
+
+                remainInfobox.SetInfoBox(message);
+
+                infoTimer = 0f;
+                infoboxRemain = true;
+
+                return;
+            }
+
+            PopupUI popup = GetPopupUI(PopupType.InfoBox);
+            InfoBoxPopup infoPopup = popup as InfoBoxPopup;
+
+            infoPopup.SetInfoBox(message);
+            PopUp(PopupType.InfoBox);
+
+            infoTimer = 0f;
+            infoboxRemain = true;
         }
 
         public void AllPopDown()
@@ -173,7 +240,7 @@ namespace Swift_Blade
 
         public PopupUI GetRemainPopup(PopupType type)
         {
-            return _popupList.Find(x => x.popupType == type);
+            return _popupList.FirstOrDefault(x => x.popupType == type);
         }
 
         public void OpenSettingPopup() => PopUp(PopupType.Setting);

@@ -294,7 +294,7 @@ namespace Swift_Blade
             //Original item need to go to the inventory
             ItemDataSO tempItemData = matchSlot.GetSlotItemData();
             
-            var baseEquip = tempItemData.itemObject as BaseEquipment;
+            var baseEquip = tempItemData.itemObject as Equipment;
             baseEquip?.OffEquipment();
             
             EquipmentDatas.Remove(tempItemData);

@@ -13,12 +13,10 @@ namespace Swift_Blade
 
     public class PlayerStatCompo : StatComponent, IEntityComponent
     {
-        public List<ColorStat>        defaultColorStat = new List<ColorStat>();
+        public List<ColorStat> defaultColorStat  = new List<ColorStat>();
         public static List<ColorStat> colorStats = new List<ColorStat>();
 
-        private static bool InitOnce = false;
-
-        public event Action ColorChangedAction;
+        public event Action ColorValueChangedAction;
 
         public void EntityComponentAwake(Entity entity)
         {
@@ -41,12 +39,12 @@ namespace Swift_Blade
             foreach (var stat in _stats)
                 stat.ColorValue = 0;
 
-            //hmm...no way..
-            foreach (var stat in _stats)
+            //hmm...no way../Max: O(8 or 9 * 7 * 3) = Max: O(168 or 189)
+            foreach (var stat in _stats) //Max O(8 ~ 9)
             {
-                foreach (ColorStat colorStat in colorStats)
+                foreach (ColorStat colorStat in colorStats) //Max O(7)
                 {
-                    if (ColorUtils.GetCotainColors(colorStat.colorType).Contains(stat.colorType))
+                    if (ColorUtils.GetCotainColors(colorStat.colorType).Contains(stat.colorType)) //Max O(3)
                         stat.ColorValue += colorStat.colorValue;
                 }
             }
@@ -64,7 +62,7 @@ namespace Swift_Blade
             var colorStat = GetColorStat(colorType);
 
             colorStat.colorValue += increaseAmount;
-            ColorChange();
+            ColorValueChange();
         }
 
         public void DecreaseColorValue(ColorType colorType, int decreaseAmount)
@@ -72,13 +70,13 @@ namespace Swift_Blade
             var colorStat = GetColorStat(colorType);
 
             colorStat.colorValue -= decreaseAmount;
-            ColorChange();
+            ColorValueChange();
         }
 
-        private void ColorChange()
+        private void ColorValueChange()
         {
             UpdateColorValueToStat();
-            ColorChangedAction?.Invoke();
+            ColorValueChangedAction?.Invoke();
         }
 
         public int GetColorStatValue(ColorType colorType) => GetColorStat(colorType).colorValue;
