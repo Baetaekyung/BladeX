@@ -11,10 +11,15 @@ namespace Swift_Blade
         QSwing,
         Roll
     }
+    public enum EAttackType
+    {
+        Normal,
+        Stun
+    }
 
     public class AnimationTriggers : MonoBehaviour
     {
-        public event Action OnAttackTriggerEvent;
+        public event Action<EAttackType> OnAttackTriggerEvent;
 
         public event Action OnAnimationEndEvent;
         public event Action OnAnimationEndableEvent;
@@ -23,6 +28,7 @@ namespace Swift_Blade
 
         public event Action<float> OnSpeedMultiplierDefaultEvent;
         public event Action<float> OnForceEvent;
+        public event Action<float> OnForceEvent2;
 
         public event Action OnRotateAllowSetEvent;
         public event Action OnRotateDisallowSetEvent;
@@ -46,9 +52,12 @@ namespace Swift_Blade
         [Preserve]
         private void OnForceEventTrigger(float force) => OnForceEvent?.Invoke(force);
         [Preserve]
+        private void OnForceEventTrigger2(float force) => OnForceEvent2?.Invoke(force);
+
+        [Preserve]
         private void OnSpeedMultiplierDefaultTrigger(float set) => OnSpeedMultiplierDefaultEvent?.Invoke(set);
         [Preserve]
-        private void OnAttackTrigger() => OnAttackTriggerEvent?.Invoke();
+        private void OnAttackTrigger(EAttackType attackType) => OnAttackTriggerEvent?.Invoke(attackType);
         [Preserve]
         private void OnRotateAllowTrigger() => OnRotateAllowSetEvent?.Invoke();
         [Preserve]

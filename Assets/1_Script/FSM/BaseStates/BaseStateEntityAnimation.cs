@@ -25,11 +25,12 @@ namespace Swift_Blade.FSM.States
         protected virtual void OnAnimationEndTriggerListen()                => Debug.Log("OnAnimationListen");
         protected virtual void OnAnimationEndTriggerStoplisten()            => Debug.Log("Onstoplisten");
 
-        protected virtual void OnAttackTrigger()                            => Debug.Log("OnAttackTrigger");
+        protected virtual void OnAttackTrigger(EAttackType attackType)      => Debug.Log("OnAttackTrigger");
         protected virtual void OnAllowRotateAllowTrigger()                  => Debug.Log("OnRotoateSet");
         protected virtual void OnAllowRotateDisallowTrigger()               => Debug.Log("OnRotoateDisallowSet");
 
         protected virtual void OnForceEventTrigger(float force)             => Debug.Log("OnFroce");
+        protected virtual void OnForceEventTrigger2(float force)            => Debug.Log("OnForce2");
         protected virtual void OnSpeedMultiplierDefaultTrigger(float set)   => Debug.Log("OnSpeedmultiplier");
         protected virtual void OnAudioPlayTrigger(AudioSO audioSO)          => Debug.Log("OnAudio");
         #endregion
@@ -47,6 +48,8 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnRotateDisallowSetEvent+= OnAllowRotateDisallowTrigger;
 
             animationTriggers.OnForceEvent += OnForceEventTrigger;
+            animationTriggers.OnForceEvent2 += OnForceEventTrigger2;
+
             animationTriggers.OnSpeedMultiplierDefaultEvent += OnSpeedMultiplierDefaultTrigger;
             animationTriggers.OnAudioPlayEvent += OnAudioPlayTrigger;
 
@@ -65,6 +68,8 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnRotateDisallowSetEvent -= OnAllowRotateDisallowTrigger;
 
             animationTriggers.OnForceEvent -= OnForceEventTrigger;
+            animationTriggers.OnForceEvent2 -= OnForceEventTrigger2;
+
             animationTriggers.OnSpeedMultiplierDefaultEvent -= OnSpeedMultiplierDefaultTrigger;
             animationTriggers.OnAudioPlayEvent -= OnAudioPlayTrigger;
 
@@ -89,13 +94,13 @@ namespace Swift_Blade.FSM.States
         {
             Debug.Assert(param != null, "parameterSO is null");
             int hash = param.GetAnimationHash;
-            //ownerAnimator.Rebind();
+            ownerAnimator.Rebind();
             ownerAnimator.Play(hash, layer);
             //ownerAnimator.CrossFadeInFixedTime(hash, 0.05f, layer);
         }
         protected void PlayAnimationRebind(int hash, int layer = -1)
         {
-            //ownerAnimator.Rebind();
+            ownerAnimator.Rebind();
             ownerAnimator.Play(hash, layer);
             //ownerAnimator.CrossFadeInFixedTime(hash, 0.05f, layer, 0, 0.2f);
         }
