@@ -48,7 +48,7 @@ namespace Swift_Blade.Enemy.Goblin
         protected override void OnDrawGizmos()
         {
             base.OnDrawGizmos();
-
+            
             Gizmos.DrawWireSphere(transform.position, checkTargetRadius);
         }
 
