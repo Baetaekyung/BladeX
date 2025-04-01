@@ -28,8 +28,29 @@ namespace Swift_Blade
         private const float initialRollStamina = 1f;
         private float currentRollStamina;
 
+        [Header("AnimationTrigger")]
+        [SerializeField] private AnimationCurve forceCurve;
+        private Vector3 forceVetor;
+        private float curveValue;
+
         [Header("Angle Multiplier")]
-        [SerializeField] private float angleMultiplier = 20f;
+        [SerializeField] private float angleMultiplier = ANGLE_MULTIPLIER_NORMAL;
+        private const float ANGLE_MULTIPLIER_SLOW = 4f;
+        private const float ANGLE_MULTIPLIER_NORMAL = 12;
+        public enum EAngleMultiplier
+        {
+            Slow,
+            Normal
+        }
+
+        public void SetAngleMultiplier(EAngleMultiplier angleOptions)
+        {
+            if (angleOptions == EAngleMultiplier.Slow)
+            {
+                angleMultiplier = ANGLE_MULTIPLIER_SLOW;
+            }
+            else angleMultiplier = ANGLE_MULTIPLIER_NORMAL;
+        }
 
         [Header("Debug")]
         [SerializeField] private float db_speedMulti;
@@ -68,12 +89,15 @@ namespace Swift_Blade
         {
             currentRollStamina += Time.deltaTime;
             currentRollStamina = Mathf.Min(GetMaxStamina, currentRollStamina);
+            UI_DebugPlayer.DebugText(1, curveValue, "curveValue", DBG_UI_KEYS.Keys_PlayerAction);
+            UI_DebugPlayer.DebugText(2, forceCurve.Evaluate(curveValue), "curveCrv", DBG_UI_KEYS.Keys_PlayerAction);
             //print(SpeedMultiplierDefault);
         }
         private void FixedUpdate()
         {
             ApplyMovement();
             rollValue = Mathf.MoveTowards(rollValue, 2, Time.fixedDeltaTime * 2.5f);
+            curveValue = Mathf.MoveTowards(curveValue, 2, Time.fixedDeltaTime * 2.5f);
             //UI_DebugPlayer.DebugText(7, rollValue, "rollValue", DBG_UI_KEYS.Keys_PlayerAction);
             //UI_DebugPlayer.DebugText(8, currentRollStamina, "currentRoll", DBG_UI_KEYS.Keys_PlayerAction);
             AdditionalVelocity = Vector3.MoveTowards(AdditionalVelocity, Vector3.zero, Time.fixedDeltaTime * 10);
@@ -127,8 +151,10 @@ namespace Swift_Blade
             //UI_DebugPlayer.DebugText(1, speed, "speed", DBG_UI_KEYS.Keys_PlayerMovement);
             //UI_DebugPlayer.DebugText(1, AllowInputMove, "allowInputMove", DBG_UI_KEYS.Keys_PlayerAction);
             //UI_DebugPlayer.DebugText(2, wishSpeed, "wishSpeed", DBG_UI_KEYS.Keys_PlayerMovement);
+            Vector3 dashResult = DashVelocity * rollCurve.Evaluate(rollValue);
+            Vector3 forceResult = forceVetor * forceCurve.Evaluate(curveValue);
 
-            Vector3 addition = AdditionalVelocity + DashVelocity * rollCurve.Evaluate(rollValue);
+            Vector3 addition = AdditionalVelocity + dashResult + forceResult;
             Vector3 result = input * speed + addition;
             result.y += yVal;
             controller.linearVelocity = result;
@@ -141,7 +167,13 @@ namespace Swift_Blade
             Vector3 result = visulTrnasform.TransformVector(force) * multiplier;
             AdditionalVelocity += result;
         }
-
+        public void AddForceCurve(Vector3 force)
+        {
+            Transform visualTransform = playerRenderer.GetPlayerVisualTrasnform;
+            Vector3 result = visualTransform.TransformVector(force);
+            curveValue = 0;
+            forceVetor = result;
+        }
         public void Dash(Vector3 dir, float force)
         {
             Vector3 result = dir * force;
