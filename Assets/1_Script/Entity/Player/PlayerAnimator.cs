@@ -28,11 +28,10 @@ namespace Swift_Blade
             animator.Play(hash, layer);
         }
         
-        public void SetPlayerAttackSpeed()
+        private void SetPlayerAttackSpeed()
         {
             float speed = playerStatCompo.GetStat(StatType.ATTACKSPEED).Value;
             animator.SetFloat(attackSpeedHash, speed);
         }
-        
     }
 }

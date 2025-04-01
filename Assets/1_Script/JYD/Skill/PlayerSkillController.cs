@@ -91,9 +91,9 @@ namespace Swift_Blade.Skill
             {
                 if (slotCount >= maxSlotCount) return;
                 
-                if (skillEvents.ContainsKey(skillData.SkillType))
+                if (skillEvents.ContainsKey(skillData.skillType))
                 {
-                    skillEvents[skillData.SkillType] += skillData.UseSkill;
+                    skillEvents[skillData.skillType] += skillData.UseSkill;
                     currentSkillList.Add(skillData);
                     ++slotCount;
                     
@@ -103,9 +103,9 @@ namespace Swift_Blade.Skill
 
             public void RemoveSkill(SkillData skillData)
             {
-                if (skillEvents.ContainsKey(skillData.SkillType) && skillEvents[skillData.SkillType] != null)
+                if (skillEvents.ContainsKey(skillData.skillType) && skillEvents[skillData.skillType] != null)
                 {
-                    skillEvents[skillData.SkillType] -= skillData.UseSkill;
+                    skillEvents[skillData.skillType] -= skillData.UseSkill;
                     currentSkillList.Remove(skillData);
                     --slotCount;
                 }

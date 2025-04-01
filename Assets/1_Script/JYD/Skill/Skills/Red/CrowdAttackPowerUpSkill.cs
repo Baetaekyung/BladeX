@@ -12,7 +12,6 @@ namespace Swift_Blade.Skill
         [SerializeField] private LayerMask whatIsTarget;
         [Range(1, 10)] [SerializeField] private int targetCount;
         [Range(1f, 10f)] [SerializeField] private float increaseValue;
-        [Tooltip("색깔 스탯의 영향을 얼마나 받을지")] [Range(1f, 10f)] [SerializeField] private float ratio;
         
         private bool isUpgrade;
         
@@ -30,24 +29,20 @@ namespace Swift_Blade.Skill
             {
                 isUpgrade = true;
                 
-                //Debug.Log("강해짐");
-                
                 RedWaveParticle redWaveParticle = MonoGenericPool<RedWaveParticle>.Pop();
                 redWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,1,0);
                 
-                player.GetPlayerStat.GetStat(StatType).AddModifier("CrowdAttackPowerUp" , increaseValue);
+                player.GetPlayerStat.GetStat(statType).AddModifier(skillName, increaseValue);
             }
             else if(isUpgrade && targets.Count < targetCount)
             {
                 isUpgrade = false;
                 
-                //Debug.Log("약해짐");
-                
-                player.GetPlayerStat.GetStat(StatType).RemoveModifier("CrowdAttackPowerUp");
+                player.GetPlayerStat.GetStat(statType).RemoveModifier(skillName);
             }
             
         }
-
+        
         public override void UseSkill(Player player, Transform[] targets = null)
         {
             

@@ -1,11 +1,10 @@
-using System;
-using Swift_Blade.Enemy;
-using Unity.Behavior;
-using UnityEngine;
 using Action = Unity.Behavior.Action;
+using Swift_Blade.Enemy;
 using Unity.Properties;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
+using Unity.Behavior;
+using UnityEngine;
+using System;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "MoveToTargetAndCheckPlayer", story: "Move To [Target] in [Radius] [Player]", category: "Action", id: "b96944a995977f3bce8c42518732d19f")]
