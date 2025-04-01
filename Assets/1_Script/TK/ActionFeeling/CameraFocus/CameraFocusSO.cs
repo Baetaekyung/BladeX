@@ -24,6 +24,7 @@ namespace Swift_Blade.Feeling
         [Tooltip("포커스 후 바로 원래 FOV로 돌아올 것인가?")]
         public bool isImmediatelyReturn = false;
 
-        [HideInInspector] public WaitForSeconds FocusWait => new WaitForSeconds(focusTime);
+        [HideInInspector] 
+        public WaitForSeconds FocusWait => new WaitForSeconds(focusTime);
     }
 }

@@ -19,10 +19,14 @@ namespace Swift_Blade
     public class InventoryManager : MonoSingleton<InventoryManager>
     {
         //TODO: 나중에 UI랑 Manager기능 분리하기.
-        [FormerlySerializedAs("equipInfoUIs")]
         [Header("UI 부분")]
         [SerializeField] private QuickSlotUI         quickSlotUI;
         [SerializeField] private List<EquipmentSlot> equipSlots;
+        [SerializeField] private TextMeshProUGUI     titleText;
+        [SerializeField] private SlotChangeButton    inventoryButton;
+        [SerializeField] private SlotChangeButton    skillButton;
+        [SerializeField] private GameObject          inventoryUI;
+        [SerializeField] private GameObject          skillUI;
 
         [Header("Item Information")]
         [SerializeField] private Image           itemIcon;
@@ -30,29 +34,22 @@ namespace Swift_Blade
         [SerializeField] private TextMeshProUGUI itemDescription;
         [SerializeField] private TextMeshProUGUI itemTypeInfo;
 
-        [SerializeField] private TextMeshProUGUI  titleText;
-        [SerializeField] private SlotChangeButton inventoryButton;
-        [SerializeField] private SlotChangeButton skillButton;
-        [SerializeField] private GameObject       inventoryUI;
-        [SerializeField] private GameObject       skillUI;
-        
+
         //-------------------------------------------------------------
-        
-        private bool _isDragging = false;
 
-        [SerializeField] private List<ItemSlot>  itemSlots = new List<ItemSlot>();
-        private Dictionary<ItemDataSO, int> _itemDatas = new();
-        private List<ItemDataSO> _itemTable = new();
-        private int _currentItemIndex = 0;
-        
-        public bool IsDragging { get => _isDragging; set => _isDragging = value; }
-        public ItemDataSO QuickSlotItem { get; set; }
-        public static PlayerInventory Inventory { get; set; }
-        public static List<ItemDataSO> EquipmentDatas = new List<ItemDataSO>();
         public static bool IsAfterInit = false;
-        
-        [SerializeField] private PlayerInventory playerInv;
 
+        [SerializeField] private PlayerInventory playerInv;
+        [SerializeField] private List<ItemSlot>  itemSlots  = new List<ItemSlot>();
+        private Dictionary<ItemDataSO, int>      _itemDatas = new();
+        private List<ItemDataSO>                 _itemTable = new();
+
+        private int _currentItemIndex = 0;
+
+        public ItemDataSO QuickSlotItem { get; set; }
+        public static PlayerInventory  Inventory { get; set; }
+        public static List<ItemDataSO> EquipmentDatas = new List<ItemDataSO>();
+        
         private void OnEnable()
         {
             ChangeToInventory();
@@ -63,7 +60,8 @@ namespace Swift_Blade
             if (IsAfterInit == false)
             {
                 Inventory = playerInv.Clone();
-                Instance.InitializeSlots();
+
+                InitializeSlots();
                 IsAfterInit = true;
             }
             
@@ -73,9 +71,9 @@ namespace Swift_Blade
         public void InitializeSlots()
         {
             _currentItemIndex = 0;
-                        
+
             Inventory.itemSlots = new List<ItemSlot>();
-            
+
             for (int i = 0; i < itemSlots.Count; i++)
                 Inventory.itemSlots.Add(itemSlots[i]);
 
@@ -84,7 +82,7 @@ namespace Swift_Blade
                 var slot = GetMatchTypeEquipSlot(EquipmentDatas[i].equipmentData.slotType);
                 slot.SetItemData(EquipmentDatas[i]);
             }
-            
+
             //인벤토리의 아이템 데이터를 슬롯에 넣어주기 (장비창 제외)
             for (int i = 0; i < Inventory.itemInventory.Count; i++)
             {
@@ -92,16 +90,17 @@ namespace Swift_Blade
                 ItemSlot emptySlot = GetEmptySlot();
 
                 ItemDataSO currentIndexItem = Inventory.itemInventory[i];
-                
+
                 //퀵슬롯 등록을 위한 item만 모아놓기
                 if (currentIndexItem.itemType == ItemType.ITEM)
                 {
                     if (_itemDatas.ContainsKey(currentIndexItem))
                     {
                         _itemDatas[currentIndexItem]++;
+
                         continue;
                     }
-                    if (!_itemTable.Contains(currentIndexItem))
+                    else
                         _itemTable.Add(currentIndexItem);
                     
                     _itemDatas.Add(currentIndexItem, 1);
@@ -111,16 +110,24 @@ namespace Swift_Blade
                 {
                     matchSlot.SetItemData(Inventory.itemInventory[i]);
                     Inventory.itemInventory[i].ItemSlot = matchSlot;
+
                     continue;
                 }
-                
+
                 emptySlot.SetItemData(Inventory.itemInventory[i]);
                 Inventory.itemInventory[i].ItemSlot = emptySlot;
             }
 
+            SetQuickSlotItem();
+            UpdateAllSlots();
+        }
+
+        private void SetQuickSlotItem()
+        {
             if (_itemTable.Count != 0)
             {
                 QuickSlotItem = _itemTable[_currentItemIndex];
+
                 UpdateQuickSlotUI(QuickSlotItem);
             }
             
@@ -129,31 +136,32 @@ namespace Swift_Blade
 
         private void Update()
         {
-            //임시 퀵슬롯 키
             if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                if (QuickSlotItem == null)
-                    return;
-                
-                QuickSlotItem.itemObject.ItemEffect(Player.Instance);
-                
-                //아이템 다 쓰면 넘어가기
-                if (--_itemDatas[QuickSlotItem] <= 0)
-                {
-                    _itemDatas.Remove(QuickSlotItem);
-                    _itemTable.Remove(QuickSlotItem);
-                    Inventory.itemInventory.Remove(QuickSlotItem);
-                    
-                    ChangeQuickSlotItem();
-                    UpdateAllSlots();
-                }
-                UpdateQuickSlotUI(QuickSlotItem);
-            }
+                UseQuickSlotItem();
 
             if (Input.GetKeyDown(KeyCode.Tab))
-            {
                 ChangeQuickSlotItem();
+        }
+
+        private void UseQuickSlotItem()
+        {
+            if (QuickSlotItem == null)
+                return;
+
+            QuickSlotItem.itemObject.ItemEffect(Player.Instance);
+            _itemDatas[QuickSlotItem]--;
+
+            //아이템 다 쓰면 넘어가기
+            if (_itemDatas[QuickSlotItem] <= 0)
+            {
+                _itemDatas.Remove(QuickSlotItem);
+                _itemTable.Remove(QuickSlotItem);
+                Inventory.itemInventory.Remove(QuickSlotItem);
+
+                ChangeQuickSlotItem();
+                UpdateAllSlots();
             }
+            UpdateQuickSlotUI(QuickSlotItem);
         }
 
         private void ChangeQuickSlotItem()
@@ -178,27 +186,27 @@ namespace Swift_Blade
         {
             for (int i = 0; i < itemSlots.Count; i++)
             {
-                if (itemSlots[i].GetSlotItemData() == null
+                if (!itemSlots[i].GetSlotItemData()
                     && itemSlots[i] is EquipmentSlot equipSlot)
                 {
-                    itemSlots[i].SetItemImage(equipSlot.GetInfoIcon);
+                    itemSlots[i].SetItemUI(equipSlot.GetInfoIcon);
                 }
                 //빈 슬롯이면 empty 이미지
-                else if (itemSlots[i].GetSlotItemData() == null
+                else if (!itemSlots[i].GetSlotItemData()
                     && itemSlots[i] is not EquipmentSlot)
                 {
-                    itemSlots[i].SetItemImage(null);
+                    itemSlots[i].SetItemUI(null);
                 }
                 else //아이템이 존재하면 itemImage 넣어주기
                 {
                     Sprite itemIcon = itemSlots[i].GetSlotItemData().itemImage;
-                    itemSlots[i].SetItemImage(itemIcon);
+                    itemSlots[i].SetItemUI(itemIcon);
                 }
             }
         }
 
         //아이템을 클릭했을 때 커서에 표시되는 UI
-        public void UpdateInfoUI(ItemDataSO itemData)
+        public void UpdateItemInformationUI(ItemDataSO itemData)
         {
             SetInfoUI(itemData);
         }
@@ -243,7 +251,7 @@ namespace Swift_Blade
             if (matchSlot)
             {
                 matchSlot.SetItemData(newItem);
-                newItem.ItemSlot = matchSlot;
+                //newItem.ItemSlot = matchSlot;
             }
             else
                 AddItemToEmptySlot(newItem);
@@ -286,7 +294,7 @@ namespace Swift_Blade
             //Original item need to go to the inventory
             ItemDataSO tempItemData = matchSlot.GetSlotItemData();
             
-            var baseEquip = tempItemData.itemObject as BaseEquipment;
+            var baseEquip = tempItemData.itemObject as Equipment;
             baseEquip?.OffEquipment();
             
             EquipmentDatas.Remove(tempItemData);
@@ -307,7 +315,7 @@ namespace Swift_Blade
 
         public void UpdateQuickSlotUI(ItemDataSO itemData)
         {
-            if (itemData == null)
+            if (!itemData)
             {
                 quickSlotUI.SetIcon(null);
                 return;
@@ -318,7 +326,6 @@ namespace Swift_Blade
 
         public int GetItemCount(ItemDataSO itemData)
         {
-            Debug.Log(itemData);
             if (_itemDatas.ContainsKey(itemData))
             {
                 return _itemDatas[itemData];

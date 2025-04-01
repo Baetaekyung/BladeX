@@ -35,8 +35,12 @@ namespace Swift_Blade.Level
         private void Start()
         {
             MonoGenericPool<ShinyParticle>.Initialize(shinyParticlePrefab);
-            
             rigidbody = GetComponent<Rigidbody>();
+
+            Vector3 lookDirection = (Camera.main.transform.forward - transform.position).normalized;
+            lookDirection.y = 0;
+            transform.rotation = Quaternion.LookRotation(lookDirection);
+            
             SetRandomChestType();
         }
 
@@ -57,7 +61,9 @@ namespace Swift_Blade.Level
         {
             if (isOpen) return;
             isOpen = true;
-
+            
+            gameObject.layer = LayerMask.NameToLayer("Default");
+            
             ShinyParticle shinyParticle = MonoGenericPool<ShinyParticle>.Pop();
             shinyParticle.transform.position = shinyParticleTrm.position;
             
@@ -70,7 +76,7 @@ namespace Swift_Blade.Level
         {
             Vector3 openLidAngle = new Vector3(-90, transform.eulerAngles.y, transform.eulerAngles.z);
             chestLid.DORotate(openLidAngle, 0.3f).SetEase(Ease.OutQuad);
-
+            
             rigidbody.DOJump(rigidbody.position + Vector3.up * 0.4f, 0.1f, 1, 0.15f);
             rigidbody.DORotate(rigidbody.rotation.eulerAngles + new Vector3(5, 0, 0), 0.1f);
         }

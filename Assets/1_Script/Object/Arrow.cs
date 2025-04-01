@@ -1,14 +1,15 @@
-using System;
 using UnityEngine;
 
 namespace Swift_Blade.Pool
 {
     public class Arrow : MonoBehaviour , IPoolable
     {
+        [SerializeField] private LayerMask whatIsObstacle;
+        
         [SerializeField] private float speed;
         [SerializeField] private float pushTime;
         private float pushTimer;
-
+        
         private TrailRenderer trailRenderer;
         private Rigidbody rigidBody;
         
@@ -30,15 +31,16 @@ namespace Swift_Blade.Pool
 
         private void OnTriggerEnter(Collider other)
         {
-            if (deadFlag) return;
-            deadFlag = true;
-            //do dead arrow stuff here
-            
-            if (other.gameObject.TryGetComponent(out PlayerHealth playerHealth))
+            if ((whatIsObstacle & (1 << other.gameObject.layer)) != 0 && deadFlag == false)
             {
-                playerHealth.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
-                MonoGenericPool<Arrow>.Push(this);
-            }
+                if (other.gameObject.TryGetComponent(out PlayerHealth playerHealth))
+                {
+                    deadFlag = true;
+                    playerHealth.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
+                    MonoGenericPool<Arrow>.Push(this);
+                }
+            }            
+            
         }
                 
         public void Shot()

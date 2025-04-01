@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -9,8 +8,6 @@ namespace Swift_Blade
     {
         [SerializeField] protected StatSO[] _stats;
         protected static StatSO[] _statDatas;
-
-        public static Dictionary<ColorType, float> colorModValues = new();
 
         public static bool InitOnce = false;
 
@@ -27,12 +24,13 @@ namespace Swift_Blade
                     tempStatSO[i] = _stats[i].Clone();
                     
                     if (tempStatSO[i].statType == StatType.HEALTH)
-                        PlayerHealth._currentHealth = tempStatSO[i].Value;
+                        PlayerHealth.CurrentHealth = tempStatSO[i].Value;
                 }
 
                 _stats = tempStatSO;
                 _statDatas = tempStatSO;
                 InitOnce = true;
+
                 return;
             }
             
@@ -67,39 +65,9 @@ namespace Swift_Blade
             return findStat;
         }
 
-        public void SetColorValue(StatSO stat, int value)
-        {
-            GetStat(stat).ColorValue = value;
-            OnStatChanged?.Invoke();
-        }
-        
-        public float GetColorValue(StatSO stat)
-            => GetStat(stat).ColorValue;
-
-        public float IncreaseColorValue(StatSO stat, int value)
-        {
-            GetStat(stat).ColorValue += value;
-            OnStatChanged?.Invoke();
-            
-            return GetStat(stat).ColorValue;
-        }
-
-        public void AddModifier(StatSO stat, object key, float value)
-        {
-            GetStat(stat).AddModifier(key, value);
-            
-            OnStatChanged?.Invoke();
-        }
-
         public void AddModifier(StatType statType, object key, float value)
         {
             GetStat(statType).AddModifier(key, value);
-            OnStatChanged?.Invoke();
-        }
-
-        public void RemoveModifier(StatSO stat, object key)
-        {
-            GetStat(stat).RemoveModifier(key);
             OnStatChanged?.Invoke();
         }
 
@@ -116,5 +84,7 @@ namespace Swift_Blade
                 stat.ClearModifier();
             }
         }
+
+        public float GetColorValue(StatSO stat) => GetStat(stat).ColorValue;
     }
 }

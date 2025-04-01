@@ -1,11 +1,10 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Swift_Blade
 {
-    public class ItemOrb : MonoBehaviour
+    public class ItemOrb : MonoBehaviour,IInteractable
     {
         [SerializeField] private ItemTableSO itemTables;
         [SerializeField] private ItemDataSO ItemData;
@@ -14,42 +13,32 @@ namespace Swift_Blade
         [SerializeField] private float duration;
         
         [SerializeField] private Material[] colors;
-        private MeshRenderer renderer;
+        private MeshRenderer itemRenderer;
         
         private void Start()
         {
             transform.DOScale(size,0.5f);
         }
 
-        private void OnDestroy()
-        {
-            DOTween.Kill(gameObject);
-        }
-
-        private void Collected()
-        {
-            int n = Random.Range(0, itemTables.itemTable.Count);
-            ItemData = itemTables.itemTable[n].itemData;
-
-            InventoryManager.Instance.AddItemToEmptySlot(ItemData);
-        }
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (collision.collider.CompareTag("Player"))
-            {
-                Debug.Log("¿‚æ“¥Ÿ! ≥Õ ≥ª≤®æﬂ!");
-                Collected();
-                Destroy(gameObject);
-            }
-        }
-
         public void SetColor(ColorType color)
         {
-            if(renderer == null)
-                renderer = GetComponent<MeshRenderer>();
+            if(itemRenderer == null)
+                itemRenderer = GetComponent<MeshRenderer>();
             
-            renderer.material = colors[(int)color];
+            itemRenderer.material = colors[(int)color];
         }
-        
+
+        public void Interact()
+        {
+            DOTween.Kill(gameObject);
+            transform.DOScale(0 , duration).SetEase(Ease.OutSine).OnComplete(() =>
+            {
+                int n = Random.Range(0, itemTables.itemTable.Count);
+                ItemData = itemTables.itemTable[n].itemData;
+            
+                InventoryManager.Instance.AddItemToEmptySlot(ItemData);
+            });
+            
+        }
     }
 }

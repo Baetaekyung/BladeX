@@ -8,7 +8,7 @@ namespace Swift_Blade.Combat.Feedback
         [SerializeField] private CameraFocusSO FocusData;
         public override void PlayFeedback()
         {
-            CameraFocusManager.Instance.DoFocus(FocusData);
+            CameraFocusManager.Instance.StartFocus(FocusData);
         }
 
         public override void ResetFeedback()

@@ -9,7 +9,7 @@ namespace Swift_Blade
 
         public void Interact()
         {
-            DialogueManager.Instance.DoDialogue(dialogueData).Subscribe(OpenStatus);
+            DialogueManager.Instance.StartDialogue(dialogueData).Subscribe(OpenStatus);
         }
 
         private void OpenStatus()

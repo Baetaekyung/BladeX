@@ -1,7 +1,5 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Swift_Blade.UI
@@ -9,8 +7,9 @@ namespace Swift_Blade.UI
     public abstract class BaseButton : MonoBehaviour
     {
         private Button _button;
-        [SerializeField] private bool _isAnimationUI = false;
-        [SerializeField] private float _animationSpeed = 4f;
+
+        [SerializeField] private bool  _isAnimationUI      = false;
+        [SerializeField] private float _animationSpeed     = 4f;
         [SerializeField] private float _clickedButtonScale = 1f;
         
         protected virtual void Awake()

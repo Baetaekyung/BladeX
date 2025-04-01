@@ -16,26 +16,15 @@ namespace Swift_Blade
         private void Start()
         {
             if (icon.sprite == null)
-            {
                 icon.color = Color.clear;
-            }
             else
-            {
                 icon.color = Color.white;
-            }
         }
 
         public void SetIcon(Sprite newSprite)
-        {
-            if (newSprite == null)
-            {
-                icon.sprite = null;
-                icon.color = Color.clear;
-                return;
-            }
-            
-            icon.color = Color.white;
-            icon.sprite = newSprite;
+        {   
+            icon.color  = newSprite  ? Color.white : Color.clear;
+            icon.sprite = newSprite ? newSprite   : null;
         }
     }
 }

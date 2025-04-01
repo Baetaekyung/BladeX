@@ -75,8 +75,8 @@ MonoBehaviour:
   animationEnd: 0
   isManualRotate: 0
   isManualMove: 0
-  maxAnimationSpeed: 0
-  minAnimationSpeed: 0
+  maxAnimationSpeed: 1
+  minAnimationSpeed: 1
 --- !u!1 &138757414886401044
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,10 +1061,10 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 15
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_AngularSpeed: 0
+  m_StoppingDistance: 0.2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1134,22 +1134,12 @@ MonoBehaviour:
   - rid: 3879321691919482920
   - rid: 3879321691919482921
   - rid: 3879321691919482922
-  - rid: 3879321691919482923
-  - rid: 3879321691919482924
-  - rid: 3879321691991573354
-  - rid: 2781718477335429510
-  - rid: 6383923194033865458
+  - rid: 6383923532532548365
+  - rid: 6383923532532548366
+  - rid: 6383923532532548367
   references:
     version: 2
     RefIds:
-    - rid: 2781718477335429510
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Enemy.BaseEnemyAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 7270422014901884034
-          m_Value1: 1337080013107440021
-        Name: AnimationController
-        m_Value: {fileID: 2888206600592001660}
     - rid: 3879321691665465479
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -1182,31 +1172,7 @@ MonoBehaviour:
           m_Value1: 11337077293980532446
         Name: MeleeDistance
         m_Value: 3
-    - rid: 3879321691919482923
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Caster.BaseBossCaster, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 9477954891741127956
-          m_Value1: 18151398301787368271
-        Name: BossDamageCaster
-        m_Value: {fileID: 1530787598509481323}
-    - rid: 3879321691919482924
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 6734034036057306792
-          m_Value1: 8025144667599098049
-        Name: Animator
-        m_Value: {fileID: 7598120757330523599}
-    - rid: 3879321691991573354
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 1823908589997029196
-          m_Value1: 16617269392962309977
-        Name: Target
-        m_Value: {fileID: 0}
-    - rid: 6383923194033865458
+    - rid: 6383923532532548365
       type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1214,6 +1180,22 @@ MonoBehaviour:
           m_Value1: 17803047032386870955
         Name: EnemyHealth
         m_Value: {fileID: 7247834950103633631}
+    - rid: 6383923532532548366
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 6734034036057306792
+          m_Value1: 8025144667599098049
+        Name: Animator
+        m_Value: {fileID: 7598120757330523599}
+    - rid: 6383923532532548367
+      type: {class: 'BlackboardVariable`1[[Swift_Blade.Enemy.BaseEnemyAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 7270422014901884034
+          m_Value1: 1337080013107440021
+        Name: AnimationController
+        m_Value: {fileID: 2888206600592001660}
 --- !u!114 &5226963268164371234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1289,6 +1271,7 @@ MonoBehaviour:
   isDead: 0
   BehaviorGraphAgent: {fileID: 8858946518664432056}
   changeBossState: {fileID: 0}
+  isKnockback: 0
 --- !u!1 &3937397267102221991
 GameObject:
   m_ObjectHideFlags: 0

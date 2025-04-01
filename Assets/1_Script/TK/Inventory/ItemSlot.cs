@@ -1,10 +1,8 @@
-using System;
 using DG.Tweening;
 using Swift_Blade.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Swift_Blade
@@ -14,23 +12,20 @@ namespace Swift_Blade
     {
         #region UI region
 
-        [SerializeField] protected Image itemImage;
-        [SerializeField] protected Image accentFrame;
-        [SerializeField] protected Sprite emptySprite;
+        [SerializeField] protected Image           itemImage;
+        [SerializeField] protected Image           itemBackground;
+        [SerializeField] protected Image           accentFrame;
+        [SerializeField] protected Sprite          emptySprite;
         [SerializeField] protected TextMeshProUGUI countText;
 
         #endregion
         
         protected ItemDataSO _itemDataSO;
         
-        protected InventoryManager _inventoryManager => InventoryManager.Instance;
+        protected InventoryManager InvenManager => InventoryManager.Instance;
         
         public virtual void OnPointerDown(PointerEventData eventData)
-        {
-            //현재 드래그 중이면 이미 선택된 아이템이 존재한다는 뜻이므로 return
-            if (_inventoryManager.IsDragging) 
-                return; 
-            
+        {   
             //빈 슬롯인 경우에 클릭해도 의미가 없기 때문에 return
             if (IsEmptySlot())
                 return;
@@ -44,34 +39,39 @@ namespace Swift_Blade
             //장비는 인벤토리에 1개만 있다고 가정하고 만든 것
             if (_itemDataSO.itemType == ItemType.EQUIPMENT)
             {
-                if (InventoryManager.Inventory
-                    .currentEquipment.Contains(_itemDataSO.equipmentData))
+                if (InventoryManager.Inventory.currentEquipment
+                    .Contains(_itemDataSO.equipmentData))
                 {
-                    TryEquipDuplicatedEquipment();
+                    ShowDuplicatedEquipmentMessage(); //Not error but can't equip
                     return;
                 }
                     
                 InventoryManager.EquipmentDatas.Add(_itemDataSO);
                 InventoryManager.Inventory.currentEquipment.Add(_itemDataSO.equipmentData);
-                _inventoryManager.GetMatchTypeEquipSlot(
-                    _itemDataSO.equipmentData.slotType).SetItemData(_itemDataSO);
                 InventoryManager.Inventory.itemInventory.Remove(_itemDataSO);
-                    
-                BaseEquipment baseEquip = _itemDataSO.itemObject as BaseEquipment;
-                baseEquip?.OnEquipment();
-            
+
+                InvenManager
+                    .GetMatchTypeEquipSlot(_itemDataSO.equipmentData.slotType)
+                    .SetItemData(_itemDataSO);
+
+                var baseEquip = _itemDataSO.itemObject as Equipment;
+                baseEquip.OnEquipment();
+
                 _itemDataSO = null;
                     
-                _inventoryManager.UpdateAllSlots();
+                InvenManager.UpdateAllSlots();
             }
         }
 
-        private void TryEquipDuplicatedEquipment()
+        private void ShowDuplicatedEquipmentMessage()
         {
             PopupUI popup = PopupManager.Instance.GetPopupUI(PopupType.Text);
-            TextPopup textPopup = (TextPopup)popup;
-            textPopup.SetText("이미 장착중이다.");
-            PopupManager.Instance.DelayPopup(PopupType.Text, 2f, () =>
+            TextPopup textPopup = popup as TextPopup;
+
+            Debug.Assert(textPopup != null, "Popup is not matched with Text Type");
+
+            textPopup.SetText("이미 장착 중인 장비이다.");
+            PopupManager.Instance.DelayPopup(PopupType.Text, 1.5f, () =>
             {
                 PopupManager.Instance.PopDown(PopupType.Text);
             });
@@ -79,7 +79,7 @@ namespace Swift_Blade
 
         public virtual void OnPointerEnter(PointerEventData eventData)
         {
-            _inventoryManager.UpdateInfoUI(_itemDataSO);
+            InvenManager.UpdateItemInformationUI(_itemDataSO);
             
             if (!accentFrame.gameObject.activeSelf)
                 accentFrame.gameObject.SetActive(true);
@@ -90,7 +90,7 @@ namespace Swift_Blade
 
         public virtual void OnPointerExit(PointerEventData eventData)
         {
-            _inventoryManager.UpdateInfoUI(null);
+            InvenManager.UpdateItemInformationUI(null);
             
             if (accentFrame.gameObject.activeSelf)
                 accentFrame.gameObject.SetActive(false);
@@ -98,7 +98,7 @@ namespace Swift_Blade
             transform.DOScale(1f, 0.5f);
         }
 
-        public void SetItemImage(Sprite sprite)
+        public void SetItemUI(Sprite sprite)
         {
             if (sprite == null)
             {
@@ -107,62 +107,76 @@ namespace Swift_Blade
                 return;
             }
 
+            SetBackgroundColor();
+            SetItemImage(sprite);
+        }
+
+        private void SetItemImage(Sprite sprite)
+        {
             if (this is not EquipmentSlot)
             {
                 itemImage.color = Color.white;
                 itemImage.sprite = sprite;
-                
+
                 if (_itemDataSO.itemType == ItemType.EQUIPMENT)
                 {
                     countText.text = string.Empty;
                     return;
                 }
-                
-                int count = _inventoryManager.GetItemCount(_itemDataSO);
+
+                int count = InvenManager.GetItemCount(_itemDataSO);
+
                 if (count == -1)
                 {
-                    SetItemImage(null);
+                    SetItemUI(null);
                     countText.text = string.Empty;
                 }
             }
             else if (this is EquipmentSlot equipmentSlot)
             {
                 if (sprite == equipmentSlot.GetInfoIcon)
-                {
-                    itemImage.color = new Color(1,1,1, 0.2f);
-                    itemImage.sprite = sprite;
-                }
+                    itemImage.color = new Color(1, 1, 1, 0.2f);
                 else
-                {
                     itemImage.color = Color.white;
-                    itemImage.sprite = sprite;
-                }
+
+                itemImage.sprite = sprite;
             }
         }
-        
-        public bool IsEmptySlot() => _itemDataSO == null;
 
-        public ItemDataSO GetSlotItemData()
+        private void SetBackgroundColor()
         {
-            if (_itemDataSO == null)
-                return null;
-            
-            return _itemDataSO;
+            if(_itemDataSO == null)
+            {
+                itemBackground.color = Color.clear;
+            }
+
+            if (_itemDataSO.itemType == ItemType.EQUIPMENT)
+            {
+                EquipmentData equipData = _itemDataSO.equipmentData;
+
+                (int a, int b, int c) = ColorUtils.GetRGBColor(equipData.colorType);
+                Color newColor = new Color(a, b, c, 0.3f);
+                itemBackground.color = newColor;
+            }
         }
 
         public virtual void SetItemData(ItemDataSO newItemData)
         {
             _itemDataSO = newItemData;
             
-            int count = _inventoryManager.GetItemCount(_itemDataSO);
+            int count = InvenManager.GetItemCount(newItemData);
 
             if (count == -1)
             {
-                if (_itemDataSO.itemType == ItemType.EQUIPMENT)
+                if (newItemData.itemType == ItemType.EQUIPMENT)
                     return;
             }
             
             countText.text = count.ToString();
         }
+
+        public ItemDataSO GetSlotItemData() => _itemDataSO ? _itemDataSO : null;
+
+        public bool IsEmptySlot() => _itemDataSO == null;
     }
 }

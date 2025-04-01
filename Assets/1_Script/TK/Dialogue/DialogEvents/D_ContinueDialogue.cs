@@ -7,16 +7,11 @@ namespace Swift_Blade
     public class D_ContinueDialogue : DialogueEventSO
     {
         public DialogueDataSO nextDialogue;
-
-        private void OnValidate()
-        {
-            Debug.Assert(nextDialogue != null, "다음 다이얼로그를 등록해 주세요");
-        }
         
         public override void InvokeEvent()
         {
             DialogueManager.Instance.CancelDialogue();
-            DialogueManager.Instance.DoDialogue(nextDialogue);
+            DialogueManager.Instance.StartDialogue(nextDialogue);
         }
     }
 }

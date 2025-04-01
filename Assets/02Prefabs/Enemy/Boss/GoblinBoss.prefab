@@ -32010,10 +32010,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Speed: 0
+  m_Acceleration: 10
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 0
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -32091,37 +32091,11 @@ MonoBehaviour:
   - rid: 3879321506256519317
   - rid: 3879321506256519318
   - rid: 3879321506256519320
-  - rid: 2781718364404319153
-  - rid: 2781718364404319154
-  - rid: 2781718364618228301
-  - rid: 6383923194033864838
+  - rid: 6383923532800458952
+  - rid: 6383923532800458953
   references:
     version: 2
     RefIds:
-    - rid: 2781718364404319153
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Caster.BaseBossCaster, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 9477954891741127956
-          m_Value1: 18151398301787368271
-        Name: BossDamageCaster
-        m_Value: {fileID: 2874536558477111447}
-    - rid: 2781718364404319154
-      type: {class: 'BlackboardVariable`1[[Swift_Blade.Enemy.BaseEnemyAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15661012414566437961
-          m_Value1: 14102293482136468477
-        Name: AnimationController
-        m_Value: {fileID: 8132421530998017649}
-    - rid: 2781718364618228301
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 18161553395296250440
-          m_Value1: 1598338716999467112
-        Name: MeleeDistance
-        m_Value: 5
     - rid: 3879321506256519315
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -32162,7 +32136,7 @@ MonoBehaviour:
           m_Value1: 8025144667599098049
         Name: Animator
         m_Value: {fileID: 4502871627910593828}
-    - rid: 6383923194033864838
+    - rid: 6383923532800458952
       type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -32170,6 +32144,14 @@ MonoBehaviour:
           m_Value1: 4783264038869002118
         Name: EnemyHealth
         m_Value: {fileID: 6405993487956724485}
+    - rid: 6383923532800458953
+      type: {class: 'BlackboardVariable`1[[Swift_Blade.Enemy.BaseEnemyAnimationController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15661012414566437961
+          m_Value1: 14102293482136468477
+        Name: AnimationController
+        m_Value: {fileID: 8132421530998017649}
 --- !u!114 &8132421530998017649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32272,7 +32254,7 @@ MonoBehaviour:
   checkForward: {fileID: 3854553854343625318}
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 22528
   maxDistance: 1.6
   showGizmo: 1
   weapon: {fileID: 0}

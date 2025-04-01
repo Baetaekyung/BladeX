@@ -1,10 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
+using Swift_Blade.Level.Door;
+using System.Collections;
 using Swift_Blade.Enemy;
 using Swift_Blade.Level;
-using Swift_Blade.Level.Portal;
 using Swift_Blade.Pool;
 using UnityEngine;
 
@@ -41,25 +40,21 @@ namespace Swift_Blade
 
         private void Update()
         {
-            endTimer += Time.deltaTime;
+            if(isGameEnd == false)
+                endTimer += Time.deltaTime;
+            
             if (endTimer >= endTimeSecond)
             {
-                TimesOut();
                 endTimer = 0;
-
-                Node[] node = nodeList.GetNode();
-                for (int i = 0; i < node.Length; i++)
-                {
-                     Portal portal = Instantiate(node[i].GetPortalPrefab() , portalTrm[i].position,Quaternion.identity);
-                     portal.SetScene(node[i].nodeName);
-                }
+                TimeOut();
             }
         }
 
-        private void TimesOut()
+        private void TimeOut()
         {
-            isGameEnd = true;
             StopAllCoroutines();
+            
+            isGameEnd = true;
             
             foreach (var enemy in allEnemyList)
             {
@@ -70,9 +65,24 @@ namespace Swift_Blade
                 }
             }
             
-            sceneManagerSO.LevelClear();
+            StartCoroutine(LevelClear());
         }
 
+        
+        private IEnumerator LevelClear()
+        {
+            sceneManagerSO.LevelClear();
+            
+            Node[] newNode = nodeList.GetNode();
+    
+            for (int i = 0; i < newNode.Length; ++i)
+            {
+                Door newDoor = Instantiate(newNode[i].GetPortalPrefab(), portalTrm[i].position, Quaternion.identity);
+                newDoor.SetScene(newNode[i].nodeName);
+                yield return StartCoroutine(newDoor.UpDoor()); 
+            }
+        }
+        
         private IEnumerator EnemyWavesCoroutine()
         {
             while (isGameEnd == false)
