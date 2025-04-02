@@ -34,8 +34,7 @@ public class MoveToTargetAction : Action
         
         targetPos = Target.Value.transform.position;
         distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
-        distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
-        
+                
         bool isNotObstacleLine = IsNotObstacleLine();
         bool isNearTarget = (distance <= attackDistance.Value || distance <= meleeAttackDistance.Value);
         
@@ -53,7 +52,6 @@ public class MoveToTargetAction : Action
         Agent.Value.SetDestination(targetPos);
         
         distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
-        distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
         
         bool isNotObstacleLine = IsNotObstacleLine();
         bool isNearTarget = (distance <= attackDistance.Value || distance <= meleeAttackDistance.Value);
@@ -68,14 +66,14 @@ public class MoveToTargetAction : Action
     
     private bool IsNotObstacleLine()
     {
-        Vector3 direction = (Target.Value.transform.position - Agent.Value.transform.position).normalized;
+        Vector3 direction = (Target.Value.transform.position - Agent.Value.transform.position);
         Vector3 start = Agent.Value.transform.position + new Vector3(0, 1f, 0);
         
-        Debug.DrawRay(start, direction * 100, Color.red);
+        //Debug.DrawRay(start, direction * 100, Color.red);
         
-        if (Physics.Raycast(start, direction,out  RaycastHit hit,100, whatIsObstacle))
+        if (Physics.Raycast(start, direction.normalized,direction.magnitude, whatIsObstacle))
         {
-            Debug.Log(hit.collider.gameObject.name);
+            //Debug.Log(hit.collider.gameObject.name);
             return false;
         }
         

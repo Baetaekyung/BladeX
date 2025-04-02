@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Swift_Blade.Pool;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -8,24 +9,30 @@ namespace Swift_Blade.Skill
     {
         public string skillName;
         public Sprite skillIcon;
-        public SkillType SkillType;
+        [Space(30)]
+        public SkillType skillType;
+        public StatType statType;
         public ColorType colorType;
-        
+        [Tooltip("색깔 스탯의 영향을 얼마나 받을지")] public float colorRatio;
         [Tooltip("성공 확률")][Range(1,100)] public int random;
-        
+                
         [TextArea] public string skillDescription;
         
         [Space(40)]
         public PoolPrefabMonoBehaviourSO skillParticle;
         
         public virtual void Initialize(){}
-
+        
+        public virtual void ResetSkill(){}
+        
+        public virtual void SkillUpdate(Player player, List<Transform> targets = null){}
+        
         public abstract void UseSkill(Player player, Transform[] targets = null);
         
-
-        public bool CheckSkill()
+        protected bool CheckSkill()
         {
-            return Random.Range(0, 100) > random;
+            return Random.Range(0, 100) <= random;
         }
+        
     }
 }

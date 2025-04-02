@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,8 @@ namespace Swift_Blade
     [CreateAssetMenu(fileName = "Stat_", menuName = "SO/StatSO")]
     public class StatSO : ScriptableObject
     {
+        public event Action OnValueChanged;
+
         public StatType  statType;
         public ColorType colorType;
 
@@ -42,7 +45,12 @@ namespace Swift_Blade
         public int ColorValue
         {
             get => _colorValue;
-            set => _colorValue = value;
+            set
+            {
+                _colorValue = value;
+
+                OnValueChanged?.Invoke();
+            }
         }
         
         public float MaxValue
@@ -64,9 +72,11 @@ namespace Swift_Blade
         {
             if (modifyValueByKeys.ContainsKey(key))
                 return;
-
+            
             modifiedValue += value;
             modifyValueByKeys.Add(key, value);
+            
+            OnValueChanged?.Invoke();
         }
 
         public void RemoveModifier(object key)
@@ -75,6 +85,8 @@ namespace Swift_Blade
             {
                 modifiedValue -= value; 
                 modifyValueByKeys.Remove(key);
+                
+                OnValueChanged?.Invoke();
             }
         }
 

@@ -9,7 +9,7 @@ using Swift_Blade.Combat.Caster;
 [NodeDescription(name: "SetUnparryable", story: "SetUnparryable", category: "Action", id: "29a337b686e33b6b38898a201bd0df71")]
 public partial class SetUnparryableAction : Action
 {
-    [SerializeReference] public BlackboardVariable<BaseBossCaster> damageCaster;
+    [SerializeReference] public BlackboardVariable<BaseEnemyCaster> damageCaster;
 
     protected override Status OnStart()
     {

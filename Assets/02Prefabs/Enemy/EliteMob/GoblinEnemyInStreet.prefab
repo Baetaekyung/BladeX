@@ -32202,7 +32202,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 4
+  m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 0
   m_StoppingDistance: 0.2
@@ -32400,6 +32400,18 @@ MonoBehaviour:
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 6643126959885087117}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Goblin.GoblinAnimator, Assembly-CSharp
+        m_MethodName: StopManualKnockback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 3669204044569326016}
         m_TargetAssemblyTypeName: Swift_Blade.Boss.Goblin.GoblinEnemy, Assembly-CSharp
         m_MethodName: DeadEvent
@@ -36800,9 +36812,9 @@ MonoBehaviour:
   OnCastEvent:
     m_PersistentCalls:
       m_Calls: []
-  _casterRadius: 1.24
-  _casterInterpolation: 0.46
-  _castingRange: 1.84
+  _casterRadius: 1.27
+  _casterInterpolation: 0.56
+  _castingRange: 2.08
   CanCurrentAttackParry: 1
   parryEvents:
     m_PersistentCalls:

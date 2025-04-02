@@ -13967,7 +13967,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5126406010917739907}
-  - component: {fileID: 3498847551612479478}
+  - component: {fileID: 1967651398801571302}
   m_Layer: 7
   m_Name: DamageCaster
   m_TagString: Untagged
@@ -13990,7 +13990,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3498945835321012855}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3498847551612479478
+--- !u!114 &1967651398801571302
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13999,7 +13999,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1991033742116749030}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc3295a6b5106394ab630d5e94c3588b, type: 3}
+  m_Script: {fileID: 11500000, guid: 43fc5191c5bf8c44f8f89fc300c17732, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetLayer:
@@ -14011,9 +14011,9 @@ MonoBehaviour:
   OnCastEvent:
     m_PersistentCalls:
       m_Calls: []
-  _casterRadius: 1.33
-  _casterInterpolation: 0.28
-  _castingRange: 2.25
+  _casterRadius: 0.64
+  _casterInterpolation: 0
+  _castingRange: 1.98
   CanCurrentAttackParry: 1
   parryEvents:
     m_PersistentCalls:
@@ -18918,7 +18918,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.25
   m_Speed: 0
-  m_Acceleration: 4
+  m_Acceleration: 15
   avoidancePriority: 50
   m_AngularSpeed: 0
   m_StoppingDistance: 0.2
@@ -19139,7 +19139,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  maxHealth: 2
+  maxHealth: 10
   currentHealth: 0
   isDead: 0
   BehaviorGraphAgent: {fileID: 1062021171754124941}
@@ -19176,7 +19176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  moveSpeed: 4
+  moveSpeed: 6
   rotateSpeed: 11.61
   stopDistance: 1.85
   whatIsGround:

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,7 +42,29 @@ namespace Swift_Blade.Skill
                     { SkillType.Hit, OnHitEventSkill },
                     { SkillType.Dead, OnDeadEventSkill }
                 };
-                //currentSkillList = new List<SkillData>();
+                
+                //StartCoroutine(SKillUpdateRoutine());
+            }
+            
+            private IEnumerator SKillUpdateRoutine()
+            {
+                while (true)
+                {
+                    foreach (var item in currentSkillList)
+                    {
+                        item.SkillUpdate(_player);
+
+                        yield return new WaitForSeconds(0.01f);
+                    }
+                }
+            }
+
+            private void Update()
+            {
+                foreach (var item in currentSkillList)
+                {
+                    item.SkillUpdate(_player);
+                }
             }
 
             public void EntityComponentAwake(Entity entity)
@@ -68,9 +91,9 @@ namespace Swift_Blade.Skill
             {
                 if (slotCount >= maxSlotCount) return;
                 
-                if (skillEvents.ContainsKey(skillData.SkillType))
+                if (skillEvents.ContainsKey(skillData.skillType))
                 {
-                    skillEvents[skillData.SkillType] += skillData.UseSkill;
+                    skillEvents[skillData.skillType] += skillData.UseSkill;
                     currentSkillList.Add(skillData);
                     ++slotCount;
                     
@@ -80,9 +103,9 @@ namespace Swift_Blade.Skill
 
             public void RemoveSkill(SkillData skillData)
             {
-                if (skillEvents.ContainsKey(skillData.SkillType) && skillEvents[skillData.SkillType] != null)
+                if (skillEvents.ContainsKey(skillData.skillType) && skillEvents[skillData.skillType] != null)
                 {
-                    skillEvents[skillData.SkillType] -= skillData.UseSkill;
+                    skillEvents[skillData.skillType] -= skillData.UseSkill;
                     currentSkillList.Remove(skillData);
                     --slotCount;
                 }

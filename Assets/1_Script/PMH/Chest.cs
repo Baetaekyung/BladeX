@@ -35,8 +35,12 @@ namespace Swift_Blade.Level
         private void Start()
         {
             MonoGenericPool<ShinyParticle>.Initialize(shinyParticlePrefab);
-            
             rigidbody = GetComponent<Rigidbody>();
+
+            Vector3 lookDirection = (Camera.main.transform.forward - transform.position).normalized;
+            lookDirection.y = 0;
+            transform.rotation = Quaternion.LookRotation(lookDirection);
+            
             SetRandomChestType();
         }
 
@@ -57,7 +61,9 @@ namespace Swift_Blade.Level
         {
             if (isOpen) return;
             isOpen = true;
-
+            
+            gameObject.layer = LayerMask.NameToLayer("Default");
+            
             ShinyParticle shinyParticle = MonoGenericPool<ShinyParticle>.Pop();
             shinyParticle.transform.position = shinyParticleTrm.position;
             

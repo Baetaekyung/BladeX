@@ -19,7 +19,7 @@ namespace Swift_Blade.FSM.States
         protected Vector3 GetResultVector => playerInput.CameraRotationOnlyY * playerInput.GetInputDirectionRaw;
 
         private const float delayParry = 0.8f;
-        private const float delayDash = 1f;
+        private const float delayDash = 1.1f;
 
         private static float nextDelayTime_AllowParry;
         private static float nextDelayTime_AllowDash;
@@ -47,7 +47,8 @@ namespace Swift_Blade.FSM.States
                 OnAttackInput(EComboState.PowerAttack);
 
             if (Input.GetKeyDown(KeyCode.C) && BaseAllowParryInput)
-                OnParryInput();
+                OnSpecialInput();
+
             if (Input.GetKeyDown(KeyCode.Space) && BaseAllowDashInput && playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f && playerMovement.CanRoll)
                 OnDashInput();
 
@@ -83,7 +84,7 @@ namespace Swift_Blade.FSM.States
         {
             player.Attack(previousComboState, nonImeediateState);
         }
-        protected virtual void OnParryInput()
+        protected virtual void OnSpecialInput()
         {
             if (nextDelayTime_AllowParry > Time.time) return;
             nextDelayTime_AllowParry = Time.time + delayParry;
@@ -107,7 +108,7 @@ namespace Swift_Blade.FSM.States
             AudioManager.PlayWithInit(audioSO, true);
         }
         //protected sealed override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetAdditionalVelocity(value);
-        protected sealed override void OnAttackTrigger()
+        protected sealed override void OnAttackTrigger(EAttackType eAttackType)
         {
             if (player.GetPlayerDamageCaster.Cast())
             {

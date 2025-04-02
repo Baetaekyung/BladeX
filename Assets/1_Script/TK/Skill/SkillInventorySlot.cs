@@ -31,12 +31,12 @@ namespace Swift_Blade
             if (skillData == null)
                 return;
 
-            var slot = SkillManager.Instance.GetEmptySkillSlot(skillData.SkillType);
+            var slot = SkillManager.Instance.GetEmptySkillSlot(skillData.skillType);
 
             //½½·ÔÀÌ °¡µæÂü
             if (slot == default)
             {
-                string typeToKorean = skillData.SkillType switch
+                string typeToKorean = skillData.skillType switch
                 {
                     SkillType.Attack  => "°ø°Ý",
                     SkillType.Dead    => "»ç¸Á",

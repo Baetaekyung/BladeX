@@ -1,10 +1,8 @@
-using System;
 using DG.Tweening;
 using Swift_Blade.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Swift_Blade
@@ -15,6 +13,7 @@ namespace Swift_Blade
         #region UI region
 
         [SerializeField] protected Image           itemImage;
+        [SerializeField] protected Image           itemBackground;
         [SerializeField] protected Image           accentFrame;
         [SerializeField] protected Sprite          emptySprite;
         [SerializeField] protected TextMeshProUGUI countText;
@@ -99,7 +98,7 @@ namespace Swift_Blade
             transform.DOScale(1f, 0.5f);
         }
 
-        public void SetItemImage(Sprite sprite)
+        public void SetItemUI(Sprite sprite)
         {
             if (sprite == null)
             {
@@ -108,33 +107,56 @@ namespace Swift_Blade
                 return;
             }
 
+            SetBackgroundColor();
+            SetItemImage(sprite);
+        }
+
+        private void SetItemImage(Sprite sprite)
+        {
             if (this is not EquipmentSlot)
             {
                 itemImage.color = Color.white;
                 itemImage.sprite = sprite;
-                
+
                 if (_itemDataSO.itemType == ItemType.EQUIPMENT)
                 {
                     countText.text = string.Empty;
                     return;
                 }
-                
+
                 int count = InvenManager.GetItemCount(_itemDataSO);
 
                 if (count == -1)
                 {
-                    SetItemImage(null);
+                    SetItemUI(null);
                     countText.text = string.Empty;
                 }
             }
             else if (this is EquipmentSlot equipmentSlot)
             {
                 if (sprite == equipmentSlot.GetInfoIcon)
-                    itemImage.color = new Color(1,1,1, 0.2f);
+                    itemImage.color = new Color(1, 1, 1, 0.2f);
                 else
                     itemImage.color = Color.white;
 
                 itemImage.sprite = sprite;
+            }
+        }
+
+        private void SetBackgroundColor()
+        {
+            if(_itemDataSO == null)
+            {
+                itemBackground.color = Color.clear;
+            }
+
+            if (_itemDataSO.itemType == ItemType.EQUIPMENT)
+            {
+                EquipmentData equipData = _itemDataSO.equipmentData;
+
+                (int a, int b, int c) = ColorUtils.GetRGBColor(equipData.colorType);
+                Color newColor = new Color(a, b, c, 0.3f);
+                itemBackground.color = newColor;
             }
         }
 
