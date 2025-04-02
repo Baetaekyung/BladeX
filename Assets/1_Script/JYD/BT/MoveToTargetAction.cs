@@ -34,8 +34,7 @@ public class MoveToTargetAction : Action
         
         targetPos = Target.Value.transform.position;
         distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
-        distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
-        
+                
         bool isNotObstacleLine = IsNotObstacleLine();
         bool isNearTarget = (distance <= attackDistance.Value || distance <= meleeAttackDistance.Value);
         
@@ -52,7 +51,6 @@ public class MoveToTargetAction : Action
         Boss.Value.FactToTarget(Boss.Value.GetNextPathPoint());
         Agent.Value.SetDestination(targetPos);
         
-        distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
         distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
         
         bool isNotObstacleLine = IsNotObstacleLine();

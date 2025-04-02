@@ -5,21 +5,21 @@ using System;
 public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
     private static MonoSingletonFlags? singletonFlag;
-    private static T _instance = null;
+    private static T instance = null;
     public static event Action OnSingletonDestroy;
 
     public static T Instance
     {
         get
         {
-            if (_instance is null)
+            if (instance is null)//UnityEngine.Object's implicit bool operator detour.
             {
                 //tood : if scene transitinoing, throw error
                 if (IsShuttingDown) return null;
 
-                _instance = RuntimeInitialize();
+                instance = RuntimeInitialize();
             }
-            return _instance;
+            return instance;
         }
     }
     private static bool IsShuttingDown { get; set; }
@@ -34,7 +34,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     protected virtual void Awake()
     {
         //check two singleton error
-        if (_instance is not null)
+        if (instance is not null)
         {
             Debug.LogError("[ERROR]TwoSingletons_" + typeof(T).Name);
             Destroy(gameObject);
@@ -55,15 +55,15 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
 #if UNITY_EDITOR
         print($"[Singleton_Awake] [type : {typeof(T).Name}] [name : {gameObject.name}]");
 #endif
-        _instance = this as T;
+        instance = this as T;
 
     }
     protected virtual void OnDestroy()
     {
-        if (_instance == this)
+        if (instance == this)
         {
             OnSingletonDestroy?.Invoke();
-            _instance = null;
+            instance = null;
         }
 
     }

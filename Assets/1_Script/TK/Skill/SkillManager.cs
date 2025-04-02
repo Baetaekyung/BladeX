@@ -117,7 +117,7 @@ namespace Swift_Blade
 
             if (invSlot == default)
             {
-                PopupManager.Instance.LogMessage("½ºÅ³ ÀÎº¥Åä¸®°¡ °¡µæ Ã¡½À´Ï´Ù.");
+                PopupManager.Instance.LogMessage("ï¿½ï¿½Å³ ï¿½Îºï¿½ï¿½ä¸®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¡ï¿½ï¿½ï¿½Ï´ï¿½.");
                 return default;
             }
 

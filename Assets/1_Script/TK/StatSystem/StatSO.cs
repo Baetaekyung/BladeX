@@ -72,11 +72,11 @@ namespace Swift_Blade
         {
             if (modifyValueByKeys.ContainsKey(key))
                 return;
-
-            OnValueChanged?.Invoke();
-
+            
             modifiedValue += value;
             modifyValueByKeys.Add(key, value);
+            
+            OnValueChanged?.Invoke();
         }
 
         public void RemoveModifier(object key)
@@ -85,8 +85,9 @@ namespace Swift_Blade
             {
                 modifiedValue -= value; 
                 modifyValueByKeys.Remove(key);
+                
+                OnValueChanged?.Invoke();
             }
-            OnValueChanged?.Invoke();
         }
 
         public void ClearModifier()

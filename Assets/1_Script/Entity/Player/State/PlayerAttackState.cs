@@ -73,6 +73,7 @@ namespace Swift_Blade.FSM.States
                 else
                     OnComboFail();
             }
+            UI_DebugPlayer.DebugText(2, allowListening, "allowLs", DBG_UI_KEYS.Keys_PlayerMovement);
         }
         private void OnComboFail()
         {
@@ -116,11 +117,17 @@ namespace Swift_Blade.FSM.States
             }
         }
         protected override void OnAnimationEndTriggerListen() => allowListening = true;
+        protected override void OnAnimationEndTriggerStoplisten() => allowListening = false;
         protected override void OnAnimationEndableTrigger() => isCurrentAnimationEndable = true;
         protected override void OnForceEventTrigger(float force)
         {
             Vector3 result = currentComboData.GetComboForce * force;
             playerMovement.AddForceFacingDirection(result);
+        }
+        protected override void OnForceEventTrigger2(float force)
+        {
+            Vector3 result = currentComboData.GetComboForce * force;
+            playerMovement.AddForceCurve(result);
         }
         public override void Exit()
         {
