@@ -1,20 +1,24 @@
+using Swift_Blade.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 
 namespace Swift_Blade
 {
     [Serializable]
-    public struct ColorStat
+    public class ColorStat
     {
         public ColorType colorType;
         public int colorValue;
     }
 
-    public class PlayerStatCompo : StatComponent, IEntityComponent
+    public class PlayerStatCompo : StatComponent, IEntityComponent, IEntityComponentStart
     {
         public List<ColorStat> defaultColorStat  = new List<ColorStat>();
         public static List<ColorStat> colorStats = new List<ColorStat>();
+
+        private PlayerHealth _playerHealth;
 
         public event Action ColorValueChangedAction;
 
@@ -24,6 +28,21 @@ namespace Swift_Blade
                 colorStats = defaultColorStat;
 
             Initialize();
+        }
+
+        public void EntityComponentStart(Entity entity)
+        {
+            Player player = entity as Player;
+
+            _playerHealth = entity.GetEntityComponent<PlayerHealth>();
+        }
+
+        private void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.B))
+            {
+                BuffToStat(StatType.DAMAGE, "damageBuff", 5f, 1f);
+            }
         }
 
         protected override void Initialize()
@@ -57,9 +76,36 @@ namespace Swift_Blade
 #endif
         }
 
+        public void BuffToStat(StatType statType, string buffKey, float buffTime, float buffAmount)
+        {
+            StatSO stat = GetStat(statType);
+
+            if(stat.currentBuffDictionary.TryGetValue(buffKey, out var buffRoutine))
+            {
+                stat.RemoveModifier(buffKey);
+                stat.currentBuffDictionary.Remove(buffKey);
+                stat.buffTimer = 0;
+
+                StopCoroutine(buffRoutine);
+            }
+
+            StartCoroutine(stat.DelayBuffRoutine(buffKey, buffTime, buffAmount));
+
+            if(stat.statType == StatType.HEALTH)
+            {
+                PlayerHealth.CurrentHealth++;
+
+            }
+            
+
+            stat.currentBuffDictionary.Add(buffKey, buffRoutine);
+        }
+
         public void IncreaseColorValue(ColorType colorType, int increaseAmount)
         {
-            var colorStat = GetColorStat(colorType);
+            ColorStat colorStat = GetColorStat(colorType);
+
+            Debug.Log(colorStat.colorType.ToString());
 
             colorStat.colorValue += increaseAmount;
             ColorValueChange();
@@ -80,6 +126,17 @@ namespace Swift_Blade
         }
 
         public int GetColorStatValue(ColorType colorType) => GetColorStat(colorType).colorValue;
-        public ColorStat GetColorStat(ColorType colorType) => colorStats.FirstOrDefault(stat => stat.colorType == colorType);
+        public ColorStat GetColorStat(ColorType colorType)
+        {
+            foreach (var stat in colorStats)
+            {
+                if(stat.colorType == colorType)
+                {
+                    return stat;
+                }
+            }
+
+            return default;
+        }
     }
 }

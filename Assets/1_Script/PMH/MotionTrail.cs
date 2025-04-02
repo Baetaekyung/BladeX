@@ -13,10 +13,13 @@ public class MeshTrailStruct
     public MeshFilter BodyMeshFilter;
 
     public Mesh bodyMesh;
+
 }
+   
 
 public class MotionTrail : MonoBehaviour
 {
+    [SerializeField] private string MAIHAMA;
     #region Variables & Initializer
     [Header("[PreRequisite]")]
     [SerializeField] private SkinnedMeshRenderer SMR_Body;

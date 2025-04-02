@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,6 +40,10 @@ namespace Swift_Blade
         public float colorMultiplier; //if color value == 1, value increase 1 * colorMultiplier
         public float modifiedValue = 0;
         public float dbgValue = 0;
+
+        public float buffTimer = 0f;
+
+        public Dictionary<string, Coroutine> currentBuffDictionary = new Dictionary<string, Coroutine>();
         
         private Dictionary<object, float> modifyValueByKeys = new Dictionary<object, float>();
 
@@ -70,12 +75,25 @@ namespace Swift_Blade
 
         public void AddModifier(object key, float value)
         {
-            if (modifyValueByKeys.ContainsKey(key))
-                return;
+            if (modifyValueByKeys.TryGetValue(key, out var val))
+            {
+                if(val > value)
+                {
+                    return;
+                }
+                else
+                {
+                    RemoveModifier(key);
+                    modifiedValue += value;
+                    modifyValueByKeys.Add(key, value);
+
+                    OnValueChanged?.Invoke();
+                }
+            }
             
             modifiedValue += value;
             modifyValueByKeys.Add(key, value);
-            
+                        
             OnValueChanged?.Invoke();
         }
 
@@ -126,6 +144,15 @@ namespace Swift_Blade
             statSo.modifyValueByKeys = modTemp;
             
             return statSo;
+        }
+
+        public IEnumerator DelayBuffRoutine(string buffKey, float buffTime, float buffAmount)
+        {
+            AddModifier(buffKey, buffAmount);
+
+            yield return new WaitForSeconds(buffTime);
+
+            RemoveModifier(buffKey);
         }
     }
 }

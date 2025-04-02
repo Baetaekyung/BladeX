@@ -97,5 +97,8 @@ namespace Swift_Blade
             PopupManager.Instance.AllPopDown();
             PopupManager.Instance.PopUp(PopupType.GameOver);
         }
+        
+        public bool IsFullHealth => CurrentHealth == _healthStat.Value;
+        
     }
 }

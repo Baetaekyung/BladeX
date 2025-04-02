@@ -26,7 +26,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
             base.Start();
             damageCaster = caster as GolemEnemyCaster;
             
-            MonoGenericPool<GroundCrack>.Initialize(groundCrackSO);
+            MonoGenericPool<GroundCrackParticle>.Initialize(groundCrackSO);
         }
         
         public void JumpAttackCast()
@@ -57,19 +57,19 @@ namespace Swift_Blade.Enemy.Boss.Golem
         {
             if (_direction == 1)
             {
-                var g = MonoGenericPool<GroundCrack>.Pop();
+                var g = MonoGenericPool<GroundCrackParticle>.Pop();
                 g.transform.position = rightGroundCrackTrm.position;
             }
 
             if (_direction == -1)
             {
-                var g = MonoGenericPool<GroundCrack>.Pop();
+                var g = MonoGenericPool<GroundCrackParticle>.Pop();
                 g.transform.position = leftGroundCrackTrm.position;
             }
 
             if (_direction == 0)
             {
-                var g = MonoGenericPool<GroundCrack>.Pop();
+                var g = MonoGenericPool<GroundCrackParticle>.Pop();
                 g.transform.position = forwardGroundCrackTrm.position;
             }
             

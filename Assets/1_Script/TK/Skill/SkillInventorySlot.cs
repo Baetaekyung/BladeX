@@ -19,7 +19,16 @@ namespace Swift_Blade
 
         public override void SetSlotImage(Sprite sprite)
         {
-            skillIconImage.color  = sprite ? Color.white : Color.clear;
+            Color newColor = Color.white;
+
+            if(skillData)
+            {
+                (int r, int g, int b) = ColorUtils.GetRGBColor(skillData.colorType);
+                newColor = new Color(r * 0.7f, g * 0.7f, b * 0.9f, 1f);
+                
+            }
+
+            skillIconImage.color  = sprite ? newColor : Color.clear;
             skillIconImage.sprite = sprite;
         }
 
@@ -31,22 +40,24 @@ namespace Swift_Blade
             if (skillData == null)
                 return;
 
-            var slot = SkillManager.Instance.GetEmptySkillSlot(skillData.SkillType);
+            var slot = SkillManager.Instance.GetEmptySkillSlot(
+                skillData.skillType,
+                skillData.colorType);
 
-            //½½·ÔÀÌ °¡µæÂü
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             if (slot == default)
             {
-                string typeToKorean = skillData.SkillType switch
+                string typeToKorean = skillData.skillType switch
                 {
-                    SkillType.Attack  => "°ø°Ý",
-                    SkillType.Dead    => "»ç¸Á",
-                    SkillType.Hit     => "ÇÇ°Ý",
-                    SkillType.Parry   => "ÆÐ¸®",
-                    SkillType.Rolling => "±¸¸£±â",
+                    SkillType.Attack  => "ï¿½ï¿½ï¿½ï¿½",
+                    SkillType.Dead    => "ï¿½ï¿½ï¿½",
+                    SkillType.Hit     => "ï¿½Ç°ï¿½",
+                    SkillType.Parry   => "ï¿½Ð¸ï¿½",
+                    SkillType.Rolling => "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",
                     _ => "???"
                 };
 
-                PopupManager.Instance.LogMessage($"{typeToKorean}Å¸ÀÔÀÇ ½ºÅ³ ½½·ÔÀÌ ´Ù Ã¡½À´Ï´Ù.");
+                PopupManager.Instance.LogMessage($"{typeToKorean}Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ã¡ï¿½ï¿½ï¿½Ï´ï¿½.");
             }
             else if (SkillManager.Instance.CanAddSkill)
             {
@@ -57,7 +68,7 @@ namespace Swift_Blade
                 SetSlotData(null);
             }
             else
-                PopupManager.Instance.LogMessage("½ºÅ³ÀÌ °¡µæ Â÷ ´õ µî·ÏÇÒ ¼ö ¾ø½À´Ï´Ù");
+                PopupManager.Instance.LogMessage("ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
         }
 
         #region MouseEvents

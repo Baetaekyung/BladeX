@@ -22,9 +22,6 @@ namespace Swift_Blade
 
         private void OnDestroy()
         {
-            if (PopupManager.Instance == null)
-                return;
-            
             PopupManager.Instance.OnPopUpOpenOrClose -= HandleCastable;
         }
 

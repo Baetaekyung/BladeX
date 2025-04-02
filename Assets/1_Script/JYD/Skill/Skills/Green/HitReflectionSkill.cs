@@ -14,9 +14,9 @@ namespace Swift_Blade.Skill
         private float skillRadius = 10;
         public override void Initialize()
         {
-            MonoGenericPool<RedWaveParticle>.Initialize(skillParticle);
+            MonoGenericPool<ShockWaveParticle>.Initialize(skillParticle);
         }
-
+        
         public override void UseSkill(Player player, Transform[] targets = null)
         {
             if (targets == null)
@@ -25,9 +25,9 @@ namespace Swift_Blade.Skill
                     .Select(x => x.transform).ToArray();
             }
     
-            RedWaveParticle redWaveParticle = MonoGenericPool<RedWaveParticle>.Pop();
+            ShockWaveParticle redWaveParticle = MonoGenericPool<ShockWaveParticle>.Pop();
             redWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0, 0.5f, 0);
-
+            
             Transform closeTarget = null;
             float minDistance = float.MaxValue;
             foreach (var item in targets)
@@ -55,7 +55,7 @@ namespace Swift_Blade.Skill
                     
                 }
             }
+            
         }
-
     }
 }

@@ -31,8 +31,8 @@ namespace Swift_Blade.UI
                 _playerHealth.OnHitEvent.AddListener(HandleSetHealthUI);
                 _playerHealth.OnHealthUpdateEvent += SetHealthUI;
 
-                StatInfoUI.OnHealthStatUp += SetHealthUIIfStatUp;
-                StatInfoUI.OnHealthStatDown += SetHealthUIIfStatDown;
+                //StatInfoUI.OnHStatUp += SetHealthUIIfStatUp;
+                //StatInfoUI.OnHealthStatDown += SetHealthUIIfStatDown;
 
                 Player.Instance.GetEntityComponent<PlayerStatCompo>().OnStatChanged += SetHealthUI;
                 
@@ -49,8 +49,8 @@ namespace Swift_Blade.UI
 
                 Player.Instance.GetEntityComponent<PlayerStatCompo>().OnStatChanged -= SetHealthUI;
 
-                StatInfoUI.OnHealthStatUp -= SetHealthUIIfStatUp;
-                StatInfoUI.OnHealthStatDown -= SetHealthUIIfStatDown;
+                //StatInfoUI.OnHStatUp -= SetHealthUIIfStatUp;
+                //StatInfoUI.OnHealthStatDown -= SetHealthUIIfStatDown;
             }
         }
 

@@ -20,7 +20,7 @@ namespace Swift_Blade.Combat.Projectile
         {
             base.Start();
 
-            MonoGenericPool<Explosion>.Initialize(explosionSO);
+            MonoGenericPool<ExplosionParticle>.Initialize(explosionSO);
         }
 
         private void OnCollisionEnter(Collision other)
@@ -54,7 +54,7 @@ namespace Swift_Blade.Combat.Projectile
 
             CameraShakeManager.Instance.DoShake(shakeType);
             
-            var e = MonoGenericPool<Explosion>.Pop();
+            var e = MonoGenericPool<ExplosionParticle>.Pop();
             e.transform.position = explosionPoint;
 
             Destroy(gameObject);

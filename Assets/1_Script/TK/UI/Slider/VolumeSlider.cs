@@ -16,7 +16,6 @@ namespace Swift_Blade
         
         private void OnEnable()
         {
-            //TODO: audioMixer랑 연결해서 소리 적용 시키기
             volumeSlider.onValueChanged.AddListener(HandleVolumeChanged);
             volume = PlayerPrefs.GetFloat(saveKey, 50f);
             volumeSlider.value = volume;
