@@ -8,7 +8,7 @@ namespace Swift_Blade.FSM.States
     {
         public event Action OnRollEnd;
 
-        protected override bool BaseAllowParryInput => false;
+        protected override bool BaseAllowSpecialInput => false;
         protected override bool BaseAllowDashInput => false;
         private readonly PlayerRenderer playerRenderer;
         private readonly PlayerHealth playerHealth;
@@ -82,7 +82,7 @@ namespace Swift_Blade.FSM.States
             // 0 ~ 0.4 (roll anim time)
             float delta = TimeSinceEntered * 2.5f;
             //delta = Mathf.Min(delta, 1);//doesntmatter
-            float multiplier = Mathf.Lerp(0.5f, 0.1f, delta);
+            float multiplier = Mathf.Lerp(0.5f, 0.2f, delta);
 
             Vector3 targetVector = inputClamped;
             movementVectorInterpolated = Vector3.MoveTowards(movementVectorInterpolated, targetVector, multiplier * Time.deltaTime);

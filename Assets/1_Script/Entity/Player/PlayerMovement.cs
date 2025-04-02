@@ -36,7 +36,7 @@ namespace Swift_Blade
         [Header("Angle Multiplier")]
         [SerializeField] private float angleMultiplier = ANGLE_MULTIPLIER_NORMAL;
         private const float ANGLE_MULTIPLIER_SLOW = 4f;
-        private const float ANGLE_MULTIPLIER_NORMAL = 12;
+        private const float ANGLE_MULTIPLIER_NORMAL = 10;
         public enum EAngleMultiplier
         {
             Slow,
@@ -155,7 +155,7 @@ namespace Swift_Blade
             Vector3 forceResult = forceVetor * forceCurve.Evaluate(curveValue);
 
             Vector3 addition = AdditionalVelocity + dashResult + forceResult;
-            Vector3 result = input * speed + addition;
+            Vector3 result = speed * input + addition;
             result.y += yVal;
             controller.linearVelocity = result;
 
