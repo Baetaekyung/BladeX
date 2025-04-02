@@ -93,7 +93,7 @@ namespace Swift_Blade
             
             modifiedValue += value;
             modifyValueByKeys.Add(key, value);
-            
+                        
             OnValueChanged?.Invoke();
         }
 

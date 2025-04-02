@@ -28,8 +28,8 @@ namespace Swift_Blade
 
         public void EntityComponentAwake(Entity entity)
         {
-            MonoGenericPool<Dust>.Initialize(dustParticle);
-            MonoGenericPool<HitSlash>.Initialize(hitSlashParticle);
+            MonoGenericPool<DustParticle>.Initialize(dustParticle);
+            MonoGenericPool<HitSlashParticle>.Initialize(hitSlashParticle);
             MonoGenericPool<ParryParticle>.Initialize(parryParticle);
             MonoGenericPool<LevelUpParticle>.Initialize(levelUpParticle);
             MonoGenericPool<PlayerHealParticle>.Initialize(healParticle);
@@ -37,13 +37,13 @@ namespace Swift_Blade
                 
         public void PlayDamageEffect(ActionData actionData)
         {
-            Dust dust = MonoGenericPool<Dust>.Pop();
-            dust.transform.position = actionData.hitPoint;
-            dust.transform.rotation = Quaternion.LookRotation(-actionData.hitNormal);
+            DustParticle dustParticle = MonoGenericPool<DustParticle>.Pop();
+            dustParticle.transform.position = actionData.hitPoint;
+            dustParticle.transform.rotation = Quaternion.LookRotation(-actionData.hitNormal);
             
-            HitSlash hitSlash = MonoGenericPool<HitSlash>.Pop();
-            hitSlash.transform.position = actionData.hitPoint;
-            hitSlash.transform.rotation = Quaternion.LookRotation(-actionData.hitNormal);
+            HitSlashParticle hitSlashParticle = MonoGenericPool<HitSlashParticle>.Pop();
+            hitSlashParticle.transform.position = actionData.hitPoint;
+            hitSlashParticle.transform.rotation = Quaternion.LookRotation(-actionData.hitNormal);
         }
         
         public void PlayParryEffect()
@@ -51,8 +51,8 @@ namespace Swift_Blade
             ParryParticle parryParticle = MonoGenericPool<ParryParticle>.Pop();
             parryParticle.transform.position = parryParticleTrm.position;
             
-            HitSlash hitSlash = MonoGenericPool<HitSlash>.Pop();
-            hitSlash.transform.position = parryParticleTrm.position;
+            HitSlashParticle hitSlashParticle = MonoGenericPool<HitSlashParticle>.Pop();
+            hitSlashParticle.transform.position = parryParticleTrm.position;
         }
 
         private void LevelUpEffect(Player.LevelStat levelStat)

@@ -56,7 +56,7 @@ namespace Swift_Blade.Combat.Caster
             if (parryController.CanParry() && isLookingAtAttacker && canInterval)
             {
                 parryEvents?.Invoke();//적 쪽
-                parryController.ParryEvents?.Invoke();//플레이어쪽
+                
                         
                 lastParryTime = Time.time;
             }

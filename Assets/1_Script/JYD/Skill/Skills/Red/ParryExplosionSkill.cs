@@ -16,7 +16,7 @@ namespace Swift_Blade.Skill
         
         public override void Initialize()
         {
-            MonoGenericPool<SmallExplosion>.Initialize(skillParticle);
+            MonoGenericPool<SmallExplosionParticle>.Initialize(skillParticle);
         }
         
         public override void UseSkill(Player player, Transform[] targets = null)
@@ -38,8 +38,8 @@ namespace Swift_Blade.Skill
                     actionData.damageAmount = skillDamage;
                     health.TakeDamage(actionData);
 
-                    SmallExplosion smallExplosion = MonoGenericPool<SmallExplosion>.Pop();
-                    smallExplosion.transform.position =
+                    SmallExplosionParticle smallExplosionParticle = MonoGenericPool<SmallExplosionParticle>.Pop();
+                    smallExplosionParticle.transform.position =
                         explosionPosition;
                 }                
             }

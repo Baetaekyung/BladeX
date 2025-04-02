@@ -25,7 +25,7 @@ namespace Swift_Blade.Combat
         public void EntityComponentStart(Entity entity)
         {
             playerStatCompo = player.GetEntityComponent<PlayerStatCompo>();
-            ParryEvents.AddListener(()=>player.GetSkillController.UseSkill(SkillType.Parry));
+            ParryEvents.AddListener(()=>player.GetSkillController.UseSkill(SkillType.Special));
         }
 
         private void OnDestroy()
@@ -44,7 +44,14 @@ namespace Swift_Blade.Combat
             float parryChance = defaultParryChance + additinoalParryChance;
             return parryChance > Random.value;
         }
-        public bool CanParry() => canParry && ParryProbability();
+        public bool CanParry()
+        {
+            bool result =   canParry && ParryProbability();
+            if(result)
+                ParryEvents?.Invoke();
 
+            return result;
+        }
+        
     }
 }
