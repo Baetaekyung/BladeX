@@ -11,6 +11,8 @@ namespace Swift_Blade.Pool
         [SerializeField] private float speed;
         [SerializeField] private float pushTime;
         private float pushTimer;
+
+        [SerializeField] private PoolPrefabMonoBehaviourSO dustParticle;
         
         private TrailRenderer trailRenderer;
         private Rigidbody rigidBody;
@@ -22,6 +24,8 @@ namespace Swift_Blade.Pool
         {
             rigidBody = GetComponent<Rigidbody>();
             trailRenderer = GetComponentInChildren<TrailRenderer>();
+            
+            MonoGenericPool<DustParticle>.Initialize(dustParticle);
         }
         
         private void Update()
@@ -41,19 +45,25 @@ namespace Swift_Blade.Pool
                 {
                     if (other.TryGetComponent(out PlayerParryController playerParryController) && playerParryController.CanParry())
                     {
-                        playerParryController.ParryEvents.Invoke();
                         Reflection();
                     }
                     else
                     {
-                        deadFlag = true;
-                        health.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
-                        MonoGenericPool<Arrow>.Push(this);
+                        Hit(health);
                     }
                     
                 }
             }            
             
+        }
+
+        private void Hit(IDamageble health)
+        {
+            deadFlag = true;
+            health.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
+                        
+            MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
+            MonoGenericPool<Arrow>.Push(this);
         }
 
         private void Reflection()

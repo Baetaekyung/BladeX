@@ -44,7 +44,14 @@ namespace Swift_Blade.Combat
             float parryChance = defaultParryChance + additinoalParryChance;
             return parryChance > Random.value;
         }
-        public bool CanParry() => canParry && ParryProbability();
+        public bool CanParry()
+        {
+            bool result =   canParry && ParryProbability();
+            if(result)
+                ParryEvents?.Invoke();
 
+            return result;
+        }
+        
     }
 }
