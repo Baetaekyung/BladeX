@@ -48,6 +48,7 @@ namespace Swift_Blade
         public void HealthUpdate()
         {
             _maxHealth = _healthStat.Value;
+            CurrentHealth = Mathf.Clamp(CurrentHealth, 0, _maxHealth);
             
             OnHealthUpdateEvent?.Invoke(_maxHealth, CurrentHealth);
         }

@@ -22,6 +22,7 @@ namespace Swift_Blade
     public class StatSO : ScriptableObject
     {
         public event Action OnValueChanged;
+        public event Action OnBuffEnd;
 
         public StatType  statType;
         public ColorType colorType;
@@ -150,9 +151,17 @@ namespace Swift_Blade
         {
             AddModifier(buffKey, buffAmount);
 
-            yield return new WaitForSeconds(buffTime);
+            buffTimer = buffTime;
+            while(this.buffTimer > 0)
+            {
+                this.buffTimer -= Time.deltaTime;
+                yield return null;
+            }
 
+            Debug.Log("buff end");
             RemoveModifier(buffKey);
+
+            OnBuffEnd?.Invoke();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace Swift_Blade
         {
             if(Input.GetKeyDown(KeyCode.B))
             {
-                BuffToStat(StatType.DAMAGE, "damageBuff", 5f, 1f);
+                BuffToStat(StatType.HEALTH, "damageBuff", 1f, 1f);
             }
         }
 
@@ -85,20 +85,29 @@ namespace Swift_Blade
                 stat.RemoveModifier(buffKey);
                 stat.currentBuffDictionary.Remove(buffKey);
                 stat.buffTimer = 0;
+                stat.OnBuffEnd -= HandleBuffEnd;
+                _playerHealth.HealthUpdate();
 
                 StopCoroutine(buffRoutine);
             }
 
-            StartCoroutine(stat.DelayBuffRoutine(buffKey, buffTime, buffAmount));
-
-            if(stat.statType == StatType.HEALTH)
-            {
-                PlayerHealth.CurrentHealth++;
-
-            }
-            
-
+            stat.OnBuffEnd += HandleBuffEnd;
+            buffRoutine = StartCoroutine(stat.DelayBuffRoutine(buffKey, buffTime, buffAmount));
             stat.currentBuffDictionary.Add(buffKey, buffRoutine);
+
+            if (stat.statType == StatType.HEALTH)
+            {
+                PlayerHealth.CurrentHealth += buffAmount;
+                _playerHealth.HealthUpdate();
+            }
+
+            void HandleBuffEnd()
+            {
+                if(stat.statType == StatType.HEALTH)
+                {
+                    _playerHealth.HealthUpdate();
+                }
+            }
         }
 
         public void IncreaseColorValue(ColorType colorType, int increaseAmount)

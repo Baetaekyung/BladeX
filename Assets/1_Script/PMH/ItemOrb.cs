@@ -30,7 +30,7 @@ namespace Swift_Blade
 
         public void Interact()
         {
-            DOTween.Kill(gameObject);
+            //DOTween.Kill(gameObject);
             transform.DOScale(0 , duration).SetEase(Ease.OutSine).OnComplete(() =>
             {
                 int n = Random.Range(0, itemTables.itemTable.Count);
