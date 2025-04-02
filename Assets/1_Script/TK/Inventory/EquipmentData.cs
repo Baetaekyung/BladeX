@@ -10,7 +10,7 @@ namespace Swift_Blade
         HEAD,
         ARMOR,
         WEAPON, 
-        SHIELD,
+        RING,
         SHOES
     }
     

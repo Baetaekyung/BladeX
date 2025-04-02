@@ -41,7 +41,7 @@ namespace Swift_Blade
                 return;
 
             var slot = SkillManager.Instance.GetEmptySkillSlot(
-                skillData.SkillType,
+                skillData.skillType,
                 skillData.colorType);
 
             //������ ������
