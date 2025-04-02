@@ -21,36 +21,36 @@ namespace Swift_Blade.Enemy.Sword
         
         private void Start()
         {
-            MonoGenericPool<DustUp>.Initialize(dustUpEffect);    
-            MonoGenericPool<GroundCrack>.Initialize(groundEffect);    
-            MonoGenericPool<Prick>.Initialize(prickEffect);    
+            MonoGenericPool<DustUpParticle>.Initialize(dustUpEffect);    
+            MonoGenericPool<GroundCrackParticle>.Initialize(groundEffect);    
+            MonoGenericPool<PrickParticle>.Initialize(prickEffect);    
         }
         
         public void PlayDustUpEffect()
         {
             if (Physics.Raycast(dustUpTransform.position ,Vector3.down ,out RaycastHit hit, 1f , groundLayer))
             {
-                DustUp dust = MonoGenericPool<DustUp>.Pop();
+                DustUpParticle dust = MonoGenericPool<DustUpParticle>.Pop();
                 dust.transform.position = hit.point;
                 
-                GroundCrack groundCrack = MonoGenericPool<GroundCrack>.Pop();
-                groundCrack.transform.position = hit.point;
+                GroundCrackParticle groundCrackParticle = MonoGenericPool<GroundCrackParticle>.Pop();
+                groundCrackParticle.transform.position = hit.point;
                 
             }
         }
 
         public void PlayPrickEffect()
         {
-            Prick prick = MonoGenericPool<Prick>.Pop();
-            prick.transform.rotation = prickTrm1.rotation;
-            prick.transform.position = prickTrm1.position;
+            PrickParticle prickParticle = MonoGenericPool<PrickParticle>.Pop();
+            prickParticle.transform.rotation = prickTrm1.rotation;
+            prickParticle.transform.position = prickTrm1.position;
         }
         
         public void PlayPrickEffect1()
         {
-            Prick prick = MonoGenericPool<Prick>.Pop();
-            prick.transform.rotation = prickTrm2.rotation;
-            prick.transform.position = prickTrm2.position;
+            PrickParticle prickParticle = MonoGenericPool<PrickParticle>.Pop();
+            prickParticle.transform.rotation = prickTrm2.rotation;
+            prickParticle.transform.position = prickTrm2.position;
         }
         
     }

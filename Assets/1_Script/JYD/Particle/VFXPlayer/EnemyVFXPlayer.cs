@@ -9,13 +9,13 @@ namespace Swift_Blade
         [SerializeField] private Transform unParrySignParticleTrm;
         private void Start()
         {
-            MonoGenericPool<ParrySign>.Initialize(unParrySignParticle);
+            MonoGenericPool<ParrySignParticle>.Initialize(unParrySignParticle);
         }
 
         public void PlayUnParrySign()
         {
-            ParrySign parrySign = MonoGenericPool<ParrySign>.Pop();
-            parrySign.transform.position = unParrySignParticleTrm.position;
+            ParrySignParticle parrySignParticle = MonoGenericPool<ParrySignParticle>.Pop();
+            parrySignParticle.transform.position = unParrySignParticleTrm.position;
             
         }
         

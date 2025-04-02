@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Pool
 {
-    public class Dust : ParticlePoolAble<Dust>
+    public class DustParticle : ParticlePoolAble<DustParticle>
     {
       
     }

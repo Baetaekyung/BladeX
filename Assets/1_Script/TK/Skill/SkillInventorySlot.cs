@@ -41,7 +41,7 @@ namespace Swift_Blade
                     SkillType.Attack  => "공격",
                     SkillType.Dead    => "사망",
                     SkillType.Hit     => "피격",
-                    SkillType.Parry   => "패리",
+                    SkillType.Special   => "패리",
                     SkillType.Rolling => "구르기",
                     _ => "???"
                 };

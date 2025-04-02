@@ -8,7 +8,7 @@ public enum SkillType
 {
     Attack,
     Rolling,
-    Parry,
+    Special,//c key
     Hit,
     Dead
 }
@@ -38,7 +38,7 @@ namespace Swift_Blade.Skill
                 {
                     { SkillType.Attack, OnAttackEventSkill },
                     { SkillType.Rolling, OnRollingEventSkill },
-                    { SkillType.Parry, OnParryEventSkill },
+                    { SkillType.Special, OnParryEventSkill },
                     { SkillType.Hit, OnHitEventSkill },
                     { SkillType.Dead, OnDeadEventSkill }
                 };
