@@ -16,14 +16,16 @@ namespace Swift_Blade.Pool
         
         private TrailRenderer trailRenderer;
         private Rigidbody rigidBody;
+        private Vector3 originScale;
         
         private bool deadFlag;
-
+        
         private const string enemyLayerName = "Enemy";
         private void Awake()
         {
             rigidBody = GetComponent<Rigidbody>();
             trailRenderer = GetComponentInChildren<TrailRenderer>();
+            originScale = transform.localScale;
             
             MonoGenericPool<DustParticle>.Initialize(dustParticle);
         }
@@ -45,7 +47,7 @@ namespace Swift_Blade.Pool
                 {
                     if (other.TryGetComponent(out PlayerParryController playerParryController) && playerParryController.CanParry())
                     {
-                        Reflection();
+                        Reflection(other.GetComponentInParent<Player>().GetPlayerTransform);
                     }
                     else
                     {
@@ -66,11 +68,10 @@ namespace Swift_Blade.Pool
             MonoGenericPool<Arrow>.Push(this);
         }
 
-        private void Reflection()
+        private void Reflection(Transform player)
         {
-            Vector3 direction = gameObject.transform.forward;
-            direction = new Vector3(-direction.x, direction.y, -direction.z);
-            rigidBody.linearVelocity = direction * speed;
+            transform.rotation = Quaternion.LookRotation(player.forward);
+            rigidBody.linearVelocity = transform.forward * speed;
             
             whatIsTarget |= (1 << LayerMask.NameToLayer(enemyLayerName));
             
@@ -90,7 +91,7 @@ namespace Swift_Blade.Pool
             trailRenderer.Clear();
             deadFlag = false;
             whatIsTarget &= ~LayerMask.GetMask(enemyLayerName);
-            
+            transform.localScale = originScale;
             
             pushTimer = 0;
         }

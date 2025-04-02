@@ -53,11 +53,10 @@ namespace Swift_Blade.Combat.Caster
             bool isLookingAtAttacker = IsFacingEachOther(hit.transform.GetComponentInParent<Player>().GetPlayerTransform , transform);
             bool canInterval = Time.time > lastParryTime + parryInterval;
                     
-            if (parryController.CanParry() && isLookingAtAttacker && canInterval)
+            if (isLookingAtAttacker && canInterval && parryController.CanParry())
             {
                 parryEvents?.Invoke();//적 쪽
-                
-                        
+                                        
                 lastParryTime = Time.time;
             }
             else
