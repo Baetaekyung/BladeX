@@ -46,11 +46,7 @@ namespace Swift_Blade.Combat
         }
         public bool CanParry()
         {
-            bool result =   canParry && ParryProbability();
-            if(result)
-                ParryEvents?.Invoke();
-
-            return result;
+            return canParry;
         }
         
     }

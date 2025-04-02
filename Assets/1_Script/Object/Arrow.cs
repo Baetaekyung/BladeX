@@ -47,6 +47,7 @@ namespace Swift_Blade.Pool
                 {
                     if (other.TryGetComponent(out PlayerParryController playerParryController) && playerParryController.CanParry())
                     {
+                        playerParryController.ParryEvents?.Invoke();
                         Reflection(other.GetComponentInParent<Player>().GetPlayerTransform);
                     }
                     else
