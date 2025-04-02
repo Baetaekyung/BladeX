@@ -20,7 +20,7 @@ namespace Swift_Blade.Skill
             
             public event Action<Player,Transform[]> OnAttackEventSkill;
             public event Action<Player,Transform[]> OnRollingEventSkill;
-            public event Action<Player,Transform[]> OnParryEventSkill;
+            public event Action<Player,Transform[]> OnSpecialEventSkill;
             public event Action<Player,Transform[]> OnHitEventSkill;
             public event Action<Player,Transform[]> OnDeadEventSkill;
 
@@ -38,34 +38,35 @@ namespace Swift_Blade.Skill
                 {
                     { SkillType.Attack, OnAttackEventSkill },
                     { SkillType.Rolling, OnRollingEventSkill },
-                    { SkillType.Special, OnParryEventSkill },
+                    { SkillType.Special, OnSpecialEventSkill },
                     { SkillType.Hit, OnHitEventSkill },
                     { SkillType.Dead, OnDeadEventSkill }
                 };
                 
-                //StartCoroutine(SKillUpdateRoutine());
+                StartCoroutine(SKillUpdateRoutine());
             }
             
             private IEnumerator SKillUpdateRoutine()
             {
                 while (true)
                 {
-                    foreach (var item in currentSkillList)
+                    if (currentSkillList == null) continue;
+                    
+                    for (int i = 0; i < currentSkillList.Count; i++)
                     {
-                        item.SkillUpdate(_player);
-
-                        yield return new WaitForSeconds(0.01f);
+                        currentSkillList[i].SkillUpdate(_player);
                     }
+                    yield return new WaitForSeconds(0.02f);
                 }
             }
-
-            private void Update()
+            
+            /*private void Update()
             {
                 foreach (var item in currentSkillList)
                 {
                     item.SkillUpdate(_player);
                 }
-            }
+            }*/
 
             public void EntityComponentAwake(Entity entity)
             {
