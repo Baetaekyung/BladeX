@@ -45,7 +45,7 @@ namespace Swift_Blade.Feeling
 
         private void FindCamera(Scene scene, LoadSceneMode mode)
         {
-            _camera = FindFirstObjectByType<CinemachineCamera>();
+            _camera = GameObject.FindWithTag("PlayerCamera").GetComponent<CinemachineCamera>();
             if (_camera != null)
                 _targetCamera = _camera;
         }
