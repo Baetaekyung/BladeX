@@ -49,11 +49,11 @@ namespace Swift_Blade
             {
                 string typeToKorean = skillData.skillType switch
                 {
-                    SkillType.Attack  => "����",
-                    SkillType.Dead    => "���",
-                    SkillType.Hit     => "�ǰ�",
-                    SkillType.Parry   => "�и�",
-                    SkillType.Rolling => "������",
+                    SkillType.Attack  => "공격",
+                    SkillType.Dead    => "죽음",
+                    SkillType.Hit     => "피격",
+                    SkillType.Special   => "특수",
+                    SkillType.Rolling => "구르기",
                     _ => "???"
                 };
 
