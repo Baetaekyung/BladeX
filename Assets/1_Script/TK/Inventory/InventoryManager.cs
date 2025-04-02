@@ -18,7 +18,6 @@ namespace Swift_Blade
     
     public class InventoryManager : MonoSingleton<InventoryManager>
     {
-        //TODO: 나중에 UI랑 Manager기능 분리하기.
         [Header("UI 부분")]
         [SerializeField] private QuickSlotUI         quickSlotUI;
         [SerializeField] private List<EquipmentSlot> equipSlots;

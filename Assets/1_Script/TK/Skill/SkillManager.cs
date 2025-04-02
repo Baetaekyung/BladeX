@@ -86,8 +86,10 @@ namespace Swift_Blade
             {
                 for (ushort i = 0; i < saveDatas.skillSlotData.Count; i++)
                 {
-                    SkillType type = saveDatas.skillSlotData[i].SkillType;
-                    GetEmptySkillSlot(type).SetSlotData(saveDatas.skillSlotData[i]);
+                    SkillType type      = saveDatas.skillSlotData[i].SkillType;
+                    ColorType colorType = saveDatas.skillSlotData[i].colorType;
+
+                    GetEmptySkillSlot(type, colorType).SetSlotData(saveDatas.skillSlotData[i]);
                 }
             }
         }
@@ -122,10 +124,12 @@ namespace Swift_Blade
             return invSlot;
         }
 
-        public SkillSlot GetEmptySkillSlot(SkillType skillType)
+        public SkillSlot GetEmptySkillSlot(SkillType skillType, ColorType colorType)
         {
-            var skillSlot = skill_slots.FirstOrDefault(slot => 
-                slot.GetSkillType == skillType && slot.IsEmptySlot()); 
+            var skillSlot = skill_slots.FirstOrDefault(
+                slot => slot.GetSkillType == skillType && 
+                slot.IsEmptySlot() && 
+                slot.GetColorType == colorType); 
         
             if (skillSlot == default)
                 return default;

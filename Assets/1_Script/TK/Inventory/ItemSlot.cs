@@ -100,15 +100,17 @@ namespace Swift_Blade
 
         public void SetItemUI(Sprite sprite)
         {
+            SetBackgroundColor();
+
             if (sprite == null)
             {
                 itemImage.sprite = emptySprite;
-                itemImage.color = Color.black;
-                return;
+                itemImage.color = Color.clear;
             }
-
-            SetBackgroundColor();
-            SetItemImage(sprite);
+            else
+            {
+                SetItemImage(sprite);
+            }
         }
 
         private void SetItemImage(Sprite sprite)
@@ -148,6 +150,7 @@ namespace Swift_Blade
             if(_itemDataSO == null)
             {
                 itemBackground.color = Color.clear;
+                return;
             }
 
             if (_itemDataSO.itemType == ItemType.EQUIPMENT)
@@ -155,7 +158,7 @@ namespace Swift_Blade
                 EquipmentData equipData = _itemDataSO.equipmentData;
 
                 (int a, int b, int c) = ColorUtils.GetRGBColor(equipData.colorType);
-                Color newColor = new Color(a, b, c, 0.3f);
+                Color newColor = new Color(a, b, c, 0.26f);
                 itemBackground.color = newColor;
             }
         }

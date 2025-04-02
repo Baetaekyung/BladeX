@@ -19,7 +19,16 @@ namespace Swift_Blade
 
         public override void SetSlotImage(Sprite sprite)
         {
-            skillIconImage.color  = sprite ? Color.white : Color.clear;
+            Color newColor = Color.white;
+
+            if(skillData)
+            {
+                (int r, int g, int b) = ColorUtils.GetRGBColor(skillData.colorType);
+                newColor = new Color(r * 0.7f, g * 0.7f, b * 0.9f, 1f);
+                
+            }
+
+            skillIconImage.color  = sprite ? newColor : Color.clear;
             skillIconImage.sprite = sprite;
         }
 
@@ -31,7 +40,9 @@ namespace Swift_Blade
             if (skillData == null)
                 return;
 
-            var slot = SkillManager.Instance.GetEmptySkillSlot(skillData.SkillType);
+            var slot = SkillManager.Instance.GetEmptySkillSlot(
+                skillData.SkillType,
+                skillData.colorType);
 
             //ΩΩ∑‘¿Ã ∞°µÊ¬¸
             if (slot == default)

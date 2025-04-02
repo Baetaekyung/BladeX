@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 
 namespace Swift_Blade
 {
     [Serializable]
-    public struct ColorStat
+    public class ColorStat
     {
         public ColorType colorType;
         public int colorValue;
@@ -59,7 +59,9 @@ namespace Swift_Blade
 
         public void IncreaseColorValue(ColorType colorType, int increaseAmount)
         {
-            var colorStat = GetColorStat(colorType);
+            ColorStat colorStat = GetColorStat(colorType);
+
+            Debug.Log(colorStat.colorType.ToString());
 
             colorStat.colorValue += increaseAmount;
             ColorValueChange();
@@ -80,6 +82,17 @@ namespace Swift_Blade
         }
 
         public int GetColorStatValue(ColorType colorType) => GetColorStat(colorType).colorValue;
-        public ColorStat GetColorStat(ColorType colorType) => colorStats.FirstOrDefault(stat => stat.colorType == colorType);
+        public ColorStat GetColorStat(ColorType colorType)
+        {
+            foreach (var stat in colorStats)
+            {
+                if(stat.colorType == colorType)
+                {
+                    return stat;
+                }
+            }
+
+            return default;
+        }
     }
 }

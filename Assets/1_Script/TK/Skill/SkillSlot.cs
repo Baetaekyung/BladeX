@@ -16,6 +16,7 @@ namespace Swift_Blade
 
         private SkillManager SkillManager => SkillManager.Instance;
         public SkillType     GetSkillType => slotSkillType;
+        public ColorType     GetColorType => colorType;
 
         public override void SetSlotImage(Sprite sprite)
         {

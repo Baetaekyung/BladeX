@@ -1,36 +1,35 @@
 using TMPro;
 using UnityEngine;
+using static Swift_Blade.Player;
 
 namespace Swift_Blade
 {
     public class StatusUI : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI[] statPointText;
+        [SerializeField] private TextMeshProUGUI statPointText;
 
         private void OnEnable()
         {
             Player.LevelStat.OnLevelUp += HandleInfoChange;
 
-            StatInfoUI.OnStatChanged += HandleInfoChange;
+            ColorRecorder.OnColorChanged += HandleInfoChange;
         }
 
         private void OnDisable()
         {
             Player.LevelStat.OnLevelUp -= HandleInfoChange;
 
-            StatInfoUI.OnStatChanged -= HandleInfoChange;
+            ColorRecorder.OnColorChanged -= HandleInfoChange;
         }
 
         private void HandleInfoChange(Player.LevelStat levelStat)
         {
-            foreach (var statText in statPointText)
-                statText.text = $"Stat point: {levelStat.StatPoint}";
+            statPointText.text = $"Stat point: {levelStat.StatPoint}";
         }
         
         public void HandleInfoChange()
         {
-            foreach (var statText in statPointText)
-                statText.text = $"Stat point: {Player.level.StatPoint}";
+            statPointText.text = $"Stat point: {Player.level.StatPoint}";
         }
     }
 }
