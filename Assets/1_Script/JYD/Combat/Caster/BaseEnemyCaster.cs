@@ -53,10 +53,11 @@ namespace Swift_Blade.Combat.Caster
             bool isLookingAtAttacker = IsFacingEachOther(hit.transform.GetComponentInParent<Player>().GetPlayerTransform , transform);
             bool canInterval = Time.time > lastParryTime + parryInterval;
                     
-            if (isLookingAtAttacker && canInterval && parryController.CanParry())
+            if (parryController.CanParry() && isLookingAtAttacker && canInterval)
             {
                 parryEvents?.Invoke();//적 쪽
-                                        
+                parryController.ParryEvents?.Invoke();
+                
                 lastParryTime = Time.time;
             }
             else
@@ -84,10 +85,13 @@ namespace Swift_Blade.Combat.Caster
         
         protected bool IsFacingEachOther(Transform player, Transform enemy)
         {
-            /*Vector3 playerToEnemy = (enemy.position - player.position).normalized;
+            Vector3 playerToEnemy = (enemy.position - player.position).normalized;
+           //Debug.DrawRay(enemy.position + new Vector3(0,1,0) , enemy.forward, Color.red , 5);
+           //Debug.DrawRay(enemy.position + new Vector3(0,1,0) , playerToEnemy, Color.red , 5);
+            
             float playerDot = Vector3.Dot(player.forward, playerToEnemy);
-            return playerDot < 0;*/
-            return true;
+                        
+            return playerDot > 0;
         }
         
         protected virtual void OnDrawGizmosSelected()
