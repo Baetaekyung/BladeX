@@ -36,12 +36,14 @@ namespace Swift_Blade.Level
         {
             MonoGenericPool<ShinyParticle>.Initialize(shinyParticlePrefab);
             rigidbody = GetComponent<Rigidbody>();
-
-            Vector3 lookDirection = (Camera.main.transform.forward - transform.position).normalized;
-            lookDirection.y = 0;
-            transform.rotation = Quaternion.LookRotation(lookDirection);
             
             SetRandomChestType();
+            
+            Vector3 lookDirection = (Camera.main.transform.forward - transform.position).normalized;
+            lookDirection.y = 0;
+            
+            transform.rotation = Quaternion.LookRotation(lookDirection);
+                        
         }
 
         private void SetRandomChestType()
