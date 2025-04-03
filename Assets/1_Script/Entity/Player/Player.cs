@@ -125,7 +125,7 @@ namespace Swift_Blade
             }
 
         }
-        private Quaternion d;
+        //private Quaternion d;
         protected override void Awake()
         {
             base.Awake();
@@ -203,13 +203,13 @@ namespace Swift_Blade
             //Vector3 rr = GetPlayerTransform.InverseTransformDirection(GetPlayerInput.GetInputDirectionRawRotated);
             //Debug.DrawRay(Vector3.zero + Vector3.up * 0.7f, rr, Color.red);
 
-            d = GetPlayerTransform.rotation;
-            Quaternion originQuat = d;
-            d = Quaternion.Inverse(d);
-            Quaternion quat = d;
-            Vector3 rrr = quat * GetPlayerInput.GetInputDirectionRawRotated;
-            rrr.z = 0;
-            Vector3 finalRr = originQuat * rrr;
+            //d = GetPlayerTransform.rotation;
+            //Quaternion originQuat = d;
+            //d = Quaternion.Inverse(d);
+            //Quaternion quat = d;
+            //Vector3 rrr = quat * GetPlayerInput.GetInputDirectionRawRotated;
+            //rrr.z = 0;
+            //Vector3 finalRr = originQuat * rrr;
             //Debug.DrawRay(Vector3.zero + Vector3.up * 0.9f, rrr, Color.red);
             //Debug.DrawRay(Vector3.zero + Vector3.up * 1.2f, finalRr, Color.blue);
 

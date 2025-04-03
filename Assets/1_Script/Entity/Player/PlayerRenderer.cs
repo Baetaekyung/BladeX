@@ -28,7 +28,7 @@ namespace Swift_Blade
             if (direction.sqrMagnitude > 0)
             {
                 Quaternion result = Quaternion.LookRotation(direction, Vector3.up);
-                float angle = Vector3.Angle(direction, playerVisualTransform.forward);
+                float angle = Vector3.Angle(direction, playerVisualTransform.forward) * 0.8f;
                 float maxDegreesDelta = Time.deltaTime * angle * angleMultiplier;
                 result = Quaternion.RotateTowards(playerVisualTransform.rotation, result, maxDegreesDelta);
                 SetVisualRotation(result);

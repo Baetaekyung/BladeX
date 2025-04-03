@@ -2,9 +2,10 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class PlayerWeaponManager : MonoBehaviour, IEntityComponent
+    public class PlayerWeaponManager : MonoBehaviour, 
+        IEntityComponent
     {
-        //todo : bool check if player initialized in this scene 
+        //note : bool check if player is initialized in this scene 
         // player is not initialized when new scene is loaded
         private bool isNotInitializedInThisScene = false;
 
@@ -16,7 +17,8 @@ namespace Swift_Blade
         private GameObject rightWeaponInstance;
 
         private PlayerAnimator playerAnimator;
-        private static Weapon currentWeapon;
+        public static Weapon CurrentWeapon { get; private set; }
+
         private void Awake()
         {
             Debug.Assert(defaultWeapon != null, "default weapon is null");
@@ -25,20 +27,20 @@ namespace Swift_Blade
         {
             playerAnimator = entity.GetEntityComponent<PlayerAnimator>();
             isNotInitializedInThisScene = true;
-            SetWeapon(currentWeapon != null ? currentWeapon : defaultWeapon);
+            SetWeapon(CurrentWeapon != null ? CurrentWeapon : defaultWeapon);
         }
         public void SetWeapon(Weapon weapon)
         {
-            if (!isNotInitializedInThisScene && currentWeapon == weapon)
+            if (!isNotInitializedInThisScene && CurrentWeapon == weapon)
             {
                 Debug.LogWarning("weapon is already equipped");
                 return;
             }
 
             //clear current holding weapon
-            if (currentWeapon != null)
+            if (CurrentWeapon != null)
             {
-                if (leftWeaponInstance != null)
+                if (leftWeaponInstance != null)//note : automatically destroyed when new scene is loaded
                 {
                     Destroy(leftWeaponInstance); // todo : need optimazation
                 }
@@ -61,7 +63,7 @@ namespace Swift_Blade
             }
 
             playerAnimator.GetAnimator.runtimeAnimatorController = weapon.WeaponAnimator;
-            currentWeapon = weapon;
+            CurrentWeapon = weapon;
 
             return;
 

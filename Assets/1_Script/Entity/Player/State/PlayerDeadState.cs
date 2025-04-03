@@ -7,7 +7,7 @@ namespace Swift_Blade.FSM.States
     {
         protected override bool BaseAllowAttackInput => false;
         protected override bool BaseAllowDashInput => false;
-        protected override bool BaseAllowParryInput => false;
+        protected override bool BaseAllowSpecialInput => false;
         public PlayerDeadState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
         }

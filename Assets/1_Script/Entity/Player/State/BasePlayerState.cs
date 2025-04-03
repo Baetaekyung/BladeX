@@ -11,19 +11,17 @@ namespace Swift_Blade.FSM.States
         protected readonly PlayerMovement playerMovement;
         protected readonly PlayerInput playerInput;
 
-        //private static float additionalZValue;
         protected static Vector3 anim_inputLocalLerp;
         protected virtual bool BaseAllowAttackInput { get; } = true;
-        protected virtual bool BaseAllowParryInput { get; } = true;
+        protected virtual bool BaseAllowSpecialInput { get; } = true;
         protected virtual bool BaseAllowDashInput { get; } = true;
         protected Vector3 GetResultVector => playerInput.CameraRotationOnlyY * playerInput.GetInputDirectionRaw;
 
-        private const float delayParry = 0.8f;
-        private const float delayDash = 1.1f;
+        protected float GetSpecialDelay => PlayerWeaponManager.CurrentWeapon.GetSpecialDelay;
+        protected float GetRollDelay => PlayerWeaponManager.CurrentWeapon.GetRollDelay;
 
-        private static float nextDelayTime_AllowParry;
-        private static float nextDelayTime_AllowDash;
-
+        private static float nextDelayTime_AllowSpecial;
+        private static float nextDelayTime_AllowRoll;
 
         protected BasePlayerState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
@@ -46,7 +44,7 @@ namespace Swift_Blade.FSM.States
             if (Input.GetKeyDown(KeyCode.Mouse1) && BaseAllowAttackInput)
                 OnAttackInput(EComboState.PowerAttack);
 
-            if (Input.GetKeyDown(KeyCode.C) && BaseAllowParryInput)
+            if (Input.GetKeyDown(KeyCode.C) && BaseAllowSpecialInput)
                 OnSpecialInput();
 
             if (Input.GetKeyDown(KeyCode.Space) && BaseAllowDashInput && playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f && playerMovement.CanRoll)
@@ -86,14 +84,17 @@ namespace Swift_Blade.FSM.States
         }
         protected virtual void OnSpecialInput()
         {
-            if (nextDelayTime_AllowParry > Time.time) return;
-            nextDelayTime_AllowParry = Time.time + delayParry;
-            GetOwnerFsm.ChangeState(PlayerStateEnum.Parry);
+            if (nextDelayTime_AllowSpecial > Time.time) return;
+            nextDelayTime_AllowSpecial = Time.time + GetSpecialDelay;
+            Action specialBehaviour = PlayerWeaponManager.CurrentWeapon.GetSpecialBehaviour(entity);
+            specialBehaviour.Invoke();
+            //GetOwnerFsm.ChangeState(PlayerStateEnum.Parry);
+            //entity.GetEntityComponent<PlayerStatCompo>().AddModifier;
         }
         protected virtual void OnDashInput()
         {
-            if (nextDelayTime_AllowDash > Time.time) return;
-            nextDelayTime_AllowDash = Time.time + delayDash;
+            if (nextDelayTime_AllowRoll > Time.time) return;
+            nextDelayTime_AllowRoll = Time.time + GetRollDelay;
             GetOwnerFsm.ChangeState(PlayerStateEnum.Roll);
         }
         protected sealed override void OnAllowRotateAllowTrigger() => playerMovement.AllowRotate = true;

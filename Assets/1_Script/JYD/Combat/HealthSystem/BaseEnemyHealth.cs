@@ -84,13 +84,15 @@ namespace Swift_Blade.Combat.Health
             OnDeadEvent?.Invoke();
         }
         
-        protected void TriggerState(BossState state)
+        private void TriggerState(BossState state)
         {
+            if(isDead)return;
+            
             BehaviorGraphAgent.SetVariableValue("BossState", state);
             changeBossState.SendEventMessage(state);
         }
         
-        protected float GetHealthPercent()
+        private float GetHealthPercent()
         {
             return currentHealth / maxHealth;
         }

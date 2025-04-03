@@ -5,7 +5,7 @@ namespace Swift_Blade.FSM.States
 {
     public class PlayerParryState : BasePlayerState
     {
-        protected override bool BaseAllowParryInput => false;
+        protected override bool BaseAllowSpecialInput => false;
         protected override bool BaseAllowDashInput => false;
         protected override bool BaseAllowAttackInput => false;
         private readonly PlayerRenderer playerRenderer;
