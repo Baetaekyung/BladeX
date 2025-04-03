@@ -19,16 +19,7 @@ namespace Swift_Blade
 
         public override void SetSlotImage(Sprite sprite)
         {
-            Color newColor = Color.white;
-
-            if(skillData)
-            {
-                (int r, int g, int b) = ColorUtils.GetRGBColor(skillData.colorType);
-                newColor = new Color(r * 0.7f, g * 0.7f, b * 0.9f, 1f);
-                
-            }
-
-            skillIconImage.color  = sprite ? newColor : Color.clear;
+            skillIconImage.color  = sprite ? Color.white : Color.clear;
             skillIconImage.sprite = sprite;
         }
 
@@ -57,7 +48,7 @@ namespace Swift_Blade
                     _ => "???"
                 };
 
-                PopupManager.Instance.LogMessage($"{typeToKorean}Ÿ���� ��ų ������ �� á���ϴ�.");
+                PopupManager.Instance.LogMessage($"{typeToKorean}슬롯이 가득 찼습니다.");
             }
             else if (SkillManager.Instance.CanAddSkill)
             {
@@ -68,7 +59,7 @@ namespace Swift_Blade
                 SetSlotData(null);
             }
             else
-                PopupManager.Instance.LogMessage("��ų�� ���� �� �� ����� �� �����ϴ�");
+                PopupManager.Instance.LogMessage("스킬 슬롯이 부족합니다.");
         }
 
         #region MouseEvents

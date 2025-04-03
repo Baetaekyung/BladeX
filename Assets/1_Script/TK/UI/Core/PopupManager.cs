@@ -36,6 +36,11 @@ namespace Swift_Blade
             OpenCloseInventory();
             PopDownInput();
             CheckInfoBox();
+
+            if(Input.GetKeyDown(KeyCode.F1))
+            {
+                PopUp(PopupType.ColorMix);
+            }
         }
 
         private void CheckInfoBox()
@@ -56,7 +61,7 @@ namespace Swift_Blade
                 }
             }
         }
-
+        
         private void PopDownInput()
         {
             if (Input.GetKeyDown(KeyCode.Escape)

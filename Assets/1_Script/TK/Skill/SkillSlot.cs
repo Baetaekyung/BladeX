@@ -14,19 +14,16 @@ namespace Swift_Blade
         
         private SkillData _skillData;
 
-        private SkillManager SkillManager => SkillManager.Instance;
+        private SkillManager skillManager => SkillManager.Instance;
         public SkillType     GetSkillType => slotSkillType;
         public ColorType     GetColorType => colorType;
 
         public override void SetSlotImage(Sprite sprite)
         {
-            (int r, int g, int b) rgb = ColorUtils.GetRGBColor(colorType);
-
-            Color transperentcolor = new Color(rgb.r, rgb.g, rgb.b, 0.25f);
-            Color opaqueColor      = new Color(rgb.r, rgb.b, rgb.b, 0.65f);
+            Color transperantColor = new Color(1, 1, 1, 0.25f);
 
             skillIcon.sprite = sprite ? sprite      : originalImage;
-            skillIcon.color  = sprite ? opaqueColor : transperentcolor;
+            skillIcon.color  = sprite ? Color.white : transperantColor;
         }
         
         public override void SetSlotData(SkillData data)
@@ -38,7 +35,7 @@ namespace Swift_Blade
                 return;
             }
 
-            if (SkillManager.currentSkillCount >= SkillManager.maxSkillCount)
+            if (skillManager.currentSkillCount >= skillManager.maxSkillCount)
                 return;
             
             _skillData = data;
@@ -46,9 +43,8 @@ namespace Swift_Blade
 
             Player.Instance.GetEntityComponent<PlayerSkillController>().AddSkill(_skillData);
 
-            SkillManager.SetSkillCountUI(SkillManager.currentSkillCount, SkillManager.maxSkillCount);
-
-            SkillManager.currentSkillCount++;
+            skillManager.currentSkillCount++;
+            skillManager.SetSkillCountUI(skillManager.currentSkillCount, skillManager.maxSkillCount);
         }
 
         public override void OnPointerDown(PointerEventData eventData)
@@ -59,7 +55,7 @@ namespace Swift_Blade
             if (eventData.button != PointerEventData.InputButton.Right)
                 return;
 
-            var slot = SkillManager.GetEmptyInvSlot();
+            var slot = skillManager.GetEmptyInvSlot();
 
             //Slot is full
             if (slot == default)
@@ -69,12 +65,13 @@ namespace Swift_Blade
 
             SkillManager.saveDatas.AddSkillToInventory(_skillData);
             SkillManager.saveDatas.RemoveSlotSkillData(_skillData);
-            SkillManager.currentSkillCount--;
+
+            skillManager.currentSkillCount--;
 
             slot.SetSlotData(_skillData);
             SetSlotData(null);
 
-            SkillManager.SetSkillCountUI(SkillManager.currentSkillCount, SkillManager.maxSkillCount);
+            skillManager.SetSkillCountUI(skillManager.currentSkillCount, skillManager.maxSkillCount);
         }
 
         #region MouseEvents

@@ -22,11 +22,6 @@ namespace Swift_Blade.UI
             _raycaster = GetComponent<GraphicRaycaster>();
         }
         
-        protected virtual void OnDestroy()
-        {
-            cG.DOKill();
-        }
-
         private void OnDisable()
         {
             cG.DOKill();

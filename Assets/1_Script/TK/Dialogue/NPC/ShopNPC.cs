@@ -13,6 +13,8 @@ namespace Swift_Blade
         [SerializeField] private Shop        shop;
         [SerializeField] private int         itemCount = 6;
 
+        private bool _isShopSetted = false;
+
         private Animator animator;
         
         private void Awake()
@@ -20,6 +22,7 @@ namespace Swift_Blade
             animator = transform.GetChild(0).GetComponent<Animator>();
 
             shopItems = shopItems.GetClonedItemTable();
+            _isShopSetted = false;
         }
 
         public override void Interact()
@@ -45,8 +48,16 @@ namespace Swift_Blade
         {
             PopupManager.Instance.PopUp(PopupType.Shop);
             ClearAnimation();
+            SetShop();
+        }
 
-            shop.SetItems(shopItems, itemCount);
+        private void SetShop()
+        {
+            if (_isShopSetted == false)
+            {
+                shop.SetItems(shopItems, itemCount);
+                _isShopSetted = true;
+            }
         }
 
         private void PlayRandomAnimation()

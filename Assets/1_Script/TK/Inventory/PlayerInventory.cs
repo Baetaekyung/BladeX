@@ -37,7 +37,7 @@ namespace Swift_Blade
             inventory.itemInventory = tempInventory;            
             inventory.Coin = 0;
             
-            inventory.currentInventoryCapacity = itemInventory.Count;
+            inventory.currentInventoryCapacity = 0;
             inventory.maxInventoryCapacity = itemSlots.Count - 5; // -5는 장비슬롯 때문에
             inventory.currentEquipment = new List<EquipmentData>();
 

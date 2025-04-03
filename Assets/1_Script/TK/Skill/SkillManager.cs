@@ -78,7 +78,6 @@ namespace Swift_Blade
                 for (ushort i = 0; i < saveDatas.inventoryData.Count; i++)
                 {
                     GetEmptyInvSlot().SetSlotData(saveDatas.inventoryData[i]);
-                    Debug.Log($"{i} index inventorySlot was setted to {saveDatas.inventoryData[i]}");
                 }
             }
 
@@ -117,7 +116,7 @@ namespace Swift_Blade
 
             if (invSlot == default)
             {
-                PopupManager.Instance.LogMessage("��ų �κ��丮�� ���� á���ϴ�.");
+                PopupManager.Instance.LogMessage("인벤토리 슬롯이 가득 찼습니다.");
                 return default;
             }
 

@@ -40,8 +40,8 @@ namespace Swift_Blade
 
         [SerializeField] private PlayerInventory playerInv;
         [SerializeField] private List<ItemSlot>  itemSlots  = new List<ItemSlot>();
-        private Dictionary<ItemDataSO, int>      _itemDatas = new();
-        private List<ItemDataSO>                 _itemTable = new();
+        private Dictionary<ItemDataSO, int>      _itemDatas = new(); //How many item in there?
+        private List<ItemDataSO>                 _itemTable = new(); //There is item?
 
         private int _currentItemIndex = 0;
 
@@ -60,7 +60,6 @@ namespace Swift_Blade
             {
                 Inventory = playerInv.Clone();
 
-                InitializeSlots();
                 IsAfterInit = true;
             }
             
@@ -72,6 +71,7 @@ namespace Swift_Blade
             _currentItemIndex = 0;
 
             Inventory.itemSlots = new List<ItemSlot>();
+            Inventory.currentInventoryCapacity = 0;
 
             for (int i = 0; i < itemSlots.Count; i++)
                 Inventory.itemSlots.Add(itemSlots[i]);
@@ -93,32 +93,43 @@ namespace Swift_Blade
                 //퀵슬롯 등록을 위한 item만 모아놓기
                 if (currentIndexItem.itemType == ItemType.ITEM)
                 {
-                    if (_itemDatas.ContainsKey(currentIndexItem))
+                    if (_itemTable.Contains(currentIndexItem))
                     {
                         _itemDatas[currentIndexItem]++;
-
-                        continue;
+                        Debug.Log("Item added");
                     }
                     else
+                    {
                         _itemTable.Add(currentIndexItem);
-                    
-                    _itemDatas.Add(currentIndexItem, 1);
-                }
+                        _itemDatas.Add(currentIndexItem, 1);
+                        Inventory.currentInventoryCapacity++;
+                    }
 
-                if (matchSlot != null)
+                    AssignItemToSlot(i, matchSlot, emptySlot);
+                }
+                else
                 {
-                    matchSlot.SetItemData(Inventory.itemInventory[i]);
-                    Inventory.itemInventory[i].ItemSlot = matchSlot;
-
-                    continue;
+                    AssignItemToSlot(i, matchSlot, emptySlot);
+                    Inventory.currentInventoryCapacity++;
                 }
-
-                emptySlot.SetItemData(Inventory.itemInventory[i]);
-                Inventory.itemInventory[i].ItemSlot = emptySlot;
             }
 
             SetQuickSlotItem();
             UpdateAllSlots();
+
+            static void AssignItemToSlot(int i, ItemSlot matchSlot, ItemSlot emptySlot)
+            {
+                if (matchSlot != null)
+                {
+                    matchSlot.SetItemData(Inventory.itemInventory[i]);
+                    Inventory.itemInventory[i].ItemSlot = matchSlot;
+                }
+                else
+                {
+                    emptySlot.SetItemData(Inventory.itemInventory[i]);
+                    Inventory.itemInventory[i].ItemSlot = emptySlot;
+                }
+            }
         }
 
         private void SetQuickSlotItem()
@@ -325,9 +336,9 @@ namespace Swift_Blade
 
         public int GetItemCount(ItemDataSO itemData)
         {
-            if (_itemDatas.ContainsKey(itemData))
+            if (_itemDatas.TryGetValue(itemData, out var count))
             {
-                return _itemDatas[itemData];
+                return count;
             }
 
             return -1;
