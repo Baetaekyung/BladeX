@@ -25,6 +25,8 @@ namespace Swift_Blade.Skill
         
         public virtual void ResetSkill(){}
         
+        public virtual void Render(){}
+        
         public virtual void SkillUpdate(Player player, List<Transform> targets = null){}
         
         public abstract void UseSkill(Player player, Transform[] targets = null);
