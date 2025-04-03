@@ -102,5 +102,10 @@ namespace Swift_Blade.Combat.Caster
             Gizmos.DrawWireSphere(GetStartPosition() + transform.forward * _castingRange, _casterRadius);
             Gizmos.color = Color.white;
         }
+
+        public override bool Cast(float additionalDamage = 0, float additionalCastingDistance = 0, bool stun = false)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

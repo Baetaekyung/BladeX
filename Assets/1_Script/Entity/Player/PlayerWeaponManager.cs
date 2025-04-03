@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using Swift_Blade.Combat.Caster;
 namespace Swift_Blade
 {
     public class PlayerWeaponManager : MonoBehaviour, 
@@ -12,11 +12,13 @@ namespace Swift_Blade
         [SerializeField] private Transform leftHandleTransform;
         [SerializeField] private Transform rightdHandleTransform;
         [SerializeField] private Weapon defaultWeapon;
+        [SerializeField] private AudioTrigger audioTrigger;
 
         private GameObject leftWeaponInstance;
         private GameObject rightWeaponInstance;
 
         private PlayerAnimator playerAnimator;
+        private PlayerDamageCaster playerDamageCaster;
         public static Weapon CurrentWeapon { get; private set; }
 
         private void Awake()
@@ -26,6 +28,7 @@ namespace Swift_Blade
         void IEntityComponent.EntityComponentAwake(Entity entity)
         {
             playerAnimator = entity.GetEntityComponent<PlayerAnimator>();
+            playerDamageCaster = entity.GetEntityComponent<PlayerDamageCaster>();
             isNotInitializedInThisScene = true;
             SetWeapon(CurrentWeapon != null ? CurrentWeapon : defaultWeapon);
         }
@@ -64,6 +67,10 @@ namespace Swift_Blade
 
             playerAnimator.GetAnimator.runtimeAnimatorController = weapon.WeaponAnimator;
             CurrentWeapon = weapon;
+
+            audioTrigger.AudioType = weapon.GetAudioDictionary;
+
+            playerDamageCaster.CastingRange = weapon.CastRange;
 
             return;
 

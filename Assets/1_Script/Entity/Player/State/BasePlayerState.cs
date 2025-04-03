@@ -111,8 +111,14 @@ namespace Swift_Blade.FSM.States
         //protected sealed override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetAdditionalVelocity(value);
         protected sealed override void OnAttackTrigger(EAttackType eAttackType)
         {
-            if (player.GetPlayerDamageCaster.Cast())
+            if (eAttackType == EAttackType.Normal)
             {
+                player.GetPlayerDamageCaster.Cast(PlayerWeaponManager.CurrentWeapon.NormalDamage, 0, false);
+                //player.GetPlayerDamageCaster.Cast();
+            }
+            if (eAttackType == EAttackType.Heavy)
+            {
+                player.GetPlayerDamageCaster.Cast(PlayerWeaponManager.CurrentWeapon.HeavyDamage, 0, true);
                 //player.GetEntityComponent<PlayerStatCompo>().GetStyleMeter.SuccessHit();
             }
         }
