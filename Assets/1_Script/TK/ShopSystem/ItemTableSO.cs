@@ -6,12 +6,19 @@ using Random = UnityEngine.Random;
 namespace Swift_Blade
 {
     [Serializable]
-    public class ItemGoods
+    public struct ItemGoods
     {
         public ItemDataSO itemData;
 
         public int itemCount;
         public int itemCost;
+
+        public ItemGoods(ItemDataSO itemData, int itemCount, int itemCost)
+        {
+            this.itemData = itemData;
+            this.itemCount = itemCount; 
+            this.itemCost = itemCost;
+        }
     }
     
     [CreateAssetMenu(fileName = "ItemTableSO", menuName = "SO/Item/Table")]
@@ -24,26 +31,6 @@ namespace Swift_Blade
             ItemTableSO table = Instantiate(this);
 
             return table;
-        }
-
-        public List<ItemGoods> GetRandomItemTable(int count)
-        {
-            ItemTableSO tableSo = GetClonedItemTable();
-            List<ItemGoods> randomTable = new List<ItemGoods>();
-            
-            int current = 0;
-            
-            while (count > current)
-            {
-                var index = Random.Range(0, tableSo.itemTable.Count);
-                
-                randomTable.Add(tableSo.itemTable[index]);
-                tableSo.itemTable.RemoveAt(index);
-                
-                current++;
-            }
-
-            return randomTable;
         }
     }
 }

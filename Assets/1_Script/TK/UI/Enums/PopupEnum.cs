@@ -13,5 +13,6 @@ namespace Swift_Blade.UI
         Status,
         None,
         InfoBox,
+        ColorMix
     }
 }

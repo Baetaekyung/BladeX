@@ -16,20 +16,23 @@ namespace Swift_Blade
 
         public void SetItems(ItemTableSO itemTable, int itemCount)
         {
-            List<ItemGoods> randomItemTable = itemTable.GetRandomItemTable(itemCount);
+            ItemTableSO randomItemTable = itemTable.GetClonedItemTable();
 
             if (shopSlots.Count > 0)
                 DeleteRemainSlot();
             
-            for (int i = 0; i < randomItemTable.Count; i++)
+            for (int i = 0; i < itemCount; i++)
             {
-                ItemGoods currentItem = itemTable.itemTable[i];
+                int index = UnityEngine.Random.Range(0, randomItemTable.itemTable.Count);
+
+                ItemGoods currentItem = randomItemTable.itemTable[index];
                 ShopSlotUI shopSlot = Instantiate(shopSlotPrefab, parent);
                 shopSlot.GetCanvasGroup.DOFade(1, 1.5f);
                 
                 shopSlot.SetSlotItem(currentItem.itemData, 
                     currentItem.itemCount, currentItem.itemCost);
-                
+
+                randomItemTable.itemTable.RemoveAt(index);
                 shopSlots.Add(shopSlot);
             }
         }

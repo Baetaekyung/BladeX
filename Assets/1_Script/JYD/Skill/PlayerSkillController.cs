@@ -10,7 +10,8 @@ public enum SkillType
     Rolling,
     Special,//c key
     Hit,
-    Dead
+    Dead,
+    Active
 }
 namespace Swift_Blade.Skill
     {
