@@ -80,11 +80,11 @@ namespace Swift_Blade.FSM.States
             comboStateHistory.Clear();
             delayContinuousCombo = 0;
             comboStateHistory.Add(PreviousComboState);
-            if (GetMatchingComboSO(out currentComboData))
+            if (false && GetMatchingComboSO(out currentComboData))
                 ComboAttack();
             else
             {
-                GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
+                //GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
                 Debug.Log("no match, no combo, no attack");
             }
         }

@@ -14,7 +14,7 @@ namespace Swift_Blade
     public enum EAttackType
     {
         Normal,
-        Stun
+        Heavy
     }
 
     public class AnimationTriggers : MonoBehaviour
