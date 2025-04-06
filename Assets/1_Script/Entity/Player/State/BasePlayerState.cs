@@ -113,12 +113,12 @@ namespace Swift_Blade.FSM.States
         {
             if (eAttackType == EAttackType.Normal)
             {
-                player.GetPlayerDamageCaster.Cast(PlayerWeaponManager.CurrentWeapon.NormalDamage, 0, false);
+                player.GetPlayerDamageCaster.Cast(PlayerWeaponManager.CurrentWeapon.AdditionalNormalDamage, 0, false);
                 //player.GetPlayerDamageCaster.Cast();
             }
             if (eAttackType == EAttackType.Heavy)
             {
-                player.GetPlayerDamageCaster.Cast(PlayerWeaponManager.CurrentWeapon.HeavyDamage, 0, true);
+                player.GetPlayerDamageCaster.Cast(PlayerWeaponManager.CurrentWeapon.AdditionalHeavyDamage, 0, true);
                 //player.GetEntityComponent<PlayerStatCompo>().GetStyleMeter.SuccessHit();
             }
         }

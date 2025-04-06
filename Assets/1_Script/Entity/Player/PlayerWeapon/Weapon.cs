@@ -2,6 +2,7 @@ using Swift_Blade.Audio;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Swift_Blade
 {
@@ -9,8 +10,8 @@ namespace Swift_Blade
     public class Weapon : ScriptableObject
     {
         [field: Header("Damage")]
-        [field: SerializeField] public float NormalDamage { get; private set; }
-        [field: SerializeField] public float HeavyDamage { get; private set; }
+        [field: SerializeField] public float AdditionalNormalDamage { get; private set; }
+        [field: SerializeField] public float AdditionalHeavyDamage { get; private set; }
 
         [field: Header("Setting")]
         [field: SerializeField] public GameObject LeftHandUsage { get; private set; }
@@ -63,15 +64,22 @@ namespace Swift_Blade
                     result = () => { entity.GetStateMachine.ChangeState(PlayerStateEnum.Parry); };
                     break;
                 case ColorType.GREEN:
-                    result = () => { };//entity.GetEntityComponent<PlayerStatCompo>().AddModifier(StatType.AR) };
+                    result = () => { entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.HEALTH, nameof(StatType.HEALTH), 5, 3); };
                     break;
                 case ColorType.BLUE:
-                    result = () => { Debug.Log("blue"); };
+                    result = () => 
+                    {
+                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.ATTACKSPEED, nameof(StatType.ATTACKSPEED), 3, 1);
+                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.MOVESPEED, nameof(StatType.MOVESPEED), 3, 1);
+                    };
                     break;
                 default:
                     throw new NotImplementedException($"color type {colorType} is not implemented");
             }
             return result;
+        }
+        private void OnDestroy()
+        {
         }
     }
 }

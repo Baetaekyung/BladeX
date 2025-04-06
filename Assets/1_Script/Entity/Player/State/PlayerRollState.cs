@@ -19,6 +19,7 @@ namespace Swift_Blade.FSM.States
         private bool forceChangeToAttack;
 
         private Vector3 movementVectorInterpolated;
+        private Vector3 targetVectorInterpoated;
         private Quaternion initialQuaternion;
         private Quaternion initialInverseQuaternion;
 
@@ -49,6 +50,7 @@ namespace Swift_Blade.FSM.States
             //Vector3 worldEuler = playerRenderer.GetPlayerVisualTrasnform.eulerAngles;
             //worldEuler.x = 0;
             //worldEuler.z = 0;
+            targetVectorInterpoated = Vector3.zero;
             movementVectorInterpolated = Vector3.zero;//player.GetPlayerTransform.forward;
             initialInverseQuaternion = player.GetPlayerTransform.rotation;
             initialQuaternion = initialInverseQuaternion;
@@ -82,21 +84,23 @@ namespace Swift_Blade.FSM.States
             Vector3 localInput = initialInverseQuaternion * resultVector;
             Vector3 inputClamped = localInput;
             inputClamped.z = 0;
-            float movementPenalty = Mathf.Abs(inputClamped.x) * 1.2f;
+            float movementPenalty = Mathf.Abs(inputClamped.x);
+            movementPenalty = Mathf.Min(movementPenalty, 1);
             inputClamped.Normalize();
 
             inputClamped = initialQuaternion * inputClamped;
 
             // 0 ~ 0.4 (roll anim time)
-            float delta = TimeSinceEntered * 2.5f;
+            float delta = TimeSinceEntered * 3f;
             //delta = Mathf.Min(delta, 1);//doesntmatter
-            float multiplier = Mathf.Lerp(0.5f, 0.2f, delta);
+            float multiplier = 0.5f; //Mathf.Lerp(0.1f, 0.05f, delta);
 
             Vector3 targetVector = inputClamped;
-            movementVectorInterpolated = Vector3.MoveTowards(movementVectorInterpolated, targetVector, multiplier * Time.deltaTime);
+            targetVectorInterpoated = Vector3.MoveTowards(targetVectorInterpoated, targetVector, Time.deltaTime * 1f);
+            movementVectorInterpolated = Vector3.MoveTowards(movementVectorInterpolated, targetVectorInterpoated, multiplier * Time.deltaTime);
             Vector3 inversedForward = -player.GetPlayerTransform.forward;
             playerMovement.SetAdditionalVelocity(inversedForward * movementPenalty);
-            base.OnApplyMovement(movementVectorInterpolated);
+            base.OnApplyMovement(movementVectorInterpolated * 0.35f);
         }
         protected override void OnAnimationEndTrigger()
         {
