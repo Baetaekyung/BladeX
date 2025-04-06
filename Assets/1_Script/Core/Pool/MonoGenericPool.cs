@@ -5,7 +5,7 @@ namespace Swift_Blade.Pool
     public static class MonoGenericPool<T>
         where T : MonoBehaviour, IPoolable
     {
-        private static bool canInit = true;
+        //private static bool canInit = true;
         
         private static MonoPool<T> monoPool;
         /// <summary>
@@ -13,12 +13,16 @@ namespace Swift_Blade.Pool
         /// </summary>
         public static void Initialize(PoolPrefabMonoBehaviourSO prefabSO)
         {
-            if(canInit == false)return;
+            //if(canInit == false)return;
             
-            canInit = false;
+            //canInit = false;
             
-            bool isMonoPoolNotInitialized = monoPool == null;
-            Debug.Assert(isMonoPoolNotInitialized, $"field:monoPool is already initialized. {prefabSO.name}");
+            bool isMonoPoolInitialized = monoPool != null;
+            if (isMonoPoolInitialized)
+            {
+                Debug.Assert(false, $"field:monoPool is already initialized. {prefabSO.name}");
+                return;
+            }
 
             T prefab = prefabSO.GetMono as T;
             monoPool = new MonoPool<T>(prefab);
