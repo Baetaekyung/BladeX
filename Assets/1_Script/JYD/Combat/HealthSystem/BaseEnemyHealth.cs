@@ -67,6 +67,7 @@ namespace Swift_Blade.Combat.Health
             {
                 TriggerState(BossState.Dead);
                 Dead();
+                return;
             }
             
             OnHitEvent?.Invoke(actionData);

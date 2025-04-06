@@ -32,6 +32,8 @@ namespace Swift_Blade.Skill
             private Dictionary<SkillType, Action<Player,Transform[]>> skillEvents;
             private ushort maxSlotCount = 4;
             private ushort slotCount = 0;
+
+            public bool canDrawGizmo;
             
             private void Awake()
             {
@@ -68,6 +70,16 @@ namespace Swift_Blade.Skill
                     item.SkillUpdate(_player);
                 }
             }*/
+
+            private void OnDrawGizmos()
+            {
+                if(canDrawGizmo== false)return;
+
+                foreach (var item in skillDatas)
+                {
+                    item.Render();   
+                }
+            }
 
             public void EntityComponentAwake(Entity entity)
             {

@@ -64,12 +64,12 @@ namespace Swift_Blade
                     enemy.GetComponent<BaseEnemyHealth>().TakeDamage(actionData);
                 }
             }
-            
-            StartCoroutine(LevelClear());
+
+            LevelClear();
         }
 
         
-        private IEnumerator LevelClear()
+        private void LevelClear()
         {
             sceneManagerSO.LevelClear();
             
@@ -79,7 +79,7 @@ namespace Swift_Blade
             {
                 Door newDoor = Instantiate(newNode[i].GetPortalPrefab(), portalTrm[i].position, Quaternion.identity);
                 newDoor.SetScene(newNode[i].nodeName);
-                yield return StartCoroutine(newDoor.UpDoor()); 
+                newDoor.UpDoor();
             }
         }
         
