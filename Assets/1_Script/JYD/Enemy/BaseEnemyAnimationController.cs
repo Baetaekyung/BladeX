@@ -27,6 +27,8 @@ namespace Swift_Blade.Enemy
         public float minAnimationSpeed = 1;
         
         private readonly int ATTACK_SPEED = Animator.StringToHash("AttackSpeed");
+                
+        public Animator GetAnimator() => Animator;
         
         protected virtual void Awake()
         {
@@ -89,6 +91,8 @@ namespace Swift_Blade.Enemy
         {
             Animator.Rebind();
         }
+        
+        
         
     }
 }

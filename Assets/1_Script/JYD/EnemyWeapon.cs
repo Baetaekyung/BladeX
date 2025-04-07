@@ -1,28 +1,41 @@
 using UnityEngine;
+using System.Collections;
 
 namespace Swift_Blade.Enemy
 {
     public class EnemyWeapon : MonoBehaviour
     {
-        private Rigidbody rb;
+        private float rotateDuration = 0.7f;
+        private float rotateSpeed = 720; // 1초에 360도
 
         private void Awake()
         {
             transform.parent = null;
             gameObject.AddComponent<BoxCollider>();
-            
-            rb = gameObject.AddComponent<Rigidbody>();
+            gameObject.AddComponent<Rigidbody>();
         }
 
-        void Start()
+        private void Start()
         {
-            Vector3 explosionPosition = transform.position;
-            float explosionForce = 100;
-            float explosionRadius = 4f;
-            
-            rb.AddExplosionForce(explosionForce, explosionPosition, explosionRadius);
-            rb.angularVelocity = new Vector3(UnityEngine.Random.Range(-100, 100f), UnityEngine.Random.Range(-100f, 10f), UnityEngine.Random.Range(-100f, 100f));
+            StartCoroutine(RotateOverTime());
         }
-        
+
+        private IEnumerator RotateOverTime()
+        {
+            float elapsed = 0f;
+
+            Vector3 randomAxis = new Vector3(
+                Random.Range(-1f, 1f),
+                Random.Range(-1f, 1f),
+                Random.Range(-1f, 1f)).normalized;
+            
+            while (elapsed < rotateDuration)
+            {
+                float delta = Time.deltaTime;
+                transform.Rotate(randomAxis * (rotateSpeed * delta), Space.World);
+                elapsed += delta;
+                yield return null;
+            }
+        }
     }
 }

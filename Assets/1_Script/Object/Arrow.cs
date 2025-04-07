@@ -20,6 +20,7 @@ namespace Swift_Blade.Pool
         private bool deadFlag;
         
         private const string enemyLayerName = "Enemy";
+        
         private void Awake()
         {
             rigidBody = GetComponent<Rigidbody>();
@@ -55,7 +56,13 @@ namespace Swift_Blade.Pool
                     }
                     
                 }
-            }            
+            }
+            else
+            {
+                deadFlag = true;
+                MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
+                MonoGenericPool<Arrow>.Push(this);
+            }
             
         }
 

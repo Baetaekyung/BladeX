@@ -3,6 +3,7 @@ using UnityEngine.AI;
 using Unity.Behavior;
 using UnityEngine;
 using System;
+using Swift_Blade.Enemy;
 
 namespace Swift_Blade.Combat.Health
 {
@@ -14,7 +15,8 @@ namespace Swift_Blade.Combat.Health
         [Space]
         [SerializeField] protected BehaviorGraphAgent BehaviorGraphAgent;
         [SerializeField] protected ChangeBossState changeBossState;
-        
+
+        private BaseEnemyAnimationController animationController;
         private Rigidbody enemyRigidbody;
         private NavMeshAgent navMeshAgent;
         
@@ -28,6 +30,7 @@ namespace Swift_Blade.Combat.Health
             navMeshAgent = GetComponent<NavMeshAgent>();
             enemyRigidbody = GetComponent<Rigidbody>();
             BehaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
+            animationController = GetComponent<BaseEnemyAnimationController>();
             
             OnHitEvent.AddListener(StartKnockback);
             
@@ -88,6 +91,7 @@ namespace Swift_Blade.Combat.Health
 
         public void ChangeParryState()
         {
+            animationController.StopAllAnimationEvents();
             TriggerState(BossState.Hurt);
         }
         
