@@ -10,7 +10,7 @@ namespace Swift_Blade.Combat.Health
     {
         public event Action<float> OnChangeHealthEvent; 
         public float currentHealth;
-                
+        
         [Space]
         [SerializeField] protected BehaviorGraphAgent BehaviorGraphAgent;
         [SerializeField] protected ChangeBossState changeBossState;
@@ -57,13 +57,14 @@ namespace Swift_Blade.Combat.Health
             if(actionData.stun)
                 ChangeParryState();
             
+            OnHitEvent?.Invoke(actionData);
+            
             if (currentHealth <= 0)
             {
                 TriggerState(BossState.Dead);
                 Dead();
             }
             
-            OnHitEvent?.Invoke(actionData);
         }
 
         public virtual void TakeHeal(float amount)

@@ -20,14 +20,15 @@ public class MoveToTargetAction : Action
     [SerializeReference] public BlackboardVariable<float> meleeAttackDistance;
     [SerializeReference] public BlackboardVariable<float> attackDistance;
     private float distance;
-        
-    private readonly LayerMask whatIsObstacle = LayerMask.GetMask("Wall" , "Obstacle");
+
+    private LayerMask whatIsObstacle;
     private Vector3 targetPos;
     protected override Status OnStart()
     {
         if (Target.Value == null) 
             return Status.Failure;
         
+        whatIsObstacle = LayerMask.GetMask("Wall" , "Obstacle");
         Agent.Value.speed = MoveSpeed.Value;
         
         return CheckDistance();

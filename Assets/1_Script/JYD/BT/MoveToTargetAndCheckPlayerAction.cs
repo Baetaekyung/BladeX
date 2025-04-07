@@ -20,14 +20,15 @@ public partial class MoveToTargetAndCheckPlayerAction : Action
 
     private float disToTarget;
     private float disToPlayer;
-    
-    private readonly LayerMask whatIsObstacle = LayerMask.GetMask("Wall" , "Obstacle");
-    
+
+    private LayerMask whatIsObstacle;
     protected override Status OnStart()
     {
         if (Target.Value == null || Player.Value == null)
             return Status.Failure;
-
+        
+        whatIsObstacle = LayerMask.GetMask("Wall" , "Obstacle");
+        
         Agent.Value.speed = MoveSpeed.Value;
         UpdateDistances();
         

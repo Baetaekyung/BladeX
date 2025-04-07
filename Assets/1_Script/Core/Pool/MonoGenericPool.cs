@@ -20,8 +20,8 @@ namespace Swift_Blade.Pool
             bool isMonoPoolInitialized = monoPool != null;
             if (isMonoPoolInitialized)
             {
-                Debug.Assert(false, $"field:monoPool is already initialized. {prefabSO.name}");
                 return;
+                Debug.Assert(false, $"field:monoPool is already initialized. {prefabSO.name}");
             }
 
             T prefab = prefabSO.GetMono as T;

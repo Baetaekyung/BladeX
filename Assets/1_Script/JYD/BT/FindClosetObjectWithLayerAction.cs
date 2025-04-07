@@ -12,11 +12,12 @@ public partial class FindClosetObjectWithLayerAction : Action
     [SerializeReference] public BlackboardVariable<Transform> Object;
     [SerializeReference] public BlackboardVariable<float> radius;
             
-    private readonly LayerMask whatIsStone = 1 << LayerMask.NameToLayer("Throwable"); 
+    private LayerMask whatIsStone;
     private readonly Collider[] nearTargets = new Collider[10];
     
     protected override Status OnStart()
     {
+        whatIsStone = 1 << LayerMask.NameToLayer("Throwable"); 
         int count = Physics.OverlapSphereNonAlloc(Agent.Value.position, radius.Value, nearTargets, whatIsStone);
                 
         if (count == 0)

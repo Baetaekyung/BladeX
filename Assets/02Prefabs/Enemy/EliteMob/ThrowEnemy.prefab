@@ -729,6 +729,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edc02f1693843e78cb87a933589c9f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _casterRadius: 1.76
+  _casterInterpolation: 0.99
+  _castingRange: 2.36
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -738,9 +741,6 @@ MonoBehaviour:
   OnCastEvent:
     m_PersistentCalls:
       m_Calls: []
-  _casterRadius: 1.76
-  _casterInterpolation: 0.99
-  _castingRange: 2.36
   CanCurrentAttackParry: 1
   parryEvents:
     m_PersistentCalls:
@@ -1695,10 +1695,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32703
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -2180,8 +2180,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   maxHealth: 10
-  currentHealth: 0
   isDead: 0
+  currentHealth: 0
   BehaviorGraphAgent: {fileID: 3295370776352808448}
   changeBossState: {fileID: 0}
   isKnockback: 0
