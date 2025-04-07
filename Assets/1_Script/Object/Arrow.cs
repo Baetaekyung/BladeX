@@ -42,7 +42,7 @@ namespace Swift_Blade.Pool
         {
             if ((whatIsTarget & (1 << other.gameObject.layer)) != 0 && deadFlag == false)
             {
-                if (other.gameObject.TryGetComponent(out IDamageble health))
+                if (other.gameObject.TryGetComponent(out IHealth health))
                 {
                     if (other.TryGetComponent(out PlayerParryController playerParryController) && playerParryController.CanParry())
                     {
@@ -59,7 +59,7 @@ namespace Swift_Blade.Pool
             
         }
 
-        private void Hit(IDamageble health)
+        private void Hit(IHealth health)
         {
             deadFlag = true;
             health.TakeDamage(new ActionData() { damageAmount = 1, stun = true });

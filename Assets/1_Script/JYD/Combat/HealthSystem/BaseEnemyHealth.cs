@@ -1,19 +1,13 @@
-using System;
 using System.Collections;
-using Swift_Blade.Enemy;
-using Unity.Behavior;
-using UnityEditor;
-using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Events;
+using Unity.Behavior;
+using UnityEngine;
+using System;
 
 namespace Swift_Blade.Combat.Health
 {
-    public class BaseEnemyHealth : MonoBehaviour,IDamageble
+    public class BaseEnemyHealth : BaseEntityHealth,IHealth
     {
-        public UnityEvent<ActionData> OnHitEvent;
-        public UnityEvent OnDeadEvent;
-        
         public Action<float> OnChangeHealthEvent; 
         
         public float maxHealth;
@@ -67,7 +61,6 @@ namespace Swift_Blade.Combat.Health
             {
                 TriggerState(BossState.Dead);
                 Dead();
-                return;
             }
             
             OnHitEvent?.Invoke(actionData);

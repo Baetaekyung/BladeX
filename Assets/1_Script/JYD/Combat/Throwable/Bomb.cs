@@ -49,7 +49,7 @@ namespace Swift_Blade.Combat.Projectile
             {
                 var actionData = new ActionData();
                 actionData.damageAmount = 1;
-                colliders[0].GetComponentInChildren<IDamageble>().TakeDamage(actionData);
+                colliders[0].GetComponentInChildren<IHealth>().TakeDamage(actionData);
             }
 
             CameraShakeManager.Instance.DoShake(shakeType);

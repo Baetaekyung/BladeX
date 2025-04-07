@@ -8,7 +8,7 @@ namespace Swift_Blade.Combat
         {
             if (other.CompareTag("Player"))
             {
-                if (other.TryGetComponent(out IDamageble health))
+                if (other.TryGetComponent(out IHealth health))
                 {
                     ActionData actionData = new ActionData();
                     actionData.damageAmount = 1;

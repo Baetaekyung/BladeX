@@ -1,36 +1,34 @@
-using System;
+using UnityEngine.Events;
 using Swift_Blade.UI;
 using UnityEngine;
-using UnityEngine.Events;
+using System;
 
-namespace Swift_Blade
+namespace Swift_Blade.Combat.Health
 {
-    public class PlayerHealth : MonoBehaviour, IDamageble, IEntityComponent
+    public class PlayerHealth : BaseEntityHealth, IEntityComponent
         ,IEntityComponentStart
     {
+        public UnityEvent OnHealEvent;
         [SerializeField] private StatComponent _statCompo;
         [SerializeField] private StatSO _healthStat;
         
         public static float CurrentHealth;
         
-        public UnityEvent OnDeadEvent;
-        public UnityEvent<ActionData> OnHitEvent;
-        public UnityEvent OnHealEvent;
         
         public event Action<float, float> OnHealthUpdateEvent;
         
         public float GetCurrentHealth => CurrentHealth;
         public StatSO GetHealthStat => _healthStat;
         
-        private const float DamageInterval = 0.75f;
+        private const float DAMAGE_INTERVAL = 0.75f;
         private float lastDamageTime;
-        //private float _maxHealth;
-        private bool isDead;
+        
         private float _maxHealth;
         
         public bool IsPlayerInvincible { get; set; }
         private Player _player;
         
+        private bool isDead;
         
         public void EntityComponentAwake(Entity entity)
         {
@@ -56,7 +54,7 @@ namespace Swift_Blade
         public void TakeDamage(ActionData actionData)
         {
             if (isDead) return;
-            if (lastDamageTime + DamageInterval > Time.time) return;
+            if (lastDamageTime + DAMAGE_INTERVAL > Time.time) return;
             if (IsPlayerInvincible) return;
             
             float damageAmount = actionData.damageAmount;
