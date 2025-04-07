@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Pool;
@@ -17,7 +18,7 @@ namespace Swift_Blade.Skill
             MonoGenericPool<ShockWaveParticle>.Initialize(skillParticle);
         }
         
-        public override void UseSkill(Player player, Transform[] targets = null)
+        public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
             if (targets == null)
             {

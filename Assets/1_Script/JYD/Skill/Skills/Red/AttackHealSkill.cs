@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Swift_Blade.Skill;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Swift_Blade
               
         private int skillCounter;
         
-        public override void UseSkill(Player player, Transform[] targets = null)
+        public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
             ++skillCounter;
             if (skillCounter >= skillCount)

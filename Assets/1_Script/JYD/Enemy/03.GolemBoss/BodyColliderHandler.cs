@@ -6,15 +6,14 @@ namespace Swift_Blade.Combat
     {
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if (other.TryGetComponent(out IHealth health))
             {
-                if (other.TryGetComponent(out IDamageble health))
+                ActionData actionData = new ActionData
                 {
-                    ActionData actionData = new ActionData();
-                    actionData.damageAmount = 1;
-                    
-                    health.TakeDamage(actionData);
-                }
+                    damageAmount = 1
+                };
+
+                health.TakeDamage(actionData);
             }
         }
     }

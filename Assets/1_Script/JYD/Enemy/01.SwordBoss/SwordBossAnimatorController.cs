@@ -1,8 +1,7 @@
-using Swift_Blade.Enemy;
 using Swift_Blade.Feeling;
 using UnityEngine;
 
-namespace Swift_Blade
+namespace Swift_Blade.Enemy.Sword
 {
     public class SwordBossAnimatorController : BaseEnemyAnimationController
     {

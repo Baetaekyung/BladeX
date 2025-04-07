@@ -49,7 +49,7 @@ namespace Swift_Blade.FSM.States
             
             if (parryTimer >= canParryTime)
             {
-                if(parryController.CanParry())
+                if(parryController.GetParry())
                     parryController.SetParry(false);
             }
         }

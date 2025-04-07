@@ -15,6 +15,11 @@ namespace Swift_Blade.Combat.Caster
             MonoGenericPool<Arrow>.Initialize(arrow);
         }
         
+        public void SetTarget(Transform _target)
+        {
+            target = _target;
+        }
+        
         public bool Cast()
         {
             Arrow arrow = MonoGenericPool<Arrow>.Pop();
@@ -29,10 +34,7 @@ namespace Swift_Blade.Combat.Caster
             return true;
         }
 
-        public void SetTarget(Transform target)
-        {
-            this.target = target;
-        }
+       
         
     }
 }

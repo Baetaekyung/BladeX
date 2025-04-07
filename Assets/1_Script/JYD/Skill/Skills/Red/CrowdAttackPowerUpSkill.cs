@@ -20,12 +20,12 @@ namespace Swift_Blade.Skill
             MonoGenericPool<RedWaveParticle>.Initialize(skillParticle);
         }
 
-        public override void SkillUpdate(Player player, List<Transform> targets = null)
+        public override void SkillUpdate(Player player,  IEnumerable<Transform> targets = null)
         {
             targets = Physics.OverlapSphere(player.GetPlayerTransform.position, radius, whatIsTarget)
                 .Select(x => x.transform).ToList();
             
-            if (isUpgrade == false && targets.Count >= targetCount)
+            if (isUpgrade == false && targets.Count() >= targetCount)
             {
                 isUpgrade = true;
                 
@@ -34,7 +34,7 @@ namespace Swift_Blade.Skill
                 
                 player.GetPlayerStat.GetStat(statType).AddModifier(skillName, increaseValue);
             }
-            else if(isUpgrade && targets.Count < targetCount)
+            else if(isUpgrade && targets.Count() < targetCount)
             {
                 isUpgrade = false;
                 
@@ -43,7 +43,7 @@ namespace Swift_Blade.Skill
             
         }
         
-        public override void UseSkill(Player player, Transform[] targets = null)
+        public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
             
         }

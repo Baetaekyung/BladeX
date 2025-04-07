@@ -10,6 +10,5 @@ public enum BossState
 	Attack,
 	Hurt,
 	Step,
-	Groggy,
 	Dead
 }

@@ -11,26 +11,24 @@ public partial class FindClosetObjectWithLayerAction : Action
     [SerializeReference] public BlackboardVariable<Transform> Agent;
     [SerializeReference] public BlackboardVariable<Transform> Object;
     [SerializeReference] public BlackboardVariable<float> radius;
-    [SerializeReference] public BlackboardVariable<string> Layer;
-
+            
     private LayerMask whatIsStone;
-        
+    private readonly Collider[] nearTargets = new Collider[10];
+    
     protected override Status OnStart()
     {
-        whatIsStone = 1 << LayerMask.NameToLayer(Layer.Value); 
-        
-        Collider[] nearbyObjects = Physics.OverlapSphere(Agent.Value.position, radius.Value, whatIsStone);
-        
-        if (nearbyObjects.Length == 0)
-        {
-            return Status.Failure; 
-        }
+        whatIsStone = 1 << LayerMask.NameToLayer("Throwable"); 
+        int count = Physics.OverlapSphereNonAlloc(Agent.Value.position, radius.Value, nearTargets, whatIsStone);
+                
+        if (count == 0)
+            return Status.Failure;
 
         Transform closestObject = null;
         float closestDistance = float.MaxValue;
         
-        foreach (Collider collider in nearbyObjects)
+        for (int i = 0; i < count; i++)
         {
+            var collider = nearTargets[i];
             float distance = Vector3.Distance(Agent.Value.position, collider.transform.position);
             if (distance < closestDistance)
             {
@@ -38,13 +36,14 @@ public partial class FindClosetObjectWithLayerAction : Action
                 closestObject = collider.transform;
             }
         }
-
+        
         if (closestObject != null)
         {
-            Object.Value = closestObject; 
+            Object.Value = closestObject;
             return Status.Success;
         }
-        
+
         return Status.Failure;
     }
+    
 }
