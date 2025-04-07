@@ -5,23 +5,17 @@ namespace Swift_Blade.Combat.Projectile
     [RequireComponent(typeof(Rigidbody))]
     public class BaseThrow : MonoBehaviour
     {
-        [SerializeField] protected float moveSpeed;
-        public float forceAmount;
-        //protected NavMeshObstacle obstacle;
+        [SerializeField] protected float forceAmount;
         
         [SerializeField] protected Rigidbody Rigidbody;
         
         protected virtual void Start()
         {
-            //obstacle = GetComponent<NavMeshObstacle>();
             Rigidbody = GetComponent<Rigidbody>();
-            //SetPhysicsState(true);
         }
-
+        
         public virtual void SetPhysicsState(bool isActive)
         {
-            //obstacle.enabled = false;
-            
             Rigidbody.useGravity = !isActive;
             Rigidbody.isKinematic = isActive;
         }
@@ -35,12 +29,12 @@ namespace Swift_Blade.Combat.Projectile
             Rigidbody.mass = 1;
             Rigidbody.AddForce(force * forceAmount, ForceMode.Impulse);
         }
-
-        public virtual void SetRigid(bool PS, float RM)
+        
+        protected virtual void SetRigid(bool active, float mass)
         {
-            SetPhysicsState(PS);
-
-            Rigidbody.mass = RM;
+            SetPhysicsState(active);
+            Rigidbody.mass = mass;
         }
+        
     }
 }

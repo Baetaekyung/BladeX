@@ -18,14 +18,14 @@ namespace Swift_Blade.Skill
             MonoGenericPool<RedWaveParticle>.Initialize(skillParticle);
         }
 
-        public override void UseSkill(Player player, Transform[] targets = null)
+        public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
             MonoGenericPool<RedWaveParticle>.Pop().transform.position = player.GetPlayerTransform.position + new Vector3(0,1,0);
             
             canUseSkill = true;
         }
 
-        public override void SkillUpdate(Player player, List<Transform> targets = null)
+        public override void SkillUpdate(Player player,  IEnumerable<Transform> targets = null)
         {
             if (canUseSkill)
             {

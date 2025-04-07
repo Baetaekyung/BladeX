@@ -44,7 +44,7 @@ namespace Swift_Blade.Pool
             {
                 if (other.gameObject.TryGetComponent(out IHealth health))
                 {
-                    if (other.TryGetComponent(out PlayerParryController playerParryController) && playerParryController.CanParry())
+                    if (other.TryGetComponent(out PlayerParryController playerParryController) && playerParryController.GetParry())
                     {
                         playerParryController.ParryEvents?.Invoke();
                         Reflection(other.GetComponentInParent<Player>().GetPlayerTransform);

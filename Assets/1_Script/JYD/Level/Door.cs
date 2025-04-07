@@ -72,6 +72,7 @@ namespace Swift_Blade.Level.Door
             sequence.OnComplete(() => isFinished = true);
 
             DustUpParticle dustParticle = MonoGenericPool<DustUpParticle>.Pop();
+            dustParticle.transform.position = transform.position;
         }
         
         public void Interact()

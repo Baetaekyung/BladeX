@@ -21,7 +21,7 @@ namespace Swift_Blade.Enemy
             float explosionRadius = 4f;
             
             rb.AddExplosionForce(explosionForce, explosionPosition, explosionRadius);
-            rb.angularVelocity = new Vector3(UnityEngine.Random.Range(-20f, 20f), UnityEngine.Random.Range(-20f, 20f), UnityEngine.Random.Range(-5f, 5f));
+            rb.angularVelocity = new Vector3(UnityEngine.Random.Range(-100, 100f), UnityEngine.Random.Range(-100f, 10f), UnityEngine.Random.Range(-100f, 100f));
         }
         
     }

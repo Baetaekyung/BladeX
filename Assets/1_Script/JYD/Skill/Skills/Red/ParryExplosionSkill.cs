@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Pool;
@@ -19,13 +20,13 @@ namespace Swift_Blade.Skill
             MonoGenericPool<SmallExplosionParticle>.Initialize(skillParticle);
         }
         
-        public override void UseSkill(Player player, Transform[] targets = null)
+        public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
             Vector3 explosionPosition = player.GetPlayerTransform.position +
                                         (player.GetPlayerTransform.forward * explosionAdjustment.x);
             explosionPosition.y = explosionPosition.y + player.GetPlayerTransform.position.y;
             
-            if (targets == null || targets.Length == 0)
+            if (targets == null || !targets.Any())
             {
                 targets = Physics.OverlapSphere(explosionPosition, skillRadius, whatIsTarget).Select(x => x.transform).ToArray();
             }

@@ -6,18 +6,16 @@ namespace Swift_Blade.Enemy.Goblin
     {
         [SerializeField] private LayerMask whatIsTarget;
         [Range(1, 20)] [SerializeField] private float checkTargetRadius;
-        
-        private Collider[] targets;
+
+        private Collider[] targets = new Collider[1];
         
         protected override void Start()
         {
             base.Start();
             btAgent.SetVariableValue("Target", (Transform)null);
             btAgent.enabled = false;
-
-            target = null;
             
-            targets = new Collider[1];
+            target = null;
         }
         
         protected override void Update()
@@ -30,15 +28,6 @@ namespace Swift_Blade.Enemy.Goblin
                     target = findTarget;
                     btAgent.BlackboardReference.SetVariableValue("Target", target);
                     btAgent.enabled = true;
-                                        
-                    /*var isIsLine = CanSeeTarget(findTarget);
-
-                    if (isIsLine)
-                    {
-                        target = findTarget;
-                        btAgent.BlackboardReference.SetVariableValue("Target", target);
-                        btAgent.enabled = true;
-                    }*/
                 }
             }
             
@@ -54,22 +43,11 @@ namespace Swift_Blade.Enemy.Goblin
 
         private Transform FindNearTarget()
         {
-            targets = Physics.OverlapSphere(transform.position, checkTargetRadius, whatIsTarget);
-            if (targets.Length > 0)
+            int count = Physics.OverlapSphereNonAlloc(transform.position, checkTargetRadius, targets, whatIsTarget);
+            if (count > 0)
                 return targets[0].transform;
             return null;
         }
-
-        /*private bool CanSeeTarget(Transform target)
-        {
-            var directionToTarget = (target.position - transform.position).normalized;
-            var distanceToTarget = Vector3.Distance(transform.position, target.position);
-
-            if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, ~whatIsTarget)) return true;
-            
-            return false;
-        }*/
-        
         
     }
 }
