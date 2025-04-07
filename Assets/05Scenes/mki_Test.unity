@@ -565,6 +565,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 700703393971720685, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
+      propertyPath: defaultWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 9576341052fc50d4a94e7150b9ba2382, type: 2}
     - target: {fileID: 2777080882551110989, guid: 244852e4822ecb949bd9c7ceb4ebb951, type: 3}
       propertyPath: m_Name
       value: PlayerCategory
@@ -12224,7 +12228,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: bc62d7af9c8967c4c9d2184e478dadf3, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -12317,6 +12321,7 @@ MonoBehaviour:
   m_BlackboardVariableOverridesList:
   - rid: 8808810005851538206
   - rid: 8808810005851538207
+  - rid: 8808810141937828468
   references:
     version: 2
     RefIds:
@@ -12336,6 +12341,14 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 1588896296608445}
+    - rid: 8808810141937828468
+      type: {class: 'BlackboardVariable`1[[UnityEngine.AI.NavMeshAgent, UnityEngine.AIModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 12068228137160827895
+          m_Value1: 3187198214489097814
+        Name: NavMeshAgent
+        m_Value: {fileID: 95241917605185944}
 --- !u!195 &95241917605185944
 NavMeshAgent:
   m_ObjectHideFlags: 0
