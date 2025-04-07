@@ -13202,6 +13202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillDatas: []
   currentSkillList: []
+  canDrawGizmo: 0
 --- !u!1 &2777974626546988096
 GameObject:
   m_ObjectHideFlags: 0
@@ -13525,7 +13526,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHandleTransform: {fileID: 6225817383199895527}
   rightdHandleTransform: {fileID: 8664730785908485265}
-  defaultWeapon: {fileID: 11400000, guid: e10ff2ac15468cf4199c56b6bc545ce4, type: 2}
+  defaultWeapon: {fileID: 11400000, guid: 599118e5cc3604e49b1b031555038e2d, type: 2}
+  audioTrigger: {fileID: 5196206241196479339}
 --- !u!1 &2830836079372413566
 GameObject:
   m_ObjectHideFlags: 0
@@ -13554,7 +13556,7 @@ Transform:
   m_GameObject: {fileID: 2830836079372413566}
   serializedVersion: 2
   m_LocalRotation: {x: 0.4050021, y: -0.34395358, z: 0.16775735, w: 0.83037746}
-  m_LocalPosition: {x: 5.68451, y: 11.25748, z: -5.68451}
+  m_LocalPosition: {x: 5.6695027, y: 11.25748, z: -5.6995177}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13619,7 +13621,7 @@ MonoBehaviour:
   CameraDistance: 13.5
   DeadZoneDepth: 0
   Composition:
-    ScreenPosition: {x: 0, y: 0}
+    ScreenPosition: {x: 0.0010416508, y: 0}
     DeadZone:
       Enabled: 0
       Size: {x: 0.2, y: 0.2}
@@ -13629,7 +13631,7 @@ MonoBehaviour:
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 0.5, z: 0}
-  Damping: {x: 0.65, y: 1, z: 1.1}
+  Damping: {x: 0.7, y: 1, z: 1.1}
   Lookahead:
     Enabled: 0
     Time: 0.1
@@ -18797,6 +18799,14 @@ MonoBehaviour:
   resultTransform: {fileID: 296104839605046796}
   playerCamera: {fileID: 5346482904669399683}
   staticCamera: {fileID: 6203998590263145709}
+  sceneManager: {fileID: 11400000, guid: a2d8f67d9c116a8499c86ab4cb0ed966, type: 2}
+  focusData: {fileID: 11400000, guid: 15f4349b5c816a942a60b1a8bde4e326, type: 2}
+  cameraShakeType: 9
+  levelClearCameraDistance: 50
+  increaseDuration: 0.5
+  delay: 1.7
+  cameraShakeDelay: 1.7
+  decreaseDuration: 1.2
 --- !u!1 &3974827566064221275
 GameObject:
   m_ObjectHideFlags: 0
@@ -20622,14 +20632,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animTrigger: {fileID: 150995623001427998}
-  audioType:
-    _keyValueList:
-    - key: 0
-      value: {fileID: 11400000, guid: 351d15111f4151747af176389e91a68f, type: 2}
-    - key: 1
-      value: {fileID: 11400000, guid: f73f91cc75c28944f926cced2f9c0be1, type: 2}
-    - key: 2
-      value: {fileID: 11400000, guid: 67e100a4112d40d45af705dc53bc511c, type: 2}
 --- !u!95 &4469182075292860675
 Animator:
   serializedVersion: 7
@@ -20640,7 +20642,7 @@ Animator:
   m_GameObject: {fileID: 4185315790898999569}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 038320a534bd8b444b43734860d1a211, type: 3}
-  m_Controller: {fileID: 22100000, guid: dd302a1545144ce4390c3e81a09f5864, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -46059,7 +46061,7 @@ Transform:
   m_GameObject: {fileID: 8769104566819483706}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.842171e-14, y: 0.0000005313947, z: 0.00000041517114}
+  m_LocalPosition: {x: 0.0000006743496, y: 0.000000055745943, z: -0.0000011666766}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

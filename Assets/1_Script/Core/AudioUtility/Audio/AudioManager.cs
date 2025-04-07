@@ -39,7 +39,6 @@ namespace Swift_Blade.Audio
         public static AudioEmitter PlayOneShotWithInit(AudioSO audioSO)
         {
             throw new System.NotImplementedException("no");
-            return default;
         }
 
     }

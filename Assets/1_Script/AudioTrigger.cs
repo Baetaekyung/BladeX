@@ -1,4 +1,5 @@
 using Swift_Blade.Audio;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -7,7 +8,7 @@ namespace Swift_Blade
     {
         [SerializeField] private AnimationTriggers animTrigger;
 
-        [SerializeField] private SerializableDictionary<EAudioType, BaseAudioSO> audioType;
+        public IReadOnlyDictionary<EAudioType, BaseAudioSO> AudioType { get; set; }
         private void Awake()
         {
             animTrigger.OnAudioPlayWithTypeEvent += AudioPlayWithType;
@@ -18,7 +19,7 @@ namespace Swift_Blade
         }
         private void AudioPlayWithType(EAudioType type)
         {
-            BaseAudioSO audioCollection = audioType[type];
+            BaseAudioSO audioCollection = AudioType[type];
             AudioManager.PlayWithInit(audioCollection.GetAudio(), true);
         }
     }

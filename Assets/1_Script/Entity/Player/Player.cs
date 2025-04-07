@@ -29,6 +29,7 @@ namespace Swift_Blade
         public bool IsPlayerDead { get; private set; }
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
+        public FiniteStateMachine<PlayerStateEnum> GetStateMachine => playerStateMachine;
         private PlayerAttackState playerAttackState;
 
         public static LevelStat level = new LevelStat();
@@ -287,9 +288,6 @@ namespace Swift_Blade
             playerAttackState.ClearComboHistory();
         }
         public PlayerStateEnum GetCurrentState() => playerStateMachine.GetState();
-        //private void OnDrawGizmos()
-        //{
-        //    Gizmos.DrawWireSphere(playerTransform.position, 2);
-        //}
+
     }
 }

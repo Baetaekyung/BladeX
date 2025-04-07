@@ -9,6 +9,7 @@ namespace Swift_Blade.Combat.Caster
         [SerializeField][Range(0.5f, 10f)] private float _casterRadius = 1f;
         [SerializeField][Range(0f, 10f)] private float _casterInterpolation = 0.5f;
         [SerializeField][Range(0f, 10f)] private float _castingRange = 1f;
+        public float CastingRange { get => _castingRange; set => _castingRange = value; }
 
         [SerializeField] private Transform _visualTrm;
         [SerializeField] private PlayerMovement _playerMovement;
@@ -17,6 +18,8 @@ namespace Swift_Blade.Combat.Caster
 
         private Player _player;
         private PlayerStatCompo _statCompo;
+
+        private float GetBaseDamage => _statCompo.GetStat(damageStat).Value;
 
         public void EntityComponentAwake(Entity entity)
         {
@@ -38,7 +41,7 @@ namespace Swift_Blade.Combat.Caster
             bool isHit = false;
             HashSet<IDamageble> damagedEntities = new HashSet<IDamageble>();
 
-            foreach (var hitCollider in hitColliders)
+            foreach (Collider hitCollider in hitColliders)
             {
                 if (hitCollider.TryGetComponent(out IDamageble health))
                 {
@@ -56,6 +59,44 @@ namespace Swift_Blade.Combat.Caster
 
                     OnCastDamageEvent?.Invoke(actionData);
 
+                    health.TakeDamage(actionData);
+                }
+            }
+
+            if (isHit)
+            {
+                _player.GetSkillController.UseSkill(SkillType.Attack, hitColliders.Select(x => x.transform).ToArray());
+            }
+
+            return isHit;
+        }
+        public override bool Cast(float additionalDamage = 0, float additionalCastingDistance = 0, bool stun = false)
+        {
+            Vector3 startPos = GetStartPosition();
+            Vector3 endPos = startPos + _visualTrm.forward * (_castingRange + additionalCastingDistance);
+
+            Collider[] hitColliders = Physics.OverlapSphere(endPos, _casterRadius, targetLayer);
+
+            bool isHit = false;
+            HashSet<IDamageble> damagedEntities = new HashSet<IDamageble>();
+
+            foreach (Collider hitCollider in hitColliders)
+            {
+                if (hitCollider.TryGetComponent(out IDamageble health))
+                {
+                    if (damagedEntities.Contains(health))
+                        continue;
+
+                    damagedEntities.Add(health);
+                    isHit = true;
+
+                    Vector3 hitPoint = hitCollider.ClosestPoint(startPos);
+                    Vector3 hitNormal = (hitPoint - hitCollider.transform.position).normalized;
+
+                    float damageAmount = _statCompo.GetStat(damageStat).Value + additionalDamage;
+                    ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, stun);
+
+                    OnCastDamageEvent?.Invoke(actionData);
 
                     health.TakeDamage(actionData);
                 }
@@ -68,24 +109,23 @@ namespace Swift_Blade.Combat.Caster
 
             return isHit;
         }
-
         private Vector3 GetStartPosition()
         {
             return transform.transform.position
                    + _visualTrm.forward * (-_casterInterpolation * 2);
         }
 
-        //protected void OnDrawGizmosSelected()
-        //{
-        //    if (_visualTrm == null) return;
-        //    if (_playerMovement == null) return;
-        //    
-        //    Gizmos.color = Color.green;
-        //    Gizmos.DrawWireSphere(GetStartPosition(), _casterRadius);
-        //    Gizmos.color = Color.red;
-        //    Gizmos.DrawWireSphere(GetStartPosition() + _visualTrm.forward * _castingRange, _casterRadius);
-        //    Gizmos.color = Color.white;
-        //}
+        protected void OnDrawGizmosSelected()
+        {
+            if (_visualTrm == null) return;
+            if (_playerMovement == null) return;
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(GetStartPosition(), _casterRadius);
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(GetStartPosition() + _visualTrm.forward * _castingRange, _casterRadius);
+            Gizmos.color = Color.white;
+        }
 
 
     }

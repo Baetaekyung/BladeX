@@ -1,6 +1,5 @@
 using Swift_Blade.Combat;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade.Pool
 {
