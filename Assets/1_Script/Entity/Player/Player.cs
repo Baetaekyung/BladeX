@@ -195,7 +195,6 @@ namespace Swift_Blade
         private void Update()
         {
             playerStateMachine.UpdateState();
-
             //if (Input.GetKeyDown(KeyCode.Z))
             //    AudioEmitter.Dbg2();
 

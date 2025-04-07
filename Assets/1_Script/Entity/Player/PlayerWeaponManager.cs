@@ -1,9 +1,11 @@
 using UnityEngine;
 using Swift_Blade.Combat.Caster;
+using Swift_Blade.FSM;
 namespace Swift_Blade
 {
     public class PlayerWeaponManager : MonoBehaviour, 
-        IEntityComponent
+        IEntityComponent,
+        IEntityComponentStart
     {
         //note : bool check if player is initialized in this scene 
         // player is not initialized when new scene is loaded
@@ -17,6 +19,7 @@ namespace Swift_Blade
         private GameObject leftWeaponInstance;
         private GameObject rightWeaponInstance;
 
+        private FiniteStateMachine<PlayerStateEnum> playerFsm;
         private PlayerAnimator playerAnimator;
         private PlayerDamageCaster playerDamageCaster;
         public static Weapon CurrentWeapon { get; private set; }
@@ -27,10 +30,21 @@ namespace Swift_Blade
         }
         void IEntityComponent.EntityComponentAwake(Entity entity)
         {
+            playerFsm = (entity as Player).GetStateMachine;
+            isNotInitializedInThisScene = true;
+        }
+        void IEntityComponentStart.EntityComponentStart(Entity entity)
+        {
             playerAnimator = entity.GetEntityComponent<PlayerAnimator>();
             playerDamageCaster = entity.GetEntityComponent<PlayerDamageCaster>();
-            isNotInitializedInThisScene = true;
             SetWeapon(CurrentWeapon != null ? CurrentWeapon : defaultWeapon);
+        }
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F3))
+            {
+                SetWeapon(defaultWeapon);
+            }
         }
         public void SetWeapon(Weapon weapon)
         {
@@ -72,6 +86,9 @@ namespace Swift_Blade
 
             playerDamageCaster.CastingRange = weapon.CastRange;
 
+            playerAnimator.GetAnimator.Rebind();
+            playerFsm.ChangeState(PlayerStateEnum.Move);
+
             return;
 
             static GameObject CreateWeaponHandle(GameObject prefab, Transform parent)
@@ -81,5 +98,7 @@ namespace Swift_Blade
                 return result;
             }
         }
+
+
     }
 }
