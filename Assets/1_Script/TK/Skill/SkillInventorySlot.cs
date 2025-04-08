@@ -31,11 +31,8 @@ namespace Swift_Blade
             if (skillData == null)
                 return;
 
-            var slot = SkillManager.Instance.GetEmptySkillSlot(
-                skillData.skillType,
-                skillData.colorType);
+            var slot = SkillManager.Instance.GetEmptySkillSlot();
 
-            //������ ������
             if (slot == default)
             {
                 string typeToKorean = skillData.skillType switch

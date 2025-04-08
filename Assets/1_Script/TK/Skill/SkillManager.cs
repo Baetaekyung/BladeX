@@ -12,6 +12,7 @@ namespace Swift_Blade
     {
         [SerializeField] private List<SkillSlot>          skill_slots;
         [SerializeField] private List<SkillInventorySlot> inv_slots;
+        [SerializeField] private List<SkillSlotToMix>     mix_slots;
         [SerializeField] private SkillSaveSO              skillSaveData;
         [SerializeField] private RectTransform            rootRect;
         [SerializeField] private TextMeshProUGUI          maxSkillText;
@@ -35,9 +36,14 @@ namespace Swift_Blade
             }
 
             SkillSlotBase.OnPointerEnterAction += HandleCreateInfoUI;
+            
 
             HandleCreateInfoUI(Vector2.zero, null);
-            InitializeSlots();
+        }
+
+        private void Start()
+        {
+            PopupManager.Instance.OnPopUpOpenOrClose += UpdateDatas;
         }
 
         private void OnDisable()
@@ -49,6 +55,7 @@ namespace Swift_Blade
         {
             InitializeSlot(inv_slots);
             InitializeSlot(skill_slots);
+            InitializeSlot(mix_slots);
         }
 
         private void HandleCreateInfoUI(Vector2 screenPosition, SkillData skillData)
@@ -71,25 +78,30 @@ namespace Swift_Blade
             infoUI.gameObject.SetActive(true);
         }
 
+        public void UpdateDatas()
+        {
+            InitializeSlots();
+            LoadData();
+        }
+
         private void LoadData()
         {
             if (saveDatas.inventoryData.Count > 0)
             {
-                for (ushort i = 0; i < saveDatas.inventoryData.Count; i++)
-                {
+                for (int i = 0; i < saveDatas.inventoryData.Count; i++)
                     GetEmptyInvSlot().SetSlotData(saveDatas.inventoryData[i]);
-                }
+            }
+
+            if (saveDatas.inventoryData.Count > 0)
+            {
+                for (int i = 0; i < saveDatas.inventoryData.Count; i++)
+                    GetEmptyMixSlot().SetSlotData(saveDatas.inventoryData[i]);
             }
 
             if (saveDatas.skillSlotData.Count > 0)
             {
-                for (ushort i = 0; i < saveDatas.skillSlotData.Count; i++)
-                {
-                    SkillType type      = saveDatas.skillSlotData[i].skillType;
-                    ColorType colorType = saveDatas.skillSlotData[i].colorType;
-
-                    GetEmptySkillSlot(type, colorType).SetSlotData(saveDatas.skillSlotData[i]);
-                }
+                for (int i = 0; i < saveDatas.skillSlotData.Count; i++)
+                    GetEmptySkillSlot().SetSlotData(saveDatas.skillSlotData[i]);
             }
         }
 
@@ -99,7 +111,7 @@ namespace Swift_Blade
             LoadData();
         }
 
-        private void InitializeSlot<T>(List<T> slots) where T : SkillSlotBase
+        private void InitializeSlot<T>(IEnumerable<T> slots) where T : SkillSlotBase
         {
             foreach (var slot in slots)
                 slot.SetSlotData(null);
@@ -123,17 +135,30 @@ namespace Swift_Blade
             return invSlot;
         }
 
-        public SkillSlot GetEmptySkillSlot(SkillType skillType, ColorType colorType)
+        public SkillSlot GetEmptySkillSlot()
         {
-            var skillSlot = skill_slots.FirstOrDefault(
-                slot => slot.GetSkillType == skillType && 
-                slot.IsEmptySlot() && 
-                slot.GetColorType == colorType); 
+            var skillSlot = skill_slots.FirstOrDefault(slot => slot.IsEmptySlot()); 
         
             if (skillSlot == default)
+            {
+                Debug.LogWarning("빈 Skill slot을 찾을 수 없다.");
                 return default;
+            }
         
             return skillSlot;
+        }
+
+        public SkillSlotToMix GetEmptyMixSlot()
+        {
+            var mixSlot = mix_slots.FirstOrDefault(slot => slot.IsEmptySlot());
+
+            if (mixSlot == default)
+            {
+                Debug.LogWarning("빈 SkillMix slot을 찾을 수 없다.");
+                return default;
+            }
+
+            return mixSlot;
         }
 
         //If player get skill, skill needs to go to inv 
