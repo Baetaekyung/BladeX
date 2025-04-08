@@ -33,6 +33,7 @@ namespace Swift_Blade.FSM.States
         protected virtual void OnForceEventTrigger2(float force)            => Debug.Log("OnForce2");
         protected virtual void OnSpeedMultiplierDefaultTrigger(float set)   => Debug.Log("OnSpeedmultiplier");
         protected virtual void OnAudioPlayTrigger(AudioSO audioSO)          => Debug.Log("OnAudio");
+        protected virtual void OnTrailTrigger(bool active)                  => Debug.Log("OnTrail");
         #endregion
         public override void Enter()
         {
@@ -53,6 +54,8 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnSpeedMultiplierDefaultEvent += OnSpeedMultiplierDefaultTrigger;
             animationTriggers.OnAudioPlayEvent += OnAudioPlayTrigger;
 
+            //animationTriggers.OnAnimationTrailEvent += OnTrailTrigger;
+
             if (baseAnimParam != null)
                 PlayAnimationOnEnter();
         }
@@ -72,6 +75,7 @@ namespace Swift_Blade.FSM.States
 
             animationTriggers.OnSpeedMultiplierDefaultEvent -= OnSpeedMultiplierDefaultTrigger;
             animationTriggers.OnAudioPlayEvent -= OnAudioPlayTrigger;
+            //animationTriggers.OnAnimationTrailEvent -= OnTrailTrigger;
 
             //re init
             OnAllowRotateAllowTrigger();

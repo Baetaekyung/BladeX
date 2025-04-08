@@ -12,21 +12,25 @@ namespace Swift_Blade
         [field: Header("Damage")]
         [field: SerializeField] public float AdditionalNormalDamage { get; private set; }
         [field: SerializeField] public float AdditionalHeavyDamage { get; private set; }
+        [field: SerializeField] public float RollAttackDamage { get; private set; }
 
         [field: Header("Setting")]
-        [field: SerializeField] public GameObject LeftHandUsage { get; private set; }
-        [field: SerializeField] public GameObject RightHandUsage { get; private set; }
+        //[field: SerializeField] public GameObject LeftHandUsage { get; private set; }
+        //[field: SerializeField] public GameObject RightHandUsage { get; private set; }
         [field: SerializeField] public RuntimeAnimatorController WeaponAnimator { get; private set; }
+
+        [field: SerializeField] public WeaponHandler LeftWeaponHandler { get; set; }
+        [field: SerializeField] public WeaponHandler RightWeaponHandler { get; set; }
 
         [SerializeField] private SerializableDictionary<EAudioType, BaseAudioSO> audioDictionary;
         public IReadOnlyDictionary<EAudioType, BaseAudioSO> GetAudioDictionary => audioDictionary;
         /// <summary>
         /// color is limited to (red, blu, green)
         /// </summary>
-        [SerializeField] private ColorType colorType;
+        [field: SerializeField] public ColorType ColorType { get; private set; }
         [SerializeField] private float specialModifier;
         [SerializeField] private float rollModifier;
-        [field: SerializeField, Range(1, 2.5f)] public float CastRange { get; private set; }
+        [field: SerializeField, Range(1, 3)] public float CastRange { get; private set; }
 
         private const float BASE_SPECIAL_DELAY = 1f;
         private const float BASE_ROLL_DELAY = 1f;
@@ -36,17 +40,17 @@ namespace Swift_Blade
         {
             ColorType banType = ~(ColorType.RED | ColorType.BLUE | ColorType.GREEN);
 
-            if ((colorType & banType) != 0)
+            if ((ColorType & banType) != 0)
             {
-                Debug.LogError($"{nameof(colorType)} contains banned type");
-                Debug.Log(colorType);
-                colorType = ColorType.RED;
+                Debug.LogError($"{nameof(ColorType)} contains banned type");
+                Debug.Log(ColorType);
+                ColorType = ColorType.RED;
             }
             //can't detect yellow because enum is not a flag
-            else if (colorType == ColorType.YELLOW)
+            else if (ColorType == ColorType.YELLOW)
             {
                 Debug.LogError("yellow yellow");
-                colorType = ColorType.RED;
+                ColorType = ColorType.RED;
             }
 
             int enumLength = Enum.GetValues(typeof(EAudioType)).Length;
@@ -58,7 +62,7 @@ namespace Swift_Blade
         public Action GetSpecialBehaviour(Player entity)
         {
             Action result = default;
-            switch (colorType)
+            switch (ColorType)
             {
                 case ColorType.RED:
                     result = () => { entity.GetStateMachine.ChangeState(PlayerStateEnum.Parry); };
@@ -67,19 +71,16 @@ namespace Swift_Blade
                     result = () => { entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.HEALTH, nameof(StatType.HEALTH), 5, 3); };
                     break;
                 case ColorType.BLUE:
-                    result = () => 
+                    result = () =>
                     {
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.ATTACKSPEED, nameof(StatType.ATTACKSPEED), 3, 1);
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.MOVESPEED, nameof(StatType.MOVESPEED), 3, 1);
                     };
                     break;
                 default:
-                    throw new NotImplementedException($"color type {colorType} is not implemented");
+                    throw new NotImplementedException($"color type {ColorType} is not implemented");
             }
             return result;
-        }
-        private void OnDestroy()
-        {
         }
     }
 }

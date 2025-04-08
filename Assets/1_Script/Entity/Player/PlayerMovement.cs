@@ -89,8 +89,6 @@ namespace Swift_Blade
         {
             currentRollStamina += Time.deltaTime;
             currentRollStamina = Mathf.Min(GetMaxStamina, currentRollStamina);
-            UI_DebugPlayer.DebugText(1, curveValue, "curveValue", DBG_UI_KEYS.Keys_PlayerAction);
-            UI_DebugPlayer.DebugText(2, forceCurve.Evaluate(curveValue), "curveCrv", DBG_UI_KEYS.Keys_PlayerAction);
             //print(SpeedMultiplierDefault);
         }
         private void FixedUpdate()
@@ -110,7 +108,6 @@ namespace Swift_Blade
                 yVal += Time.fixedDeltaTime * gravitiy * gravitiyMultiplier;
             }
 
-            UI_DebugPlayer.DebugText(5, lowestContactPointBottom.HasValue, "ONGROUND", DBG_UI_KEYS.Keys_PlayerMovement);
             //if (lowestContactPointBottom.HasValue)
             //    Debug.DrawRay(lowestContactPointBottom.Value.point, Vector3.right, Color.magenta, 0.1f);
             //UI_DebugPlayer.DebugText(0, yVal, "yVal", DBG_UI_KEYS.Keys_PlayerMovement);
