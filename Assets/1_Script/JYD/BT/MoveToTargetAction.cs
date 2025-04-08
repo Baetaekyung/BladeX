@@ -20,7 +20,7 @@ public class MoveToTargetAction : Action
     [SerializeReference] public BlackboardVariable<float> meleeAttackDistance;
     [SerializeReference] public BlackboardVariable<float> attackDistance;
     private float distance;
-        
+
     private LayerMask whatIsObstacle;
     private Vector3 targetPos;
     protected override Status OnStart()
@@ -29,41 +29,33 @@ public class MoveToTargetAction : Action
             return Status.Failure;
         
         whatIsObstacle = LayerMask.GetMask("Wall" , "Obstacle");
-        
         Agent.Value.speed = MoveSpeed.Value;
         
-        targetPos = Target.Value.transform.position;
-        distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
-                
-        bool isNotObstacleLine = IsNotObstacleLine();
-        bool isNearTarget = (distance <= attackDistance.Value || distance <= meleeAttackDistance.Value);
-        
-        if (isNearTarget && isNotObstacleLine)
-            return Status.Success;
-        
-        return Status.Running;
+        return CheckDistance();
     }
     
     protected override Status OnUpdate()
     {
-        targetPos = Target.Value.transform.position;
-        
         Boss.Value.FactToTarget(Boss.Value.GetNextPathPoint());
         Agent.Value.SetDestination(targetPos);
         
+        return CheckDistance();
+    }
+
+    private Status CheckDistance()
+    {
+        targetPos = Target.Value.transform.position;
         distance = Vector3.Distance(targetPos, Agent.Value.transform.position);
         
         bool isNotObstacleLine = IsNotObstacleLine();
         bool isNearTarget = (distance <= attackDistance.Value || distance <= meleeAttackDistance.Value);
-        
-        //Debug.Log($"is Near target : {isNearTarget}, " + $"IsObstacleLine : {isNotObstacleLine}");
         
         if (isNearTarget && isNotObstacleLine)
             return Status.Success;
         
         return Status.Running;
     }
-    
+
     private bool IsNotObstacleLine()
     {
         Vector3 direction = (Target.Value.transform.position - Agent.Value.transform.position);
@@ -73,7 +65,6 @@ public class MoveToTargetAction : Action
         
         if (Physics.Raycast(start, direction.normalized,direction.magnitude, whatIsObstacle))
         {
-            //Debug.Log(hit.collider.gameObject.name);
             return false;
         }
         

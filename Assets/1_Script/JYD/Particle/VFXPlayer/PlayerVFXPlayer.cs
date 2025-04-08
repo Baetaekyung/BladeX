@@ -38,12 +38,10 @@ namespace Swift_Blade
         public void PlayDamageEffect(ActionData actionData)
         {
             DustParticle dustParticle = MonoGenericPool<DustParticle>.Pop();
-            dustParticle.transform.position = actionData.hitPoint;
-            dustParticle.transform.rotation = Quaternion.LookRotation(-actionData.hitNormal);
-            
+            dustParticle.transform.SetPositionAndRotation(actionData.hitPoint,  Quaternion.LookRotation(-actionData.hitNormal));
+                        
             HitSlashParticle hitSlashParticle = MonoGenericPool<HitSlashParticle>.Pop();
-            hitSlashParticle.transform.position = actionData.hitPoint;
-            hitSlashParticle.transform.rotation = Quaternion.LookRotation(-actionData.hitNormal);
+            hitSlashParticle.transform.SetPositionAndRotation(actionData.hitPoint ,  Quaternion.LookRotation(-actionData.hitNormal));
         }
         
         public void PlayParryEffect()

@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Pool;
+using System.Linq;
 using UnityEngine;
 
 namespace Swift_Blade.Skill
@@ -12,12 +14,12 @@ namespace Swift_Blade.Skill
             MonoGenericPool<BangExplosionParticle>.Initialize(skillParticle);
         }
 
-        public override void UseSkill(Player player, Transform[] targets = null)
+        public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
-            if(targets == null || targets.Length == 0)return;
+            if(targets == null || !targets.Any())return;
             if(player.GetPlayerHealth.IsFullHealth == false)return;
-
-            MonoGenericPool<BangExplosionParticle>.Pop().transform.position = targets[0].position + new Vector3(0,1,0);
+            
+            MonoGenericPool<BangExplosionParticle>.Pop().transform.position = targets.First().transform.position + new Vector3(0,1,0);
             
             foreach (var item in targets)
             {
@@ -26,9 +28,7 @@ namespace Swift_Blade.Skill
                     enemyHealth.ChangeParryState();
                 }
             }
-            
-            
+                        
         }
-        
     }
 }

@@ -1,6 +1,6 @@
 using Swift_Blade.Combat.Caster;
-using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine;
 
 
 namespace Swift_Blade.Enemy
@@ -15,7 +15,7 @@ namespace Swift_Blade.Enemy
 
         [SerializeField] [Range(1,60)] private float defaultAttackMoveSpeed;
         private float attackMoveSpeed;
-                
+        
         public float AttackMoveSpeed => attackMoveSpeed;
         
         [Space]
@@ -25,6 +25,10 @@ namespace Swift_Blade.Enemy
         
         public float maxAnimationSpeed = 1.3f;
         public float minAnimationSpeed = 1;
+        
+        private readonly int ATTACK_SPEED = Animator.StringToHash("AttackSpeed");
+                
+        public Animator GetAnimator() => Animator;
         
         protected virtual void Awake()
         {
@@ -36,9 +40,15 @@ namespace Swift_Blade.Enemy
         
         protected virtual void Start()
         {
-            float animationSpeed = Random.Range(minAnimationSpeed, maxAnimationSpeed);
-            Animator.SetFloat("Speed" ,animationSpeed);
+            SetAttackAnimationSpeed();
         }
+
+        protected void SetAttackAnimationSpeed()
+        {
+            float animationSpeed = Random.Range(minAnimationSpeed, maxAnimationSpeed);
+            Animator.SetFloat(ATTACK_SPEED ,animationSpeed);
+        }
+
         private void Cast()
         {
             caster.Cast();
@@ -81,6 +91,8 @@ namespace Swift_Blade.Enemy
         {
             Animator.Rebind();
         }
+        
+        
         
     }
 }

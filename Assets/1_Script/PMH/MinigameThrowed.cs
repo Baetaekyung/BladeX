@@ -84,7 +84,7 @@ namespace Swift_Blade
             if(other.CompareTag("Player"))
             {
                 Debug.Log("페리범위내에들어오다");
-                IsPerryNow(other.GetComponent<PlayerParryController>().CanParry());
+                IsPerryNow(other.GetComponent<PlayerParryController>().GetParry());
             }
 
             if(other.CompareTag("Ground"))

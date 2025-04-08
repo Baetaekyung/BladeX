@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Pool;
 using Swift_Blade.Skill;
@@ -16,7 +17,7 @@ namespace Swift_Blade
             MonoGenericPool<GreenWaveParticle>.Initialize(skillParticle);    
         }
         
-        public override void UseSkill(Player player, Transform[] targets = null)
+        public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
             if (CheckSkill() && player.GetPlayerHealth.IsFullHealth && targets != null)
             {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public class BreakableObject : MonoBehaviour, IDamageble
+    public class BreakableObject : MonoBehaviour, IHealth
     {
         public event Action<float> OnHit;
         public event Action<BreakableObject> OnDeadStart;
@@ -24,7 +24,7 @@ namespace Swift_Blade
                 OnGameObjectDestroy?.Invoke(this);
             }, false);
         }
-        void IDamageble.TakeDamage(ActionData actionData)
+        void IHealth.TakeDamage(ActionData actionData)
         {
             if (deadFlag) return;
 
@@ -39,12 +39,12 @@ namespace Swift_Blade
                 DelayDead();
             }
         }
-        void IDamageble.TakeHeal(float amount)
+        void IHealth.TakeHeal(float amount)
         {
             throw new NotImplementedException();
         }
 
-        void IDamageble.Dead()
+        void IHealth.Dead()
         {
             throw new NotImplementedException();
         }

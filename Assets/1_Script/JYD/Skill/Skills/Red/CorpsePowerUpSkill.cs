@@ -12,12 +12,12 @@ namespace Swift_Blade.Skill
             
         }
 
-        public override void UseSkill(Player player, Transform[] targets = null)
+        public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
             //empty    
         }
 
-        public override void SkillUpdate(Player player, List<Transform> targets = null)
+        public override void SkillUpdate(Player player,  IEnumerable<Transform> targets = null)
         {
             
         }

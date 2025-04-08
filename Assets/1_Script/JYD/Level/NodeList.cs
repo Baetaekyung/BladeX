@@ -51,7 +51,7 @@ public class Node
 }
 
 [Serializable]
-public class NodeDictionary : IEnumerable<Node>
+public class NodeDictionary : IEnumerable<List<Node>>
 {
     private Dictionary<NodeType, List<Node>> nodeList;
     private bool canAppearSpecialNode = true;
@@ -149,15 +149,9 @@ public class NodeDictionary : IEnumerable<Node>
         return nodeTypes;
     }
     
-    public IEnumerator<Node> GetEnumerator()
+    public IEnumerator<List<Node>> GetEnumerator()
     {
-        foreach (var item  in nodeList)
-        {
-            foreach (var item2 in item.Value)
-            {
-                yield return item2;
-            }
-        }
+        return nodeList.Values.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -190,36 +184,45 @@ namespace Swift_Blade.Level
         {
             currentNodeIndex = 0;
             nodeDictionary = new NodeDictionary(nodelist);
-
-            foreach (var item in nodeDictionary)
+            
+            foreach (var node in nodeDictionary)
             {
-                switch (item.nodeType)
+                foreach (var item in node)
                 {
-                    case NodeType.Exp:
-                        item.SetPortalPrefab(expDoor);
-                        break;
-                    case NodeType.Event:
-                        item.SetPortalPrefab(eventDoor);
-                        break;
-                    case NodeType.Point:
-                        item.SetPortalPrefab(pointDoor);
-                        break;
-                    case NodeType.Challenge:
-                        item.SetPortalPrefab(challengeDoor);
-                        break;
-                    case NodeType.Store:
-                        item.SetPortalPrefab(storeDoor);
-                        break;
-                    case NodeType.Boss:
-                        item.SetPortalPrefab(bossDoor);
-                        break;
-                    case NodeType.None:
-                        break;
+                    AssignDoor(item);
                 }
+                
             }
             
         }
-        
+
+        private void AssignDoor(Node item)
+        {
+            switch (item.nodeType)
+            {
+                case NodeType.Exp:
+                    item.SetPortalPrefab(expDoor);
+                    break;
+                case NodeType.Event:
+                    item.SetPortalPrefab(eventDoor);
+                    break;
+                case NodeType.Point:
+                    item.SetPortalPrefab(pointDoor);
+                    break;
+                case NodeType.Challenge:
+                    item.SetPortalPrefab(challengeDoor);
+                    break;
+                case NodeType.Store:
+                    item.SetPortalPrefab(storeDoor);
+                    break;
+                case NodeType.Boss:
+                    item.SetPortalPrefab(bossDoor);
+                    break;
+                case NodeType.None:
+                    break;
+            }
+        }
+
         public Node[] GetNode()
         {
             List<NodeType> nodeTypes = nodeDictionary.GetNodeTypes(++currentNodeIndex);

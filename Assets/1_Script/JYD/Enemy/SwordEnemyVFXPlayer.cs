@@ -39,18 +39,20 @@ namespace Swift_Blade.Enemy.Sword
             }
         }
 
-        public void PlayPrickEffect()
+        private void PlayPrickEffectAt(Transform targetTrm)
         {
             PrickParticle prickParticle = MonoGenericPool<PrickParticle>.Pop();
-            prickParticle.transform.rotation = prickTrm1.rotation;
-            prickParticle.transform.position = prickTrm1.position;
+            prickParticle.transform.SetPositionAndRotation(targetTrm.position , targetTrm.rotation);
         }
         
+        public void PlayPrickEffect()
+        {
+            PlayPrickEffectAt(prickTrm1);
+        }
+
         public void PlayPrickEffect1()
         {
-            PrickParticle prickParticle = MonoGenericPool<PrickParticle>.Pop();
-            prickParticle.transform.rotation = prickTrm2.rotation;
-            prickParticle.transform.position = prickTrm2.position;
+            PlayPrickEffectAt(prickTrm2);
         }
         
     }
