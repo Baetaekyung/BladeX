@@ -10939,12 +10939,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2376712662176941158}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1547652066911575172}
+  m_Father: {fileID: 4103815729079207692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8332071332477179229
 MonoBehaviour:
@@ -10959,7 +10959,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _casterRadius: 1.25
-  _casterInterpolation: 0.78
+  _casterInterpolation: 0.6
   _castingRange: 2.7
   targetLayer:
     serializedVersion: 2
@@ -13524,10 +13524,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63de028854144a8439b9cdeaf9887948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitStopFeedback: {fileID: 6629387547957254363}
+  cameraFocusFeedback: {fileID: 8273481991483540441}
+  cameraShakeFeedback: {fileID: 105032864419843250}
+  defaultWeapon: {fileID: 11400000, guid: 9576341052fc50d4a94e7150b9ba2382, type: 2}
+  audioTrigger: {fileID: 5196206241196479339}
   leftHandleTransform: {fileID: 6225817383199895527}
   rightdHandleTransform: {fileID: 8664730785908485265}
-  defaultWeapon: {fileID: 11400000, guid: e10ff2ac15468cf4199c56b6bc545ce4, type: 2}
-  audioTrigger: {fileID: 5196206241196479339}
+  colorTrails:
+    _keyValueList:
+    - key: 0
+      value: {fileID: 3885769630888759941, guid: 846f0a06ed2115144888c88e6ab25ee5, type: 3}
+    - key: 1
+      value: {fileID: 6731485777883740245, guid: 7c85d662e726e5146aa3dbafeeb9f055, type: 3}
+    - key: 2
+      value: {fileID: 2079032265972089854, guid: ff60f4bf920cf8b4d96d58f36a819134, type: 3}
 --- !u!1 &2830836079372413566
 GameObject:
   m_ObjectHideFlags: 0
@@ -18804,7 +18815,7 @@ MonoBehaviour:
   cameraShakeType: 9
   levelClearCameraDistance: 50
   increaseDuration: 0.5
-  delay: 2.77
+  delay: 1.7
   cameraShakeDelay: 1.7
   decreaseDuration: 1.2
 --- !u!1 &3974827566064221275
@@ -25278,6 +25289,7 @@ Transform:
   m_Children:
   - {fileID: 5769926146292660288}
   - {fileID: 7402450700343906106}
+  - {fileID: 2889313541361825741}
   m_Father: {fileID: 1547652066911575172}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5167611880278136625
@@ -37615,7 +37627,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4103815729079207692}
-  - {fileID: 2889313541361825741}
   - {fileID: 2146183822903394731}
   - {fileID: 8632028477375930125}
   - {fileID: 5781057234805245007}

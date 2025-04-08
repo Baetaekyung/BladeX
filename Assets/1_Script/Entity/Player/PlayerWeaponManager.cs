@@ -1,22 +1,46 @@
 using UnityEngine;
 using Swift_Blade.Combat.Caster;
+using Swift_Blade.FSM;
 namespace Swift_Blade
 {
-    public class PlayerWeaponManager : MonoBehaviour, 
-        IEntityComponent
+    public class PlayerWeaponManager : MonoBehaviour,
+        IEntityComponent,
+        IEntityComponentStart
     {
         //note : bool check if player is initialized in this scene 
         // player is not initialized when new scene is loaded
-        private bool isNotInitializedInThisScene = false;
 
-        [SerializeField] private Transform leftHandleTransform;
-        [SerializeField] private Transform rightdHandleTransform;
+        private bool isInitializedInThisScene = false;
+
         [SerializeField] private Weapon defaultWeapon;
         [SerializeField] private AudioTrigger audioTrigger;
 
-        private GameObject leftWeaponInstance;
-        private GameObject rightWeaponInstance;
+        [SerializeField] private Transform leftHandleTransform;
+        [SerializeField] private Transform rightdHandleTransform;
 
+        [SerializeField] private SerializableDictionary<ColorType, GameObject> colorTrails;
+
+        private WeaponHandler leftWeaponInstance;
+        private WeaponHandler rightWeaponInstance;
+        private GameObject leftTrailHandle;
+        private GameObject rightTrailHandle;
+
+        public bool TrailActive
+        {
+            set
+            {
+                if (leftTrailHandle != null)
+                {
+                    leftTrailHandle.SetActive(value);
+                }
+                if (rightTrailHandle != null)
+                {
+                    rightTrailHandle.SetActive(value);
+                }
+            }
+        }
+
+        private FiniteStateMachine<PlayerStateEnum> playerFsm;
         private PlayerAnimator playerAnimator;
         private PlayerDamageCaster playerDamageCaster;
         public static Weapon CurrentWeapon { get; private set; }
@@ -24,62 +48,89 @@ namespace Swift_Blade
         private void Awake()
         {
             Debug.Assert(defaultWeapon != null, "default weapon is null");
+            isInitializedInThisScene = true;
         }
         void IEntityComponent.EntityComponentAwake(Entity entity)
         {
+            playerFsm = (entity as Player).GetStateMachine;
+        }
+        void IEntityComponentStart.EntityComponentStart(Entity entity)
+        {
             playerAnimator = entity.GetEntityComponent<PlayerAnimator>();
             playerDamageCaster = entity.GetEntityComponent<PlayerDamageCaster>();
-            isNotInitializedInThisScene = true;
             SetWeapon(CurrentWeapon != null ? CurrentWeapon : defaultWeapon);
+        }
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F3))
+            {
+                SetWeapon(defaultWeapon);
+            }
         }
         public void SetWeapon(Weapon weapon)
         {
-            if (!isNotInitializedInThisScene && CurrentWeapon == weapon)
+            Debug.Assert(weapon != null, "weapon is null");
+
+            if (!isInitializedInThisScene && CurrentWeapon == weapon)
             {
                 Debug.LogWarning("weapon is already equipped");
                 return;
             }
 
-            //clear current holding weapon
+
+            //clear currently holding weapons
             if (CurrentWeapon != null)
             {
                 if (leftWeaponInstance != null)//note : automatically destroyed when new scene is loaded
                 {
-                    Destroy(leftWeaponInstance); // todo : need optimazation
+                    Destroy(leftWeaponInstance.gameObject); // todo : need optimazation
                 }
                 if (rightWeaponInstance != null)
                 {
-                    Destroy(rightWeaponInstance); // todo : need optimazation
+                    Destroy(rightWeaponInstance.gameObject); // todo : need optimazation
                 }
             }
 
-            if (weapon.LeftHandUsage != null)
+            //instansiate new weapon visuals
+            if (weapon.LeftWeaponHandler != null)
             {
-                GameObject handle = CreateWeaponHandle(weapon.LeftHandUsage, leftHandleTransform);
+                WeaponHandler handle = CreateWeaponHandle(weapon.LeftWeaponHandler, leftHandleTransform);
                 leftWeaponInstance = handle;
+                leftTrailHandle = Instantiate(colorTrails[weapon.ColorType], leftWeaponInstance.TrailTransform);
+                leftTrailHandle.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             }
 
-            if (weapon.RightHandUsage != null)
+            if (weapon.RightWeaponHandler != null)
             {
-                GameObject handle = CreateWeaponHandle(weapon.RightHandUsage, rightdHandleTransform);
+                WeaponHandler handle = CreateWeaponHandle(weapon.RightWeaponHandler, rightdHandleTransform);
                 rightWeaponInstance = handle;
+                rightTrailHandle = Instantiate(colorTrails[weapon.ColorType], rightWeaponInstance.TrailTransform);
+                rightTrailHandle.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             }
 
-            playerAnimator.GetAnimator.runtimeAnimatorController = weapon.WeaponAnimator;
             CurrentWeapon = weapon;
 
-            audioTrigger.AudioType = weapon.GetAudioDictionary;
+            playerAnimator.GetAnimator.runtimeAnimatorController = weapon.WeaponAnimator;
+            playerAnimator.GetAnimator.Rebind();
 
+            audioTrigger.AudioType = weapon.GetAudioDictionary;
             playerDamageCaster.CastingRange = weapon.CastRange;
+
+            playerFsm.ChangeState(PlayerStateEnum.Move);
+
+            isInitializedInThisScene = true;
 
             return;
 
-            static GameObject CreateWeaponHandle(GameObject prefab, Transform parent)
+            static TResult CreateWeaponHandle<TResult>(TResult prefab, Transform parent)
+                where TResult : MonoBehaviour
             {
-                GameObject result = Instantiate(prefab, parent);
+                TResult result = Instantiate(prefab, parent);
                 result.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
                 return result;
             }
         }
+
+
     }
 }
