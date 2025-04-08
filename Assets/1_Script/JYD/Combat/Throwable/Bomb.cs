@@ -7,14 +7,11 @@ namespace Swift_Blade.Combat.Projectile
 {
     public class Bomb : BaseThrow
     {
-        public float explosionRadius;
-
-        public LayerMask whatIsGround;
         public LayerMask whatIsTarget;
-        
         public CameraShakeType shakeType;
-        
         public PoolPrefabMonoBehaviourSO explosionSO;
+        
+        public float explosionRadius;
         private bool canExplosion;
         
         private readonly Collider[] targets = new Collider[10];
@@ -28,13 +25,9 @@ namespace Swift_Blade.Combat.Projectile
 
         private void OnCollisionEnter(Collision other)
         {
-            if ((whatIsGround & (1 << other.gameObject.layer)) != 0 ||
-                (whatIsTarget & (1 << other.gameObject.layer)) != 0)
+            if (canExplosion)
             {
-                if (canExplosion)
-                {
-                    Explosion(other.contacts[0].point);
-                }
+                Explosion(other.contacts[0].point);
             }
         }
         
@@ -44,9 +37,10 @@ namespace Swift_Blade.Combat.Projectile
             
             var actionData = new ActionData
             {
-                damageAmount = 1
+                damageAmount = 1,
+                stun = true
             };
-
+            
             for (int i = 0; i < counts; i++)
             {
                 var target = targets[i].GetComponentInChildren<IHealth>();
@@ -60,7 +54,7 @@ namespace Swift_Blade.Combat.Projectile
 
             var e = MonoGenericPool<ExplosionParticle>.Pop();
             e.transform.position = explosionPoint;
-
+            
             Destroy(gameObject);
         }
 
@@ -76,5 +70,6 @@ namespace Swift_Blade.Combat.Projectile
         {
             Gizmos.DrawWireSphere(transform.position, explosionRadius);
         }
+        
     }
 }
