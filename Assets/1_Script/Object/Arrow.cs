@@ -1,6 +1,5 @@
 using Swift_Blade.Combat;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade.Pool
 {
@@ -21,6 +20,7 @@ namespace Swift_Blade.Pool
         private bool deadFlag;
         
         private const string enemyLayerName = "Enemy";
+        
         private void Awake()
         {
             rigidBody = GetComponent<Rigidbody>();
@@ -43,9 +43,9 @@ namespace Swift_Blade.Pool
         {
             if ((whatIsTarget & (1 << other.gameObject.layer)) != 0 && deadFlag == false)
             {
-                if (other.gameObject.TryGetComponent(out IDamageble health))
+                if (other.gameObject.TryGetComponent(out IHealth health))
                 {
-                    if (other.TryGetComponent(out PlayerParryController playerParryController) && playerParryController.CanParry())
+                    if (other.TryGetComponent(out PlayerParryController playerParryController) && playerParryController.GetParry())
                     {
                         playerParryController.ParryEvents?.Invoke();
                         Reflection(other.GetComponentInParent<Player>().GetPlayerTransform);
@@ -56,11 +56,17 @@ namespace Swift_Blade.Pool
                     }
                     
                 }
-            }            
+            }
+            else
+            {
+                deadFlag = true;
+                MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
+                MonoGenericPool<Arrow>.Push(this);
+            }
             
         }
 
-        private void Hit(IDamageble health)
+        private void Hit(IHealth health)
         {
             deadFlag = true;
             health.TakeDamage(new ActionData() { damageAmount = 1, stun = true });

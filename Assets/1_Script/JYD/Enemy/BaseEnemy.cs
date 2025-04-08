@@ -113,7 +113,6 @@ namespace Swift_Blade.Enemy
             
             NavmeshAgent.isStopped = true;
             NavmeshAgent.velocity = Vector3.zero;
-            
         }
 
         public Vector3 GetNextPathPoint()
@@ -138,7 +137,8 @@ namespace Swift_Blade.Enemy
 
         public virtual void DeadEvent()
         {
-            owner?.TryNextEnemyCanSpawn(transform.localPosition,transform.forward);
+            if(owner != null)
+                owner.TryNextEnemyCanSpawn(transform.localPosition,transform.forward);
             
             StopImmediately();
             

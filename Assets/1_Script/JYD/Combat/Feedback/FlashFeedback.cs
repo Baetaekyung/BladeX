@@ -16,16 +16,20 @@ namespace Swift_Blade.Combat.Feedback
         [SerializeField] private SkinnedMeshRenderer[] _meshRenderers;
         private Material[] _originMats;
 
+        private WaitForSeconds _flashDuration;
+        
         private void Start()
         {
             _meshRenderers = root.GetComponentsInChildren<SkinnedMeshRenderer>();
             _originMats = Array.ConvertAll(_meshRenderers, mesh => mesh.material);
+            
+            float waitTime = flashDuration / (flashCount * 2);
+            _flashDuration = new WaitForSeconds(waitTime);
         }
-
+        
         public override void PlayFeedback()
         {
             StartCoroutine(FlashRoutine());
-           
         }
 
         public override void ResetFeedback()
@@ -38,14 +42,12 @@ namespace Swift_Blade.Combat.Feedback
 
         private IEnumerator FlashRoutine()
         {
-            float waitTime = flashDuration / (flashCount * 2);
-            
             for (int i = 0; i < flashCount; i++)
             {
                 SetMaterials(_flashMat);
-                yield return new WaitForSeconds(waitTime);
+                yield return _flashDuration;
                 ResetFeedback();
-                yield return new WaitForSeconds(waitTime);
+                yield return _flashDuration;
             }
         }
 

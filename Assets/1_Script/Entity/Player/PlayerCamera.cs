@@ -1,5 +1,7 @@
+using Swift_Blade.Feeling;
 using Unity.Cinemachine;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Swift_Blade
 {
@@ -9,11 +11,25 @@ namespace Swift_Blade
         [SerializeField] private Transform resultTransform;
         [SerializeField] private Camera playerCamera;
         [SerializeField] private Camera staticCamera;
+        
+        [Header("Level Clear")]
+        [SerializeField] private SceneManagerSO sceneManager;
+        [SerializeField] private CameraFocusSO focusData;
+        [SerializeField] private CameraShakeType cameraShakeType;
+        
+        [Range(0.1f,50f)][SerializeField] private float levelClearCameraDistance;
+        [Range(0.1f,3f)][SerializeField] private float increaseDuration;
+        [Range(0.1f,3f)][SerializeField] private float delay;
+        [Range(0.1f,3f)][SerializeField] private float cameraShakeDelay;
+        [Range(0.1f,3f)][SerializeField] private float decreaseDuration;
+        private float originalCameraDistance;
+        
         private CinemachinePositionComposer cinemachinePositionComposer;
 
         public float CameraTargetDistance { get; set; }
         public float CameraDistance { get; private set; }
         public Quaternion GetResultQuaternion => resultTransform.rotation;
+                
         public Quaternion GetResultQuaternionOnlyY
         {
             get
@@ -31,7 +47,17 @@ namespace Swift_Blade
             cinemachinePositionComposer = GetComponentInChildren<CinemachinePositionComposer>();
             CameraDistance = cinemachinePositionComposer.CameraDistance;
             CameraTargetDistance = cinemachinePositionComposer.CameraDistance;
+        
+            sceneManager.LevelClearEvent += LevelClearCameraEffect;
+
+            originalCameraDistance = CameraDistance;
         }
+
+        private void OnDestroy()
+        {
+            sceneManager.LevelClearEvent -= LevelClearCameraEffect;
+        }
+
         private void FixedUpdate()
         {
             //UpdateCameraDistance();
@@ -46,6 +72,26 @@ const float minValue = 3;
             cinemachinePositionComposer.CameraDistance = CameraDistance;
         }
 
+        private void LevelClearCameraEffect()
+        {
+            Sequence sequence = DOTween.Sequence();
 
+            sequence.Append(
+                DOVirtual.Float(CameraDistance, levelClearCameraDistance, increaseDuration,
+                        x => cinemachinePositionComposer.CameraDistance = x)
+                    .SetEase(Ease.OutSine)
+            );
+            
+            sequence.JoinCallback(()=>DOVirtual.DelayedCall(cameraShakeDelay , ()=> CameraShakeManager.Instance.DoShake(cameraShakeType)));
+            
+            sequence.AppendInterval(delay);
+                
+            sequence.Append(
+                DOVirtual.Float(levelClearCameraDistance, originalCameraDistance, decreaseDuration,
+                        x => cinemachinePositionComposer.CameraDistance = x)
+                    .SetEase(Ease.OutSine)
+            );
+        }
+                
     }
 }

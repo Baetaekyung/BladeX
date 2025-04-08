@@ -17,7 +17,7 @@ namespace Swift_Blade.Combat.Caster
             
             foreach (var hitCollider in hitColliders)
             {
-                if (hitCollider.TryGetComponent(out IDamageble health))
+                if (hitCollider.TryGetComponent(out IHealth health))
                 {
                     ActionData actionData = new ActionData(Vector3.zero,Vector3.zero,1 , true);
                     

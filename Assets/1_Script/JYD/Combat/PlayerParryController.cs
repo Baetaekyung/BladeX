@@ -33,21 +33,23 @@ namespace Swift_Blade.Combat
             ParryEvents.RemoveAllListeners();
         }
         
+        public bool GetParry()
+        {
+            return canParry;
+        }
+        
         public void SetParry(bool _active)
         {
             canParry = _active;
         }
         private bool ParryProbability()
         {
-            float additinoalParryChance = playerStatCompo.GetStat(StatType.PARRY_CHANCE).Value;
+            float additionalParryChance = playerStatCompo.GetStat(StatType.PARRY_CHANCE).Value;
             const float defaultParryChance = 0.5f;
-            float parryChance = defaultParryChance + additinoalParryChance;
+            float parryChance = defaultParryChance + additionalParryChance;
             return parryChance > Random.value;
         }
-        public bool CanParry()
-        {
-            return canParry;
-        }
+        
         
     }
 }

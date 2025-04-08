@@ -1,44 +1,48 @@
-using Swift_Blade.Combat;
-using Swift_Blade.Combat.Caster;
 using UnityEngine;
 
-namespace Swift_Blade.Enemy
+namespace Swift_Blade.Combat.Caster
 {
     public class SpearEnemyCaster : BaseEnemyCaster
     {
         
+        private readonly RaycastHit[] hits = new RaycastHit[5];
+        
         public override bool Cast()
         {
             OnCastEvent?.Invoke();
-    
+
             Vector3 startPos = GetStartPosition();
             Vector3 endPos = startPos + transform.forward * _castingRange;
+            Vector3 direction = (endPos - startPos).normalized;
+            float distance = Vector3.Distance(startPos, endPos);
+            
+            int hitCount = Physics.CapsuleCastNonAlloc(startPos, endPos, _casterRadius, direction, hits, distance, targetLayer);
 
-            Collider[] hitColliders = Physics.OverlapCapsule(startPos, endPos, _casterRadius, targetLayer);
-    
-            bool isHit = hitColliders.Length > 0;
-    
-            if (isHit)
+            for (int i = 0; i < hitCount; i++)
             {
-                Collider hit = hitColliders[0];
-                
-                if (hit.TryGetComponent(out IDamageble health))
+                RaycastHit hit = hits[i];
+
+                if (hit.collider.gameObject == gameObject)
+                    continue; // 자기 자신은 무시
+
+                Debug.Log(hit.collider.gameObject.name);
+
+                if (hit.collider.TryGetComponent(out IHealth health))
                 {
-                    Vector3 hitPoint = hit.ClosestPoint((startPos + endPos) / 2);
-                    Vector3 hitNormal = (hitPoint - startPos).normalized;
+                    Vector3 hitPoint = hit.point;
+                    Vector3 hitNormal = hit.normal;
 
                     ActionData actionData = new ActionData(hitPoint, hitNormal, 1, true);
 
-                    if (CanCurrentAttackParry && hit.TryGetComponent(out PlayerParryController parryController))
+                    if (CanCurrentAttackParry && hit.collider.TryGetComponent(out PlayerParryController parryController))
                     {
-                        bool isLookingAtAttacker = IsFacingEachOther(hit.GetComponentInParent<Player>().GetPlayerTransform , transform);
-                        
+                        bool isLookingAtAttacker = IsFacingEachOther(hit.collider.GetComponentInParent<Player>().GetPlayerTransform, transform);
                         bool canInterval = Time.time > lastParryTime + parryInterval;
-                        
-                        if (parryController.CanParry() && isLookingAtAttacker && canInterval)
+
+                        if (parryController.GetParry() && isLookingAtAttacker && canInterval)
                         {
-                            parryEvents?.Invoke();//적 쪽
-                            parryController.ParryEvents?.Invoke();//플레이어쪽
+                            parryEvents?.Invoke();
+                            parryController.ParryEvents?.Invoke();
                         }
                         else
                         {
@@ -49,14 +53,15 @@ namespace Swift_Blade.Enemy
                     {
                         ApplyDamage(health, actionData);
                     }
+
+                    CanCurrentAttackParry = true;
+                    return true; // 하나 맞추면 바로 true 반환
                 }
             }
 
             CanCurrentAttackParry = true;
-
-            return isHit;
+            return false; // 아무것도 안 맞았을 경우
         }
-
 
         protected override void OnDrawGizmosSelected()
         {
@@ -68,8 +73,6 @@ namespace Swift_Blade.Enemy
             Gizmos.DrawWireSphere(endPos, _casterRadius);
             Gizmos.DrawLine(startPos, endPos);
         }
-        
-        
         
     }
     

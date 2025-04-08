@@ -18,7 +18,7 @@ namespace Swift_Blade.Skill
             ResetSkill();
         }
         
-        public override void UseSkill(Player player, Transform[] targets = null)
+        public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
             if(isOnSkill)return;
             
@@ -36,7 +36,7 @@ namespace Swift_Blade.Skill
             MonoGenericPool<BlueWaveParticle>.Pop().transform.position =  player.GetPlayerTransform.position + new Vector3(0,1,0);
         }
         
-        public override void SkillUpdate(Player player, List<Transform> targets = null)
+        public override void SkillUpdate(Player player, IEnumerable<Transform> targets = null)
         {
             if (isOnSkill)
             {

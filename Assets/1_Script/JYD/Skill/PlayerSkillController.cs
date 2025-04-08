@@ -19,23 +19,25 @@ namespace Swift_Blade.Skill
         {
             private Player _player;
             
-            public event Action<Player,Transform[]> OnAttackEventSkill;
-            public event Action<Player,Transform[]> OnRollingEventSkill;
-            public event Action<Player,Transform[]> OnSpecialEventSkill;
-            public event Action<Player,Transform[]> OnHitEventSkill;
-            public event Action<Player,Transform[]> OnDeadEventSkill;
+            public event Action<Player,IEnumerable<Transform>> OnAttackEventSkill;
+            public event Action<Player,IEnumerable<Transform>> OnRollingEventSkill;
+            public event Action<Player,IEnumerable<Transform>> OnSpecialEventSkill;
+            public event Action<Player,IEnumerable<Transform>> OnHitEventSkill;
+            public event Action<Player,IEnumerable<Transform>> OnDeadEventSkill;
 
             [SerializeField] private SkillData[] skillDatas;
             
             [SerializeField] private List<SkillData> currentSkillList;
             
-            private Dictionary<SkillType, Action<Player,Transform[]>> skillEvents;
+            private Dictionary<SkillType, Action<Player,IEnumerable<Transform>>> skillEvents;
             private ushort maxSlotCount = 4;
             private ushort slotCount = 0;
+
+            public bool canDrawGizmo;
             
             private void Awake()
             {
-                skillEvents = new Dictionary<SkillType, Action<Player,Transform[]>>()
+                skillEvents = new Dictionary<SkillType, Action<Player,IEnumerable<Transform>>>()
                 {
                     { SkillType.Attack, OnAttackEventSkill },
                     { SkillType.Rolling, OnRollingEventSkill },
@@ -51,7 +53,8 @@ namespace Swift_Blade.Skill
             {
                 while (true)
                 {
-                    if (currentSkillList == null) continue;
+                    if (currentSkillList == null) 
+                        continue;
                     
                     for (int i = 0; i < currentSkillList.Count; i++)
                     {
@@ -68,6 +71,16 @@ namespace Swift_Blade.Skill
                     item.SkillUpdate(_player);
                 }
             }*/
+
+            private void OnDrawGizmos()
+            {
+                if(canDrawGizmo== false)return;
+
+                foreach (var item in skillDatas)
+                {
+                    item.Render();   
+                }
+            }
 
             public void EntityComponentAwake(Entity entity)
             {
@@ -113,15 +126,13 @@ namespace Swift_Blade.Skill
                 }
             }
                 
-            public void UseSkill(SkillType type,Transform[] targets = null)
+            public void UseSkill(SkillType type,IEnumerable<Transform> targets = null)
             {
                 if (skillEvents.ContainsKey(type))
                 {
                     skillEvents[type]?.Invoke(_player,targets);
                 }
             }
-            
-            
         }
 }
         

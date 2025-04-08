@@ -1,8 +1,6 @@
-using System.Collections;
-using Swift_Blade.Feeling;
-using Unity.Cinemachine;
-using DG.Tweening;
+using Swift_Blade.Pool;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Swift_Blade.Level.Door
 {
@@ -10,19 +8,16 @@ namespace Swift_Blade.Level.Door
     {
         [SerializeField] private SceneManagerSO sceneManager;
         [SerializeField] private NodeList nodeList;
+        [SerializeField] private PoolPrefabMonoBehaviourSO dustPrefab;
         
         [SerializeField] private bool isDefaultPortal;
         
-        [Range(0.1f , 10)] [SerializeField] private float delay;
-        [Range(0.1f , 10)] [SerializeField] private float duration;
+        [Range(0.1f , 10)] [SerializeField] private float enterDelay;
+        [Range(0.1f , 10)] [SerializeField] private float enterDuration;
         
         [Space]
         
-        [SerializeField] private CameraShakeType cameraShakeType;
-        
         [SerializeField] private Transform door;
-        [SerializeField] private CinemachineCamera cinemachineCamera;
-        
         [SerializeField] private string sceneName;
         
         private void Start()
@@ -51,8 +46,8 @@ namespace Swift_Blade.Level.Door
         {
             door.transform.position -= new Vector3(0,2.6f , 0);
         }*/
-
-        public IEnumerator UpDoor(float doorMoveDelay = 0)
+        
+        /*public IEnumerator UpDoor(float doorMoveDelay = 0)
         {
             bool isFinished = false;
             
@@ -66,6 +61,18 @@ namespace Swift_Blade.Level.Door
             sequence.OnComplete(() => isFinished = true); 
 
             yield return new WaitUntil(() => isFinished);
+        }*/
+        
+        public void UpDoor()
+        {
+            bool isFinished = false;
+            Sequence sequence = DOTween.Sequence();
+            sequence.AppendInterval(enterDelay);
+            sequence.Append(door.DOMoveY(transform.position.y + 0.25f, enterDuration));
+            sequence.OnComplete(() => isFinished = true);
+
+            DustUpParticle dustParticle = MonoGenericPool<DustUpParticle>.Pop();
+            dustParticle.transform.position = transform.position;
         }
         
         public void Interact()
@@ -77,6 +84,6 @@ namespace Swift_Blade.Level.Door
         {
             sceneName = _sceneName;
         }
-                
+        
     }
 }

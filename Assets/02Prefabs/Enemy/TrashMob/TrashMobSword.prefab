@@ -31851,7 +31851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c119b932384cc3749ba253393b204855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultAttackMoveSpeed: 1
+  defaultAttackMoveSpeed: 3.5
   animationEnd: 0
   isManualRotate: 0
   isManualMove: 0
@@ -31899,9 +31899,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  maxHealth: 10
-  currentHealth: 0
+  maxHealth: 9
   isDead: 0
+  currentHealth: 0
   BehaviorGraphAgent: {fileID: 0}
   changeBossState: {fileID: 0}
   isKnockback: 0
@@ -32066,6 +32066,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edc02f1693843e78cb87a933589c9f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _casterRadius: 0.98
+  _casterInterpolation: 0.32
+  _castingRange: 1.28
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -32075,9 +32078,6 @@ MonoBehaviour:
   OnCastEvent:
     m_PersistentCalls:
       m_Calls: []
-  _casterRadius: 0.98
-  _casterInterpolation: 0.32
-  _castingRange: 1.28
   CanCurrentAttackParry: 1
   parryEvents:
     m_PersistentCalls:
