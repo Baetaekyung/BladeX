@@ -14,9 +14,9 @@ public partial class FaceToTargetAction : Action
 
     protected override Status OnStart()
     {
-        Vector2 a = Self.Value.transform.position;
+        Vector3 a = Self.Value.transform.position;
         a.y = 0f;
-        Vector2 b = Target.Value.position;
+        Vector3 b = Target.Value.position;
         b.y = 0f;
 
         Self.Value.transform.rotation = Quaternion.LookRotation(b - a);
