@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Swift_Blade.Feeling;
 
 namespace Swift_Blade
 {
@@ -13,6 +14,11 @@ namespace Swift_Blade
         [field: SerializeField] public float AdditionalNormalDamage { get; private set; }
         [field: SerializeField] public float AdditionalHeavyDamage { get; private set; }
         [field: SerializeField] public float RollAttackDamage { get; private set; }
+
+        [field: Header("Feeling")]
+        [field: SerializeField] public CameraShakeType WeaponCameraShkaeType { get; private set; }
+        [field: SerializeField] public CameraFocusSO WeaponCameraFocus { get; private set; }
+        [field: SerializeField] public HitStopSO WeaponHitStop { get; private set; }
 
         [field: Header("Setting")]
         //[field: SerializeField] public GameObject LeftHandUsage { get; private set; }

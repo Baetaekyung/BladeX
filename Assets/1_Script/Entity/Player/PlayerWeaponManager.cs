@@ -10,6 +10,8 @@ namespace Swift_Blade
         //note : bool check if player is initialized in this scene 
         // player is not initialized when new scene is loaded
 
+        private bool isInitializedInThisScene = false;
+
         [SerializeField] private Weapon defaultWeapon;
         [SerializeField] private AudioTrigger audioTrigger;
 
@@ -46,6 +48,7 @@ namespace Swift_Blade
         private void Awake()
         {
             Debug.Assert(defaultWeapon != null, "default weapon is null");
+            isInitializedInThisScene = true;
         }
         void IEntityComponent.EntityComponentAwake(Entity entity)
         {
@@ -68,7 +71,7 @@ namespace Swift_Blade
         {
             Debug.Assert(weapon != null, "weapon is null");
 
-            if (CurrentWeapon == weapon)
+            if (!isInitializedInThisScene && CurrentWeapon == weapon)
             {
                 Debug.LogWarning("weapon is already equipped");
                 return;
@@ -114,6 +117,8 @@ namespace Swift_Blade
             playerDamageCaster.CastingRange = weapon.CastRange;
 
             playerFsm.ChangeState(PlayerStateEnum.Move);
+
+            isInitializedInThisScene = true;
 
             return;
 
