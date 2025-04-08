@@ -93,10 +93,10 @@ namespace Swift_Blade.FSM.States
             // 0 ~ 0.4 (roll anim time)
             float delta = TimeSinceEntered * 3f;
             //delta = Mathf.Min(delta, 1);//doesntmatter
-            float multiplier = 0.5f; //Mathf.Lerp(0.1f, 0.05f, delta);
+            float multiplier = 1;// Mathf.Lerp(0.1f, 0.09f, delta);
 
             Vector3 targetVector = inputClamped;
-            targetVectorInterpoated = Vector3.MoveTowards(targetVectorInterpoated, targetVector, Time.deltaTime * 1f);
+            targetVectorInterpoated = Vector3.MoveTowards(targetVectorInterpoated, targetVector, Time.deltaTime * 0.15f);
             movementVectorInterpolated = Vector3.MoveTowards(movementVectorInterpolated, targetVectorInterpoated, multiplier * Time.deltaTime);
             Vector3 inversedForward = -player.GetPlayerTransform.forward;
             playerMovement.SetAdditionalVelocity(inversedForward * movementPenalty);

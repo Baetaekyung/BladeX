@@ -79,7 +79,6 @@ namespace Swift_Blade.FSM.States
                 else
                     OnComboFail();
             }
-            UI_DebugPlayer.DebugText(2, allowListening, "allowLs", DBG_UI_KEYS.Keys_PlayerMovement);
         }
         private void OnComboFail()
         {

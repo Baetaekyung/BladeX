@@ -20,6 +20,7 @@ namespace Swift_Blade
         private void AudioPlayWithType(EAudioType type)
         {
             BaseAudioSO audioCollection = AudioType[type];
+            if (audioCollection == null) return;
             AudioManager.PlayWithInit(audioCollection.GetAudio(), true);
         }
     }

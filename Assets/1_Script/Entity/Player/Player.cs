@@ -213,11 +213,6 @@ namespace Swift_Blade
             //Debug.DrawRay(Vector3.zero + Vector3.up * 0.9f, rrr, Color.red);
             //Debug.DrawRay(Vector3.zero + Vector3.up * 1.2f, finalRr, Color.blue);
 
-            UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
-            UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
-            UI_DebugPlayer.DebugText(2, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DAMAGE).Value, "atkBase");
-            UI_DebugPlayer.DebugText(0, playerStateMachine.GetState().ToString(), "state", DBG_UI_KEYS.Keys_PlayerAction);
-            //UI_DebugPlayer.DebugText(3, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).Value, "dec");
 
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -242,7 +237,6 @@ namespace Swift_Blade
                     }
                 }
             }
-
             Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))
                 UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
@@ -252,7 +246,6 @@ namespace Swift_Blade
             const int radius = 2;
 
             int hitCount = Physics.SphereCastNonAlloc(playerTransform.position, radius, Vector3.up, buffer_overlapSphereResult, 0.1f, lm_interactable);
-            UI_DebugPlayer.DebugText(5, hitCount, "length");
             interactable = null;
 
             if (hitCount > 0)
