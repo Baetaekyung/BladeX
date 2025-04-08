@@ -18,7 +18,9 @@ namespace Swift_Blade.Enemy.Throw
         {
             base.DeadEvent();
             _throwEnemyAnimationController.SetStone(null);
-        }       
-        
+        }
+
+        public float GetSpeed() => moveSpeed;
+
     }
 }

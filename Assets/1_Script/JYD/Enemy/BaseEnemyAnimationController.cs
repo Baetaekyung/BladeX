@@ -13,8 +13,8 @@ namespace Swift_Blade.Enemy
         protected BaseEnemy enemy;
         protected ICasterAble caster;
 
-        [SerializeField] [Range(1,60)] private float defaultAttackMoveSpeed;
-        private float attackMoveSpeed;
+        [SerializeField] [Range(1,60)] protected float defaultAttackMoveSpeed;
+        protected float attackMoveSpeed;
         
         public float AttackMoveSpeed => attackMoveSpeed;
         
@@ -69,7 +69,7 @@ namespace Swift_Blade.Enemy
 
             NavMeshAgent.enabled = false;
         }
-        public void StopManualMove()
+        public virtual void StopManualMove()
         {
             attackMoveSpeed = defaultAttackMoveSpeed;
 
