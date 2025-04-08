@@ -10958,6 +10958,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1011d742f573585428f9f82be39fed6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _casterRadius: 1.25
+  _casterInterpolation: 0.6
+  _castingRange: 2.7
   targetLayer:
     serializedVersion: 2
     m_Bits: 640
@@ -11041,9 +11044,6 @@ MonoBehaviour:
   OnCastEvent:
     m_PersistentCalls:
       m_Calls: []
-  _casterRadius: 1.25
-  _casterInterpolation: 0.6
-  _castingRange: 2.7
   _visualTrm: {fileID: 4103815729079207692}
   _playerMovement: {fileID: 8177067181426564885}
   damageStat: {fileID: 11400000, guid: addd3b36185f6454791024df16a78c27, type: 2}
@@ -37644,11 +37644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79020367695748a4b9812884ba6ef3f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _statCompo: {fileID: 814462047537304845}
-  _healthStat: {fileID: 11400000, guid: 62e0b58eb0b17624eada6e77313bb27e, type: 2}
-  OnDeadEvent:
-    m_PersistentCalls:
-      m_Calls: []
   OnHitEvent:
     m_PersistentCalls:
       m_Calls:
@@ -37714,6 +37709,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  maxHealth: 0
+  isDead: 0
   OnHealEvent:
     m_PersistentCalls:
       m_Calls:
@@ -37729,6 +37729,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _statCompo: {fileID: 814462047537304845}
+  healthStat: {fileID: 11400000, guid: 62e0b58eb0b17624eada6e77313bb27e, type: 2}
 --- !u!114 &4253624694102172301
 MonoBehaviour:
   m_ObjectHideFlags: 0
