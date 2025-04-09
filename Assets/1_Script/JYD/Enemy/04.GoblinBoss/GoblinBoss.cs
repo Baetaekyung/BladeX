@@ -20,6 +20,8 @@ namespace Swift_Blade.Enemy.Boss.Goblin
         protected override void Start()
         {
             base.Start();
+            
+            player = target.GetComponent<Player>().GetPlayerTransform;
             summons = new List<GoblinEnemyInBoss>();
             goblinBossVFXPlayer = GetComponent<GoblinBossVFXPlayer>();
         }

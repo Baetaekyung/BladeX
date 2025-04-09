@@ -1,7 +1,7 @@
 using Swift_Blade.Combat.Health;
 using UnityEngine;
 
-namespace Swift_Blade
+namespace Swift_Blade.Level.Obstacle
 {
     public class FireTrap : MonoBehaviour
     {

@@ -9,10 +9,12 @@ namespace Swift_Blade.Enemy.Goblin
         protected override void Start()
         {
             base.Start();
-            player = target.GetComponent<Player>().GetPlayerTransform;
+            
             goblinAnimator = baseAnimationController as GoblinAnimator;
+            
+            player = target.GetComponent<Player>().GetPlayerTransform;
         }
-
+        
         protected override void Update()
         {
             base.Update();

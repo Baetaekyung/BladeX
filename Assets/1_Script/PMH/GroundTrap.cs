@@ -3,7 +3,7 @@ using Swift_Blade.Combat.Health;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Swift_Blade
+namespace Swift_Blade.Level.Obstacle
 {
     public class GroundTrap : MonoBehaviour
     {
@@ -59,7 +59,7 @@ namespace Swift_Blade
             if (!isActive) return;
             if (other.TryGetComponent(out BaseEntityHealth health))
             {
-                health.TakeDamage(new ActionData { damageAmount = 1, stun = true });
+                health.TakeDamage(new ActionData { damageAmount = 1, stun = health is PlayerHealth });
             }
         }
         //IEnumerator ActiveCoroutine()
