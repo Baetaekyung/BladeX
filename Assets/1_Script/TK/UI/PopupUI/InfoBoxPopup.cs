@@ -1,8 +1,7 @@
-using DG.Tweening;
 using Swift_Blade.UI;
-using System.Text;
-using TMPro;
 using UnityEngine;
+using DG.Tweening;
+using TMPro;
 
 namespace Swift_Blade
 {
@@ -11,6 +10,8 @@ namespace Swift_Blade
         [SerializeField] private float minPosY;
         [SerializeField] private float maxPosY;
 
+        [SerializeField] [Range(0.1f, 1)] private float upDuration;
+        
         [Header("Info")]
         [SerializeField] private TextMeshProUGUI infoText;
 
@@ -28,8 +29,8 @@ namespace Swift_Blade
             if(rectTrans != null)
             {
                 rectTrans.DOKill();
-
-                rectTrans.DOLocalMoveY(maxPosY, fadeTime)
+                
+                rectTrans.DOLocalMoveY(maxPosY, upDuration)
                     .SetEase(Ease.OutCirc)
                     .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
             }
@@ -44,7 +45,7 @@ namespace Swift_Blade
 
             if(cG != null)
             {
-                cG.DOFade(0f, 0.5f).SetEase(Ease.InCirc).OnComplete(() =>
+                cG.DOFade(0f, fadeTime).SetEase(Ease.InCirc).OnComplete(() =>
                 {
                     rectTrans.localPosition = new Vector3(
                     rectTrans.localPosition.x,
@@ -52,7 +53,7 @@ namespace Swift_Blade
                     rectTrans.localPosition.z);
                 }).SetLink(gameObject, LinkBehaviour.KillOnDestroy);
             }
-
+            
             PopupManager.Instance.InfoBoxRemain = false;
             _raycaster.enabled = false;
         }

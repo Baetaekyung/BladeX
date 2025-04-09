@@ -24,6 +24,9 @@ namespace Swift_Blade.Combat.Health
         [Header("Knockback info")]
         public bool isKnockback = false;
         
+        private const float DAMAGE_INTERVAL = 0.1f;
+        private float lastDamageTime;
+        
         protected virtual void Start()
         {
             currentHealth = maxHealth;
@@ -43,7 +46,7 @@ namespace Swift_Blade.Combat.Health
             {
                 Debug.LogError("Enemy has Not State Change");
             }
-                    
+            
         }
 
         private void OnDestroy()
@@ -53,7 +56,9 @@ namespace Swift_Blade.Combat.Health
         
         public override void TakeDamage(ActionData actionData)
         {
-            if(isDead)return;
+            if(isDead || !IsDamageTime())return;
+            
+            lastDamageTime = Time.time; 
             
             currentHealth -= actionData.damageAmount;
             OnChangeHealthEvent?.Invoke(GetHealthPercent());
@@ -78,6 +83,11 @@ namespace Swift_Blade.Combat.Health
             base.Dead();
         }
 
+        private bool IsDamageTime()
+        {
+            return Time.time > lastDamageTime + DAMAGE_INTERVAL;
+        }
+        
         private int AddRandomCoin()
         {
             return Random.Range(1,10);

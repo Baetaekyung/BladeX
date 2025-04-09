@@ -7,9 +7,9 @@ namespace Swift_Blade
     {
         private void OnTriggerStay(Collider other)
         {
-            if (other.TryGetComponent(out PlayerHealth playerHealth))
+            if (other.TryGetComponent(out BaseEntityHealth baseEntityHealth))
             {
-                playerHealth.TakeDamage(new ActionData { damageAmount = 1, stun = false });
+                baseEntityHealth.TakeDamage(new ActionData { damageAmount = 1, stun = false });
             }
         }
     }

@@ -5,11 +5,11 @@ namespace Swift_Blade.Enemy.Goblin
     public class BaseGoblin : BaseEnemy
     {
         protected GoblinAnimator goblinAnimator;
-
+        protected Transform player;
         protected override void Start()
         {
             base.Start();
-            
+            player = target.GetComponent<Player>().GetPlayerTransform;
             goblinAnimator = baseAnimationController as GoblinAnimator;
         }
 
@@ -19,7 +19,7 @@ namespace Swift_Blade.Enemy.Goblin
             
             if (goblinAnimator.isManualKnockback && !DetectBackwardObstacle() && !baseHealth.isKnockback)
             {
-                attackDestination = transform.position + -transform.forward;
+                attackDestination = transform.position + player.forward;
                 
                 transform.position = Vector3.MoveTowards(transform.position, attackDestination,
                     goblinAnimator.knockbackSpeed * Time.deltaTime);
