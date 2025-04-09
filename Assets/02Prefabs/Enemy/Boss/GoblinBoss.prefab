@@ -23935,18 +23935,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edc02f1693843e78cb87a933589c9f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer:
+  _casterRadius: 2.47
+  _casterInterpolation: 1.2
+  _castingRange: 3.69
+  whatIsTarget:
     serializedVersion: 2
     m_Bits: 64
+  whatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 0
   OnCastDamageEvent:
     m_PersistentCalls:
       m_Calls: []
   OnCastEvent:
     m_PersistentCalls:
       m_Calls: []
-  _casterRadius: 2.47
-  _casterInterpolation: 1.2
-  _castingRange: 3.69
   CanCurrentAttackParry: 1
   parryEvents:
     m_PersistentCalls:
@@ -32236,8 +32239,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   maxHealth: 50
-  currentHealth: 0
   isDead: 0
+  currentHealth: 0
   BehaviorGraphAgent: {fileID: 6837282425248631878}
   changeBossState: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
   isKnockback: 0
@@ -32263,7 +32266,7 @@ MonoBehaviour:
   checkForward: {fileID: 3854553854343625318}
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 22528
+    m_Bits: 30720
   maxDistance: 1.6
   showGizmo: 1
   weapon: {fileID: 0}

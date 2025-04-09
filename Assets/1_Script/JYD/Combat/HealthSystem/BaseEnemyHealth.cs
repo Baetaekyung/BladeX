@@ -1,13 +1,14 @@
 using System.Collections;
+using Swift_Blade.Enemy;
 using UnityEngine.AI;
 using Unity.Behavior;
 using UnityEngine;
 using System;
-using Swift_Blade.Enemy;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat.Health
 {
-    public class BaseEnemyHealth : BaseEntityHealth,IHealth
+    public class BaseEnemyHealth : BaseEntityHealth, IHealth
     {
         public event Action<float> OnChangeHealthEvent; 
         public float currentHealth;
@@ -15,7 +16,7 @@ namespace Swift_Blade.Combat.Health
         [Space]
         [SerializeField] protected BehaviorGraphAgent BehaviorGraphAgent;
         [SerializeField] protected ChangeBossState changeBossState;
-
+                        
         private BaseEnemyAnimationController animationController;
         private Rigidbody enemyRigidbody;
         private NavMeshAgent navMeshAgent;
@@ -30,7 +31,7 @@ namespace Swift_Blade.Combat.Health
             navMeshAgent = GetComponent<NavMeshAgent>();
             enemyRigidbody = GetComponent<Rigidbody>();
             BehaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
-            animationController = GetComponent<BaseEnemyAnimationController>();
+            animationController = GetComponentInChildren<BaseEnemyAnimationController>();
             
             OnHitEvent.AddListener(StartKnockback);
             
@@ -42,7 +43,7 @@ namespace Swift_Blade.Combat.Health
             {
                 Debug.LogError("Enemy has Not State Change");
             }
-            
+                    
         }
 
         private void OnDestroy()
@@ -70,7 +71,19 @@ namespace Swift_Blade.Combat.Health
             
         }
 
-        public virtual void TakeHeal(float amount)
+        public override void Dead()
+        {
+            InventoryManager.Inventory.AddCoin(AddRandomCoin());
+                        
+            base.Dead();
+        }
+
+        private int AddRandomCoin()
+        {
+            return Random.Range(1,10);
+        } 
+
+        public override void TakeHeal(float amount)
         {
             currentHealth += amount;
             currentHealth = Mathf.Min(currentHealth , maxHealth);

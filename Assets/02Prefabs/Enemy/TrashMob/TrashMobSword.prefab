@@ -31899,6 +31899,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8526537254496560909}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.CoinBurstFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   maxHealth: 9
   isDead: 0
   currentHealth: 0
@@ -31927,7 +31940,7 @@ MonoBehaviour:
   checkForward: {fileID: 740264442749277415}
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 22528
+    m_Bits: 30720
   maxDistance: 1.26
   showGizmo: 0
   weapon: {fileID: 0}
@@ -32069,9 +32082,12 @@ MonoBehaviour:
   _casterRadius: 0.98
   _casterInterpolation: 0.32
   _castingRange: 1.28
-  targetLayer:
+  whatIsTarget:
     serializedVersion: 2
     m_Bits: 64
+  whatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 22528
   OnCastDamageEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -58833,6 +58849,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1861828440522044926}
   - component: {fileID: 2840029255627781192}
+  - component: {fileID: 8526537254496560909}
   m_Layer: 7
   m_Name: Feedback
   m_TagString: Untagged
@@ -58872,6 +58889,20 @@ MonoBehaviour:
   flashCount: 1
   _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
   _meshRenderers: []
+--- !u!114 &8526537254496560909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7555956772869858807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b3d80fd39e73e40a41f8361d3c3d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinBurst: {fileID: 11400000, guid: 9d4e0c6884558134e9d04e669da364ed, type: 2}
+  random: 0
 --- !u!1 &7572378662027066068
 GameObject:
   m_ObjectHideFlags: 0

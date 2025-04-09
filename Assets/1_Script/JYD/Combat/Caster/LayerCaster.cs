@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Swift_Blade.Combat.Caster
 {
@@ -9,7 +10,8 @@ namespace Swift_Blade.Combat.Caster
         [SerializeField] [Range(0f, 10f)] protected float _casterInterpolation = 0.5f;
         [SerializeField] [Range(0f, 10f)] protected float _castingRange = 1f;
         
-        public LayerMask targetLayer;
+        [FormerlySerializedAs("targetLayer")] public LayerMask whatIsTarget;
+        public LayerMask whatIsObstacle;
         public UnityEvent<ActionData> OnCastDamageEvent;
         public UnityEvent OnCastEvent;
         public abstract bool Cast();
@@ -24,6 +26,21 @@ namespace Swift_Blade.Combat.Caster
         {
             return transform.position + transform.forward * -_casterInterpolation * 2;
         }
+
+        protected bool IsNotObstacleLine()
+        {
+            Vector3 direction = transform.forward;
+            Vector3 start = GetStartPosition() + new Vector3(0, 0.25f, 0);
+            float distance = _castingRange;
+
+            if (Physics.Raycast(start, direction, distance, whatIsObstacle))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        
         
         protected virtual void OnDrawGizmosSelected()
         {

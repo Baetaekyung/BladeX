@@ -15,7 +15,7 @@ namespace Swift_Blade.Skill
             if (playerHealth == null)
                 playerHealth = player.GetPlayerHealth;
             
-            if(CheckSkill())            
+            if(TryUseSkill())            
                 playerHealth.TakeHeal(healAmount);
         }
         

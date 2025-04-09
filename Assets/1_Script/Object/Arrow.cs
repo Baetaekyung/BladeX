@@ -41,34 +41,43 @@ namespace Swift_Blade.Pool
 
         private void OnTriggerEnter(Collider other)
         {
-            if ((whatIsTarget & (1 << other.gameObject.layer)) != 0 && deadFlag == false)
+            if(deadFlag)return;
+            
+            if ((whatIsTarget & (1 << other.gameObject.layer)) != 0)
             {
                 if (other.gameObject.TryGetComponent(out IHealth health))
                 {
-                    if (other.TryGetComponent(out PlayerParryController playerParryController) && playerParryController.GetParry())
-                    {
-                        playerParryController.ParryEvents?.Invoke();
-                        Reflection(other.GetComponentInParent<Player>().GetPlayerTransform);
-                    }
-                    else
-                    {
-                        Hit(health);
-                    }
-                    
+                    TryParry(other, health);
+                }
+                else
+                {
+                    Hit(health);
                 }
             }
             else
             {
-                deadFlag = true;
                 MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
                 MonoGenericPool<Arrow>.Push(this);
             }
             
+            deadFlag = true;
+        }
+
+        private void TryParry(Collider other, IHealth health)
+        {
+            if (other.TryGetComponent(out PlayerParryController playerParryController) && playerParryController.GetParry())
+            {
+                playerParryController.ParryEvents?.Invoke();
+                Reflection(other.GetComponentInParent<Player>().GetPlayerTransform);
+            }
+            else
+            {
+                Hit(health);
+            }
         }
 
         private void Hit(IHealth health)
         {
-            deadFlag = true;
             health.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
                         
             MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;

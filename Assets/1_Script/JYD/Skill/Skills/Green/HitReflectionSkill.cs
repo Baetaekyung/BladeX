@@ -41,7 +41,7 @@ namespace Swift_Blade.Skill
                 }
             }
             
-            if (CheckSkill())
+            if (TryUseSkill())
             {
                 if (closeTarget != null && closeTarget.TryGetComponent(out BaseEnemyHealth health))
                 {

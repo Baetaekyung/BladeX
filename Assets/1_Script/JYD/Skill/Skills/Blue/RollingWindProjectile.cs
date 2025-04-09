@@ -20,7 +20,7 @@ namespace Swift_Blade.Skill
         
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
-            if(CheckSkill() == false)return;
+            if(TryUseSkill() == false)return;
             
             if (directions == null || directions.Length != skillCount)
             {

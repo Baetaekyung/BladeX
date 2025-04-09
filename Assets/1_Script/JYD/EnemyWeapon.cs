@@ -14,7 +14,7 @@ namespace Swift_Blade.Enemy
             gameObject.AddComponent<BoxCollider>();
             gameObject.AddComponent<Rigidbody>();
         }
-
+        
         private void Start()
         {
             StartCoroutine(RotateOverTime());
@@ -32,7 +32,7 @@ namespace Swift_Blade.Enemy
             while (elapsed < rotateDuration)
             {
                 float delta = Time.deltaTime;
-                transform.Rotate(randomAxis * (rotateSpeed * delta), Space.World);
+                transform.Rotate(randomAxis * (rotateSpeed * delta), Space.Self);
                 elapsed += delta;
                 yield return null;
             }

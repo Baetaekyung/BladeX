@@ -59,7 +59,7 @@ public class MoveToTargetAction : Action
     private bool IsNotObstacleLine()
     {
         Vector3 direction = (Target.Value.transform.position - Agent.Value.transform.position);
-        Vector3 start = Agent.Value.transform.position + new Vector3(0, 1f, 0);
+        Vector3 start = Agent.Value.transform.position + new Vector3(0, 0.25f, 0);
         
         //Debug.DrawRay(start, direction * 100, Color.red);
         

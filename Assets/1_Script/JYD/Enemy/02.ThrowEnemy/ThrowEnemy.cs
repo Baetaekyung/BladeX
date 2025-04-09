@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-
+﻿
 namespace Swift_Blade.Enemy.Throw
 {
     public class ThrowEnemy :  BaseEnemy
@@ -13,12 +12,14 @@ namespace Swift_Blade.Enemy.Throw
             _throwEnemyAnimationController = baseAnimationController as ThrowAnimatorController;
             _throwEnemyAnimationController.target = target;
         }
-
+        
+        public float GetSpeed() => moveSpeed;
+                
         public override void DeadEvent()
         {
             base.DeadEvent();
             _throwEnemyAnimationController.SetStone(null);
-        }       
+        }
         
     }
 }

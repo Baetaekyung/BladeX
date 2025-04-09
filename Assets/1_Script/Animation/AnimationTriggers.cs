@@ -33,7 +33,7 @@ namespace Swift_Blade
 
         public event Action OnRotateAllowSetEvent;
         public event Action OnRotateDisallowSetEvent;
-
+        
         public event Action<AudioSO> OnAudioPlayEvent;
         public event Action<EAudioType> OnAudioPlayWithTypeEvent;
 
