@@ -83,7 +83,7 @@ namespace Swift_Blade.Combat.Health
             return Random.Range(1,10);
         } 
 
-        public virtual void TakeHeal(float amount)
+        public override void TakeHeal(float amount)
         {
             currentHealth += amount;
             currentHealth = Mathf.Min(currentHealth , maxHealth);
