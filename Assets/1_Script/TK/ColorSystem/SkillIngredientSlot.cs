@@ -18,8 +18,9 @@ namespace Swift_Blade
 
         public SkillData GetSkillData => _skillData;
 
-        public void UseSkillData()
+        public void DeleteSkillData()
         {
+            //Remove from save data and updateDatas
             SkillManager.saveDatas.RemoveInventoryData(_skillData);
             SkillManager.Instance.UpdateDatas();
 
@@ -37,8 +38,10 @@ namespace Swift_Blade
             if (data == null)
             {
                 SetSlotImage(null);
+
                 _skillData = null;
                 colorInfoIcon.color = new Color(1, 1, 1, 0.7f);
+
                 return;
             }
 
