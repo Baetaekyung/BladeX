@@ -80,7 +80,7 @@ namespace Swift_Blade.Level
             chestLid.DORotate(openLidAngle, 0.3f)
                 .SetEase(Ease.OutQuad);
 
-            rigidbody.DOJump(rigidbody.position + Vector3.up * 0.4f, 0.1f, 1, 0.15f)
+            rigidbody.DOJump(rigidbody.position + Vector3.up * 0.35f, 0.1f, 1, 0.15f)
                 .SetEase(Ease.OutExpo)
                 .SetDelay(0.3f);
             rigidbody.DORotate(rigidbody.rotation.eulerAngles + new Vector3(5, 0, 0), 0.1f);
@@ -88,7 +88,7 @@ namespace Swift_Blade.Level
 
         private void InstItemOrb()
         {
-            Vector3 spawnPos = transform.localPosition + new Vector3(0, 1f, 0);
+            Vector3 spawnPos = transform.localPosition + new Vector3(0, 0.7f, 0);
             BaseOrb orbInstance = Instantiate(orb, spawnPos, Quaternion.identity);
             orbInstance.SetColor((ColorType)Random.Range(0, 3));
 
