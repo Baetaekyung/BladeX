@@ -1,10 +1,12 @@
+using Swift_Blade.FSM.States;
+
 namespace Swift_Blade.Enemy.Boss
 {
     public class SorcererBoss : BaseEnemy
     {
-        protected override void Update()
+        public void ResetParry()
         {
-            
+            BasePlayerState.parryable = true;
         }
     }
 }
