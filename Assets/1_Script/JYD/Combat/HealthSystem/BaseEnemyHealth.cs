@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat.Health
 {
-    public class BaseEnemyHealth : BaseEntityHealth,IHealth
+    public class BaseEnemyHealth : BaseEntityHealth, IHealth
     {
         public event Action<float> OnChangeHealthEvent; 
         public float currentHealth;
@@ -31,7 +31,7 @@ namespace Swift_Blade.Combat.Health
             navMeshAgent = GetComponent<NavMeshAgent>();
             enemyRigidbody = GetComponent<Rigidbody>();
             BehaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
-            animationController = GetComponent<BaseEnemyAnimationController>();
+            animationController = GetComponentInChildren<BaseEnemyAnimationController>();
             
             OnHitEvent.AddListener(StartKnockback);
             
@@ -83,7 +83,7 @@ namespace Swift_Blade.Combat.Health
             return Random.Range(1,10);
         } 
 
-        public virtual void TakeHeal(float amount)
+        public override void TakeHeal(float amount)
         {
             currentHealth += amount;
             currentHealth = Mathf.Min(currentHealth , maxHealth);
