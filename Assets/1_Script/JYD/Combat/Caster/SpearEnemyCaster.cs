@@ -9,6 +9,11 @@ namespace Swift_Blade.Combat.Caster
         
         public override bool Cast()
         {
+            if (IsNotObstacleLine() == false)
+            {
+                return false;
+            }
+            
             OnCastEvent?.Invoke();
 
             Vector3 startPos = GetStartPosition();
@@ -16,7 +21,7 @@ namespace Swift_Blade.Combat.Caster
             Vector3 direction = (endPos - startPos).normalized;
             float distance = Vector3.Distance(startPos, endPos);
             
-            int hitCount = Physics.CapsuleCastNonAlloc(startPos, endPos, _casterRadius, direction, hits, distance, targetLayer);
+            int hitCount = Physics.CapsuleCastNonAlloc(startPos, endPos, _casterRadius, direction, hits, distance, whatIsTarget);
 
             for (int i = 0; i < hitCount; i++)
             {

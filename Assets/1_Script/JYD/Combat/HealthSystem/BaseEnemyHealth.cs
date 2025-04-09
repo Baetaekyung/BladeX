@@ -4,6 +4,7 @@ using UnityEngine.AI;
 using Unity.Behavior;
 using UnityEngine;
 using System;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat.Health
 {
@@ -65,10 +66,22 @@ namespace Swift_Blade.Combat.Health
             if (currentHealth <= 0)
             {
                 TriggerState(BossState.Dead);
-                base.Dead();
+                Dead();
             }
             
         }
+
+        public override void Dead()
+        {
+            InventoryManager.Inventory.AddCoin(AddRandomCoin());
+                        
+            base.Dead();
+        }
+
+        private int AddRandomCoin()
+        {
+            return Random.Range(1,10);
+        } 
 
         public virtual void TakeHeal(float amount)
         {

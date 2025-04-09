@@ -14,7 +14,7 @@ namespace Swift_Blade.Enemy
         [Header("Movement Info")]
         [Range(0,30)][SerializeField] protected float moveSpeed;
         [Range(0,20)][SerializeField] protected float rotateSpeed;
-        [Range(0, 5)] [SerializeField] protected float stopDistance;
+        [Range(-1, 5)] [SerializeField] protected float stopDistance;
         [SerializeField] private LayerMask whatIsGround;
         
         [Header("Detect Forward Info")]

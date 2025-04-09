@@ -11,13 +11,13 @@ namespace Swift_Blade
         
         private void Start()
         {
-            MonoGenericPool<ParrySignParticle>.Initialize(unParrySignParticle);
+            MonoGenericPool<UnParryParticle>.Initialize(unParrySignParticle);
         }
         
         public void PlayUnParrySign()
         {
-            ParrySignParticle parrySignParticle = MonoGenericPool<ParrySignParticle>.Pop();
-            parrySignParticle.transform.position = unParrySignParticleTrm.position;
+            UnParryParticle unParryParticle = MonoGenericPool<UnParryParticle>.Pop();
+            unParryParticle.transform.position = unParrySignParticleTrm.position;
             
         }
         

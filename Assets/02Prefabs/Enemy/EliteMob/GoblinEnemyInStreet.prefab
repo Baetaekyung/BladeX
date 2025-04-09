@@ -16724,6 +16724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinBurst: {fileID: 11400000, guid: 9d4e0c6884558134e9d04e669da364ed, type: 2}
+  random: 1
 --- !u!1 &3332799616830144712
 GameObject:
   m_ObjectHideFlags: 0
@@ -32499,7 +32500,7 @@ MonoBehaviour:
   checkForward: {fileID: 2527107723555165245}
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 22528
+    m_Bits: 30720
   maxDistance: 1.4
   showGizmo: 1
   weapon: {fileID: 0}
@@ -36833,9 +36834,12 @@ MonoBehaviour:
   _casterRadius: 1.27
   _casterInterpolation: 0.56
   _castingRange: 2.08
-  targetLayer:
+  whatIsTarget:
     serializedVersion: 2
     m_Bits: 64
+  whatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 22528
   OnCastDamageEvent:
     m_PersistentCalls:
       m_Calls: []

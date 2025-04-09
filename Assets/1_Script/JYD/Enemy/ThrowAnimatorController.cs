@@ -10,6 +10,7 @@ namespace Swift_Blade.Enemy.Throw
         public Transform throwHolder;
 
         public Collider bodyCollider;
+        public Collider originCollider;
         
         private BaseThrow _throw;
 
@@ -54,11 +55,13 @@ namespace Swift_Blade.Enemy.Throw
         public void StartManualCollider()
         {
             bodyCollider.enabled = true;
+            originCollider.excludeLayers |= 1 << LayerMask.NameToLayer("Player");
         }
         
         public void StopManualCollider()
         {
             bodyCollider.enabled = false;
+            originCollider.excludeLayers &= ~(1 << LayerMask.NameToLayer("Player"));
         }
 
         public override void StopManualMove()

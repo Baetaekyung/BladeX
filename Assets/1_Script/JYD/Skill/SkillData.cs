@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Swift_Blade.Pool;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade.Skill
 {
