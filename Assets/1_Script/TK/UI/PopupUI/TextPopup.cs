@@ -17,14 +17,22 @@ namespace Swift_Blade.UI
         
         public override void Popup()
         {
-            transform.DOScaleX(1, fadeTime)
-                .SetEase(Ease.OutCirc);
+            if(transform != null)
+            {
+                transform.DOScaleX(1, fadeTime)
+                    .SetEase(Ease.OutCirc)
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            }
         }
 
         public override void PopDown()
         {
-            transform.DOScaleX(0, fadeTime)
-                .SetEase(Ease.OutCirc);
+            if(transform != null)
+            {
+                transform.DOScaleX(0, fadeTime)
+                    .SetEase(Ease.OutCirc)
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            }
         }
     }
 }

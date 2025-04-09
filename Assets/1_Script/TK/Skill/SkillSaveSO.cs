@@ -26,7 +26,7 @@ namespace Swift_Blade
             skillSlotData.Remove(skillData);
         }
 
-        public void RemoveInvenSkillData(SkillData skillData)
+        public void RemoveInventoryData(SkillData skillData)
         {
             inventoryData.Remove(skillData);
         }

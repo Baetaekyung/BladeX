@@ -1,13 +1,11 @@
-using Swift_Blade.UI;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
 using UnityEngine;
 
 namespace Swift_Blade
 {
-    [Serializable]
+    [Serializable] //why i made it a class? may struct better..
     public class ColorStat
     {
         public ColorType colorType;
@@ -16,16 +14,16 @@ namespace Swift_Blade
 
     public class PlayerStatCompo : StatComponent, IEntityComponent, IEntityComponentStart
     {
-        public List<ColorStat> defaultColorStat  = new List<ColorStat>();
         public static List<ColorStat> colorStats = new List<ColorStat>();
+        public event  Action ColorValueChangedAction;
+
+        public List<ColorStat> defaultColorStat = new List<ColorStat>();
 
         private PlayerHealth _playerHealth;
 
-        public event Action ColorValueChangedAction;
-
         public void EntityComponentAwake(Entity entity)
         {
-            if(InitOnce == false)
+            if (InitOnce == false)
                 colorStats = defaultColorStat;
 
             Initialize();
@@ -38,14 +36,6 @@ namespace Swift_Blade
             _playerHealth = entity.GetEntityComponent<PlayerHealth>();
         }
 
-        private void Update()
-        {
-            if(Input.GetKeyDown(KeyCode.B))
-            {
-                BuffToStat(StatType.HEALTH, "damageBuff", 1f, 1f);
-            }
-        }
-
         protected override void Initialize()
         {
             base.Initialize();
@@ -55,59 +45,71 @@ namespace Swift_Blade
 
         private void UpdateColorValueToStat()
         {
-            //Init value
-            foreach (var stat in _stats)
-                stat.ColorValue = 0;
-
-            //hmm...no way../Max: O(8 or 9 * 7 * 3) = Max: O(168 or 189)
-            foreach (var stat in _stats) //Max O(8 ~ 9)
+            foreach (StatSO stat in _stats)
             {
-                foreach (ColorStat colorStat in colorStats) //Max O(7)
+                foreach (ColorStat colorStat in colorStats)
                 {
-                    if (ColorUtils.GetCotainColors(colorStat.colorType).Contains(stat.colorType)) //Max O(3)
-                        stat.ColorValue += colorStat.colorValue;
+                    if(stat.colorType == colorStat.colorType)
+                        stat.ColorValue = colorStat.colorValue;
                 }
             }
 
-#if UNITY_EDITOR
-
-            foreach(StatSO stat in _stats)
+#if UNITY_EDITOR // For Debuging
+            foreach (StatSO stat in _stats)
                 stat.dbgValue = stat.Value;
-
 #endif
         }
 
-        public void BuffToStat(StatType statType, string buffKey, float buffTime, float buffAmount)
+        public void BuffToStat(StatType statType, string buffKey, float buffTime, float buffAmount
+            , Action startCallback = null, Action endCallback = null)
         {
             StatSO stat = GetStat(statType);
 
-            if(stat.currentBuffDictionary.TryGetValue(buffKey, out var buffRoutine))
-            {
-                stat.RemoveModifier(buffKey);
-                stat.currentBuffDictionary.Remove(buffKey);
-                stat.buffTimer = 0;
-                stat.OnBuffEnd -= HandleBuffEnd;
-                _playerHealth.HealthUpdate();
+            // Effect.., Sound.., etc..
+            startCallback?.Invoke(); 
 
-                StopCoroutine(buffRoutine);
-            }
-
-            stat.OnBuffEnd += HandleBuffEnd;
-            buffRoutine = StartCoroutine(stat.DelayBuffRoutine(buffKey, buffTime, buffAmount));
-            stat.currentBuffDictionary.Add(buffKey, buffRoutine);
+            if (stat.currentBuffDictionary.TryGetValue(buffKey, out var buffRoutine))
+                RemoveDuplicatedBuff(buffKey, stat, buffRoutine);
 
             if (stat.statType == StatType.HEALTH)
-            {
-                PlayerHealth.CurrentHealth += buffAmount;
-                _playerHealth.HealthUpdate();
-            }
+                _playerHealth.ShieldAmount += Mathf.RoundToInt(buffAmount);
+
+            // Start coroutine
+            Coroutine newBuffRoutine = StartCoroutine(stat.DelayBuffRoutine(buffKey, buffTime, buffAmount));
+
+            stat.currentBuffDictionary.Add(buffKey, newBuffRoutine);
+            // register buff end event
+            stat.OnBuffEnd += HandleBuffEnd; 
+
+            _playerHealth.HealthUpdate();
 
             void HandleBuffEnd()
             {
-                if(stat.statType == StatType.HEALTH)
+                stat.currentBuffDictionary.Remove(buffKey);
+                stat.OnBuffEnd = null;
+
+                //Invoke after buff end
+                switch(stat.statType)
                 {
-                    _playerHealth.HealthUpdate();
+                    case StatType.HEALTH:
+                        _playerHealth.ShieldAmount -= Mathf.RoundToInt(buffAmount);
+                        _playerHealth.HealthUpdate();
+                        break;
+
+                    default:
+                        break;
                 }
+
+                endCallback?.Invoke();
+            }
+            void RemoveDuplicatedBuff(string buffKey, StatSO stat, Coroutine buffRoutine)
+            {
+                StopCoroutine(buffRoutine);
+
+                stat.RemoveModifier(buffKey);
+                stat.currentBuffDictionary.Remove(buffKey);
+                stat.buffTimer = 0;
+                stat.OnBuffEnd = null;
             }
         }
 
@@ -115,7 +117,12 @@ namespace Swift_Blade
         {
             ColorStat colorStat = GetColorStat(colorType);
 
-            Debug.Log(colorStat.colorType.ToString());
+            if (colorType == ColorType.GREEN)
+            {
+                float healthHandler = GetStat(StatType.HEALTH).colorMultiplier * increaseAmount;
+
+                PlayerHealth.CurrentHealth++;
+            }
 
             colorStat.colorValue += increaseAmount;
             ColorValueChange();
@@ -131,8 +138,10 @@ namespace Swift_Blade
 
         private void ColorValueChange()
         {
-            UpdateColorValueToStat();
             ColorValueChangedAction?.Invoke();
+
+            UpdateColorValueToStat();
+            Player.Instance.GetEntityComponent<PlayerHealth>().HealthUpdate();
         }
 
         public int GetColorStatValue(ColorType colorType) => GetColorStat(colorType).colorValue;
@@ -140,7 +149,7 @@ namespace Swift_Blade
         {
             foreach (var stat in colorStats)
             {
-                if(stat.colorType == colorType)
+                if (stat.colorType == colorType)
                 {
                     return stat;
                 }

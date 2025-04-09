@@ -27,8 +27,12 @@ namespace Swift_Blade.UI
         {
             if (_isAnimationUI is false) return;
             
-            transform.DOScale(Vector3.one * _clickedButtonScale, 1 / _animationSpeed)
-                .SetEase(Ease.OutCirc);
+            if(transform != null)
+            {
+                transform.DOScale(Vector3.one * _clickedButtonScale, 1 / _animationSpeed)
+                    .SetEase(Ease.OutCirc).SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            }
+
         }
 
         protected abstract void ClickEvent();
