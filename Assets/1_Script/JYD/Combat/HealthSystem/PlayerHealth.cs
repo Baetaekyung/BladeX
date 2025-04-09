@@ -64,7 +64,7 @@ namespace Swift_Blade.Combat.Health
             }
         }
         
-        public void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
+        public override void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
         {
             if(Mathf.Approximately(CurrentHealth, healthStat.Value))
                 return;
