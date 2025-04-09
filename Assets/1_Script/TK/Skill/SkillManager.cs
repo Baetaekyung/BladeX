@@ -26,14 +26,14 @@ namespace Swift_Blade
         public bool CanAddSkill => currentSkillCount < maxSkillCount;
         
         public static SkillSaveSO  saveDatas;
-        private static bool        InitOnce = false;
+        public static bool        IsNewGame = false;
         
         private void OnEnable()
         {
-            if (InitOnce == false)
+            if (IsNewGame == false)
             {
                 saveDatas = skillSaveData.Clone();
-                InitOnce = true;
+                IsNewGame = true;
             }
 
             SkillSlotBase.OnPointerEnterAction += HandleCreateInfoUI;

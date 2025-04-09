@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    [Serializable] //why i made it a class? may struct better..
+    [Serializable]
     public class ColorStat
     {
         public ColorType colorType;
@@ -23,7 +23,7 @@ namespace Swift_Blade
 
         public void EntityComponentAwake(Entity entity)
         {
-            if (InitOnce == false)
+            if (IsNewGame == false)
                 colorStats = defaultColorStat;
 
             Initialize();
@@ -45,7 +45,7 @@ namespace Swift_Blade
 
         private void UpdateColorValueToStat()
         {
-            foreach (StatSO stat in _stats)
+            foreach (StatSO stat in _defaultStats)
             {
                 foreach (ColorStat colorStat in colorStats)
                 {
@@ -55,7 +55,7 @@ namespace Swift_Blade
             }
 
 #if UNITY_EDITOR // For Debuging
-            foreach (StatSO stat in _stats)
+            foreach (StatSO stat in _defaultStats)
                 stat.dbgValue = stat.Value;
 #endif
         }
@@ -117,12 +117,12 @@ namespace Swift_Blade
         {
             ColorStat colorStat = GetColorStat(colorType);
 
-            if (colorType == ColorType.GREEN)
-            {
-                float healthHandler = GetStat(StatType.HEALTH).colorMultiplier * increaseAmount;
+            //if (colorType == ColorType.GREEN)
+            //{
+            //    float healthHandler = GetStat(StatType.HEALTH).colorMultiplier * increaseAmount;
 
-                PlayerHealth.CurrentHealth++;
-            }
+            //    PlayerHealth.CurrentHealth++;
+            //}
 
             colorStat.colorValue += increaseAmount;
             ColorValueChange();

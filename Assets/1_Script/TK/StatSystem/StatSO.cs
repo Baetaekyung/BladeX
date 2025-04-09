@@ -90,6 +90,8 @@ namespace Swift_Blade
 
                     OnValueChanged?.Invoke();
                 }
+
+                return;
             }
             
             modifiedValue += value;

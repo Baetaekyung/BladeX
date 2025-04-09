@@ -34,7 +34,7 @@ namespace Swift_Blade
 
         //-------------------------------------------------------------
 
-        public static bool IsAfterInit = false;
+        public static bool IsNewGame = false;
 
         [SerializeField] private PlayerInventory playerInv;
         [SerializeField] private List<ItemSlot>  itemSlots  = new List<ItemSlot>();
@@ -51,12 +51,14 @@ namespace Swift_Blade
         {
             base.Awake();
 
-            if (IsAfterInit == false)
+            if (IsNewGame == false)
             {
                 Inventory = playerInv.Clone();
 
                 ChangeToInventory();
-                IsAfterInit = true;
+                EquipmentDatas.Clear();
+
+                IsNewGame = true;
             }
             
             InitializeSlots();
