@@ -42021,24 +42021,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edc02f1693843e78cb87a933589c9f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer:
+  _casterRadius: 3.89
+  _casterInterpolation: 1.78
+  _castingRange: 5.59
+  whatIsTarget:
     serializedVersion: 2
     m_Bits: 64
+  whatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 0
   OnCastDamageEvent:
     m_PersistentCalls:
       m_Calls: []
   OnCastEvent:
     m_PersistentCalls:
       m_Calls: []
-  _casterRadius: 3.89
-  _casterInterpolation: 1.78
-  _castingRange: 5.59
   CanCurrentAttackParry: 1
   parryEvents:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2646160260723031557}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BossBaseHealth, Assembly-CSharp
+      - m_Target: {fileID: 6895625097253760448}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp
         m_MethodName: ChangeParryState
         m_Mode: 1
         m_Arguments:
@@ -45454,9 +45457,9 @@ GameObject:
   - component: {fileID: 8161863624544920820}
   - component: {fileID: 1908999335113879507}
   - component: {fileID: 3575926326915301583}
-  - component: {fileID: 2646160260723031557}
   - component: {fileID: 1344055792727759508}
   - component: {fileID: 5492742793706994907}
+  - component: {fileID: 6895625097253760448}
   m_Layer: 7
   m_Name: SwrodBoss
   m_TagString: Untagged
@@ -45689,54 +45692,6 @@ MonoBehaviour:
   maxAnimationSpeed: 1.2
   minAnimationSpeed: 1.2
   cameraShakeType: 3
---- !u!114 &2646160260723031557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5782296022825403814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47de7c16339d4affbf35303bcc0780a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnHitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8652284089516704569}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDeadEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1344055792727759508}
-        m_TargetAssemblyTypeName: Swift_Blade.Boss.BossBase, Assembly-CSharp
-        m_MethodName: DeadEvent
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  maxHealth: 50
-  currentHealth: 0
-  isDead: 0
-  BehaviorGraphAgent: {fileID: 1908999335113879507}
-  changeBossState: {fileID: 0}
-  isKnockback: 0
 --- !u!114 &1344055792727759508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45750,8 +45705,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  moveSpeed: 11.1
-  rotateSpeed: 20
+  moveSpeed: 10.4
+  rotateSpeed: 18.6
   stopDistance: 2.05
   whatIsGround:
     serializedVersion: 2
@@ -45759,7 +45714,7 @@ MonoBehaviour:
   checkForward: {fileID: 1882639443864621935}
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 22528
+    m_Bits: 30720
   maxDistance: 2.01
   showGizmo: 1
   weapon: {fileID: 0}
@@ -45784,6 +45739,54 @@ MonoBehaviour:
   prickEffect: {fileID: 11400000, guid: 448e4fac51f97074d8eb268a9334c66c, type: 2}
   prickTrm1: {fileID: 6666297108255584503}
   prickTrm2: {fileID: 882628041340589753}
+--- !u!114 &6895625097253760448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5782296022825403814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a970b73a23fd204d93af0d5583e55dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnHitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8652284089516704569}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1344055792727759508}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.BaseEnemy, Assembly-CSharp
+        m_MethodName: DeadEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  maxHealth: 0
+  isDead: 0
+  currentHealth: 0
+  BehaviorGraphAgent: {fileID: 1908999335113879507}
+  changeBossState: {fileID: 0}
+  isKnockback: 0
 --- !u!1 &5783172332564757590
 GameObject:
   m_ObjectHideFlags: 0
@@ -58572,7 +58575,7 @@ Transform:
   m_GameObject: {fileID: 7307799705064874111}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0.092, y: 0.027, z: -0.012}
+  m_LocalPosition: {x: 0.092, y: 0.027, z: -0.064}
   m_LocalScale: {x: 1, y: 1.3480601, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

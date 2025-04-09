@@ -27,7 +27,7 @@ namespace Swift_Blade.Pool
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out IDamageble health))
+            if (other.TryGetComponent(out IHealth health))
             {
                 ActionData actionData = new ActionData();
                 actionData.stun = true;

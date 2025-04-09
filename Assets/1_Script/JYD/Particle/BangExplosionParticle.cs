@@ -1,6 +1,5 @@
-using Swift_Blade.Pool;
 
-namespace Swift_Blade.Skill
+namespace Swift_Blade.Pool
 {
     public class BangExplosionParticle : ParticlePoolAble<BangExplosionParticle>
     {

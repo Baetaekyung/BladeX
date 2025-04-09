@@ -14,7 +14,8 @@ namespace Swift_Blade
     public enum EAttackType
     {
         Normal,
-        Stun
+        Heavy,
+        RollAttack
     }
 
     public class AnimationTriggers : MonoBehaviour
@@ -32,9 +33,11 @@ namespace Swift_Blade
 
         public event Action OnRotateAllowSetEvent;
         public event Action OnRotateDisallowSetEvent;
-
+        
         public event Action<AudioSO> OnAudioPlayEvent;
         public event Action<EAudioType> OnAudioPlayWithTypeEvent;
+
+        public event Action<bool> OnAnimationTrailEvent;
 
         [Preserve]
         private void OnAnimationEndTrigger()
@@ -68,5 +71,9 @@ namespace Swift_Blade
         private void OnAudioPlayCollection(AudioCollectionSO audioCollectionSo) => OnAudioPlay(audioCollectionSo.GetRandomAudio);
         [Preserve]
         private void OnAudioPlayWithType(EAudioType type) => OnAudioPlayWithTypeEvent?.Invoke(type);
+        [Preserve]
+        private void OnAnimationTrailActive() => OnAnimationTrailEvent?.Invoke(true);
+        [Preserve]
+        private void OnAnimationTrailDeactive() => OnAnimationTrailEvent?.Invoke(false);
     }
 }

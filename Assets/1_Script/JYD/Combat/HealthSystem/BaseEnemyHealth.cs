@@ -1,59 +1,57 @@
-using System;
 using System.Collections;
 using Swift_Blade.Enemy;
-using Unity.Behavior;
-using UnityEditor;
-using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Events;
+using Unity.Behavior;
+using UnityEngine;
+using System;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat.Health
 {
-    public class BaseEnemyHealth : MonoBehaviour,IDamageble
+    public class BaseEnemyHealth : BaseEntityHealth, IHealth
     {
-        public UnityEvent<ActionData> OnHitEvent;
-        public UnityEvent OnDeadEvent;
-        
-        public Action<float> OnChangeHealthEvent; 
-        
-        public float maxHealth;
+        public event Action<float> OnChangeHealthEvent; 
         public float currentHealth;
-        public bool isDead = false;
         
         [Space]
         [SerializeField] protected BehaviorGraphAgent BehaviorGraphAgent;
         [SerializeField] protected ChangeBossState changeBossState;
-
-        public bool isKnockback = false;
+                        
+        private BaseEnemyAnimationController animationController;
         private Rigidbody enemyRigidbody;
         private NavMeshAgent navMeshAgent;
-                
+        
+        [Header("Knockback info")]
+        public bool isKnockback = false;
+        
         protected virtual void Start()
         {
             currentHealth = maxHealth;
-
+            
             navMeshAgent = GetComponent<NavMeshAgent>();
             enemyRigidbody = GetComponent<Rigidbody>();
             BehaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
+            animationController = GetComponentInChildren<BaseEnemyAnimationController>();
+            
+            OnHitEvent.AddListener(StartKnockback);
             
             BehaviorGraphAgent.GetVariable("ChangeBossState",out BlackboardVariable<ChangeBossState> state);
-
+            
             if (state != null)
                 changeBossState = state;
             else
             {
-                Debug.LogError("Goblin Enemy has Not State Change");
+                Debug.LogError("Enemy has Not State Change");
             }
-
-            OnHitEvent.AddListener(StartKnockback);
+                    
         }
 
         private void OnDestroy()
         {
             OnHitEvent.RemoveListener(StartKnockback);
         }
-
-        public virtual void TakeDamage(ActionData actionData)
+        
+        public override void TakeDamage(ActionData actionData)
         {
             if(isDead)return;
             
@@ -63,28 +61,34 @@ namespace Swift_Blade.Combat.Health
             if(actionData.stun)
                 ChangeParryState();
             
+            OnHitEvent?.Invoke(actionData);
+            
             if (currentHealth <= 0)
             {
                 TriggerState(BossState.Dead);
                 Dead();
-                return;
             }
             
-            OnHitEvent?.Invoke(actionData);
         }
 
-        public virtual void TakeHeal(float amount)
+        public override void Dead()
+        {
+            InventoryManager.Inventory.AddCoin(AddRandomCoin());
+                        
+            base.Dead();
+        }
+
+        private int AddRandomCoin()
+        {
+            return Random.Range(1,10);
+        } 
+
+        public override void TakeHeal(float amount)
         {
             currentHealth += amount;
             currentHealth = Mathf.Min(currentHealth , maxHealth);
         }
-
-        public virtual void Dead()
-        {
-            isDead = true;
-            OnDeadEvent?.Invoke();
-        }
-        
+                
         private void TriggerState(BossState state)
         {
             if(isDead)return;
@@ -100,6 +104,7 @@ namespace Swift_Blade.Combat.Health
 
         public void ChangeParryState()
         {
+            animationController.StopAllAnimationEvents();
             TriggerState(BossState.Hurt);
         }
         

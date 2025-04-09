@@ -13,55 +13,83 @@ public partial class MoveToTargetAndCheckPlayerAction : Action
     [SerializeReference] public BlackboardVariable<BaseEnemy> BaseEnemy;
     [SerializeReference] public BlackboardVariable<Transform> Target;
     [SerializeReference] public BlackboardVariable<Transform> Player;
-    
     [SerializeReference] public BlackboardVariable<NavMeshAgent> Agent;
-    
     [SerializeReference] public BlackboardVariable<float> RadiusToTarget;
     [SerializeReference] public BlackboardVariable<float> RadiusToPlayer;
     [SerializeReference] public BlackboardVariable<float> MoveSpeed;
-    
+
     private float disToTarget;
     private float disToPlayer;
-    
+
+    private LayerMask whatIsObstacle;
     protected override Status OnStart()
     {
-        if (Target.Value == null || Player.Value == null) 
+        if (Target.Value == null || Player.Value == null)
             return Status.Failure;
-    
+        
+        whatIsObstacle = LayerMask.GetMask("Wall" , "Obstacle");
+        
         Agent.Value.speed = MoveSpeed.Value;
-    
-        Vector3 agentPos = Agent.Value.transform.position;
-        disToTarget = Vector3.Distance(Target.Value.position, agentPos);
-        disToPlayer = Vector3.Distance(Player.Value.position, agentPos);
+        UpdateDistances();
         
-        if (disToPlayer < RadiusToPlayer.Value)
+        bool isNotObstacleLine = IsNotObstacleLine();
+        
+        if (IsPlayerTooClose() && isNotObstacleLine)
             return Status.Failure;
         
-        if (disToTarget <= RadiusToTarget.Value) 
+        if (IsTargetInRange() && isNotObstacleLine)
             return Status.Success;
-    
+
         return Status.Running;
     }
 
     protected override Status OnUpdate()
     {
-        var targetPos = Target.Value.position;
-        var playerPos = Player.Value.position;
-        var agentPos = Agent.Value.transform.position;
+        UpdateDistances();
 
-        disToTarget = Vector3.Distance(targetPos, agentPos);
-        disToPlayer = Vector3.Distance(playerPos, agentPos);
-
-        if (disToPlayer < RadiusToPlayer.Value)
+        if (IsPlayerTooClose())
             return Status.Failure;
-
-        BaseEnemy.Value.FactToTarget(BaseEnemy.Value.GetNextPathPoint());
-        Agent.Value.SetDestination(targetPos);
         
-        if (disToTarget <= RadiusToTarget.Value) 
+        BaseEnemy.Value.FactToTarget(BaseEnemy.Value.GetNextPathPoint());
+        Agent.Value.SetDestination(Target.Value.position);
+        
+        bool isNotObstacleLine = IsNotObstacleLine();
+        
+        if (IsTargetInRange() && isNotObstacleLine)
             return Status.Success;
-    
+        
         return Status.Running;
     }
 
+    private void UpdateDistances()
+    {
+        var agentPos = Agent.Value.transform.position;
+        disToTarget = Vector3.Distance(Target.Value.position, agentPos);
+        disToPlayer = Vector3.Distance(Player.Value.position, agentPos);
+    }
+
+    private bool IsPlayerTooClose()
+    {
+        return disToPlayer < RadiusToPlayer.Value;
+    }
+
+    private bool IsTargetInRange()
+    {
+        return disToTarget <= RadiusToTarget.Value;
+    }
+    
+    private bool IsNotObstacleLine()
+    {
+        Vector3 direction = (Target.Value.transform.position - Agent.Value.transform.position);
+        Vector3 start = Agent.Value.transform.position + new Vector3(0, 25f, 0);
+        
+        //Debug.DrawRay(start, direction * 100, Color.red);
+        
+        if (Physics.Raycast(start, direction.normalized,direction.magnitude, whatIsObstacle))
+        {
+            return false;
+        }
+        
+        return true;
+    }
 }

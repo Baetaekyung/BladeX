@@ -14,7 +14,7 @@ namespace Swift_Blade.Enemy
         [Header("Movement Info")]
         [Range(0,30)][SerializeField] protected float moveSpeed;
         [Range(0,20)][SerializeField] protected float rotateSpeed;
-        [Range(0, 5)] [SerializeField] protected float stopDistance;
+        [Range(-1, 5)] [SerializeField] protected float stopDistance;
         [SerializeField] private LayerMask whatIsGround;
         
         [Header("Detect Forward Info")]
@@ -30,11 +30,11 @@ namespace Swift_Blade.Enemy
         protected Collider enemyCollider;
         protected BehaviorGraphAgent btAgent;
         protected NavMeshAgent NavmeshAgent;
-        private Vector3 nextPathPoint;
         
         protected BaseEnemyAnimationController baseAnimationController;
         protected BaseEnemyHealth baseHealth;
-
+        
+        private Vector3 nextPathPoint;
         private EnemySpawner owner;
         
         protected virtual void Start()
@@ -113,7 +113,6 @@ namespace Swift_Blade.Enemy
             
             NavmeshAgent.isStopped = true;
             NavmeshAgent.velocity = Vector3.zero;
-            
         }
 
         public Vector3 GetNextPathPoint()
@@ -138,11 +137,13 @@ namespace Swift_Blade.Enemy
 
         public virtual void DeadEvent()
         {
-            owner?.TryNextEnemyCanSpawn(transform.localPosition,transform.forward);
-            
             StopImmediately();
-            
+                                    
             enemyCollider.enabled = false;
+            NavmeshAgent.enabled = false;
+            
+            if(owner != null)
+                owner.TryNextEnemyCanSpawn(transform.localPosition,transform.forward);
             
             if(weapon != null)
                 weapon.AddComponent<EnemyWeapon>();

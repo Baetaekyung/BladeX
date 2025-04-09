@@ -8,6 +8,7 @@ using Swift_Blade.FSM;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using Swift_Blade.Combat.Health;
 using UnityEngine.Serialization;
 
 namespace Swift_Blade
@@ -29,11 +30,12 @@ namespace Swift_Blade
         public bool IsPlayerDead { get; private set; }
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();
+        public FiniteStateMachine<PlayerStateEnum> GetStateMachine => playerStateMachine;
         private PlayerAttackState playerAttackState;
 
         public static LevelStat level = new LevelStat();
 
-        private readonly RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
+        private readonly Collider[] buffer_overlapSphereResult = new Collider[5];
 
         private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
         private GameObject interactable;
@@ -88,7 +90,7 @@ namespace Swift_Blade
         public PlayerSkillController GetSkillController => GetEntityComponent<PlayerSkillController>();
         public Transform GetPlayerTransform => visualTransform;
         public PlayerStatCompo GetPlayerStat => GetEntityComponent<PlayerStatCompo>();
-        
+
         #endregion
 
         public class LevelStat
@@ -194,7 +196,6 @@ namespace Swift_Blade
         private void Update()
         {
             playerStateMachine.UpdateState();
-
             //if (Input.GetKeyDown(KeyCode.Z))
             //    AudioEmitter.Dbg2();
 
@@ -213,26 +214,21 @@ namespace Swift_Blade
             //Debug.DrawRay(Vector3.zero + Vector3.up * 0.9f, rrr, Color.red);
             //Debug.DrawRay(Vector3.zero + Vector3.up * 1.2f, finalRr, Color.blue);
 
-            UI_DebugPlayer.DebugText(0, GetPlayerHealth.IsPlayerInvincible, "invincible");
-            UI_DebugPlayer.DebugText(1, playerStateMachine.CurrentState, "cs");
-            UI_DebugPlayer.DebugText(2, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.DAMAGE).Value, "atkBase");
-            UI_DebugPlayer.DebugText(0, playerStateMachine.GetState().ToString(), "state", DBG_UI_KEYS.Keys_PlayerAction);
-            //UI_DebugPlayer.DebugText(3, GetEntityComponent<PlayerStatCompo>().GetStat(StatType.STYLE_METER_INCREASE_INCREMENT).Value, "dec");
 
             if (Input.GetKeyDown(KeyCode.E))
             {
                 IInteractable interactable = GetClosestInteractable;
                 if (interactable != null)
                 {
-                    if (false && Input.GetKey(KeyCode.LeftShift))
-                    {
-                        interactable.OnEndCallbackUnsubscribe(OnEndCallback);
-                        Debug.Log("unsub");
-                    }
-                    else
+                    //if (false && Input.GetKey(KeyCode.LeftShift))
+                    //{
+                    //    interactable.OnEndCallbackUnsubscribe(OnEndCallback);
+                    //    Debug.Log("unsub");
+                    //}
+                    //else
                     {
                         interactable.Interact();
-                        interactable.OnEndCallbackSubscribe(OnEndCallback);
+                        //interactable.OnEndCallbackSubscribe(OnEndCallback);
                         //playerStateMachine.ChangeState(PlayerStateEnum.Interact);
                     }
                     void OnEndCallback()
@@ -242,38 +238,42 @@ namespace Swift_Blade
                     }
                 }
             }
-
             Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))
                 UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
         }
         private void FixedUpdate()
         {
-            const int radius = 2;
+            const float radius = 1.3f;
+            Vector3 playerPosition = visualTransform.position;
+            Debug.DrawRay(playerPosition, Vector3.right * radius, Color.magenta);
+            Debug.DrawRay(playerPosition, Vector3.forward * radius, Color.magenta);
+            int hitCount = Physics.OverlapSphereNonAlloc(playerPosition, radius, buffer_overlapSphereResult, lm_interactable);
 
-            int hitCount = Physics.SphereCastNonAlloc(playerTransform.position, radius, Vector3.up, buffer_overlapSphereResult, 0.1f, lm_interactable);
-            UI_DebugPlayer.DebugText(5, hitCount, "length");
-            interactable = null;
+            float smallestDistance = Mathf.Infinity;
+            GameObject result = null;
 
-            if (hitCount > 0)
+            for (int i = 0; i < hitCount; i++)
             {
-                float tempHighest = Mathf.Infinity;
-                GameObject result = null;
+                Collider item = buffer_overlapSphereResult[i];
+                Vector3 pPos = playerPosition;
+                pPos.y = 0;
 
-                for (int i = 0; i < hitCount; i++)
+                Vector3 itemPos = item.transform.position;
+                itemPos.y = 0;
+
+                float sqrDistance = (itemPos - pPos).sqrMagnitude;
+                Debug.DrawLine(itemPos, playerPosition, Color.blue);
+                if (smallestDistance > sqrDistance)
                 {
-                    RaycastHit item = buffer_overlapSphereResult[i];
-                    Vector3 distance = item.transform.position - playerTransform.position;
-                    Debug.DrawLine(item.transform.position, playerTransform.position, Color.blue);
-                    if (tempHighest > distance.sqrMagnitude)
-                    {
-                        tempHighest = distance.sqrMagnitude;
-                        result = item.transform.gameObject;
-                    }
+                    smallestDistance = sqrDistance;
+                    result = item.gameObject;
                 }
-                interactable = result;
-                Debug.DrawRay(result.transform.position, Vector3.up, Color.red);
             }
+
+            interactable = result;
+
+            if (result != null) Debug.DrawRay(result.transform.position, Vector3.up, Color.red);
         }
 
         public void Attack(EComboState previousState, EComboState nonImmediateState = EComboState.None)
@@ -287,9 +287,6 @@ namespace Swift_Blade
             playerAttackState.ClearComboHistory();
         }
         public PlayerStateEnum GetCurrentState() => playerStateMachine.GetState();
-        //private void OnDrawGizmos()
-        //{
-        //    Gizmos.DrawWireSphere(playerTransform.position, 2);
-        //}
+
     }
 }

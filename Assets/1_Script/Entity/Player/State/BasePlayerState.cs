@@ -10,6 +10,7 @@ namespace Swift_Blade.FSM.States
 
         protected readonly PlayerMovement playerMovement;
         protected readonly PlayerInput playerInput;
+        protected readonly PlayerWeaponManager playerWeaponManager;
 
         protected static Vector3 anim_inputLocalLerp;
         protected virtual bool BaseAllowAttackInput { get; } = true;
@@ -22,12 +23,14 @@ namespace Swift_Blade.FSM.States
 
         private static float nextDelayTime_AllowSpecial;
         private static float nextDelayTime_AllowRoll;
+        public static bool parryable;
 
         protected BasePlayerState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
             player = entity;
             playerMovement = player.GetPlayerMovement;
             playerInput = player.GetPlayerInput;
+            playerWeaponManager = player.GetEntityComponent<PlayerWeaponManager>();
         }
         public override void Enter()
         {
@@ -55,7 +58,6 @@ namespace Swift_Blade.FSM.States
             Vector3 localInput = playerInput.GetInputDirectionRaw;
             Vector3 resultVector = CameraRotation * localInput;
 
-            UI_DebugPlayer.DebugText(0, resultVector, "res", DBG_UI_KEYS.Keys_PlayerMovement);
             OnApplyMovement(resultVector);
 
             //animator
@@ -84,8 +86,9 @@ namespace Swift_Blade.FSM.States
         }
         protected virtual void OnSpecialInput()
         {
-            if (nextDelayTime_AllowSpecial > Time.time) return;
+            if (nextDelayTime_AllowSpecial > Time.time && !parryable) return;
             nextDelayTime_AllowSpecial = Time.time + GetSpecialDelay;
+            parryable = false;
             Action specialBehaviour = PlayerWeaponManager.CurrentWeapon.GetSpecialBehaviour(entity);
             specialBehaviour.Invoke();
             //GetOwnerFsm.ChangeState(PlayerStateEnum.Parry);
@@ -96,6 +99,10 @@ namespace Swift_Blade.FSM.States
             if (nextDelayTime_AllowRoll > Time.time) return;
             nextDelayTime_AllowRoll = Time.time + GetRollDelay;
             GetOwnerFsm.ChangeState(PlayerStateEnum.Roll);
+        }
+        protected override void OnTrailTrigger(bool active)
+        {
+            playerWeaponManager.TrailActive = active;
         }
         protected sealed override void OnAllowRotateAllowTrigger() => playerMovement.AllowRotate = true;
         protected sealed override void OnAllowRotateDisallowTrigger() => playerMovement.AllowRotate = false;
@@ -111,9 +118,19 @@ namespace Swift_Blade.FSM.States
         //protected sealed override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetAdditionalVelocity(value);
         protected sealed override void OnAttackTrigger(EAttackType eAttackType)
         {
-            if (player.GetPlayerDamageCaster.Cast())
+            if (eAttackType == EAttackType.Normal)
             {
+                player.GetPlayerDamageCaster.Cast(PlayerWeaponManager.CurrentWeapon.AdditionalNormalDamage, 0, false);
+                //player.GetPlayerDamageCaster.Cast();
+            }
+            if (eAttackType == EAttackType.Heavy)
+            {
+                player.GetPlayerDamageCaster.Cast(PlayerWeaponManager.CurrentWeapon.AdditionalHeavyDamage, 0, true);
                 //player.GetEntityComponent<PlayerStatCompo>().GetStyleMeter.SuccessHit();
+            }
+            if (eAttackType == EAttackType.RollAttack)
+            {
+                player.GetPlayerDamageCaster.Cast(PlayerWeaponManager.CurrentWeapon.RollAttackDamage, 0, false);
             }
         }
     }

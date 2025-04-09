@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Pool;
 using UnityEngine;
@@ -24,13 +25,13 @@ namespace Swift_Blade.Skill
             MonoGenericPool<ThunderParticle>.Initialize(skillParticle);
         }
 
-        public override void UseSkill(Player player,Transform[] targets = null)
+        public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
             ++attackCounter;
             
             if (attackCounter >= attackCount)
             {
-                if (CheckSkill())
+                if (TryUseSkill())
                 {
                     foreach (var item in targets)
                     {
@@ -51,8 +52,6 @@ namespace Swift_Blade.Skill
                 
                 attackCounter = 0;
             }
-            
         }
-        
     }
 }

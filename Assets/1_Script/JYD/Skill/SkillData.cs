@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Swift_Blade.Pool;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade.Skill
 {
@@ -27,11 +26,11 @@ namespace Swift_Blade.Skill
         
         public virtual void Render(){}
         
-        public virtual void SkillUpdate(Player player, List<Transform> targets = null){}
+        public virtual void SkillUpdate(Player player, IEnumerable<Transform> targets = null){}
         
-        public abstract void UseSkill(Player player, Transform[] targets = null);
+        public abstract void UseSkill(Player player, IEnumerable<Transform> targets = null);
         
-        protected bool CheckSkill()
+        protected bool TryUseSkill()
         {
             return Random.Range(0, 100) <= random;
         }

@@ -14,6 +14,7 @@ namespace Swift_Blade.FSM.States
         private bool allowListening;
         private bool isCurrentAnimationEndable;
         private bool inputBuffer;
+        private bool forceExit;
 
         private float delayContinuousCombo;
         private bool IsContinuousComboAllowed => delayContinuousCombo > Time.time;
@@ -37,6 +38,7 @@ namespace Swift_Blade.FSM.States
         public override void Enter()
         {
             base.Enter();
+            forceExit = false;
             if (!IsContinuousComboAllowed)
                 comboStateHistory.Clear();
             
@@ -60,7 +62,11 @@ namespace Swift_Blade.FSM.States
                 ComboAttack();
             }
             else
+            {
+                forceExit = true;
                 OnComboFail();
+            }
+
         }
         public override void Update()
         {
@@ -73,18 +79,21 @@ namespace Swift_Blade.FSM.States
                 else
                     OnComboFail();
             }
-            UI_DebugPlayer.DebugText(2, allowListening, "allowLs", DBG_UI_KEYS.Keys_PlayerMovement);
         }
         private void OnComboFail()
         {
             comboStateHistory.Clear();
             delayContinuousCombo = 0;
             comboStateHistory.Add(PreviousComboState);
-            if (GetMatchingComboSO(out currentComboData))
+            if (GetMatchingComboSO(out currentComboData) && false)
                 ComboAttack();
             else
             {
-                GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
+                if (forceExit == true)
+                {
+                    GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
+                }
+                forceExit = true;
                 Debug.Log("no match, no combo, no attack");
             }
         }
@@ -118,7 +127,14 @@ namespace Swift_Blade.FSM.States
         }
         protected override void OnAnimationEndTriggerListen() => allowListening = true;
         protected override void OnAnimationEndTriggerStoplisten() => allowListening = false;
-        protected override void OnAnimationEndableTrigger() => isCurrentAnimationEndable = true;
+        protected override void OnAnimationEndableTrigger()
+        {
+            if(forceExit)
+            {
+                GetOwnerFsm.ChangeState(PlayerStateEnum.Move);
+            }
+            isCurrentAnimationEndable = true;
+        }
         protected override void OnForceEventTrigger(float force)
         {
             Vector3 result = currentComboData.GetComboForce * force;

@@ -16,7 +16,7 @@ public partial class MoveToCircleAction : Action
     [SerializeReference] public BlackboardVariable<Transform> Target;
         
     [SerializeReference] public BlackboardVariable<int> moveDirection;
-
+    
     private ReaperBoss reaperBoss;
     
     private float radius;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Pool
 {
-    public class ParticlePoolAble<T> :  MonoBehaviour,IPoolable where T : MonoBehaviour,IPoolable
+    public class ParticlePoolAble<T> :  MonoBehaviour,IPoolable where T : ParticlePoolAble<T>
     {
         private ParticleSystem _particle;
 

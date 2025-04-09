@@ -1,6 +1,6 @@
-using System;
-using Swift_Blade.Skill;
+using Swift_Blade.Combat.Health;
 using UnityEngine;
+using System;
 
 namespace Swift_Blade.FSM.States
 {
@@ -12,12 +12,19 @@ namespace Swift_Blade.FSM.States
         protected override bool BaseAllowDashInput => false;
         private readonly PlayerRenderer playerRenderer;
         private readonly PlayerHealth playerHealth;
+
         private bool allowListening;
         private bool inputBuffer;
         private bool allowChangeToAttack;
+        private bool forceChangeToAttack;
+
         private Vector3 movementVectorInterpolated;
+        private Vector3 targetVectorInterpoated;
         private Quaternion initialQuaternion;
         private Quaternion initialInverseQuaternion;
+
+        private EComboState lastPreviousState;
+        private EComboState lastNonImeediateState;
 
         private float timeEntered = 0;
         public float TimeSinceEntered => Time.time - timeEntered;
@@ -43,6 +50,7 @@ namespace Swift_Blade.FSM.States
             //Vector3 worldEuler = playerRenderer.GetPlayerVisualTrasnform.eulerAngles;
             //worldEuler.x = 0;
             //worldEuler.z = 0;
+            targetVectorInterpoated = Vector3.zero;
             movementVectorInterpolated = Vector3.zero;//player.GetPlayerTransform.forward;
             initialInverseQuaternion = player.GetPlayerTransform.rotation;
             initialQuaternion = initialInverseQuaternion;
@@ -56,6 +64,8 @@ namespace Swift_Blade.FSM.States
             allowListening = false;
             inputBuffer = false;
             allowChangeToAttack = false;
+            forceChangeToAttack = false;
+
             bool mouseMove = false;
             Vector3 direction = mouseMove == true ?
                 player.GetPlayerInput.GetMousePositionWorld - playerMovement.transform.position :
@@ -63,7 +73,7 @@ namespace Swift_Blade.FSM.States
             playerRenderer.LookAtDirection(direction);
 
             //player.GetPlayerMovement.AllowInputMove = false;
-            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirectionRawRotated.normalized, 8.7f);
+            entity.GetPlayerMovement.Dash(entity.GetPlayerInput.GetInputDirectionRawRotated.normalized, 8f);
 
             playerHealth.IsPlayerInvincible = true;
 
@@ -74,28 +84,48 @@ namespace Swift_Blade.FSM.States
             Vector3 localInput = initialInverseQuaternion * resultVector;
             Vector3 inputClamped = localInput;
             inputClamped.z = 0;
-            float movementPenalty = Mathf.Abs(inputClamped.x) * 1.2f;
+            float movementPenalty = Mathf.Abs(inputClamped.x);
+            movementPenalty = Mathf.Min(movementPenalty, 1);
             inputClamped.Normalize();
 
             inputClamped = initialQuaternion * inputClamped;
 
             // 0 ~ 0.4 (roll anim time)
-            float delta = TimeSinceEntered * 2.5f;
+            float delta = TimeSinceEntered * 3f;
             //delta = Mathf.Min(delta, 1);//doesntmatter
-            float multiplier = Mathf.Lerp(0.5f, 0.2f, delta);
+            float multiplier = 1;// Mathf.Lerp(0.1f, 0.09f, delta);
 
             Vector3 targetVector = inputClamped;
-            movementVectorInterpolated = Vector3.MoveTowards(movementVectorInterpolated, targetVector, multiplier * Time.deltaTime);
+            targetVectorInterpoated = Vector3.MoveTowards(targetVectorInterpoated, targetVector, Time.deltaTime * 0.15f);
+            movementVectorInterpolated = Vector3.MoveTowards(movementVectorInterpolated, targetVectorInterpoated, multiplier * Time.deltaTime);
             Vector3 inversedForward = -player.GetPlayerTransform.forward;
             playerMovement.SetAdditionalVelocity(inversedForward * movementPenalty);
-            base.OnApplyMovement(movementVectorInterpolated);
+            base.OnApplyMovement(movementVectorInterpolated * 0.35f);
+        }
+        protected override void OnAnimationEndTrigger()
+        {
+            if(forceChangeToAttack)
+            {
+                player.Attack(lastPreviousState, lastNonImeediateState);
+                return;
+            }
+            base.OnAnimationEndTrigger();
         }
         protected override void OnAttackInput(EComboState previousState, EComboState nonImeediateState = EComboState.None)
         {
-            if (!allowListening) return;
+            lastPreviousState = previousState;
+            lastNonImeediateState = nonImeediateState;
+            if (!allowListening)
+            {
+                forceChangeToAttack = true;
+                return;
+            }
             inputBuffer = true;
             if (allowChangeToAttack)
+            {
                 ChangeToAttack();
+            }
+
         }
         private void ChangeToAttack()
         {
@@ -106,7 +136,10 @@ namespace Swift_Blade.FSM.States
         protected override void OnAnimationEndableTrigger()
         {
             allowChangeToAttack = true;
-            if (inputBuffer) ChangeToAttack();
+            if (inputBuffer)
+            {
+                ChangeToAttack();
+            }
         }
 
         public override void Exit()

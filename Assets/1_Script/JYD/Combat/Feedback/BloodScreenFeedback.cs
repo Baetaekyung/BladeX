@@ -29,6 +29,9 @@ namespace Swift_Blade.Combat.Feedback
         
         private void Start()
         {
+            if(profile == null)
+                Debug.LogError("Blood Screen Feedback Profile is null");
+            
             profile.TryGet(out vignette);
             ApplyVignetteInfo(origin);
         }

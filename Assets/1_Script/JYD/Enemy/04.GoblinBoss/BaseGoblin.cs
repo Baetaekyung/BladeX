@@ -26,11 +26,13 @@ namespace Swift_Blade.Enemy.Goblin
             }
         }
         
-        protected bool DetectBackwardObstacle()
+        private bool DetectBackwardObstacle()
         {
             var ray = new Ray(checkForward.position, -checkForward.forward);
 
-            if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, whatIsWall)) return true;
+            if (Physics.Raycast(ray, maxDistance, whatIsWall)) 
+                return true;
+            
             return false;
         }
         

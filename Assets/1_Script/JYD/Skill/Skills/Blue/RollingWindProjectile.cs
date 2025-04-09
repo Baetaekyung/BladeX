@@ -1,4 +1,5 @@
-﻿using Swift_Blade.Pool;
+﻿using System.Collections.Generic;
+using Swift_Blade.Pool;
 using UnityEngine;
 
 namespace Swift_Blade.Skill
@@ -17,9 +18,9 @@ namespace Swift_Blade.Skill
             MonoGenericPool<WindProjectileParticle>.Initialize(skillParticle);
         }
         
-        public override void UseSkill(Player player, Transform[] targets = null)
+        public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
-            if(CheckSkill() == false)return;
+            if(TryUseSkill() == false)return;
             
             if (directions == null || directions.Length != skillCount)
             {

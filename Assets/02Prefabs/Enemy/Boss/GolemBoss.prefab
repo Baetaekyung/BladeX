@@ -16011,10 +16011,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32703
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -16073,24 +16073,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c94935cd7242d43a72622090ee08b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer:
+  _casterRadius: 3.91
+  _casterInterpolation: 1.94
+  _castingRange: 5.48
+  whatIsTarget:
     serializedVersion: 2
     m_Bits: 64
+  whatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 0
   OnCastDamageEvent:
     m_PersistentCalls:
       m_Calls: []
   OnCastEvent:
     m_PersistentCalls:
       m_Calls: []
-  _casterRadius: 3.91
-  _casterInterpolation: 1.94
-  _castingRange: 5.48
   CanCurrentAttackParry: 1
   parryEvents:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7497389155446239979}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BossBaseHealth, Assembly-CSharp
+      - m_Target: {fileID: 8584629348793959091}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp
         m_MethodName: ChangeParryState
         m_Mode: 1
         m_Arguments:
@@ -35967,8 +35970,8 @@ GameObject:
   - component: {fileID: 899422968304042828}
   - component: {fileID: 1781525761500621936}
   - component: {fileID: 6024012862813766767}
-  - component: {fileID: 7497389155446239979}
   - component: {fileID: 6198602165125838848}
+  - component: {fileID: 8584629348793959091}
   - component: {fileID: 6076430792158419863}
   - component: {fileID: 935215573921165051}
   m_Layer: 7
@@ -36176,7 +36179,7 @@ MonoBehaviour:
           m_Value0: 12257871961926554284
           m_Value1: 4933287102960887248
         Name: EnemyHealth
-        m_Value: {fileID: 7497389155446239979}
+        m_Value: {fileID: 0}
     - rid: 6383923532824838167
       type: {class: 'BlackboardVariable`1[[Swift_Blade.Combat.Caster.BaseEnemyCaster, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -36207,58 +36210,10 @@ MonoBehaviour:
   checkForward: {fileID: 5240885335986100602}
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 22528
+    m_Bits: 30720
   maxDistance: 1.73
   showGizmo: 1
   weapon: {fileID: 0}
---- !u!114 &7497389155446239979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4397436418132759665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98b3c3206ea305d42acb508f1a13233f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnHitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 361599536718045817}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDeadEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6024012862813766767}
-        m_TargetAssemblyTypeName: Swift_Blade.Boss.BossBase, Assembly-CSharp
-        m_MethodName: DeadEvent
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  maxHealth: 50
-  currentHealth: 0
-  isDead: 0
-  BehaviorGraphAgent: {fileID: 1781525761500621936}
-  changeBossState: {fileID: 11400000, guid: be7f20326fee0c642bbeed328fb622fb, type: 2}
-  isKnockback: 0
 --- !u!114 &6198602165125838848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36280,12 +36235,61 @@ MonoBehaviour:
   target: {fileID: 0}
   throwHolder: {fileID: 4242730501690653894}
   bodyCollider: {fileID: 6197281510146877967}
+  originCollider: {fileID: 2668753999937455947}
   cameraShakeType: 4
   rig: {fileID: 6812827375013687127}
   groundCrackSO: {fileID: 11400000, guid: ad129cfd44d58a54ea0cfe172c4d1734, type: 2}
   rightGroundCrackTrm: {fileID: 647857644824401392}
   leftGroundCrackTrm: {fileID: 6734990834668514980}
   forwardGroundCrackTrm: {fileID: 3076437332989430727}
+--- !u!114 &8584629348793959091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4397436418132759665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a970b73a23fd204d93af0d5583e55dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnHitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 361599536718045817}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6024012862813766767}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.BaseEnemy, Assembly-CSharp
+        m_MethodName: DeadEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  maxHealth: 0
+  isDead: 0
+  currentHealth: 0
+  BehaviorGraphAgent: {fileID: 1781525761500621936}
+  changeBossState: {fileID: 0}
+  isKnockback: 0
 --- !u!114 &6076430792158419863
 MonoBehaviour:
   m_ObjectHideFlags: 0
