@@ -20,7 +20,7 @@ namespace Swift_Blade
 
         public void UseSkillData()
         {
-            SkillManager.saveDatas.RemoveInvenSkillData(_skillData);
+            SkillManager.saveDatas.RemoveInventoryData(_skillData);
             SkillManager.Instance.UpdateDatas();
 
             SetSlotData(null);

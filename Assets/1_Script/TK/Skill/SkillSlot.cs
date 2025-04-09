@@ -34,9 +34,9 @@ namespace Swift_Blade
                 return;
             
             _skillData = data;
-            SetSlotImage(_skillData.skillIcon);
+            SetSlotImage(data.skillIcon);
 
-            Player.Instance.GetEntityComponent<PlayerSkillController>().AddSkill(_skillData);
+            Player.Instance.GetEntityComponent<PlayerSkillController>().AddSkill(data);
 
             skillManager.currentSkillCount++;
             skillManager.SetSkillCountUI(skillManager.currentSkillCount, skillManager.maxSkillCount);

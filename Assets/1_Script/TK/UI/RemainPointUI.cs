@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using static Swift_Blade.Player;
 
 namespace Swift_Blade
 {
@@ -10,22 +11,29 @@ namespace Swift_Blade
 
         private void Start()
         {
-            HandleUpdateRemainUI(Player.level);
+            HandleUpdateRemainUI(level);
         }
         
         private void OnEnable()
         {
-            Player.LevelStat.OnLevelUp += HandleUpdateRemainUI;
+            LevelStat.OnLevelUp += HandleUpdateRemainUI;
+            ColorRecorder.OnColorChanged += HandleUpdateRemainUI;
         }
         
         private void OnDisable()
         {
-            Player.LevelStat.OnLevelUp -= HandleUpdateRemainUI;
+            LevelStat.OnLevelUp -= HandleUpdateRemainUI;
+            ColorRecorder.OnColorChanged -= HandleUpdateRemainUI;
         }
-                
-        private void HandleUpdateRemainUI(Player.LevelStat levelStat)
+
+        private void HandleUpdateRemainUI(LevelStat levelStat)
         {
             remainText.text = $"남은 스텟포인트: {levelStat.StatPoint.ToString()}";
+        }
+
+        private void HandleUpdateRemainUI()
+        {
+            remainText.text = $"남은 스텟포인트: {level.StatPoint.ToString()}";
         }
     }
 }

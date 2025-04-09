@@ -43,7 +43,7 @@ namespace Swift_Blade
         protected virtual void HoverAnimation()
         {
             _rectTrm.DOScale(_originScale * animationScale, 1 / _hoverAnimationSpeed)
-                .SetEase(Ease.InSine);
+                .SetEase(Ease.InSine).SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -62,7 +62,7 @@ namespace Swift_Blade
         protected virtual void HoverAnimationEnd()
         {
             _rectTrm.DOScale(_originScale, 1 / _hoverAnimationSpeed)
-                .SetEase(Ease.OutSine);
+                .SetEase(Ease.OutSine).SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
 
         public virtual void SetHovering(bool isHovering)

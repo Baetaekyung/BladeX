@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Swift_Blade.Skill;
 using TMPro;
 using UnityEngine;
@@ -36,8 +37,6 @@ namespace Swift_Blade
             }
 
             SkillSlotBase.OnPointerEnterAction += HandleCreateInfoUI;
-            
-
             HandleCreateInfoUI(Vector2.zero, null);
         }
 
@@ -53,6 +52,8 @@ namespace Swift_Blade
 
         private void InitializeSlots()
         {
+            currentSkillCount = 0;
+
             InitializeSlot(inv_slots);
             InitializeSlot(skill_slots);
             InitializeSlot(mix_slots);
@@ -86,22 +87,16 @@ namespace Swift_Blade
 
         private void LoadData()
         {
-            if (saveDatas.inventoryData.Count > 0)
-            {
-                for (int i = 0; i < saveDatas.inventoryData.Count; i++)
-                    GetEmptyInvSlot().SetSlotData(saveDatas.inventoryData[i]);
-            }
+            int i;
+            for (i = 0; i < saveDatas.inventoryData.Count; i++)
+                GetEmptyInvSlot().SetSlotData(saveDatas.inventoryData[i]);
 
-            if (saveDatas.inventoryData.Count > 0)
-            {
-                for (int i = 0; i < saveDatas.inventoryData.Count; i++)
-                    GetEmptyMixSlot().SetSlotData(saveDatas.inventoryData[i]);
-            }
+            for (i = 0; i < saveDatas.inventoryData.Count; i++)
+                GetEmptyMixSlot().SetSlotData(saveDatas.inventoryData[i]);
 
-            if (saveDatas.skillSlotData.Count > 0)
+            for (i = 0; i < saveDatas.skillSlotData.Count; i++)
             {
-                for (int i = 0; i < saveDatas.skillSlotData.Count; i++)
-                    GetEmptySkillSlot().SetSlotData(saveDatas.skillSlotData[i]);
+                GetEmptySkillSlot().SetSlotData(saveDatas.skillSlotData[i]);
             }
         }
 
@@ -113,8 +108,12 @@ namespace Swift_Blade
 
         private void InitializeSlot<T>(IEnumerable<T> slots) where T : SkillSlotBase
         {
-            foreach (var slot in slots)
-                slot.SetSlotData(null);
+            int i;
+            for(i = 0; i < slots.Count(); i++)
+                slots.ElementAt(i).SetSlotData(null);
+
+            //foreach (var slot in slots)
+            //    slot.SetSlotData(null);
         }
 
         public void SetSkillCountUI(int current, int max)
@@ -124,25 +123,45 @@ namespace Swift_Blade
         
         public SkillInventorySlot GetEmptyInvSlot()
         {
-            var invSlot = inv_slots.FirstOrDefault(slot => slot.IsEmptySlot());
+            SkillInventorySlot inventorySlot = null;
 
-            if (invSlot == default)
+            int i = 0;
+            for(i = 0; i < inv_slots.Count; i++)
             {
-                PopupManager.Instance.LogMessage("인벤토리 슬롯이 가득 찼습니다.");
-                return default;
+                if (inv_slots[i].IsEmptySlot())
+                {
+                    inventorySlot = inv_slots[i];
+                    break;
+                }
             }
 
-            return invSlot;
+            if (inventorySlot == null)
+            {
+                PopupManager.Instance.LogMessage("인벤토리 슬롯이 가득 찼습니다.");
+                return inventorySlot;
+            }
+
+            return inventorySlot;
         }
 
         public SkillSlot GetEmptySkillSlot()
         {
-            var skillSlot = skill_slots.FirstOrDefault(slot => slot.IsEmptySlot()); 
-        
-            if (skillSlot == default)
+            SkillSlot skillSlot = null;
+
+            int i = 0;
+            for(i = 0; i < skill_slots.Count; i++)
+            {
+                if (skill_slots[i].IsEmptySlot())
+                {
+                    skillSlot = skill_slots[i];
+                    break;
+                }
+            }
+
+            if (skillSlot == null)
             {
                 Debug.LogWarning("빈 Skill slot을 찾을 수 없다.");
-                return default;
+                return skillSlot;
             }
         
             return skillSlot;
@@ -150,15 +169,25 @@ namespace Swift_Blade
 
         public SkillSlotToMix GetEmptyMixSlot()
         {
-            var mixSlot = mix_slots.FirstOrDefault(slot => slot.IsEmptySlot());
+            SkillSlotToMix skillMixSlot = null;
 
-            if (mixSlot == default)
+            int i = 0;
+            for(i = 0; i < mix_slots.Count; i++)
             {
-                Debug.LogWarning("빈 SkillMix slot을 찾을 수 없다.");
-                return default;
+                if (mix_slots[i].IsEmptySlot())
+                {
+                    skillMixSlot = mix_slots[i];
+                    break;
+                }
             }
 
-            return mixSlot;
+            if (skillMixSlot == null)
+            {
+                Debug.LogWarning("빈 SkillMix slot을 찾을 수 없다.");
+                return skillMixSlot;
+            }
+
+            return skillMixSlot;
         }
 
         //If player get skill, skill needs to go to inv 

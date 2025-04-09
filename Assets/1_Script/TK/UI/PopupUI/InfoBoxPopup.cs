@@ -25,24 +25,35 @@ namespace Swift_Blade
 
         public override void Popup()
         {
-            rectTrans.DOKill();
+            if(rectTrans != null)
+            {
+                rectTrans.DOKill();
 
-            rectTrans.DOLocalMoveY(maxPosY, fadeTime).SetEase(Ease.OutCirc);
+                rectTrans.DOLocalMoveY(maxPosY, fadeTime)
+                    .SetEase(Ease.OutCirc)
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            }
+
             _raycaster.enabled = true;
         }
 
         public override void PopDown()
         {
-            rectTrans.DOKill();
+            if(rectTrans != null)
+                rectTrans.DOKill();
 
-            cG.DOFade(0f, 0.5f).SetEase(Ease.InCirc).OnComplete(() =>
+            if(cG != null)
             {
-                rectTrans.localPosition = new Vector3(
-                rectTrans.localPosition.x,
-                minPosY,
-                rectTrans.localPosition.z);
-            });
+                cG.DOFade(0f, 0.5f).SetEase(Ease.InCirc).OnComplete(() =>
+                {
+                    rectTrans.localPosition = new Vector3(
+                    rectTrans.localPosition.x,
+                    minPosY,
+                    rectTrans.localPosition.z);
+                }).SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            }
 
+            PopupManager.Instance.InfoBoxRemain = false;
             _raycaster.enabled = false;
         }
 

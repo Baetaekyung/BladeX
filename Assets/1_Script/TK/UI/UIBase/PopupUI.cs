@@ -24,13 +24,21 @@ namespace Swift_Blade.UI
         
         private void OnDisable()
         {
-            cG.DOKill();
+            if(cG != null)
+            {
+                cG.DOKill();
+            }
         }
 
         public virtual void Popup()
         {
-            cG.DOFade(1, fadeTime)
-                .SetEase(Ease.OutCirc);
+            if(cG != null)
+            {
+                cG.DOFade(1, fadeTime)
+                    .SetEase(Ease.OutCirc)
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            }
+
 
             _raycaster.enabled = true;
         }
@@ -39,7 +47,11 @@ namespace Swift_Blade.UI
         {
             _raycaster.enabled = false;
 
-            cG.DOFade(0, fadeTime).SetEase(Ease.OutCirc);
+            if(cG != null)
+            {
+                cG.DOFade(0, fadeTime).SetEase(Ease.OutCirc)
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            }
         }
         
         //팝업하고 딜레이 이후 팝업 닫기

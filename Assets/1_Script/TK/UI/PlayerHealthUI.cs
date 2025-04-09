@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using DG.Tweening;
 using Swift_Blade.Combat.Health;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Swift_Blade.UI
 {
@@ -12,16 +9,14 @@ namespace Swift_Blade.UI
     {
         private PlayerHealth _playerHealth;
 
-        [SerializeField] private RectTransform healthUI;
-        [SerializeField] private GameObject    fullHealthPrefab;
-        [SerializeField] private GameObject    burnHealthPrefab;
-
-        private List<GameObject> _healthIcons;
+        [SerializeField] private RectTransform      healthUI;
+        [SerializeField] private Sprite             fullHealthIcon;
+        [SerializeField] private Sprite             burnHealthIcon;
+        [SerializeField] private PlayerHealthIcon[] healthIcons;
+        [SerializeField] private Image[]            shieldImages;
 
         private void Start()
         {
-            _healthIcons = new List<GameObject>();
-
             _playerHealth = Player.Instance.GetEntityComponent<PlayerHealth>();
             
             RectTransform rTrm = transform as RectTransform;
@@ -37,7 +32,7 @@ namespace Swift_Blade.UI
 
                 Player.Instance.GetEntityComponent<PlayerStatCompo>().OnStatChanged += SetHealthUI;
                 
-                SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth.CurrentHealth);
+                SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth.CurrentHealth, _playerHealth.ShieldAmount);
             }
         }
 
@@ -49,34 +44,7 @@ namespace Swift_Blade.UI
                 _playerHealth.OnHealthUpdateEvent -= SetHealthUI;
 
                 Player.Instance.GetEntityComponent<PlayerStatCompo>().OnStatChanged -= SetHealthUI;
-
-                //StatInfoUI.OnHStatUp -= SetHealthUIIfStatUp;
-                //StatInfoUI.OnHealthStatDown -= SetHealthUIIfStatDown;
             }
-        }
-
-        private void SetHealthUIIfStatUp(float increaseAmount)
-        {
-            if (_playerHealth == null)
-            {
-                Debug.Log("Player health compo is null, PlayerHealthUI.cs line: 35");
-                return;
-            }
-
-            PlayerHealth.CurrentHealth += increaseAmount;
-            SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth.CurrentHealth);
-        }
-
-        private void SetHealthUIIfStatDown(float decreaseAmount)
-        {
-            if (_playerHealth == null)
-            {
-                Debug.Log("Player health compo is null, PlayerHealthUI.cs line: 35");
-                return;
-            }
-
-            PlayerHealth.CurrentHealth -= decreaseAmount;
-            SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth.CurrentHealth);
         }
 
         private void HandleSetHealthUI(ActionData actionData)
@@ -87,7 +55,7 @@ namespace Swift_Blade.UI
                 return;
             }
             
-            SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth);
+            SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth, _playerHealth.ShieldAmount);
         }
         
         private void SetHealthUI()
@@ -98,33 +66,85 @@ namespace Swift_Blade.UI
                 return;
             }
 
-            SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth);
+            SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth, _playerHealth.ShieldAmount);
         }
         
-        public void SetHealthUI(float maxHealth, float currentHealth)
+        public void SetHealthUI(float maxHealth, float currentHealth, int shieldAmount)
         {
-            if (_healthIcons.Count != 0)
+            //how much health player can have??
+            #region Health validation
+            if (maxHealth > healthIcons.Length)
+                maxHealth = healthIcons.Length;
+
+            if (currentHealth > healthIcons.Length)
+                currentHealth = healthIcons.Length;
+            #endregion
+
+            InitHealthIcons(maxHealth, currentHealth);
+            InitShieldIcons(shieldAmount);
+        }
+
+        private void InitShieldIcons(int shieldAmount)
+        {
+            int i;
+            int shieldAmountInt = Mathf.RoundToInt(shieldAmount);
+
+            for (i = 0; i < shieldImages.Length; i++)
+                shieldImages[i].gameObject.SetActive(false);
+
+            for (i = 0; i < shieldAmountInt; i++)
             {
-                _healthIcons.ForEach(icon => Destroy(icon.gameObject));
-                _healthIcons.Clear();
+                shieldImages[i].gameObject.SetActive(true);
+
+                #region Animation part
+                if (shieldImages[i].transform != null)
+                {
+                    shieldImages[i].transform.DOShakeRotation(0.4f, Vector3.forward * 25f).OnComplete(() =>
+                    {
+                        transform.rotation = Quaternion.identity;
+                    }).SetLink(shieldImages[i].gameObject, LinkBehaviour.KillOnDestroy);
+                }
+                #endregion
             }
-            
-            int intMaxHealth = Mathf.RoundToInt(maxHealth);
-            int emptyHealth = intMaxHealth - Mathf.RoundToInt(currentHealth);
-            int fullHealth = intMaxHealth - emptyHealth;
-            
-            for (int i = 0; i < fullHealth; i++)
+        }
+
+        private void InitHealthIcons(float maxHealth, float currentHealth)
+        {
+            int i;
+            int activeHealthCount = Mathf.RoundToInt(maxHealth);
+            int currentHealthCount = Mathf.RoundToInt(currentHealth);
+
+            //All icons off
+            for (i = 0; i < healthIcons.Length; i++)
+                healthIcons[i].gameObject.SetActive(false);
+
+            //setting active healthIcons
+            for (i = 0; i < healthIcons.Length; i++)
             {
-                GameObject icon = Instantiate(fullHealthPrefab, healthUI);
-                _healthIcons.Add(icon);
+                if (i < activeHealthCount)
+                {
+                    //Init
+                    healthIcons[i].gameObject.SetActive(true);
+                    healthIcons[i].SetIcon(burnHealthIcon);
+
+                    #region Animation part
+                    if (healthIcons[i].transform != null)
+                    {
+                        healthIcons[i].transform.DOKill();
+                        healthIcons[i].transform.DOShakeRotation(0.4f, Vector3.forward * 25f).OnComplete(() =>
+                        {
+                            transform.rotation = Quaternion.identity;
+                        }).SetLink(healthIcons[i].gameObject, LinkBehaviour.KillOnDestroy);
+                    }
+                    #endregion
+                }
+                else
+                    healthIcons[i].SetIcon(null);
             }
 
-            for (int j = 0; j < emptyHealth; j++)
-            {
-                GameObject icon = Instantiate(burnHealthPrefab, healthUI);
-                icon.transform.DOShakeRotation(0.4f, Vector3.forward * 25f);
-                _healthIcons.Add(icon);
-            }
+            //setting current healthIcons
+            for (i = 0; i < currentHealthCount; i++)
+                healthIcons[i].SetIcon(fullHealthIcon);
         }
     }
 }
