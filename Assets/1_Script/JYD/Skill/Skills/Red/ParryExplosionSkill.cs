@@ -33,7 +33,7 @@ namespace Swift_Blade.Skill
             
             foreach (var item in targets)
             {
-                if (CheckSkill() && item.TryGetComponent(out BaseEnemyHealth health))
+                if (TryUseSkill() && item.TryGetComponent(out BaseEnemyHealth health))
                 {
                     ActionData actionData = new ActionData();
                     actionData.damageAmount = skillDamage;

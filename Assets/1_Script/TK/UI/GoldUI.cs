@@ -1,28 +1,26 @@
+using System;
 using TMPro;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-namespace Swift_Blade
+namespace Swift_Blade.UI
 {
     public class GoldUI : MonoBehaviour
     {
-        [SerializeField] private InventoryManager playerInventory;
         [SerializeField] private TextMeshProUGUI coinText;
-        [SerializeField] private SceneManagerSO sceneManagerSo;
         
         private void Start()
         {
-            sceneManagerSo.LevelClearEvent += AddRandomGold;
+            InventoryManager.Inventory.OnCoinChanged += SetCoinUI;
             
-            SetGoldUI();
+            SetCoinUI();
         }
-        
+
         private void OnDestroy()
         {
-            sceneManagerSo.LevelClearEvent -= AddRandomGold;
+            InventoryManager.Inventory.OnCoinChanged -= SetCoinUI;
         }
-        
-        private void SetGoldUI()
+
+        private void SetCoinUI()
         {
             if(InventoryManager.Inventory != null)                        
                 coinText.text = $"{InventoryManager.Inventory.Coin.ToString()} 코인";
@@ -31,10 +29,7 @@ namespace Swift_Blade
                 coinText.text = "0 코인";
             }
         }
+                
         
-        private void AddRandomGold()
-        {
-            SetGoldUI();
-        }
     }
 }

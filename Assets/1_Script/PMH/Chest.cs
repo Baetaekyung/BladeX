@@ -43,7 +43,6 @@ namespace Swift_Blade.Level
             lookDirection.y = 0;
             
             transform.rotation = Quaternion.LookRotation(lookDirection);
-                        
         }
 
         private void SetRandomChestType()

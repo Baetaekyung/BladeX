@@ -54,7 +54,10 @@ namespace Swift_Blade.Pool
                     {
                         Hit(health);
                     }
-                    
+                }
+                else
+                {
+                    Hit(health);
                 }
             }
             else

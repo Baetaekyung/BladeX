@@ -13,7 +13,7 @@ namespace Swift_Blade.Combat.Caster
             Vector3 center = transform.position;
             float radius = jumpAttackRadius;
             
-            Collider[] hitColliders = Physics.OverlapSphere(center, radius, targetLayer);
+            Collider[] hitColliders = Physics.OverlapSphere(center, radius, whatIsTarget);
             
             foreach (var hitCollider in hitColliders)
             {

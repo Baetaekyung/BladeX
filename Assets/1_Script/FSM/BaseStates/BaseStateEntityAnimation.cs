@@ -54,7 +54,7 @@ namespace Swift_Blade.FSM.States
             animationTriggers.OnSpeedMultiplierDefaultEvent += OnSpeedMultiplierDefaultTrigger;
             animationTriggers.OnAudioPlayEvent += OnAudioPlayTrigger;
 
-            //animationTriggers.OnAnimationTrailEvent += OnTrailTrigger;
+            animationTriggers.OnAnimationTrailEvent += OnTrailTrigger;
 
             if (baseAnimParam != null)
                 PlayAnimationOnEnter();
@@ -75,7 +75,7 @@ namespace Swift_Blade.FSM.States
 
             animationTriggers.OnSpeedMultiplierDefaultEvent -= OnSpeedMultiplierDefaultTrigger;
             animationTriggers.OnAudioPlayEvent -= OnAudioPlayTrigger;
-            //animationTriggers.OnAnimationTrailEvent -= OnTrailTrigger;
+            animationTriggers.OnAnimationTrailEvent -= OnTrailTrigger;
 
             //re init
             OnAllowRotateAllowTrigger();

@@ -19,7 +19,7 @@ namespace Swift_Blade
         
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
-            if (CheckSkill() && player.GetPlayerHealth.IsFullHealth && targets != null)
+            if (TryUseSkill() && player.GetPlayerHealth.IsFullHealth && targets != null)
             {
                 GreenWaveParticle greenWaveParticle = MonoGenericPool<GreenWaveParticle>.Pop();
                 greenWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0, 1, 0);

@@ -1,10 +1,10 @@
 using System.Collections;
+using Swift_Blade.Enemy;
 using UnityEngine.AI;
 using Unity.Behavior;
 using UnityEngine;
 using System;
-using Swift_Blade.Enemy;
-using Swift_Blade.Pool;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat.Health
 {
@@ -16,7 +16,7 @@ namespace Swift_Blade.Combat.Health
         [Space]
         [SerializeField] protected BehaviorGraphAgent BehaviorGraphAgent;
         [SerializeField] protected ChangeBossState changeBossState;
-
+                        
         private BaseEnemyAnimationController animationController;
         private Rigidbody enemyRigidbody;
         private NavMeshAgent navMeshAgent;
@@ -43,7 +43,7 @@ namespace Swift_Blade.Combat.Health
             {
                 Debug.LogError("Enemy has Not State Change");
             }
-            
+                    
         }
 
         private void OnDestroy()
@@ -71,7 +71,19 @@ namespace Swift_Blade.Combat.Health
             
         }
 
-        public override void TakeHeal(float amount)
+        public override void Dead()
+        {
+            InventoryManager.Inventory.AddCoin(AddRandomCoin());
+                        
+            base.Dead();
+        }
+
+        private int AddRandomCoin()
+        {
+            return Random.Range(1,10);
+        } 
+
+        public virtual void TakeHeal(float amount)
         {
             currentHealth += amount;
             currentHealth = Mathf.Min(currentHealth , maxHealth);

@@ -31827,7 +31827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fab5454292fb003418ab15e3d914f48e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultAttackMoveSpeed: 13
+  defaultAttackMoveSpeed: 9
   animationEnd: 0
   isManualRotate: 0
   isManualMove: 0
@@ -31875,6 +31875,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2996055124802451808}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.CoinBurstFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   maxHealth: 12
   isDead: 0
   currentHealth: 0
@@ -31896,16 +31909,16 @@ MonoBehaviour:
   target: {fileID: 0}
   moveSpeed: 6.3
   rotateSpeed: 20
-  stopDistance: 2.1
+  stopDistance: 1.9
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
   checkForward: {fileID: 740264442749277415}
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 22528
-  maxDistance: 1.8
-  showGizmo: 1
+    m_Bits: 30720
+  maxDistance: 1.07
+  showGizmo: 0
   weapon: {fileID: 0}
 --- !u!1 &3934571686737857051
 GameObject:
@@ -32045,9 +32058,12 @@ MonoBehaviour:
   _casterRadius: 2.17
   _casterInterpolation: 0.97
   _castingRange: 3.07
-  targetLayer:
+  whatIsTarget:
     serializedVersion: 2
     m_Bits: 64
+  whatIsObstacle:
+    serializedVersion: 2
+    m_Bits: 22528
   OnCastDamageEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -58819,6 +58835,7 @@ GameObject:
   - component: {fileID: 1861828440522044926}
   - component: {fileID: 2840029255627781192}
   - component: {fileID: 8022966292899397068}
+  - component: {fileID: 2996055124802451808}
   m_Layer: 7
   m_Name: Feedback
   m_TagString: Untagged
@@ -58873,6 +58890,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unParrySignParticle: {fileID: 11400000, guid: 20064daeee3755345b0548c8124c1439, type: 2}
   unParrySignParticleTrm: {fileID: 5308743986634109377}
+--- !u!114 &2996055124802451808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7555956772869858807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b3d80fd39e73e40a41f8361d3c3d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinBurst: {fileID: 11400000, guid: 9d4e0c6884558134e9d04e669da364ed, type: 2}
+  random: 0
 --- !u!1 &7572378662027066068
 GameObject:
   m_ObjectHideFlags: 0
