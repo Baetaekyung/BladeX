@@ -23,6 +23,7 @@ namespace Swift_Blade.FSM.States
 
         private static float nextDelayTime_AllowSpecial;
         private static float nextDelayTime_AllowRoll;
+        public static bool parryable;
 
         protected BasePlayerState(FiniteStateMachine<PlayerStateEnum> stateMachine, Animator animator, Player entity, AnimationTriggers animTrigger, AnimationParameterSO animParamSO = null) : base(stateMachine, animator, entity, animTrigger, animParamSO)
         {
@@ -85,8 +86,9 @@ namespace Swift_Blade.FSM.States
         }
         protected virtual void OnSpecialInput()
         {
-            if (nextDelayTime_AllowSpecial > Time.time) return;
+            if (nextDelayTime_AllowSpecial > Time.time && !parryable) return;
             nextDelayTime_AllowSpecial = Time.time + GetSpecialDelay;
+            parryable = false;
             Action specialBehaviour = PlayerWeaponManager.CurrentWeapon.GetSpecialBehaviour(entity);
             specialBehaviour.Invoke();
             //GetOwnerFsm.ChangeState(PlayerStateEnum.Parry);

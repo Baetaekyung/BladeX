@@ -1,0 +1,99 @@
+﻿using UnityEngine;
+using UnityEngine.Events;
+
+namespace Swift_Blade.Combat.Caster
+{
+    public class SquareCaster : MonoBehaviour, ICasterAble
+    {
+        [SerializeField] private Vector3 _casterHalfSize;
+        [SerializeField] [Range(0f, 10f)] private float _casterInterpolation = 0.5f;
+        [SerializeField] [Range(0f, 10f)] private float _castingRange = 1f;
+
+        public LayerMask targetLayer;
+        public UnityEvent<ActionData> OnCastDamageEvent;
+        public UnityEvent OnCastEvent;
+
+        [Space(20)] public bool CanCurrentAttackParry = true;
+        [Space(10)] public UnityEvent parryEvents;
+        public UnityEvent unParriableAttack;
+        
+        protected const float parryInterval = 0.5f;
+        protected float lastParryTime;
+        
+        public bool Cast()
+        {
+            OnCastEvent?.Invoke();
+            
+            Vector3 startPos = GetStartPosition();
+
+            bool isHit = Physics.BoxCast(startPos, _casterHalfSize, transform.forward, out RaycastHit hit, transform.rotation, _castingRange, targetLayer);
+            
+            if (isHit && hit.collider.TryGetComponent(out IHealth health))
+            {
+                ActionData actionData = new ActionData(hit.point, hit.normal, 1, true);
+                
+                if (CanCurrentAttackParry && hit.collider.TryGetComponent(out PlayerParryController parryController))
+                {
+                    TryParry(hit, parryController, health, actionData);
+                }
+                else
+                {
+                    ApplyDamage(health, actionData);
+                }
+            }
+
+            CanCurrentAttackParry = true;
+
+            return isHit;
+        }
+        
+        protected Vector3 GetStartPosition()
+        {
+            return transform.position + transform.forward * -_casterInterpolation * 2;
+        }
+
+        private void TryParry(RaycastHit hit, PlayerParryController parryController, IHealth health, ActionData actionData)
+        {
+            bool isLookingAtAttacker = IsFacingEachOther(hit.transform.GetComponentInParent<Player>().GetPlayerTransform , transform);
+            bool canInterval = Time.time > lastParryTime + parryInterval;
+            
+            if (parryController.GetParry() && isLookingAtAttacker && canInterval)
+            {
+                parryEvents?.Invoke();//적 쪽
+                parryController.ParryEvents?.Invoke();
+                
+                lastParryTime = Time.time;
+            }
+            else
+            {
+                ApplyDamage(health, actionData);
+            }
+        }
+        
+        protected bool IsFacingEachOther(Transform player, Transform enemy)
+        {
+            Vector3 playerToEnemy = (enemy.position - player.position).normalized;
+            
+            float playerDot = Vector3.Dot(player.forward, playerToEnemy);
+            
+            return playerDot > 0;
+        }
+       
+        protected virtual void ApplyDamage(IHealth health,ActionData actionData)
+        {
+            OnCastDamageEvent?.Invoke(actionData);
+            health.TakeDamage(actionData);
+        }
+
+        #if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(GetStartPosition(), _casterHalfSize * 2f);
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(GetStartPosition() + transform.forward * _castingRange, _casterHalfSize * 2f);
+            Gizmos.color = Color.white;
+        }
+        #endif
+    }
+}
