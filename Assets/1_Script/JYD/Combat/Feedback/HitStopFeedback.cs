@@ -1,23 +1,25 @@
+using UnityEngine;
 using Swift_Blade.Feeling;
 
 namespace Swift_Blade.Combat.Feedback
 {
     public class HitStopFeedback : Feedback
     {
-        public HitStopSO hitStopData;
-        
-        
+        [field: SerializeField] public HitStopSO HitStopData { get; set; }
+
+
+
         public override void PlayFeedback()
         {
-            
-            HitStopManager.Instance.StartHitStop(hitStopData);
+
+            HitStopManager.Instance.StartHitStop(HitStopData);
         }
 
         public override void ResetFeedback()
         {
-            
+
         }
-                
-        
+
+
     }
 }

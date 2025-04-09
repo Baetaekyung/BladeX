@@ -5,16 +5,16 @@ namespace Swift_Blade.Combat.Feedback
 {
     public class CameraShakeFeedback : Feedback
     {
-        public CameraShakeType shakeType;
-        
+        [field: SerializeField] public CameraShakeType ShakeType { get; set; }
+
         public override void PlayFeedback()
         {
-            CameraShakeManager.Instance.DoShake(shakeType);
+            CameraShakeManager.Instance.DoShake(ShakeType);
         }
 
         public override void ResetFeedback()
         {
-            
+
         }
     }
 }
