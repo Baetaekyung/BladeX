@@ -1,5 +1,4 @@
 using Swift_Blade.Combat.Health;
-using Swift_Blade.UI;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -32,10 +31,10 @@ namespace Swift_Blade
             
             foreach (var stat in equipData.statModifier)
             {
-                if (stat.Key == StatType.HEALTH)
-                {
-                    PlayerHealth.CurrentHealth += Mathf.RoundToInt(stat.Value);
-                }
+                //if (stat.Key == StatType.HEALTH)
+                //{
+                //    PlayerHealth.CurrentHealth += Mathf.RoundToInt(stat.Value);
+                //}
 
                 //Key is StatType, Value is ModifyValue
                 _playerStat.AddModifier(
@@ -67,7 +66,7 @@ namespace Swift_Blade
                 if (stat.Key == StatType.HEALTH)
                 {
                     var playerHealth = Player.Instance?.GetEntityComponent<PlayerHealth>();
-                    PlayerHealth.CurrentHealth -= Mathf.RoundToInt(stat.Value);
+                    //PlayerHealth.CurrentHealth -= Mathf.RoundToInt(stat.Value);
 
                     playerHealth?.HealthUpdate();
                 }

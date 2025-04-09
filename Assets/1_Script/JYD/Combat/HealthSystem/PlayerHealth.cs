@@ -9,18 +9,20 @@ namespace Swift_Blade.Combat.Health
     public class PlayerHealth : BaseEntityHealth, IEntityComponent
         ,IEntityComponentStart
     {
-        public UnityEvent OnHealEvent;
         public event Action<float, float, int> OnHealthUpdateEvent;
-        
-        [SerializeField] private StatComponent _statCompo;
-        [FormerlySerializedAs("_healthStat")] [SerializeField] private StatSO healthStat;
-        
-        public static float CurrentHealth;
-        
+
         private const float DAMAGE_INTERVAL = 0.75f;
-        private float lastDamageTime;
-        private Player _player;
-        private int _shieldAmount;
+        public static float CurrentHealth;
+        public UnityEvent OnHealEvent;
+        
+        [SerializeField] private StatSO         healthStat;
+        [SerializeField] private float          defaultHealth = 4;
+
+        private float _lastDamageTime;
+        private int   _shieldAmount;
+        
+        private Player          _player;
+        private PlayerStatCompo statCompo;
 
         public float GetCurrentHealth => CurrentHealth;
 
@@ -42,7 +44,9 @@ namespace Swift_Blade.Combat.Health
         
         public void EntityComponentStart(Entity entity)
         {
-            healthStat = _statCompo.GetStat(StatType.HEALTH);
+            statCompo = _player.GetEntityComponent<PlayerStatCompo>();
+
+            healthStat = statCompo.GetStat(StatType.HEALTH);
             maxHealth = healthStat.Value;
             
             HealthUpdate();
@@ -58,7 +62,7 @@ namespace Swift_Blade.Combat.Health
         
         public override void TakeDamage(ActionData actionData)
         {
-            if (lastDamageTime + DAMAGE_INTERVAL > Time.time || isDead || IsPlayerInvincible) return;
+            if (_lastDamageTime + DAMAGE_INTERVAL > Time.time || isDead || IsPlayerInvincible) return;
                         
             //repac...
             if(ShieldAmount > 0)
@@ -87,7 +91,7 @@ namespace Swift_Blade.Combat.Health
             {
                 _player.GetSkillController.UseSkill(SkillType.Hit);
                 OnHitEvent?.Invoke(actionData);
-                lastDamageTime = Time.time;
+                _lastDamageTime = Time.time;
 
                 if (CurrentHealth <= 0)
                 {
@@ -103,7 +107,7 @@ namespace Swift_Blade.Combat.Health
                 return;
             
             CurrentHealth += healAmount;
-            CurrentHealth = Mathf.Min(CurrentHealth, healthStat.Value);
+            CurrentHealth = Mathf.Min(CurrentHealth, maxHealth);
             
             OnHealEvent?.Invoke();
             
@@ -114,14 +118,16 @@ namespace Swift_Blade.Combat.Health
         {
             base.Dead();
             
-            StatComponent.InitOnce = false;
-            CurrentHealth = 4; //기본 체력 4로 하드 코딩 해놓을게
+            StatComponent.IsNewGame = false;
+            SkillManager.IsNewGame = false;
+            InventoryManager.IsNewGame = false;
+
+            CurrentHealth = defaultHealth;
             
             PopupManager.Instance.AllPopDown();
             PopupManager.Instance.PopUp(PopupType.GameOver);
         }
 
         public bool IsFullHealth => Mathf.Approximately(CurrentHealth , healthStat.Value);
-        
     }
 }
