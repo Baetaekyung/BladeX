@@ -28,15 +28,25 @@ namespace Swift_Blade
 
         public override void Popup()
         {
-            cG.DOFade(1, fadeInTime)
-                .SetEase(Ease.OutSine)
-                .OnComplete(() => HandleButtonActive());
+            if(cG != null)
+            {
+                cG.DOFade(1, fadeInTime)
+                    .SetEase(Ease.OutSine)
+                    .OnComplete(() => HandleButtonActive())
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            }
         }
 
         private void HandleButtonActive()
         {
-            _restartButtonCG.DOFade(1f, 1f);
-            _titleButtonCG.DOFade(1f, 1f).OnComplete(() => _raycaster.enabled = true);
+            if(_restartButtonCG != null)
+                _restartButtonCG.DOFade(1f, 1f)
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+
+            if(_titleButtonCG != null)
+                _titleButtonCG.DOFade(1f, 1f)
+                    .OnComplete(() => _raycaster.enabled = true)
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
 
         public override void PopDown()
@@ -46,8 +56,12 @@ namespace Swift_Blade
             _restartButtonCG.alpha = 0f;
             _titleButtonCG.alpha = 0f;
 
-            cG.DOFade(0, fadeOutTime)
-                .SetEase(Ease.OutSine);
+            if(cG != null)
+            {
+                cG.DOFade(0, fadeOutTime)
+                    .SetEase(Ease.OutSine)
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            }
         }
 
         public void GoToTitle()
@@ -57,7 +71,9 @@ namespace Swift_Blade
 
         public void Resume()
         {
-            cG.DOKill();
+            if(cG != null)
+                cG.DOKill();
+
             sceneManager.LoadScene("Menu");
         }
     }

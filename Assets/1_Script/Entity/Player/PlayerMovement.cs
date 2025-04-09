@@ -152,6 +152,7 @@ namespace Swift_Blade
             Vector3 forceResult = forceVetor * forceCurve.Evaluate(curveValue);
 
             Vector3 addition = AdditionalVelocity + dashResult + forceResult;
+            UI_DebugPlayer.DebugText(0, forceResult, "fR", DBG_UI_KEYS.Keys_PlayerAction);
             Vector3 result = speed * input + addition;
             result.y += yVal;
             controller.linearVelocity = result;
@@ -166,6 +167,7 @@ namespace Swift_Blade
         }
         public void AddForceCurve(Vector3 force)
         {
+            controller.linearVelocity = Vector3.zero;
             Transform visualTransform = playerRenderer.GetPlayerVisualTrasnform;
             Vector3 result = visualTransform.TransformVector(force);
             curveValue = 0;

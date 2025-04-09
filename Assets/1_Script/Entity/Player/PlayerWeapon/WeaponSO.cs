@@ -8,7 +8,7 @@ using Swift_Blade.Feeling;
 namespace Swift_Blade
 {
     [CreateAssetMenu(fileName = "WeaponSO", menuName = "SO/Weapon")]
-    public class Weapon : ScriptableObject
+    public class WeaponSO : ScriptableObject
     {
         [field: Header("Damage")]
         [field: SerializeField] public float AdditionalNormalDamage { get; private set; }

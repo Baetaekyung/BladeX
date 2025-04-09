@@ -10,20 +10,30 @@ namespace Swift_Blade.Combat.Health
         ,IEntityComponentStart
     {
         public UnityEvent OnHealEvent;
-        public event Action<float, float> OnHealthUpdateEvent;
+        public event Action<float, float, int> OnHealthUpdateEvent;
         
         [SerializeField] private StatComponent _statCompo;
         [FormerlySerializedAs("_healthStat")] [SerializeField] private StatSO healthStat;
         
-        public float GetCurrentHealth => CurrentHealth;
         public static float CurrentHealth;
-        
-        public StatSO GetHealthStat => healthStat;
-        public bool IsPlayerInvincible { get; set; }
         
         private const float DAMAGE_INTERVAL = 0.75f;
         private float lastDamageTime;
         private Player _player;
+        private int _shieldAmount;
+
+        public float GetCurrentHealth => CurrentHealth;
+
+        public int ShieldAmount
+        {
+            get => _shieldAmount;
+            set
+            {
+                _shieldAmount = Mathf.Max(value, 0);
+            }
+        }
+        public StatSO GetHealthStat => healthStat;
+        public bool IsPlayerInvincible { get; set; }
         
         public void EntityComponentAwake(Entity entity)
         {
@@ -43,28 +53,51 @@ namespace Swift_Blade.Combat.Health
             maxHealth = healthStat.Value;
             CurrentHealth = Mathf.Clamp(CurrentHealth, 0, maxHealth);
             
-            OnHealthUpdateEvent?.Invoke(maxHealth, CurrentHealth);
+            OnHealthUpdateEvent?.Invoke(maxHealth, CurrentHealth, ShieldAmount);
         }
         
         public override void TakeDamage(ActionData actionData)
         {
             if (lastDamageTime + DAMAGE_INTERVAL > Time.time || isDead || IsPlayerInvincible) return;
                         
+            //repac...
+            if(ShieldAmount > 0)
+            {
+                int tempHealth = ShieldAmount - Mathf.RoundToInt(actionData.damageAmount);
+                ShieldAmount -= Mathf.RoundToInt(actionData.damageAmount);
+
+                if(tempHealth < 0)
+                {
+                    CurrentHealth -= tempHealth;
+                }
+
+                HitEvent();
+
+                return;
+            }
+
             float damageAmount = actionData.damageAmount;
             CurrentHealth -= damageAmount;
-            lastDamageTime = Time.time;
-                        
-            _player.GetSkillController.UseSkill(SkillType.Hit);
-            OnHitEvent?.Invoke(actionData);
-            
-            if (CurrentHealth <= 0)
+            CurrentHealth = Mathf.Max(CurrentHealth, -0.1f);
+
+            HitEvent();
+
+            //Local
+            void HitEvent()
             {
-                Dead();
-                _player.GetSkillController.UseSkill(SkillType.Dead);
+                _player.GetSkillController.UseSkill(SkillType.Hit);
+                OnHitEvent?.Invoke(actionData);
+                lastDamageTime = Time.time;
+
+                if (CurrentHealth <= 0)
+                {
+                    Dead();
+                    _player.GetSkillController.UseSkill(SkillType.Dead);
+                }
             }
         }
         
-        public void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
+        public override void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
         {
             if(Mathf.Approximately(CurrentHealth, healthStat.Value))
                 return;

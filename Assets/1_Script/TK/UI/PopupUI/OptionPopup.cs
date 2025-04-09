@@ -10,13 +10,26 @@ namespace Swift_Blade
         public override void Popup()
         {
             cG.alpha = 1f;
-            cG.transform.DOScaleX(1, fadeTime).SetEase(Ease.OutQuart);
+            if(cG != null)
+            {
+                cG.transform
+                    .DOScaleX(1, fadeTime)
+                    .SetEase(Ease.OutQuart)
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            }
+
             _raycaster.enabled = true;
         }
 
         public override void PopDown()
         {
-            cG.transform.DOScaleX(0, fadeTime).SetEase(Ease.Linear);
+            if(cG != null)
+            {
+                cG.transform
+                    .DOScaleX(0, fadeTime)
+                    .SetEase(Ease.Linear)
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            }
             _raycaster.enabled = false;
         }
     }

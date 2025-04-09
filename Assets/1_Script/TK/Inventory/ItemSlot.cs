@@ -25,7 +25,7 @@ namespace Swift_Blade
         protected InventoryManager InvenManager => InventoryManager.Instance;
         
         public virtual void OnPointerDown(PointerEventData eventData)
-        {   
+        {
             //빈 슬롯인 경우에 클릭해도 의미가 없기 때문에 return
             if (IsEmptySlot())
                 return;
@@ -39,6 +39,9 @@ namespace Swift_Blade
             //장비는 인벤토리에 1개만 있다고 가정하고 만든 것
             if (_itemDataSO.itemType == ItemType.EQUIPMENT)
             {
+                if(transform != null)
+                    transform.DOKill();
+
                 if (InventoryManager.Inventory.currentEquipment
                     .Contains(_itemDataSO.equipmentData))
                 {
@@ -70,11 +73,7 @@ namespace Swift_Blade
 
             Debug.Assert(textPopup != null, "Popup is not matched with Text Type");
 
-            textPopup.SetText("이미 장착 중인 장비이다.");
-            PopupManager.Instance.DelayPopup(PopupType.Text, 1.5f, () =>
-            {
-                PopupManager.Instance.PopDown(PopupType.Text);
-            });
+            PopupManager.Instance.LogMessage("이미 장착 중인 장비이다.");
         }
 
         public virtual void OnPointerEnter(PointerEventData eventData)
@@ -84,8 +83,11 @@ namespace Swift_Blade
             if (!accentFrame.gameObject.activeSelf)
                 accentFrame.gameObject.SetActive(true);
 
-            transform.DOKill();
-            transform.DOScale(1.06f, 0.5f);
+            if(transform != null)
+            {
+                transform.DOKill();
+                transform.DOScale(1.06f, 0.5f);
+            }
         }
 
         public virtual void OnPointerExit(PointerEventData eventData)
@@ -95,7 +97,11 @@ namespace Swift_Blade
             if (accentFrame.gameObject.activeSelf)
                 accentFrame.gameObject.SetActive(false);
             
-            transform.DOScale(1f, 0.5f);
+            if(transform != null)
+            {
+                transform.DOKill();
+                transform.DOScale(1f, 0.5f);
+            }
         }
 
         public void SetItemUI(Sprite sprite)

@@ -13,11 +13,34 @@ namespace Swift_Blade
         private List<PopupUI> _popupList = new List<PopupUI>();
         public event Action   OnPopUpOpenOrClose;
 
-        public bool IsRemainPopup => _popupList.Count > 0;
-
         [SerializeField] private float infoRemainTime = 2f;
         private float infoTimer = 0f;
         private bool  infoboxRemain = false;
+
+        public bool IsRemainPopup
+        {
+            get
+            {
+                bool isRemain = false;
+
+                for (int i = 0; i < _popupList.Count; i++)
+                {
+                    if (_popupList[i].popupType != PopupType.InfoBox
+                        && _popupList[i].popupType != PopupType.Text)
+                    {
+                        isRemain = true;
+                    }
+                }
+
+                return isRemain;
+            }
+        }
+
+        public bool InfoBoxRemain
+        {
+            get => infoboxRemain;
+            set => infoboxRemain = value;
+        }
 
         private void Start()
         {
@@ -46,11 +69,11 @@ namespace Swift_Blade
                 else
                 {
                     infoTimer = 0f;
+                    infoboxRemain = false;
 
                     if (GetRemainPopup(PopupType.InfoBox))
                     {
                         PopDown(PopupType.InfoBox);
-                        infoboxRemain = false;
                     }
                 }
             }
@@ -189,7 +212,7 @@ namespace Swift_Blade
 
         public void LogMessage(string message)
         {
-            PopupUI popup = GetPopupUI(UI.PopupType.Text);
+            PopupUI popup = GetPopupUI(PopupType.Text);
             TextPopup textPopup = popup as TextPopup;
 
             textPopup.SetText(message);

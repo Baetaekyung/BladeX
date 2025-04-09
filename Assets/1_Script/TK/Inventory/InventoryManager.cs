@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 namespace Swift_Blade
 {
@@ -47,17 +47,15 @@ namespace Swift_Blade
         public static PlayerInventory  Inventory { get; set; }
         public static List<ItemDataSO> EquipmentDatas = new List<ItemDataSO>();
         
-        private void OnEnable()
+        protected override void Awake()
         {
-            ChangeToInventory();
-        }
-        
-        private void Start()
-        {
+            base.Awake();
+
             if (IsAfterInit == false)
             {
                 Inventory = playerInv.Clone();
 
+                ChangeToInventory();
                 IsAfterInit = true;
             }
             
@@ -72,12 +70,16 @@ namespace Swift_Blade
             Inventory.currentInventoryCapacity = 0;
 
             for (int i = 0; i < itemSlots.Count; i++)
+            {
                 Inventory.itemSlots.Add(itemSlots[i]);
+            }
 
             for (int i = 0; i < EquipmentDatas.Count; i++)
             {
                 var slot = GetMatchTypeEquipSlot(EquipmentDatas[i].equipmentData.slotType);
                 slot.SetItemData(EquipmentDatas[i]);
+
+                (EquipmentDatas[i].itemObject as Equipment).OnEquipment();
             }
 
             //인벤토리의 아이템 데이터를 슬롯에 넣어주기 (장비창 제외)
@@ -94,13 +96,12 @@ namespace Swift_Blade
                     if (_itemTable.Contains(currentIndexItem))
                     {
                         _itemDatas[currentIndexItem]++;
-                        Debug.Log("Item added");
                     }
                     else
                     {
                         _itemTable.Add(currentIndexItem);
                         _itemDatas.Add(currentIndexItem, 1);
-                        Inventory.currentInventoryCapacity++;
+                        Inventory.currentInventoryCapacity += 1;
                     }
 
                     AssignItemToSlot(i, matchSlot, emptySlot);
@@ -154,6 +155,9 @@ namespace Swift_Blade
         private void UseQuickSlotItem()
         {
             if (QuickSlotItem == null)
+                return;
+
+            if (QuickSlotItem.itemObject.CanUse() == false)
                 return;
 
             QuickSlotItem.itemObject.ItemEffect(Player.Instance);
