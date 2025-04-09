@@ -106,8 +106,8 @@ namespace Swift_Blade
                 return;
             }
 
-            leftSlot.UseSkillData();
-            rightSlot.UseSkillData();
+            leftSlot.DeleteSkillData();
+            rightSlot.DeleteSkillData();
 
             skillDataOnStage1 = null;
             skillDataOnStage2 = null;

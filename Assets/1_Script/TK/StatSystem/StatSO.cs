@@ -22,7 +22,7 @@ namespace Swift_Blade
     public class StatSO : ScriptableObject
     {
         public event Action OnValueChanged;
-        public event Action OnBuffEnd;
+        public Action OnBuffEnd;
 
         public StatType  statType;
         public ColorType colorType;
@@ -90,6 +90,8 @@ namespace Swift_Blade
 
                     OnValueChanged?.Invoke();
                 }
+
+                return;
             }
             
             modifiedValue += value;
@@ -117,11 +119,11 @@ namespace Swift_Blade
 
         private float GetCalculatedValue(int colorVal)
         {
-            if(statType == StatType.HEALTH)
+            if (statType == StatType.HEALTH)
             {
                 float amount = colorVal * colorMultiplier;
 
-                return Mathf.RoundToInt(amount / 1) + _baseValue; //(amount / 1) is make 5.38 to 5
+                return Mathf.FloorToInt(amount) + _baseValue;
             }
 
             return (colorVal * colorMultiplier) + _baseValue;
@@ -149,6 +151,21 @@ namespace Swift_Blade
 
         public IEnumerator DelayBuffRoutine(string buffKey, float buffTime, float buffAmount)
         {
+            //todo: Refectoring..
+            if (statType == StatType.HEALTH)
+            {
+                buffTimer = buffTime;
+                while (this.buffTimer > 0)
+                {
+                    this.buffTimer -= Time.deltaTime;
+                    yield return null;
+                }
+
+                OnBuffEnd?.Invoke();
+
+                yield break;
+            }
+
             AddModifier(buffKey, buffAmount);
 
             buffTimer = buffTime;
@@ -158,7 +175,6 @@ namespace Swift_Blade
                 yield return null;
             }
 
-            Debug.Log("buff end");
             RemoveModifier(buffKey);
 
             OnBuffEnd?.Invoke();

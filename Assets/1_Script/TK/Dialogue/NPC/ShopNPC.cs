@@ -39,15 +39,13 @@ namespace Swift_Blade
             {
                 dialogueEndEvent?.Invoke();
                 OnDialogueEndEvent?.Invoke();
+                ClearAnimation();
             }
-
-            animator.Play("Talk");
         }
 
         private void HandleOpenShop()
         {
             PopupManager.Instance.PopUp(PopupType.Shop);
-            ClearAnimation();
             SetShop();
         }
 

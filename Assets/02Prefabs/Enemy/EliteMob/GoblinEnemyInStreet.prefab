@@ -16724,7 +16724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinBurst: {fileID: 11400000, guid: 9d4e0c6884558134e9d04e669da364ed, type: 2}
-  random: 1
+  random: 30
 --- !u!1 &3332799616830144712
 GameObject:
   m_ObjectHideFlags: 0
@@ -32427,18 +32427,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 3669204044569326016}
-        m_TargetAssemblyTypeName: Swift_Blade.Boss.Goblin.GoblinEnemy, Assembly-CSharp
-        m_MethodName: DeadEvent
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1062018363620789388}
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.CoinBurstFeedback,
           Assembly-CSharp
@@ -32452,7 +32440,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  maxHealth: 3
+      - m_Target: {fileID: 3669204044569326016}
+        m_TargetAssemblyTypeName: Swift_Blade.Boss.Goblin.GoblinEnemy, Assembly-CSharp
+        m_MethodName: DeadEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  maxHealth: 10
   isDead: 0
   currentHealth: 0
   BehaviorGraphAgent: {fileID: 7561101348180281554}
@@ -32500,7 +32500,7 @@ MonoBehaviour:
   checkForward: {fileID: 2527107723555165245}
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 30720
+    m_Bits: 31744
   maxDistance: 1.4
   showGizmo: 1
   weapon: {fileID: 0}

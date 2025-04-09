@@ -25,7 +25,6 @@ namespace Swift_Blade
         {
             volume = value;
             mixerGroup.audioMixer.SetFloat(mixerParamName ,NormalizedValueToDb(volume));
-            Debug.Log(NormalizedValueToDb(volume));
         }
         
         private float NormalizedValueToDb(float vol)

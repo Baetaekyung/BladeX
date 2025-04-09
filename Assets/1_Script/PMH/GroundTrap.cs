@@ -3,7 +3,7 @@ using Swift_Blade.Combat.Health;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Swift_Blade
+namespace Swift_Blade.Level.Obstacle
 {
     public class GroundTrap : MonoBehaviour
     {
@@ -54,12 +54,12 @@ namespace Swift_Blade
             const float yInactive = -2.5f;
             return isActive ? yActive : yInactive;
         }
-        private void OnTriggerStay(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             if (!isActive) return;
-            if (other.TryGetComponent(out PlayerHealth playerHealth))
+            if (other.TryGetComponent(out BaseEntityHealth health))
             {
-                playerHealth.TakeDamage(new ActionData { damageAmount = 1, stun = true });
+                health.TakeDamage(new ActionData { damageAmount = 1, stun = health is PlayerHealth });
             }
         }
         //IEnumerator ActiveCoroutine()

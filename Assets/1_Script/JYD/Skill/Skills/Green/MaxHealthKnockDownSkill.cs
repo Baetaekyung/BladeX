@@ -11,7 +11,7 @@ namespace Swift_Blade.Skill
     {
         public override void Initialize()
         {
-            MonoGenericPool<BangExplosionParticle>.Initialize(skillParticle);
+            MonoGenericPool<ImpactDirt>.Initialize(skillParticle);
         }
 
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
@@ -19,7 +19,7 @@ namespace Swift_Blade.Skill
             if(targets == null || !targets.Any())return;
             if(player.GetPlayerHealth.IsFullHealth == false)return;
             
-            MonoGenericPool<BangExplosionParticle>.Pop().transform.position = targets.First().transform.position + new Vector3(0,1,0);
+            MonoGenericPool<ImpactDirt>.Pop().transform.position = targets.First().transform.position + new Vector3(0,1,0);
             
             foreach (var item in targets)
             {

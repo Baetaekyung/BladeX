@@ -1,6 +1,7 @@
 using UnityEngine;
 using Swift_Blade.Combat.Caster;
 using Swift_Blade.FSM;
+using Swift_Blade.Combat.Feedback;
 namespace Swift_Blade
 {
     public class PlayerWeaponManager : MonoBehaviour,
@@ -12,7 +13,13 @@ namespace Swift_Blade
 
         private bool isInitializedInThisScene = false;
 
-        [SerializeField] private Weapon defaultWeapon;
+        [Header("Feedback")]
+        [SerializeField] private HitStopFeedback hitStopFeedback;
+        [SerializeField] private CameraFocusFeedback cameraFocusFeedback;
+        [SerializeField] private CameraShakeFeedback cameraShakeFeedback;
+
+        [Header("Setting")]
+        [SerializeField] private WeaponSO defaultWeapon;
         [SerializeField] private AudioTrigger audioTrigger;
 
         [SerializeField] private Transform leftHandleTransform;
@@ -43,12 +50,12 @@ namespace Swift_Blade
         private FiniteStateMachine<PlayerStateEnum> playerFsm;
         private PlayerAnimator playerAnimator;
         private PlayerDamageCaster playerDamageCaster;
-        public static Weapon CurrentWeapon { get; private set; }
+        public static WeaponSO CurrentWeapon { get; private set; }
 
         private void Awake()
         {
             Debug.Assert(defaultWeapon != null, "default weapon is null");
-            isInitializedInThisScene = true;
+            isInitializedInThisScene = false;
         }
         void IEntityComponent.EntityComponentAwake(Entity entity)
         {
@@ -67,16 +74,15 @@ namespace Swift_Blade
                 SetWeapon(defaultWeapon);
             }
         }
-        public void SetWeapon(Weapon weapon)
+        public void SetWeapon(WeaponSO weapon)
         {
             Debug.Assert(weapon != null, "weapon is null");
 
-            if (!isInitializedInThisScene && CurrentWeapon == weapon)
+            if (isInitializedInThisScene && CurrentWeapon == weapon)
             {
                 Debug.LogWarning("weapon is already equipped");
                 return;
             }
-
 
             //clear currently holding weapons
             if (CurrentWeapon != null)
@@ -98,6 +104,7 @@ namespace Swift_Blade
                 leftWeaponInstance = handle;
                 leftTrailHandle = Instantiate(colorTrails[weapon.ColorType], leftWeaponInstance.TrailTransform);
                 leftTrailHandle.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                leftTrailHandle.SetActive(false);
             }
 
             if (weapon.RightWeaponHandler != null)
@@ -106,6 +113,7 @@ namespace Swift_Blade
                 rightWeaponInstance = handle;
                 rightTrailHandle = Instantiate(colorTrails[weapon.ColorType], rightWeaponInstance.TrailTransform);
                 rightTrailHandle.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                rightTrailHandle.SetActive(false);
             }
 
             CurrentWeapon = weapon;
@@ -117,6 +125,10 @@ namespace Swift_Blade
             playerDamageCaster.CastingRange = weapon.CastRange;
 
             playerFsm.ChangeState(PlayerStateEnum.Move);
+
+            hitStopFeedback.HitStopData = weapon.WeaponHitStop;
+            cameraFocusFeedback.FocusData = weapon.WeaponCameraFocus;
+            cameraShakeFeedback.ShakeType = weapon.WeaponCameraShkaeType;
 
             isInitializedInThisScene = true;
 

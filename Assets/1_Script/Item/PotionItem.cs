@@ -11,5 +11,17 @@ namespace Swift_Blade
         {
             player.GetEntityComponent<PlayerHealth>().TakeHeal(increaseAmount);
         }
+
+        public override bool CanUse()
+        {
+            float maxHp = Player.Instance.GetEntityComponent<PlayerHealth>().maxHealth;
+
+            bool isPlayerFullHP = Mathf.Approximately(maxHp, PlayerHealth.CurrentHealth);
+
+            if (isPlayerFullHP)
+                PopupManager.Instance.LogInfoBox("체력이 가득하여 포션을 사용할 수 없습니다.");
+
+            return !isPlayerFullHP;
+        }
     }
 }

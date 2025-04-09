@@ -7,12 +7,20 @@ namespace Swift_Blade
     {
         protected override void HoverAnimation()
         {
-            transform.DOShakeRotation(_hoverAnimationSpeed, Vector3.forward * animationScale);
+            if(transform != null)
+            {
+                transform.DOShakeRotation(_hoverAnimationSpeed, Vector3.forward * animationScale)
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+            }
         }
 
         protected override void HoverAnimationEnd()
         {
-            _currentTween.Kill();
+            if(_currentTween != null)
+            {
+                _currentTween.Kill();
+            }
+
             transform.rotation = Quaternion.identity;
         }
     }

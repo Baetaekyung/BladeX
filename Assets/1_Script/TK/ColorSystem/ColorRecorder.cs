@@ -6,24 +6,31 @@ namespace Swift_Blade
 {
     public class ColorRecorder : MonoBehaviour
     {
+        private const int MIN_UPGRADE_PERCENT = 5;
+        private const int MAX_UPGRADE_PERCENT = 100;
+
         public static event Action OnColorChanged;
 
-        [SerializeField] private ColorType colorType;
-        [SerializeField] private int upgradePercent = 100;
-        [SerializeField] private int percentDecreasePer;
         [SerializeField] private ColorSettingUI colorSettingUI;
-        private int increasedAmount;
+        [SerializeField] private ColorType      colorType;
+        [SerializeField] private int            upgradePercent = 100;
+        [SerializeField] private int            percentDecreasePer;
 
         private PlayerStatCompo _statCompo;
+        private int             recordedIncreasedAmount;
 
         private void Start()
         {
             _statCompo = Player.Instance.GetEntityComponent<PlayerStatCompo>();
 
             if (_statCompo == null)
+            {
+                Debug.Log("PlayerStatCompo is null, so ColorRecorder can't work", transform);
                 return;
+            }
 
-            colorSettingUI.SetStatInfoUI(_statCompo.GetColorStatValue(colorType), upgradePercent);
+            int colorStatValue = _statCompo.GetColorStatValue(colorType);
+            colorSettingUI.SetStatInfoUI(colorStatValue, upgradePercent);
         }
 
         //Button Event
@@ -39,51 +46,61 @@ namespace Swift_Blade
             }
 
             Player.level.StatPoint -= 1;
+
             TryUpgrade();
         }
 
         private void TryUpgrade()
         {
-            if (UnityEngine.Random.Range(0, 100) <= upgradePercent)
+            int randomPercent = UnityEngine.Random.Range(0, 100); // 0 ~ 99
+
+            if (randomPercent <= upgradePercent)
             {
+                PopupManager.Instance.LogMessage("[ 성공 ]");
+
                 _statCompo.IncreaseColorValue(colorType, 1);
-
-                upgradePercent -= percentDecreasePer;
-                upgradePercent = Mathf.Clamp(upgradePercent, 5, 100); //적어도 5퍼는 되어야겠지? 아님말고
-
-                increasedAmount += 1;
-
-                colorSettingUI.SetStatInfoUI(_statCompo.GetColorStatValue(colorType), upgradePercent);
-
-                PopupManager.Instance.LogMessage("성공");
+                recordedIncreasedAmount += 1; //Record success count
                 OnColorChanged?.Invoke();
-                return;
+
+                int colorStatValue = _statCompo.GetColorStatValue(colorType);
+                colorSettingUI.SetStatInfoUI(colorStatValue, upgradePercent);
+
+                // min is 5, max is 100
+                upgradePercent = Mathf.Clamp(
+                    upgradePercent - percentDecreasePer, 
+                    MIN_UPGRADE_PERCENT, 
+                    MAX_UPGRADE_PERCENT); 
             }
-            PopupManager.Instance.LogMessage("실패");
+            else
+                PopupManager.Instance.LogMessage("[ 실패 ]");
         }
 
-        public bool CheckValidToDowngrade()
+        public bool CheckValidToDecrease()
         {
-            if (increasedAmount == 0)
+            if (recordedIncreasedAmount == 0)
             {
                 PopupManager.Instance.LogMessage($"{colorType.ToString()} 색이 부족합니다");
+
                 return false;
             }
 
             return true;
         }
 
-        public void Downgrade()
+        public void DecreaseColor()
         {
             if (_statCompo == null)
                 return;
 
-            _statCompo.DecreaseColorValue(colorType, 1);
             upgradePercent += percentDecreasePer;
-            increasedAmount -= 1;
 
+            _statCompo.DecreaseColorValue(colorType, 1);
+            recordedIncreasedAmount -= 1;
             OnColorChanged?.Invoke();
-            colorSettingUI.SetStatInfoUI(_statCompo.GetColorStatValue(colorType), upgradePercent);
+
+            int colorStatValue = _statCompo.GetColorStatValue(colorType);
+            colorSettingUI.SetStatInfoUI(colorStatValue, upgradePercent);
+
             return;
         }
 
@@ -93,16 +110,16 @@ namespace Swift_Blade
             if (_statCompo == null)
                 return;
 
-            if (increasedAmount == 0)
+            if (recordedIncreasedAmount == 0)
                 return;
 
-            Player.level.StatPoint += increasedAmount;
-
-            _statCompo.DecreaseColorValue(colorType, increasedAmount);
-
-            increasedAmount = 0;
-            colorSettingUI.SetStatInfoUI(_statCompo.GetColorStatValue(colorType), upgradePercent);
+            _statCompo.DecreaseColorValue(colorType, recordedIncreasedAmount);
             OnColorChanged?.Invoke();
+
+            Player.level.StatPoint += recordedIncreasedAmount;
+            recordedIncreasedAmount = 0;
+
+            colorSettingUI.SetStatInfoUI(_statCompo.GetColorStatValue(colorType), upgradePercent);
         }
     }
 

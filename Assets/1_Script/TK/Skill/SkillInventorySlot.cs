@@ -34,23 +34,12 @@ namespace Swift_Blade
             var slot = SkillManager.Instance.GetEmptySkillSlot();
 
             if (slot == default)
-            {
-                string typeToKorean = skillData.skillType switch
-                {
-                    SkillType.Attack  => "공격",
-                    SkillType.Dead    => "죽음",
-                    SkillType.Hit     => "피격",
-                    SkillType.Special   => "특수",
-                    SkillType.Rolling => "구르기",
-                    _ => "???"
-                };
+                return;
 
-                PopupManager.Instance.LogMessage($"{typeToKorean}슬롯이 가득 찼습니다.");
-            }
-            else if (SkillManager.Instance.CanAddSkill)
+            if (SkillManager.Instance.CanAddSkill)
             {
                 SkillManager.saveDatas.AddSkillToSlot(skillData);
-                SkillManager.saveDatas.RemoveInvenSkillData(skillData);
+                SkillManager.saveDatas.RemoveInventoryData(skillData);
 
                 slot.SetSlotData(skillData);
                 SetSlotData(null);

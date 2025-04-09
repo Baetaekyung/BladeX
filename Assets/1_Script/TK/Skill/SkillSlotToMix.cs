@@ -71,7 +71,7 @@ namespace Swift_Blade
             _skillMixer.SetSkillData(_skillData);
 
             OnSkillStageEvent?.Invoke(_skillData.colorType);
-            SkillManager.saveDatas.RemoveInvenSkillData(_skillData);
+            SkillManager.saveDatas.RemoveInventoryData(_skillData);
 
             SetSlotData(null);
 

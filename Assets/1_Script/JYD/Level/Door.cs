@@ -14,12 +14,14 @@ namespace Swift_Blade.Level.Door
         
         [Range(0.1f , 10)] [SerializeField] private float enterDelay;
         [Range(0.1f , 10)] [SerializeField] private float enterDuration;
+        [Range(0.1f , 2)] [SerializeField] private float cageDownDuration;
         
         [Space]
         
         [SerializeField] private Transform door;
+        [SerializeField] private Transform cage;
         [SerializeField] private string sceneName;
-        
+                
         private void Start()
         {
             if (isDefaultPortal)
@@ -77,6 +79,7 @@ namespace Swift_Blade.Level.Door
         
         public void Interact()
         {
+            cage.transform.DOLocalMoveY(-2.25f ,cageDownDuration ).SetEase(Ease.OutQuart);
             sceneManager.LoadScene(sceneName);
         }
 

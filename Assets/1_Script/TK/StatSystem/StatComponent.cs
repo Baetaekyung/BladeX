@@ -7,52 +7,46 @@ namespace Swift_Blade
 {
     public abstract class StatComponent : MonoBehaviour
     {
-        [SerializeField] protected StatSO[] _stats;
+        [SerializeField] protected StatSO[] _defaultStats;
         protected static StatSO[] _statDatas;
 
-        public static bool InitOnce = false;
+        public static bool IsNewGame = false;
 
         public event Action OnStatChanged;
         
         protected virtual void Initialize()
         {
-            if (InitOnce == false)
+            if (IsNewGame == false)
             {
-                StatSO[] tempStatSO = new StatSO[_stats.Length];
+                StatSO[] tempStatSO = new StatSO[_defaultStats.Length];
                 
-                for (int i = 0; i < _stats.Length; i++)
+                for (int i = 0; i < _defaultStats.Length; i++)
                 {
-                    tempStatSO[i] = _stats[i].Clone();
+                    tempStatSO[i] = _defaultStats[i].Clone();
                     
                     if (tempStatSO[i].statType == StatType.HEALTH)
                         PlayerHealth.CurrentHealth = tempStatSO[i].Value;
                 }
 
-                _stats = tempStatSO;
                 _statDatas = tempStatSO;
-                InitOnce = true;
+                IsNewGame = true;
 
                 return;
             }
             
-            StatSO[] tempStatSo = new StatSO[_statDatas.Length];
+            //StatSO[] tempStatSo = new StatSO[_statDatas.Length];
 
-            for (int i = 0; i < _statDatas.Length; i++)
-            {
-                tempStatSo[i] = _statDatas[i];
-            }
+            //for (int i = 0; i < _statDatas.Length; i++)
+            //{
+            //    tempStatSo[i] = _statDatas[i];
+            //}
 
-            _stats = tempStatSo;
-        }
-
-        private void OnDisable()
-        {
-            _statDatas = _stats;
+            //_stats = tempStatSo;
         }
 
         public StatSO GetStat(StatSO stat)
         {
-            StatSO findStat = _stats.FirstOrDefault(x => x.statName == stat.statName);
+            StatSO findStat = _statDatas.FirstOrDefault(x => x.statName == stat.statName);
             Debug.Assert(findStat != null, "stat can't find");
 
             return findStat;
@@ -60,7 +54,7 @@ namespace Swift_Blade
 
         public StatSO GetStat(StatType statType)
         {
-            StatSO findStat = _stats.FirstOrDefault(x => x.statType == statType);
+            StatSO findStat = _statDatas.FirstOrDefault(x => x.statType == statType);
             Debug.Assert(findStat != null, "stat can't find");
             
             return findStat;
@@ -80,7 +74,7 @@ namespace Swift_Blade
 
         public void ClearAllModifiers()
         {
-            foreach (StatSO stat in _stats)
+            foreach (StatSO stat in _statDatas)
             {
                 stat.ClearModifier();
             }

@@ -14,8 +14,11 @@ namespace Swift_Blade
 
         public override void OnPointerEnter(PointerEventData eventData)
         {
-            transform.DOKill();
-            transform.DOScale(1.05f, 0.2f);
+            if(transform != null)
+            {
+                transform.DOKill();
+                transform.DOScale(1.05f, 0.2f);
+            }
 
             if (!_itemDataSO)
                 return;
@@ -25,8 +28,11 @@ namespace Swift_Blade
 
         public override void OnPointerExit(PointerEventData eventData)
         {
-            transform.DOKill();
-            transform.DOScale(1f, 0.2f);
+            if(transform != null)
+            {
+                transform.DOKill();
+                transform.DOScale(1f, 0.2f);
+            }
             
             if (!_itemDataSO)
                 return;
@@ -36,6 +42,9 @@ namespace Swift_Blade
 
         public override void OnPointerDown(PointerEventData eventData)
         {
+            if(transform != null)
+                transform.DOKill();
+
             if (!_itemDataSO)
                 return;
             

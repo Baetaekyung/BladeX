@@ -7,18 +7,19 @@ namespace Swift_Blade
     {
         [SerializeField] private float moveDistance = 2f;
         [SerializeField] private float moveSpeed = 1f;
-        private Vector3 startPos;
-        
-        void Start()
-        {
-            startPos = transform.position;
-        }
+        private float originalY;
 
+        private void Awake()
+        {
+            originalY = transform.position.y;
+        }
 
         void Update()
         {
-            float newY = startPos.y + Mathf.Sin(Time.time * moveSpeed) * moveDistance;
-            transform.position = new Vector3(startPos.x, newY, startPos.z);
+            float sinWave = Mathf.Sin(Time.time * moveSpeed) * moveDistance;
+            Vector3 r = transform.position;
+            r.y = sinWave + originalY;
+            transform.position = r;
         }
     }
 }
