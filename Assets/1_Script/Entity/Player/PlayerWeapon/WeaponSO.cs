@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Swift_Blade.Feeling;
+using Swift_Blade.Combat.Feedback;
 
 namespace Swift_Blade
 {
@@ -21,12 +22,10 @@ namespace Swift_Blade
         [field: SerializeField] public HitStopSO WeaponHitStop { get; private set; }
 
         [field: Header("Setting")]
-        //[field: SerializeField] public GameObject LeftHandUsage { get; private set; }
-        //[field: SerializeField] public GameObject RightHandUsage { get; private set; }
         [field: SerializeField] public RuntimeAnimatorController WeaponAnimator { get; private set; }
-
         [field: SerializeField] public WeaponHandler LeftWeaponHandler { get; set; }
         [field: SerializeField] public WeaponHandler RightWeaponHandler { get; set; }
+
 
         [SerializeField] private SerializableDictionary<EAudioType, BaseAudioSO> audioDictionary;
         public IReadOnlyDictionary<EAudioType, BaseAudioSO> GetAudioDictionary => audioDictionary;

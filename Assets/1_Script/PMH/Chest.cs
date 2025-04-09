@@ -66,14 +66,12 @@ namespace Swift_Blade.Level
 
             gameObject.layer = LayerMask.NameToLayer("Default");
 
-            ShinyParticle shinyParticle = MonoGenericPool<ShinyParticle>.Pop();
-            shinyParticle.transform.position = shinyParticleTrm.position;
-
             OpenChestAnimations();
             InstItemOrb();
             GetRandomItem();
+            ShinyParticle shinyParticle = MonoGenericPool<ShinyParticle>.Pop();
+            shinyParticle.transform.position = shinyParticleTrm.position;
         }
-
         private void OpenChestAnimations()
         {
             Vector3 openLidAngle = new Vector3(-90, transform.eulerAngles.y, transform.eulerAngles.z);
