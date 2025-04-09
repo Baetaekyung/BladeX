@@ -1,3 +1,4 @@
+using Swift_Blade.Audio;
 using Swift_Blade.Pool;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace Swift_Blade.Combat.Caster
     {
         public PoolPrefabMonoBehaviourSO arrow;
         public Transform firePos;
-        
+                
         private Transform target;
         
         private void Start()

@@ -73,7 +73,7 @@ namespace Swift_Blade.Enemy
         {
             attackMoveSpeed = defaultAttackMoveSpeed;
 
-            NavMeshAgent.Warp(transform.position);
+            // NavMeshAgent.Warp(transform.position);
             isManualMove = false;
 
             NavMeshAgent.enabled = true;
