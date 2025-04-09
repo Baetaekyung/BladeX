@@ -55,7 +55,7 @@ namespace Swift_Blade
         private void Awake()
         {
             Debug.Assert(defaultWeapon != null, "default weapon is null");
-            isInitializedInThisScene = true;
+            isInitializedInThisScene = false;
         }
         void IEntityComponent.EntityComponentAwake(Entity entity)
         {
@@ -78,12 +78,11 @@ namespace Swift_Blade
         {
             Debug.Assert(weapon != null, "weapon is null");
 
-            if (!isInitializedInThisScene && CurrentWeapon == weapon)
+            if (isInitializedInThisScene && CurrentWeapon == weapon)
             {
                 Debug.LogWarning("weapon is already equipped");
                 return;
             }
-
 
             //clear currently holding weapons
             if (CurrentWeapon != null)
@@ -105,7 +104,7 @@ namespace Swift_Blade
                 leftWeaponInstance = handle;
                 leftTrailHandle = Instantiate(colorTrails[weapon.ColorType], leftWeaponInstance.TrailTransform);
                 leftTrailHandle.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-                leftTrailHandle.gameObject.SetActive(false);
+                leftTrailHandle.SetActive(false);
             }
 
             if (weapon.RightWeaponHandler != null)
@@ -114,7 +113,7 @@ namespace Swift_Blade
                 rightWeaponInstance = handle;
                 rightTrailHandle = Instantiate(colorTrails[weapon.ColorType], rightWeaponInstance.TrailTransform);
                 rightTrailHandle.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-                rightTrailHandle.gameObject.SetActive(false);
+                rightTrailHandle.SetActive(false);
             }
 
             CurrentWeapon = weapon;
@@ -126,6 +125,10 @@ namespace Swift_Blade
             playerDamageCaster.CastingRange = weapon.CastRange;
 
             playerFsm.ChangeState(PlayerStateEnum.Move);
+
+            hitStopFeedback.HitStopData = weapon.WeaponHitStop;
+            cameraFocusFeedback.FocusData = weapon.WeaponCameraFocus;
+            cameraShakeFeedback.ShakeType = weapon.WeaponCameraShkaeType;
 
             isInitializedInThisScene = true;
 

@@ -10,7 +10,13 @@ namespace Swift_Blade
 
         protected override TweenCallback CreateDefaultCallback()
         {
-            return () => { Debug.Log("onend" + weapon.name); Destroy(gameObject); };
+            return 
+                () => 
+            { 
+                Player.Instance.GetEntityComponent<PlayerWeaponManager>().SetWeapon(weapon); 
+                //Debug.Log("onend" + weapon.name); 
+                Destroy(gameObject); 
+            };
         }
 
     }

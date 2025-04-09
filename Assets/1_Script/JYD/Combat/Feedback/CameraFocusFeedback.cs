@@ -5,7 +5,7 @@ namespace Swift_Blade.Combat.Feedback
 {
     public class CameraFocusFeedback : Feedback
     {
-        [SerializeField] private CameraFocusSO FocusData;
+        [field: SerializeField] public CameraFocusSO FocusData { get; set; }
         public override void PlayFeedback()
         {
             CameraFocusManager.Instance.StartFocus(FocusData);
@@ -13,7 +13,7 @@ namespace Swift_Blade.Combat.Feedback
 
         public override void ResetFeedback()
         {
-            
+
         }
     }
 }
