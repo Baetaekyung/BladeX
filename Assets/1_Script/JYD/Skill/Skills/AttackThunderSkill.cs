@@ -31,7 +31,7 @@ namespace Swift_Blade.Skill
             
             if (attackCounter >= attackCount)
             {
-                if (CheckSkill())
+                if (TryUseSkill())
                 {
                     foreach (var item in targets)
                     {

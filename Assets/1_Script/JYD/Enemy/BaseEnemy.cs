@@ -30,11 +30,11 @@ namespace Swift_Blade.Enemy
         protected Collider enemyCollider;
         protected BehaviorGraphAgent btAgent;
         protected NavMeshAgent NavmeshAgent;
-        private Vector3 nextPathPoint;
         
         protected BaseEnemyAnimationController baseAnimationController;
         protected BaseEnemyHealth baseHealth;
-
+        
+        private Vector3 nextPathPoint;
         private EnemySpawner owner;
         
         protected virtual void Start()
@@ -137,12 +137,13 @@ namespace Swift_Blade.Enemy
 
         public virtual void DeadEvent()
         {
+            StopImmediately();
+                                    
+            enemyCollider.enabled = false;
+            NavmeshAgent.enabled = false;
+            
             if(owner != null)
                 owner.TryNextEnemyCanSpawn(transform.localPosition,transform.forward);
-            
-            StopImmediately();
-            
-            enemyCollider.enabled = false;
             
             if(weapon != null)
                 weapon.AddComponent<EnemyWeapon>();

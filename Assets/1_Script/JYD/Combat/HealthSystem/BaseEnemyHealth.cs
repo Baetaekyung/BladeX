@@ -1,9 +1,9 @@
 using System.Collections;
+using Swift_Blade.Enemy;
 using UnityEngine.AI;
 using Unity.Behavior;
 using UnityEngine;
 using System;
-using Swift_Blade.Enemy;
 
 namespace Swift_Blade.Combat.Health
 {
@@ -15,7 +15,7 @@ namespace Swift_Blade.Combat.Health
         [Space]
         [SerializeField] protected BehaviorGraphAgent BehaviorGraphAgent;
         [SerializeField] protected ChangeBossState changeBossState;
-
+                        
         private BaseEnemyAnimationController animationController;
         private Rigidbody enemyRigidbody;
         private NavMeshAgent navMeshAgent;
@@ -42,7 +42,7 @@ namespace Swift_Blade.Combat.Health
             {
                 Debug.LogError("Enemy has Not State Change");
             }
-            
+                    
         }
 
         private void OnDestroy()
@@ -65,7 +65,7 @@ namespace Swift_Blade.Combat.Health
             if (currentHealth <= 0)
             {
                 TriggerState(BossState.Dead);
-                Dead();
+                base.Dead();
             }
             
         }

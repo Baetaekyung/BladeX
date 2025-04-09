@@ -31,7 +31,7 @@ namespace Swift_Blade.Skill
         
         public abstract void UseSkill(Player player, IEnumerable<Transform> targets = null);
         
-        protected bool CheckSkill()
+        protected bool TryUseSkill()
         {
             return Random.Range(0, 100) <= random;
         }

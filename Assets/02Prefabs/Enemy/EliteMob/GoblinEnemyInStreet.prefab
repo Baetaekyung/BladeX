@@ -16671,6 +16671,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4730492195976036769}
   - component: {fileID: 8087195371192975988}
+  - component: {fileID: 1062018363620789388}
   m_Layer: 7
   m_Name: Feedback
   m_TagString: Untagged
@@ -16710,6 +16711,19 @@ MonoBehaviour:
   flashCount: 2
   _flashMat: {fileID: 2100000, guid: 8e79d7fad96f2be45830cc6852d1b8dc, type: 2}
   _meshRenderers: []
+--- !u!114 &1062018363620789388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3319978676907567003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b3d80fd39e73e40a41f8361d3c3d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinBurst: {fileID: 11400000, guid: 9d4e0c6884558134e9d04e669da364ed, type: 2}
 --- !u!1 &3332799616830144712
 GameObject:
   m_ObjectHideFlags: 0
@@ -32212,7 +32226,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 1
 --- !u!114 &7561101348180281554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32424,9 +32438,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1062018363620789388}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.CoinBurstFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   maxHealth: 3
-  currentHealth: 0
   isDead: 0
+  currentHealth: 0
   BehaviorGraphAgent: {fileID: 7561101348180281554}
   changeBossState: {fileID: 0}
   isKnockback: 0
@@ -36803,6 +36830,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edc02f1693843e78cb87a933589c9f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _casterRadius: 1.27
+  _casterInterpolation: 0.56
+  _castingRange: 2.08
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -36812,9 +36842,6 @@ MonoBehaviour:
   OnCastEvent:
     m_PersistentCalls:
       m_Calls: []
-  _casterRadius: 1.27
-  _casterInterpolation: 0.56
-  _castingRange: 2.08
   CanCurrentAttackParry: 1
   parryEvents:
     m_PersistentCalls:
