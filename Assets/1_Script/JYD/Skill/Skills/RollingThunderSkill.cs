@@ -34,7 +34,7 @@ namespace Swift_Blade
             {
                 skillCounter = 0;
             
-                if (CheckSkill())
+                if (TryUseSkill())
                 {
                     foreach (var item in targets)
                     {

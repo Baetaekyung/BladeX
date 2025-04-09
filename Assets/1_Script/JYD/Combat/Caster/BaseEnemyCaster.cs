@@ -14,6 +14,11 @@ namespace Swift_Blade.Combat.Caster
         
         public override bool Cast()
         {
+            if (IsNotObstacleLine() == false)
+            {
+                return false;
+            }
+            
             OnCastEvent?.Invoke();
             
             Vector3 startPos = GetStartPosition();
@@ -23,7 +28,7 @@ namespace Swift_Blade.Combat.Caster
                 _casterRadius,
                 transform.forward,
                 out RaycastHit hit,
-                _castingRange, targetLayer);
+                _castingRange, whatIsTarget);
             
             if (isHit && hit.collider.TryGetComponent(out IHealth health))
             {

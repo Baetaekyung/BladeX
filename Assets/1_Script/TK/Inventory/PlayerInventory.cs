@@ -17,6 +17,8 @@ namespace Swift_Blade
         public List<EquipmentData> currentEquipment = new();
         
         public int Coin { get; set; }
+        public event Action OnCoinChanged;
+        
         
         private PlayerInventory Initialize()
         {
@@ -45,5 +47,11 @@ namespace Swift_Blade
         }
 
         public PlayerInventory Clone() => Initialize();
+
+        public void AddCoin(int _amount)
+        {
+            Coin += _amount;
+            OnCoinChanged.Invoke();
+        }
     }
 }

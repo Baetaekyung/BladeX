@@ -7,23 +7,17 @@ namespace Swift_Blade
 {
     public class SkillSlot : SkillSlotBase
     {
-        [SerializeField] private Sprite    originalImage;
         [SerializeField] private Image     skillIcon;
-        [SerializeField] private SkillType slotSkillType;
-        [SerializeField] private ColorType colorType;
+        [SerializeField] private Image     backgroundImage;
         
         private SkillData _skillData;
 
         private SkillManager skillManager => SkillManager.Instance;
-        public SkillType     GetSkillType => slotSkillType;
-        public ColorType     GetColorType => colorType;
 
         public override void SetSlotImage(Sprite sprite)
         {
-            Color transperantColor = new Color(1, 1, 1, 0.25f);
-
-            skillIcon.sprite = sprite ? sprite      : originalImage;
-            skillIcon.color  = sprite ? Color.white : transperantColor;
+            skillIcon.sprite = sprite ? sprite      : null;
+            skillIcon.color  = sprite ? Color.white : Color.clear;
         }
         
         public override void SetSlotData(SkillData data)
@@ -31,6 +25,7 @@ namespace Swift_Blade
             if (data == null)
             {
                 _skillData = null;
+                backgroundImage.color = new Color(1, 1, 1, 0.6f);
                 SetSlotImage(null);
                 return;
             }
@@ -45,6 +40,11 @@ namespace Swift_Blade
 
             skillManager.currentSkillCount++;
             skillManager.SetSkillCountUI(skillManager.currentSkillCount, skillManager.maxSkillCount);
+
+            (int r, int g, int b) = ColorUtils.GetRGBColor(data.colorType);
+            Color newColor = new Color(r, g, b, 0.4f);
+
+            backgroundImage.color = newColor;
         }
 
         public override void OnPointerDown(PointerEventData eventData)

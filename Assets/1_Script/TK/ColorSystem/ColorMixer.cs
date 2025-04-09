@@ -17,29 +17,31 @@ namespace Swift_Blade
             return default;
         }
 
+        //Mix color to mixed color
         public void MixColor(ColorType colorType, int value)
         {
             var colorList = ColorUtils.GetCotainColors(colorType);
 
             bool isValid = CheckIsValidToMix(colorList);
 
-            DowngradeIngredientColors(colorList, isValid);
-
-            //Increase colorType color value
-            Player.Instance.GetEntityComponent<PlayerStatCompo>().IncreaseColorValue(colorType, 1);
-        }
-
-        private void DowngradeIngredientColors(List<ColorType> colorList, bool isValid)
-        {
-            if (isValid)
+            if(isValid)
             {
-                foreach (var color in colorList)
-                {
-                    GetColorRecorder(color).Downgrade();
-                }
+                DowngradeIngredientColors(colorList);
+
+                Player.Instance.GetEntityComponent<PlayerStatCompo>().IncreaseColorValue(colorType, 1);
             }
         }
 
+        //ingredients value -1
+        private void DowngradeIngredientColors(List<ColorType> colorList)
+        {
+            foreach (var color in colorList)
+            {
+                GetColorRecorder(color).Downgrade();
+            }
+        }
+
+        //check it is valid to mix, increased color
         private bool CheckIsValidToMix(List<ColorType> colorList)
         {
             foreach (var color in colorList)

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Swift_Blade.UI;
-using UnityEditor.XR;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -36,11 +35,6 @@ namespace Swift_Blade
             OpenCloseInventory();
             PopDownInput();
             CheckInfoBox();
-
-            if(Input.GetKeyDown(KeyCode.F1))
-            {
-                PopUp(PopupType.ColorMix);
-            }
         }
 
         private void CheckInfoBox()
@@ -90,6 +84,8 @@ namespace Swift_Blade
             if (_popupList.Contains(popups[popupType])) return;
             
             _popupList.Add(popups[popupType]);
+            if(Player.Instance != null)
+                Player.Instance.GetEntityComponent<PlayerMovement>().InputDirection = Vector3.zero;
 
             popups[popupType].Popup();
             popups[popupType].transform.SetAsLastSibling();

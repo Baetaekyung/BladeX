@@ -33,7 +33,7 @@ namespace Swift_Blade.Combat.Caster
             Vector3 startPos = GetStartPosition();
             Vector3 endPos = startPos + _visualTrm.forward * _castingRange;
             
-            Physics.OverlapSphereNonAlloc(endPos, _casterRadius,hitColliders,targetLayer);
+            Physics.OverlapSphereNonAlloc(endPos, _casterRadius,hitColliders,whatIsTarget);
             
             bool isHit = false;
             
@@ -66,7 +66,7 @@ namespace Swift_Blade.Combat.Caster
             Vector3 startPos = GetStartPosition();
             Vector3 endPos = startPos + _visualTrm.forward * (_castingRange + additionalCastingDistance);
 
-            Collider[] hitColliders = Physics.OverlapSphere(endPos, _casterRadius, targetLayer);
+            Collider[] hitColliders = Physics.OverlapSphere(endPos, _casterRadius, whatIsTarget);
 
             bool isHit = false;
             HashSet<IHealth> damagedEntities = new HashSet<IHealth>();

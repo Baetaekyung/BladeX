@@ -85,6 +85,7 @@ namespace Swift_Blade
         {
             ColorType type = rgb switch
             {
+                (0, 0, 0) => ColorType.BLACK,
                 (1, 0, 0) => ColorType.RED,
                 (0, 1, 0) => ColorType.GREEN,
                 (0, 0, 1) => ColorType.BLUE,

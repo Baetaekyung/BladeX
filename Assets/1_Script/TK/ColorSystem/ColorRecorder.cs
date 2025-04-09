@@ -6,7 +6,7 @@ namespace Swift_Blade
 {
     public class ColorRecorder : MonoBehaviour
     {
-        public static event Action OnColorChanged; //int is colorValue
+        public static event Action OnColorChanged;
 
         [SerializeField] private ColorType colorType;
         [SerializeField] private int upgradePercent = 100;
@@ -15,8 +15,6 @@ namespace Swift_Blade
         private int increasedAmount;
 
         private PlayerStatCompo _statCompo;
-
-        public int GetPointIncreaseAmount => increasedAmount;
 
         private void Start()
         {
@@ -58,6 +56,7 @@ namespace Swift_Blade
                 colorSettingUI.SetStatInfoUI(_statCompo.GetColorStatValue(colorType), upgradePercent);
 
                 PopupManager.Instance.LogMessage("성공");
+                OnColorChanged?.Invoke();
                 return;
             }
             PopupManager.Instance.LogMessage("실패");
@@ -83,6 +82,7 @@ namespace Swift_Blade
             upgradePercent += percentDecreasePer;
             increasedAmount -= 1;
 
+            OnColorChanged?.Invoke();
             colorSettingUI.SetStatInfoUI(_statCompo.GetColorStatValue(colorType), upgradePercent);
             return;
         }
@@ -102,6 +102,7 @@ namespace Swift_Blade
 
             increasedAmount = 0;
             colorSettingUI.SetStatInfoUI(_statCompo.GetColorStatValue(colorType), upgradePercent);
+            OnColorChanged?.Invoke();
         }
     }
 
