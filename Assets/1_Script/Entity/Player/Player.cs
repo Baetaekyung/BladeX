@@ -35,7 +35,7 @@ namespace Swift_Blade
 
         public static LevelStat level = new LevelStat();
 
-        private readonly RaycastHit[] buffer_overlapSphereResult = new RaycastHit[4];
+        private readonly Collider[] buffer_overlapSphereResult = new Collider[5];
 
         private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
         private GameObject interactable;
@@ -90,7 +90,7 @@ namespace Swift_Blade
         public PlayerSkillController GetSkillController => GetEntityComponent<PlayerSkillController>();
         public Transform GetPlayerTransform => visualTransform;
         public PlayerStatCompo GetPlayerStat => GetEntityComponent<PlayerStatCompo>();
-        
+
         #endregion
 
         public class LevelStat
@@ -220,15 +220,15 @@ namespace Swift_Blade
                 IInteractable interactable = GetClosestInteractable;
                 if (interactable != null)
                 {
-                    if (false && Input.GetKey(KeyCode.LeftShift))
-                    {
-                        interactable.OnEndCallbackUnsubscribe(OnEndCallback);
-                        Debug.Log("unsub");
-                    }
-                    else
+                    //if (false && Input.GetKey(KeyCode.LeftShift))
+                    //{
+                    //    interactable.OnEndCallbackUnsubscribe(OnEndCallback);
+                    //    Debug.Log("unsub");
+                    //}
+                    //else
                     {
                         interactable.Interact();
-                        interactable.OnEndCallbackSubscribe(OnEndCallback);
+                        //interactable.OnEndCallbackSubscribe(OnEndCallback);
                         //playerStateMachine.ChangeState(PlayerStateEnum.Interact);
                     }
                     void OnEndCallback()
@@ -244,30 +244,36 @@ namespace Swift_Blade
         }
         private void FixedUpdate()
         {
-            const int radius = 2;
+            const float radius = 1.3f;
+            Vector3 playerPosition = visualTransform.position;
+            Debug.DrawRay(playerPosition, Vector3.right * radius, Color.magenta);
+            Debug.DrawRay(playerPosition, Vector3.forward * radius, Color.magenta);
+            int hitCount = Physics.OverlapSphereNonAlloc(playerPosition, radius, buffer_overlapSphereResult, lm_interactable);
 
-            int hitCount = Physics.SphereCastNonAlloc(playerTransform.position, radius, Vector3.up, buffer_overlapSphereResult, 0.1f, lm_interactable);
-            interactable = null;
+            float smallestDistance = Mathf.Infinity;
+            GameObject result = null;
 
-            if (hitCount > 0)
+            for (int i = 0; i < hitCount; i++)
             {
-                float tempHighest = Mathf.Infinity;
-                GameObject result = null;
+                Collider item = buffer_overlapSphereResult[i];
+                Vector3 pPos = playerPosition;
+                pPos.y = 0;
 
-                for (int i = 0; i < hitCount; i++)
+                Vector3 itemPos = item.transform.position;
+                itemPos.y = 0;
+
+                float sqrDistance = (itemPos - pPos).sqrMagnitude;
+                Debug.DrawLine(itemPos, playerPosition, Color.blue);
+                if (smallestDistance > sqrDistance)
                 {
-                    RaycastHit item = buffer_overlapSphereResult[i];
-                    Vector3 distance = item.transform.position - playerTransform.position;
-                    Debug.DrawLine(item.transform.position, playerTransform.position, Color.blue);
-                    if (tempHighest > distance.sqrMagnitude)
-                    {
-                        tempHighest = distance.sqrMagnitude;
-                        result = item.transform.gameObject;
-                    }
+                    smallestDistance = sqrDistance;
+                    result = item.gameObject;
                 }
-                interactable = result;
-                Debug.DrawRay(result.transform.position, Vector3.up, Color.red);
             }
+
+            interactable = result;
+
+            if (result != null) Debug.DrawRay(result.transform.position, Vector3.up, Color.red);
         }
 
         public void Attack(EComboState previousState, EComboState nonImmediateState = EComboState.None)
