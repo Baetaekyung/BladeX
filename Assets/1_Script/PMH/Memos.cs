@@ -1,3 +1,4 @@
+using Swift_Blade.Level.Door;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -8,7 +9,8 @@ namespace Swift_Blade
         [SerializeField] private string m_scripts;
 
         private DialogueDataSO m_dialogueData;
-        private TalkingData talkData;
+
+        [SerializeField] private Door doorTrm;
 
         private void Awake()
         {
@@ -24,7 +26,11 @@ namespace Swift_Blade
             if (DialogueManager.Instance.IsDialogueOpen) return;
 
             DialogueManager.Instance.StartDialogue(m_dialogueData);
-            Debug.Log(m_scripts);
+
+            if(doorTrm is not null)
+            {
+                doorTrm.UpDoor();
+            }
         }
     }
 }
