@@ -86,11 +86,11 @@ namespace Swift_Blade.Pool
 
         private void Reflection(Transform player)
         {
+            whatIsTarget |= (1 << LayerMask.NameToLayer(enemyLayerName));
+            deadFlag = false;
+                        
             transform.rotation = Quaternion.LookRotation(player.forward);
             rigidBody.linearVelocity = transform.forward * speed;
-            
-            whatIsTarget |= (1 << LayerMask.NameToLayer(enemyLayerName));
-            
             transform.localScale *= 1.5f;
         }
 

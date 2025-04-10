@@ -16,6 +16,8 @@ namespace Swift_Blade.Enemy.Goblin
                         
             var animationSpeed = Random.Range(minAnimationSpeed, maxAnimationSpeed);
             goblinAnimator.SetAnimationSpeed(animationSpeed);
+            
+            
         }
         
         public void Init(GoblinBoss boss)

@@ -25,6 +25,8 @@ namespace Swift_Blade.Enemy.Goblin
                 var findTarget = FindNearTarget();
                 if (findTarget != null)
                 {
+                    player = target.GetComponent<Player>().GetPlayerTransform;
+                    
                     target = findTarget;
                     btAgent.BlackboardReference.SetVariableValue("Target", target);
                     btAgent.enabled = true;

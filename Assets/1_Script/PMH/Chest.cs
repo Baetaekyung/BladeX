@@ -89,7 +89,7 @@ namespace Swift_Blade.Level
             Vector3 spawnPos = transform.localPosition + new Vector3(0, 0.7f, 0);
             BaseOrb orbInstance = Instantiate(orb, spawnPos, Quaternion.identity);
             orbInstance.SetColor((ColorType)Random.Range(0, 3));
-
+            
             //orbInstance.transform.DOMoveY(transform.position.y + 3f, 0.4f)
             //    .SetEase(Ease.InBack)
             //    .SetLink(orbInstance.gameObject, LinkBehaviour.KillOnDestroy);

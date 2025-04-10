@@ -9,19 +9,19 @@ namespace Swift_Blade.UI
     {
         private PlayerHealth _playerHealth;
 
-        [SerializeField] private RectTransform      healthUI;
-        [SerializeField] private Sprite             fullHealthIcon;
-        [SerializeField] private Sprite             burnHealthIcon;
+        [SerializeField] private RectTransform healthUI;
+        [SerializeField] private Sprite fullHealthIcon;
+        [SerializeField] private Sprite burnHealthIcon;
         [SerializeField] private PlayerHealthIcon[] healthIcons;
-        [SerializeField] private Image[]            shieldImages;
+        [SerializeField] private Image[] shieldImages;
 
         private void Start()
         {
             _playerHealth = Player.Instance.GetEntityComponent<PlayerHealth>();
-            
+
             RectTransform rTrm = transform as RectTransform;
             rTrm.sizeDelta = new Vector2(800f, rTrm.sizeDelta.y);
-            
+
             if (_playerHealth != null)
             {
                 _playerHealth.OnHitEvent.AddListener(HandleSetHealthUI);
@@ -31,7 +31,7 @@ namespace Swift_Blade.UI
                 //StatInfoUI.OnHealthStatDown += SetHealthUIIfStatDown;
 
                 Player.Instance.GetEntityComponent<PlayerStatCompo>().OnStatChanged += SetHealthUI;
-                
+
                 SetHealthUI(_playerHealth.GetHealthStat.Value, PlayerHealth.CurrentHealth, _playerHealth.ShieldAmount);
             }
         }
@@ -54,10 +54,10 @@ namespace Swift_Blade.UI
                 Debug.Log("Player health compo is null, PlayerHealthUI.cs line: 35");
                 return;
             }
-            
+
             SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth, _playerHealth.ShieldAmount);
         }
-        
+
         private void SetHealthUI()
         {
             if (_playerHealth == null)
@@ -68,7 +68,7 @@ namespace Swift_Blade.UI
 
             SetHealthUI(_playerHealth.GetHealthStat.Value, _playerHealth.GetCurrentHealth, _playerHealth.ShieldAmount);
         }
-        
+
         public void SetHealthUI(float maxHealth, float currentHealth, int shieldAmount)
         {
             //how much health player can have??
@@ -96,14 +96,13 @@ namespace Swift_Blade.UI
             {
                 shieldImages[i].gameObject.SetActive(true);
 
+                int capture = i;
+
                 #region Animation part
-                if (shieldImages[i].transform != null)
-                {
-                    shieldImages[i].transform.DOShakeRotation(0.4f, Vector3.forward * 25f).OnComplete(() =>
-                    {
-                        transform.rotation = Quaternion.identity;
-                    }).SetLink(shieldImages[i].gameObject, LinkBehaviour.KillOnDestroy);
-                }
+                shieldImages[i].transform
+                    .DOShakeRotation(0.3f, Vector3.forward * 55f)
+                    .OnComplete(() => shieldImages[capture].transform.DORotate(Vector3.zero, 0.1f))
+                    .SetLink(shieldImages[capture].gameObject, LinkBehaviour.KillOnDestroy);
                 #endregion
             }
         }
@@ -128,14 +127,14 @@ namespace Swift_Blade.UI
                     healthIcons[i].SetIcon(burnHealthIcon);
 
                     #region Animation part
-                    if (healthIcons[i].transform != null)
-                    {
-                        healthIcons[i].transform.DOKill();
-                        healthIcons[i].transform.DOShakeRotation(0.4f, Vector3.forward * 25f).OnComplete(() =>
-                        {
-                            transform.rotation = Quaternion.identity;
-                        }).SetLink(healthIcons[i].gameObject, LinkBehaviour.KillOnDestroy);
-                    }
+
+                    int capture = i;
+
+                    healthIcons[i].transform
+                        .DOShakeRotation(0.3f, Vector3.forward * 55f)
+                        .OnComplete(() => healthIcons[capture].transform.DORotate(Vector3.zero, 0.1f))
+                        .SetLink(healthIcons[capture].gameObject, LinkBehaviour.KillOnDestroy);
+
                     #endregion
                 }
                 else

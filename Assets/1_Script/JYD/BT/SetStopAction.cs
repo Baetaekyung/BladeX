@@ -16,7 +16,11 @@ public partial class SetStopAction : Action
     {
         //if (self.Value.enabled == false) return Status.Failure;
         
-        self.Value.isStopped = Param.Value;
+        if(self.Value.isActiveAndEnabled)
+        {
+            self.Value.isStopped = Param.Value;
+        }
+
         return Status.Success;
     }
     

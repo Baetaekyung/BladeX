@@ -5,7 +5,7 @@ namespace Swift_Blade.Skill
 {
     public class CorpsePowerUpSkill : SkillData
     {
-        [Range(0.1f, 10f)] [SerializeField] private float skillRadius = 3;
+        //[Range(0.1f, 10f)] [SerializeField] private float skillRadius = 3;
         
         public override void Initialize()
         {
