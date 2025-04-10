@@ -11,7 +11,11 @@ GameObject:
   - component: {fileID: 1382556424604618252}
   - component: {fileID: 1844501298368467168}
   - component: {fileID: 7611173404101852340}
-  m_Layer: 1
+  - component: {fileID: 1283768761557261931}
+  - component: {fileID: 1894191746310693069}
+  - component: {fileID: 7562559723346290995}
+  - component: {fileID: 6381133253851414582}
+  m_Layer: 13
   m_Name: FX_Pickup_Sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +258,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.7
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1306,8 +1310,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 30.313194, g: 14.454571, b: 0, a: 1}
-        key1: {r: 30.313194, g: 5.2705884, b: 0, a: 1}
+        key0: {r: 1, g: 1, b: 1, a: 1}
+        key1: {r: 1, g: 1, b: 1, a: 1}
         key2: {r: 0, g: 1, b: 1, a: 0.50980395}
         key3: {r: 0.3372549, g: 0.3372549, b: 0.3372549, a: 0.6975857}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1323,7 +1327,7 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 6554
+        atime1: 65535
         atime2: 49151
         atime3: 57632
         atime4: 65535
@@ -3812,7 +3816,7 @@ ParticleSystem:
     - {fileID: 0}
   SubModule:
     serializedVersion: 2
-    enabled: 1
+    enabled: 0
     subEmitters:
     - serializedVersion: 3
       emitter: {fileID: 0}
@@ -4790,7 +4794,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 43e9d91ac8fd6f84f88ed89971c20f79, type: 2}
+  - {fileID: 2100000, guid: 9c9f63619e68a444aa4f4b8f6575ca01, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4843,6 +4847,87 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!54 &1283768761557261931
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4036184983559714238}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!135 &1894191746310693069
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4036184983559714238}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.5801675
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7562559723346290995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4036184983559714238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1284acc754689534ba843248f687348f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startFadeScale: 0.65
+  collectFadeEndDuration: 0.2
+  colors:
+  - {fileID: 2100000, guid: 132357f3a96bfe548bf4753dcfc965aa, type: 2}
+  - {fileID: 2100000, guid: 648540ba62584c44a9a518ccca4988ed, type: 2}
+  - {fileID: 2100000, guid: deafdc99141ae3a42a7fe0dc5d5f1a23, type: 2}
+  weapon: {fileID: 11400000, guid: 9576341052fc50d4a94e7150b9ba2382, type: 2}
+--- !u!114 &6381133253851414582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4036184983559714238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77c6ee7825ebd2348b425da40efad0b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveDistance: 0.2
+  moveSpeed: 1
 --- !u!1 &4802002182324249190
 GameObject:
   m_ObjectHideFlags: 0
@@ -4854,7 +4939,7 @@ GameObject:
   - component: {fileID: 2235880467736821982}
   - component: {fileID: 895027553242026088}
   - component: {fileID: 7711820677205770050}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: FX_Pickup_Glow_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9757,7 +9842,7 @@ GameObject:
   - component: {fileID: 1865062160876513737}
   - component: {fileID: 6715321150430233073}
   - component: {fileID: 4982471470986591595}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: FX_Pickup_Sparkles_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14660,7 +14745,7 @@ GameObject:
   - component: {fileID: 7783667798144066615}
   - component: {fileID: 922548761779499393}
   - component: {fileID: 4914285880288194517}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: FX_Pickup_Beams_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
