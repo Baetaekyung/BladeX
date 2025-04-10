@@ -48,7 +48,7 @@ namespace Swift_Blade.Pool
         {
             if(deadFlag)return;
             deadFlag = true;
-                        
+            
             if ((whatIsTarget & (1 << other.gameObject.layer)) != 0)
             {
                 if (other.gameObject.TryGetComponent(out IHealth health))
@@ -81,7 +81,7 @@ namespace Swift_Blade.Pool
                 Hit(health);
             }
         }
-
+        
         private void Hit(IHealth health)
         {
             health.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
@@ -90,9 +90,8 @@ namespace Swift_Blade.Pool
             
             MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
             MonoGenericPool<Arrow>.Push(this);
-            
         }
-    
+            
         private void Reflection(Transform player)
         {
             deadFlag = false;
@@ -107,7 +106,7 @@ namespace Swift_Blade.Pool
             Vector3 velocity = transform.forward;
             rigidBody.linearVelocity = velocity * speed;
         }
-
+        
         public void OnPop()
         {
             rigidBody.angularVelocity = Vector3.zero;
@@ -115,7 +114,7 @@ namespace Swift_Blade.Pool
             trailRenderer.Clear();
             deadFlag = false;
             transform.localScale = originScale;
-                        
+            
             pushTimer = 0;
         }
     }

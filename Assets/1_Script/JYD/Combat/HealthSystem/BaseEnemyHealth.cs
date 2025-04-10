@@ -75,7 +75,7 @@ namespace Swift_Blade.Combat.Health
             }
             
         }
-
+        
         public override void Dead()
         {
             InventoryManager.Inventory.AddCoin(AddRandomCoin());
