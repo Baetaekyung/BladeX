@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using Swift_Blade.Audio;
 using Swift_Blade.Combat;
 using UnityEngine;
@@ -26,7 +25,6 @@ namespace Swift_Blade.Pool
         
         private bool deadFlag;
         
-        private const string enemyLayerName = "Enemy";
         
         private void Awake()
         {
@@ -87,7 +85,7 @@ namespace Swift_Blade.Pool
         private void Hit(IHealth health)
         {
             health.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
-                        
+            
             AudioManager.PlayWithInit(bodyHitAudio.GetRandomAudio,true);
             
             MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
@@ -99,7 +97,6 @@ namespace Swift_Blade.Pool
         {
             deadFlag = false;
             
-            whatIsTarget |= (1 << LayerMask.NameToLayer(enemyLayerName));
             transform.rotation = Quaternion.LookRotation(player.forward);
             rigidBody.linearVelocity = transform.forward * speed;
             transform.localScale *= 1.5f;
@@ -117,9 +114,8 @@ namespace Swift_Blade.Pool
             rigidBody.linearVelocity = Vector3.zero;
             trailRenderer.Clear();
             deadFlag = false;
-            whatIsTarget &= ~LayerMask.GetMask(enemyLayerName);
             transform.localScale = originScale;
-            
+                        
             pushTimer = 0;
         }
     }
