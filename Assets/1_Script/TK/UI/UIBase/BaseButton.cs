@@ -15,12 +15,10 @@ namespace Swift_Blade.UI
         protected virtual void Awake()
         {
             _button = GetComponent<Button>();
-            print(_button);
         }
 
         protected virtual void Start()
         {
-            print(_button);
             _button.onClick.AddListener(ClickEvent);
             _button.onClick.AddListener(ClickAnimation);
         }

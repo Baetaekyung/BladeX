@@ -57,6 +57,8 @@ namespace Swift_Blade
         {
             LevelUpParticle levelUpParticle = MonoGenericPool<LevelUpParticle>.Pop();
             levelUpParticle.transform.position = levelUpEffectTrm.position;
+
+            levelUpParticle.transform.SetParent(playerTrm);
         }
 
         public void PlayHealEffect()
