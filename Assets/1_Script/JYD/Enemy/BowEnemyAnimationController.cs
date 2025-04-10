@@ -14,7 +14,7 @@ namespace Swift_Blade.Enemy.Bow
         {
             base.Start();
             StopDrawBowstring();
-
+            
             OnAudioPlayEvent += OnAudioPlayTrigger;
         }
 

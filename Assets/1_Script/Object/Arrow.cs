@@ -42,7 +42,8 @@ namespace Swift_Blade.Pool
         private void OnTriggerEnter(Collider other)
         {
             if(deadFlag)return;
-            
+            deadFlag = true;
+                        
             if ((whatIsTarget & (1 << other.gameObject.layer)) != 0)
             {
                 if (other.gameObject.TryGetComponent(out IHealth health))
@@ -60,7 +61,7 @@ namespace Swift_Blade.Pool
                 MonoGenericPool<Arrow>.Push(this);
             }
             
-            deadFlag = true;
+            
         }
 
         private void TryParry(Collider other, IHealth health)
@@ -83,12 +84,12 @@ namespace Swift_Blade.Pool
             MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
             MonoGenericPool<Arrow>.Push(this);
         }
-
+    
         private void Reflection(Transform player)
         {
-            whatIsTarget |= (1 << LayerMask.NameToLayer(enemyLayerName));
             deadFlag = false;
-                        
+            
+            whatIsTarget |= (1 << LayerMask.NameToLayer(enemyLayerName));
             transform.rotation = Quaternion.LookRotation(player.forward);
             rigidBody.linearVelocity = transform.forward * speed;
             transform.localScale *= 1.5f;
