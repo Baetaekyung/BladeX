@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+using Swift_Blade.Audio;
 using Swift_Blade.Combat;
 using UnityEngine;
 
@@ -12,6 +14,11 @@ namespace Swift_Blade.Pool
         private float pushTimer;
 
         [SerializeField] private PoolPrefabMonoBehaviourSO dustParticle;
+
+        [Header("Audio info")] 
+        [SerializeField] private AudioCollectionSO groundHitAudio;
+        [SerializeField] private AudioCollectionSO bodyHitAudio;
+        
         
         private TrailRenderer trailRenderer;
         private Rigidbody rigidBody;
@@ -57,11 +64,11 @@ namespace Swift_Blade.Pool
             }
             else
             {
+                AudioManager.PlayWithInit(groundHitAudio.GetRandomAudio,true);
+                
                 MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
                 MonoGenericPool<Arrow>.Push(this);
             }
-            
-            
         }
 
         private void TryParry(Collider other, IHealth health)
@@ -81,8 +88,11 @@ namespace Swift_Blade.Pool
         {
             health.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
                         
+            AudioManager.PlayWithInit(bodyHitAudio.GetRandomAudio,true);
+            
             MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
             MonoGenericPool<Arrow>.Push(this);
+            
         }
     
         private void Reflection(Transform player)
