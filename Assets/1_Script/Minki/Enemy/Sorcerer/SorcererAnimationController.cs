@@ -7,13 +7,20 @@ namespace Swift_Blade.Enemy.Boss
 {
     public class SorcererAnimationController : BaseEnemyAnimationController
     {
+        [Header("Flameshrower")]
+        [SerializeField] private SquareCaster[] _flameshrowerCasters;
+        
+        [Header("Suicide Bomb")]
+        [SerializeField] private BaseEnemyCaster _suicideCaster;
+        
+        [Header("Fire Arrow")]
+        [SerializeField] private FireArrow _fireArrowPrefab;
+        [SerializeField] private Transform _fireArrowSpawnTrm;
+
         [Header("Explosion")]
         [SerializeField] private PoolPrefabMonoBehaviourSO _explosion;
         [SerializeField] private Transform _explosionSpawnTrm;
         [SerializeField] private BaseEnemyCaster _explosionCaster;
-
-        [Header("Flameshrower")]
-        [SerializeField] private SquareCaster[] _flameshrowerCasters;
 
         protected override void Awake()
         {
@@ -30,6 +37,14 @@ namespace Swift_Blade.Enemy.Boss
 
         private void ResetLocalPosition() => transform.localPosition = Vector3.zero;
 
+        private void CastFlameshrower(int index) => _flameshrowerCasters[index].Cast();
+        private void SuicideBomb() => _suicideCaster.Cast();
+
+        private void SpawnFireArrow()
+        {
+            Instantiate(_fireArrowPrefab, _fireArrowSpawnTrm.position, _fireArrowSpawnTrm.rotation);
+        }
+
         private void SpawnExplosionEffect()
         {
             ExplosionParticle particle = MonoGenericPool<ExplosionParticle>.Pop();
@@ -37,11 +52,6 @@ namespace Swift_Blade.Enemy.Boss
             particle.transform.localScale = Vector3.one * 2.3f;
 
             _explosionCaster.Cast();
-        }
-
-        private void CastFlameshrower(int index)
-        {
-            _flameshrowerCasters[index].Cast();
         }
     }
 }
