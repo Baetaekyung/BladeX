@@ -1,3 +1,4 @@
+using Swift_Blade.Audio;
 using Swift_Blade.Combat;
 using UnityEngine;
 
@@ -12,6 +13,11 @@ namespace Swift_Blade.Pool
         private float pushTimer;
 
         [SerializeField] private PoolPrefabMonoBehaviourSO dustParticle;
+
+        [Header("Audio info")] 
+        [SerializeField] private AudioCollectionSO groundHitAudio;
+        [SerializeField] private AudioCollectionSO bodyHitAudio;
+        
         
         private TrailRenderer trailRenderer;
         private Rigidbody rigidBody;
@@ -19,7 +25,6 @@ namespace Swift_Blade.Pool
         
         private bool deadFlag;
         
-        private const string enemyLayerName = "Enemy";
         
         private void Awake()
         {
@@ -42,6 +47,7 @@ namespace Swift_Blade.Pool
         private void OnTriggerEnter(Collider other)
         {
             if(deadFlag)return;
+            deadFlag = true;
             
             if ((whatIsTarget & (1 << other.gameObject.layer)) != 0)
             {
@@ -56,11 +62,11 @@ namespace Swift_Blade.Pool
             }
             else
             {
+                AudioManager.PlayWithInit(groundHitAudio.GetRandomAudio,true);
+                
                 MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
                 MonoGenericPool<Arrow>.Push(this);
             }
-            
-            deadFlag = true;
         }
 
         private void TryParry(Collider other, IHealth health)
@@ -75,20 +81,21 @@ namespace Swift_Blade.Pool
                 Hit(health);
             }
         }
-
+        
         private void Hit(IHealth health)
         {
             health.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
-                        
+            
+            AudioManager.PlayWithInit(bodyHitAudio.GetRandomAudio,true);
+            
             MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
             MonoGenericPool<Arrow>.Push(this);
         }
-
+            
         private void Reflection(Transform player)
         {
-            whatIsTarget |= (1 << LayerMask.NameToLayer(enemyLayerName));
             deadFlag = false;
-                        
+            
             transform.rotation = Quaternion.LookRotation(player.forward);
             rigidBody.linearVelocity = transform.forward * speed;
             transform.localScale *= 1.5f;
@@ -99,14 +106,13 @@ namespace Swift_Blade.Pool
             Vector3 velocity = transform.forward;
             rigidBody.linearVelocity = velocity * speed;
         }
-
+        
         public void OnPop()
         {
             rigidBody.angularVelocity = Vector3.zero;
             rigidBody.linearVelocity = Vector3.zero;
             trailRenderer.Clear();
             deadFlag = false;
-            whatIsTarget &= ~LayerMask.GetMask(enemyLayerName);
             transform.localScale = originScale;
             
             pushTimer = 0;

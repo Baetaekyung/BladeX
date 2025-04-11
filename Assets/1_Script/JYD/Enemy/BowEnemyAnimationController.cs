@@ -8,21 +8,14 @@ namespace Swift_Blade.Enemy.Bow
     {
         [SerializeField] private Bowstring bowstring;
         
-        private event Action<AudioSO> OnAudioPlayEvent;
         
         protected override void Start()
         {
             base.Start();
             StopDrawBowstring();
-
-            OnAudioPlayEvent += OnAudioPlayTrigger;
+            
         }
-
-        private void OnDestroy()
-        {
-            OnAudioPlayEvent -= OnAudioPlayTrigger;
-        }
-
+        
         public void StartDrawBowstring()
         {
             bowstring.canDraw = true;
@@ -32,11 +25,10 @@ namespace Swift_Blade.Enemy.Bow
         {
             bowstring.canDraw = false;
         }
-        
-        private void OnAudioPlay(AudioSO audio) => OnAudioPlayEvent?.Invoke(audio);
-        private void OnAudioPlayTrigger(AudioSO audioSO)
+
+        private void OnAudioPlay(AudioSO audio)
         {
-            AudioManager.PlayWithInit(audioSO, true);
+            AudioManager.PlayWithInit(audio, true);
         }
         
         private void OnAudioPlayCollection(AudioCollectionSO audioCollectionSo) => OnAudioPlay(audioCollectionSo.GetRandomAudio);

@@ -21,9 +21,9 @@ namespace Swift_Blade.Enemy.Boss.Goblin
         {
             base.Start();
             
-            player = target.GetComponent<Player>().GetPlayerTransform;
             summons = new List<GoblinEnemyInBoss>();
             goblinBossVFXPlayer = GetComponent<GoblinBossVFXPlayer>();
+            player = target.GetComponent<Player>().GetPlayerTransform;
         }
 
         public void Summon()
