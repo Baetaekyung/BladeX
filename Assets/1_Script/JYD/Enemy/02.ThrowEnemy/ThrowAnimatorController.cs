@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Swift_Blade.Combat.Health;
 using Swift_Blade.Combat.Projectile;
 using UnityEngine;
 
@@ -13,13 +14,15 @@ namespace Swift_Blade.Enemy.Throw
         public Collider originCollider;
         
         private BaseThrow _throw;
-
+        
         private ThrowEnemy throwEnemy;
-
+        private ThrowEnemyHealth throwEnemyHealth;
+        
         protected override void Start()
         {
             base.Start();
             throwEnemy = GetComponent<ThrowEnemy>();
+            throwEnemyHealth = GetComponent<ThrowEnemyHealth>();
         }
 
         public void SetStone(BaseThrow stone)
@@ -32,13 +35,16 @@ namespace Swift_Blade.Enemy.Throw
                     _throw.SetPhysicsState(false);
                 }
             }
-                                    
+            
+            throwEnemyHealth.SetCanChangeParry(true);
             _throw = stone;
         }
-
+        
         public void CatchStone()
         {
+            throwEnemyHealth.SetCanChangeParry(false);
             _throw.SetPhysicsState(true);
+                        
             _throw.transform.SetParent(throwHolder);
             _throw.transform.localEulerAngles = Vector3.zero;
             _throw.transform.localPosition = Vector3.zero;
@@ -46,8 +52,10 @@ namespace Swift_Blade.Enemy.Throw
         
         public void ThrowStone()
         {
+            throwEnemyHealth.SetCanChangeParry(true);
+            
             var direction = (target.position - transform.position).normalized;
-
+            
             _throw.SetDirection(direction);
             _throw = null;
         }

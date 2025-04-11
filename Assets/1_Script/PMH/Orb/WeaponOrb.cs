@@ -26,8 +26,8 @@ namespace Swift_Blade
             WeaponSO tempWeapon = PlayerWeaponManager.CurrentWeapon;
             playerWeaponManager.SetWeapon(weapon);
             weapon = tempWeapon;
-            
-            MonoGenericPool<BlastParticle>.Pop().transform.position = transform.position + new Vector3(0, 0.5f , 0);
+
+            MonoGenericPool<BlastParticle>.Pop().transform.position = transform.position;
             
             base.Interact();
         }
