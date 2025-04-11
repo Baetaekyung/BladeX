@@ -31,12 +31,16 @@ namespace Swift_Blade
             
             fullScreenToggle.onValueChanged.AddListener(HandleFullScreenChanged);
             fullScreenToggle.isOn = _isFullScreen;
+
+            HandleFullScreenChanged(fullScreenToggle.isOn);
         }
         
         private void InitializeResolution()
         {
             resolutionDropdown.onValueChanged.AddListener(HandleResolutionChanged);
             resolutionDropdown.value = PlayerPrefs.GetInt(ResolutionKey, 1);
+
+            HandleResolutionChanged(resolutionDropdown.value);
         }
         
         private void InitializeFPS()
@@ -44,6 +48,8 @@ namespace Swift_Blade
             fpsDropdown.onValueChanged.AddListener(HandleFPSChanged);
 
             fpsDropdown.value = PlayerPrefs.GetInt(FPSKey, 2);
+
+            HandleFPSChanged(fpsDropdown.value);
         }
 
         private void HandleFullScreenChanged(bool isOn)
