@@ -7,7 +7,7 @@ namespace Swift_Blade.Pool
     {
         [SerializeField] private int preCreateAmount;
         [SerializeField] protected GameObject prefab;
-        private int hash;
+        [SerializeField] private int hash;
         public int GetPreCreate => preCreateAmount;
         public GameObject GetPrefab => prefab;
         public int GetHash => hash;

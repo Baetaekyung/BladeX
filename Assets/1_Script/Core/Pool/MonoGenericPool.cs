@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Swift_Blade.Pool
@@ -5,29 +6,23 @@ namespace Swift_Blade.Pool
     public static class MonoGenericPool<T>
         where T : MonoBehaviour, IPoolable
     {
-        //private static bool canInit = true;
-        
         private static MonoPool<T> monoPool;
         /// <summary>
-        /// This function must be called before calling any other methods.
+        /// This function must be called before any other methods are invoked.
         /// </summary>
         public static void Initialize(PoolPrefabMonoBehaviourSO prefabSO)
         {
-            //if(canInit == false)return;
-            
-            //canInit = false;
-            
             bool isMonoPoolInitialized = monoPool != null;
             if (isMonoPoolInitialized)
             {
+                //Debug.LogError($"field:monoPool is already initialized. {prefabSO.name}");
                 return;
-                Debug.Assert(false, $"field:monoPool is already initialized. {prefabSO.name}");
             }
 
             T prefab = prefabSO.GetMono as T;
-            monoPool = new MonoPool<T>(prefab);
-            
-            Debug.Assert(prefab != null, "failed to cast Mono to T, Wrong PoolPrefabMonoBehaviourSO values!");
+            monoPool = new MonoPool<T>(prefab, preCreate: prefabSO.GetPreCreate);
+
+            Debug.Assert(prefab != null, $"failed to cast Mono to T. {prefabSO.name}");
         }
         public static T Pop()
         {
@@ -35,7 +30,7 @@ namespace Swift_Blade.Pool
         }
         public static void Push(T instance)
         {
-            Debug.Assert(instance != null, "local:push instance is null");
+            if (instance == null) throw new ArgumentNullException("push instance is null");
             monoPool.Push(instance);
         }
         public static void Clear()

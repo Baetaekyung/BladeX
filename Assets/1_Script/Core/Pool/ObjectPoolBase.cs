@@ -3,54 +3,54 @@ using System.Collections.Generic;
 
 namespace Swift_Blade.Pool
 {
-    internal static class ObjectPoolBase
-    {
-        internal static bool collisionCheck = false;
-#if UNITY_EDITOR
-        static ObjectPoolBase()
-        {
-            collisionCheck = true;
-        }
-#endif  
-    }
-
     public abstract class ObjectPoolBase<T>
         where T : class
     {
-        public IReadOnlyList<T> GetList => poolList;
-        protected readonly List<T> poolList;
+#if UNITY_EDITOR
+        private readonly HashSet<T> collisionHashSet;
+#endif
+
         private readonly int maxCapacity;
+        protected readonly List<T> poolList;
+        public IReadOnlyList<T> GetList => poolList;
 
         public ObjectPoolBase(int initialPoolCapacity = 10, int maxCapacity = 1000)
         {
-            poolList = new List<T>(initialPoolCapacity);
             this.maxCapacity = maxCapacity;
+            poolList = new List<T>(initialPoolCapacity);
+#if UNITY_EDITOR
+            collisionHashSet = new HashSet<T>(initialPoolCapacity);
+#endif
         }
         public virtual T Pop()
         {
             T result;
             int lastIndex = poolList.Count - 1;
             if (lastIndex == -1)
+            {
                 result = Create();
+            }
             else
             {
                 result = poolList[lastIndex];
                 poolList.RemoveAt(lastIndex);
+#if UNITY_EDITOR
+                collisionHashSet.Remove(result);
+#endif
             }
             return result;
         }
         public virtual void Push(T instance)
         {
-            bool collision = ObjectPoolBase.collisionCheck;
+#if UNITY_EDITOR
+            bool collision = collisionHashSet.Contains(instance);
             if (collision)
             {
-                foreach (T item in poolList)//todo : change this to hash set
-                {
-                    if (item == instance)
-                        throw new Exception($"Collision Detected. prefab : {instance}, {nameof(T)}_POOL");
-                }
+                throw new ArgumentException($"Collision Detected. prefab : {instance}, {nameof(T)}_POOL");
             }
 
+            collisionHashSet.Add(instance);
+#endif
             if (poolList.Count < maxCapacity)
             {
                 poolList.Add(instance);
@@ -60,10 +60,12 @@ namespace Swift_Blade.Pool
         }
         protected abstract T Create();
         protected abstract void Destroy(T instance);
-        
         public virtual void Clear()
         {
             poolList.Clear();
+#if UNITY_EDITOR
+            collisionHashSet.Clear();
+#endif
         }
     }
 }
