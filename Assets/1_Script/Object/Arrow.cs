@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using Swift_Blade.Audio;
 using Swift_Blade.Combat;
 using UnityEngine;
@@ -26,7 +25,6 @@ namespace Swift_Blade.Pool
         
         private bool deadFlag;
         
-        private const string enemyLayerName = "Enemy";
         
         private void Awake()
         {
@@ -50,7 +48,7 @@ namespace Swift_Blade.Pool
         {
             if(deadFlag)return;
             deadFlag = true;
-                        
+            
             if ((whatIsTarget & (1 << other.gameObject.layer)) != 0)
             {
                 if (other.gameObject.TryGetComponent(out IHealth health))
@@ -59,14 +57,18 @@ namespace Swift_Blade.Pool
                 }
                 else
                 {
+                    Vector3 hitPosition = other.ClosestPoint(transform.position);
+                    PlayDustParticle(hitPosition);
+                    
                     Hit(health);
                 }
             }
             else
             {
+                Vector3 hitPosition = other.ClosestPoint(transform.position);
+                PlayDustParticle(hitPosition);
+                                
                 AudioManager.PlayWithInit(groundHitAudio.GetRandomAudio,true);
-                
-                MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
                 MonoGenericPool<Arrow>.Push(this);
             }
         }
@@ -80,26 +82,30 @@ namespace Swift_Blade.Pool
             }
             else
             {
+                Vector3 particlePosition = other.ClosestPoint(transform.position);
+                PlayDustParticle(particlePosition);
+                
                 Hit(health);
             }
         }
-
+        
         private void Hit(IHealth health)
         {
             health.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
-                        
             AudioManager.PlayWithInit(bodyHitAudio.GetRandomAudio,true);
-            
-            MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
             MonoGenericPool<Arrow>.Push(this);
-            
         }
-    
+            
+        private void PlayDustParticle(Vector3 particlePosition)
+        {
+            MonoGenericPool<DustParticle>.Pop().transform.position = particlePosition;
+        }
+        
+        
         private void Reflection(Transform player)
         {
             deadFlag = false;
             
-            whatIsTarget |= (1 << LayerMask.NameToLayer(enemyLayerName));
             transform.rotation = Quaternion.LookRotation(player.forward);
             rigidBody.linearVelocity = transform.forward * speed;
             transform.localScale *= 1.5f;
@@ -110,14 +116,13 @@ namespace Swift_Blade.Pool
             Vector3 velocity = transform.forward;
             rigidBody.linearVelocity = velocity * speed;
         }
-
+        
         public void OnPop()
         {
             rigidBody.angularVelocity = Vector3.zero;
             rigidBody.linearVelocity = Vector3.zero;
             trailRenderer.Clear();
             deadFlag = false;
-            whatIsTarget &= ~LayerMask.GetMask(enemyLayerName);
             transform.localScale = originScale;
             
             pushTimer = 0;

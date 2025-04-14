@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
-using Swift_Blade.Level.Door;
 using System.Collections;
 using Swift_Blade.Enemy;
-using Swift_Blade.Level;
 using Swift_Blade.Pool;
+using Swift_Blade.UI;
 using UnityEngine;
 
-namespace Swift_Blade
+namespace Swift_Blade.Level
 {
     public class ChallengeSpawner : MonoBehaviour
     {
@@ -27,27 +26,53 @@ namespace Swift_Blade
         
         [SerializeField] private Transform[] spawnPosition;
         [SerializeField] private Transform[] portalTrm;
-                
+        
+        [SerializeField] private ChallengeStageUIView challengeStageUI;
+        private ChallengeStageRemainTime challengeStageRemainTime;
+        
         private bool isGameEnd = false;
+        private WaitForSeconds waitForSeconds;
         
         private void Start()
         {
+            challengeStageRemainTime = new ChallengeStageRemainTime();
+            waitForSeconds = new WaitForSeconds(1f);
+            
+            challengeStageRemainTime.SetRemainTime(endTimeSecond);
+            
             MonoGenericPool<EnemySpawnParticle>.Initialize(enemySpawnParticle);
-            
             StartCoroutine(EnemyWavesCoroutine());
-            
+            StartCoroutine(CountdownCoroutine());
         }
 
+        private IEnumerator CountdownCoroutine()
+        {
+            while (!isGameEnd)
+            {
+                yield return waitForSeconds;
+                
+                challengeStageRemainTime.DecreaseRemainTime();
+                challengeStageUI.SetText(challengeStageRemainTime.GetRemainTime());
+                
+                if (endTimer >= endTimeSecond)
+                {
+                    yield break; 
+                }
+            }
+            
+        }
+        
         private void Update()
         {
             if(isGameEnd == false)
                 endTimer += Time.deltaTime;
-            
+                        
             if (endTimer >= endTimeSecond)
             {
                 endTimer = 0;
                 TimeOut();
             }
+            
         }
 
         private void TimeOut()
@@ -55,7 +80,7 @@ namespace Swift_Blade
             StopAllCoroutines();
             
             isGameEnd = true;
-            
+                        
             foreach (var enemy in allEnemyList)
             {
                 if (enemy != null)
@@ -71,13 +96,14 @@ namespace Swift_Blade
         
         private void LevelClear()
         {
+            
             sceneManagerSO.LevelClear();
             
             Node[] newNode = nodeList.GetNode();
     
             for (int i = 0; i < newNode.Length; ++i)
             {
-                Door newDoor = Instantiate(newNode[i].GetPortalPrefab(), portalTrm[i].position, Quaternion.identity);
+                Door.Door newDoor = Instantiate(newNode[i].GetPortalPrefab(), portalTrm[i].position, Quaternion.identity);
                 newDoor.SetScene(newNode[i].nodeName);
                 newDoor.UpDoor();
             }
@@ -108,7 +134,7 @@ namespace Swift_Blade
                 yield return new WaitForSeconds(wavePeriod);
             }
             
-            
         }
+        
     }
 }

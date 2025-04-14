@@ -9,7 +9,6 @@ namespace Swift_Blade
     public class ExpBar : MonoBehaviour
     {
         [SerializeField] private Image gauge;
-        [SerializeField] private TextMeshProUGUI infoText;
 
         private float _currentGauge;
 
@@ -21,7 +20,6 @@ namespace Swift_Blade
         
         private void Update()
         {
-            infoText.text = $"{Player.level.Experience} / 2";
             _currentGauge = Mathf.Lerp(_currentGauge, Player.level.Experience / 2f, Time.deltaTime * 4f);
             gauge.fillAmount = _currentGauge;
         }

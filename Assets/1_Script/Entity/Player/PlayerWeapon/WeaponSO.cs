@@ -25,7 +25,7 @@ namespace Swift_Blade
         [field: SerializeField] public RuntimeAnimatorController WeaponAnimator { get; private set; }
         [field: SerializeField] public WeaponHandler LeftWeaponHandler { get; set; }
         [field: SerializeField] public WeaponHandler RightWeaponHandler { get; set; }
-
+        [field:SerializeField] public Mesh PreviewMesh { get; private set; }
 
         [SerializeField] private SerializableDictionary<EAudioType, BaseAudioSO> audioDictionary;
         public IReadOnlyDictionary<EAudioType, BaseAudioSO> GetAudioDictionary => audioDictionary;

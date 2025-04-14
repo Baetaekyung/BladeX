@@ -1,36 +1,38 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Swift_Blade.FSM.States;
 
 namespace Swift_Blade.FSM
 {
-    public class FiniteStateMachine<StateEnum> 
+    public class FiniteStateMachine<StateEnum>
         where StateEnum : Enum
     {
         public event Action<StateEnum> OnChangeState;
 
         public State<StateEnum> CurrentState { get; protected set; }
-        private Dictionary<StateEnum, State<StateEnum>> StateDictionary { get; set; } = new();
+        private readonly Dictionary<StateEnum, State<StateEnum>> stateDictionary;
 
-        public void AddState(StateEnum type, State<StateEnum> instance) =>  StateDictionary.Add(type, instance);
-        public void SetStartState(StateEnum state) => CurrentState = StateDictionary[state];
+        public FiniteStateMachine()
+        {
+            stateDictionary = new Dictionary<StateEnum, State<StateEnum>>();
+        }
+
+        public void AddState(StateEnum type, State<StateEnum> instance) => stateDictionary.Add(type, instance);
+        public void SetStartState(StateEnum state) => CurrentState = stateDictionary[state];
         public void ChangeState(StateEnum type)
         {
             OnChangeState?.Invoke(type);
             CurrentState.Exit();
-            CurrentState = StateDictionary[type];
+            CurrentState = stateDictionary[type];
             CurrentState.Enter();
         }
-
         public void UpdateState()
         {
-            CurrentState.Current?.Invoke(); 
-        } 
-
+            CurrentState.Current?.Invoke();
+        }
         public StateEnum GetState()
         {
-            foreach (var kvp in StateDictionary)
+            foreach (KeyValuePair<StateEnum, State<StateEnum>> kvp in stateDictionary)
             {
                 if (kvp.Value == CurrentState)
                     return kvp.Key;
