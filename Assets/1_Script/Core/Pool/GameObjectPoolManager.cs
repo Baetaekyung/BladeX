@@ -13,7 +13,7 @@ namespace Swift_Blade.Pool
         }
         private static GameObjectPool CreateDictionary(PoolPrefabGameObjectSO prefabSO)
         {
-            GameObjectPool result = new GameObjectPool(prefabSO.GetPrefab, preCreate: prefabSO.GetPreCreate);
+            GameObjectPool result = new GameObjectPool(prefabSO.GetPrefab);//, preCreate: prefabSO.GetPreCreate);
             gameObjectPoolDictionary.Add(prefabSO.GetHash, result);
             return result;
         }
@@ -23,7 +23,11 @@ namespace Swift_Blade.Pool
             GameObject prefab = prefabSO.GetPrefab;
 
             bool collisionCheckPoolMap = !gameObjectPoolDictionary.ContainsKey(prefabSO.GetHash);
-            Debug.Assert(collisionCheckPoolMap, $"Trying to add a key that has been added to the dictionary. {prefab.name}{hash}");
+            if (!collisionCheckPoolMap)
+            {
+                Debug.LogError($"Trying to add a key that has been added to the dictionary. {prefab.name}{hash}");
+                return;
+            }
 
             CreateDictionary(prefabSO);
         }

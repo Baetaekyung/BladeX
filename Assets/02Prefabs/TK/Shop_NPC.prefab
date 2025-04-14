@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3990657552408693625}
   - component: {fileID: 1246775718947893006}
   - component: {fileID: 1759812611192048457}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Shop_NPC
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
@@ -50,7 +50,10 @@ MonoBehaviour:
   OnDialogueEndEvent:
     m_PersistentCalls:
       m_Calls: []
-  shopItems: {fileID: 11400000, guid: 93af232c3341bf843a7d99994f31af5f, type: 2}
+  shopItemTable: {fileID: 11400000, guid: ec627413055e16c498e2bf0d3077c072, type: 2}
+  potionTable: {fileID: 11400000, guid: f09909917b3328640929497da362bf80, type: 2}
+  shop: {fileID: 0}
+  itemCount: 5
 --- !u!135 &1759812611192048457
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -84,6 +87,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1085992692131754, guid: 21787ab27a16688408634a3c9261141b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1088788698193068, guid: 21787ab27a16688408634a3c9261141b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1109394626090666, guid: 21787ab27a16688408634a3c9261141b, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -106,9 +117,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189199596828430, guid: 21787ab27a16688408634a3c9261141b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1222553143703982, guid: 21787ab27a16688408634a3c9261141b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1275215592795394, guid: 21787ab27a16688408634a3c9261141b, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -128,6 +143,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1589958265455520, guid: 21787ab27a16688408634a3c9261141b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1624877458864502, guid: 21787ab27a16688408634a3c9261141b, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -145,6 +164,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1717504655495702, guid: 21787ab27a16688408634a3c9261141b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1723102832426586, guid: 21787ab27a16688408634a3c9261141b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -211,7 +234,7 @@ PrefabInstance:
     - target: {fileID: 95075836358872306, guid: 21787ab27a16688408634a3c9261141b, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: cc8d52bf2fbc55b488f6ddc5a277b61a, type: 2}
+      objectReference: {fileID: 9100000, guid: 66dd579217f888b4396ab3f67f4485ef, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

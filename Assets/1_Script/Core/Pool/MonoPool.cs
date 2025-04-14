@@ -1,11 +1,13 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Swift_Blade.Pool
 {
     internal class MonoPool<T> : UnityObjectPool<T>
         where T : MonoBehaviour, IPoolable
     {
-        public MonoPool(T prefab, int initialPoolCapacity = 100, int maxCapacity = 1000, int preCreate = 10) : base(prefab, initialPoolCapacity, maxCapacity, preCreate)
+        public MonoPool(T prefab, int initialPoolCapacity = 100, int maxCapacity = 1000, int preCreate = 10) 
+            : base(prefab, initialPoolCapacity, maxCapacity, preCreate)
         {
             UnityObjectPool.SceneChangePoolDestroyEvent += base.Clear;
         }
@@ -14,39 +16,47 @@ namespace Swift_Blade.Pool
             base.Clear();
             UnityObjectPool.SceneChangePoolDestroyEvent -= base.Clear;
         }
-        protected override T Create()
-        {
-            T result = Object.Instantiate(prefab, Vector3.zero, Quaternion.identity);
-            result.OnCreate();
-            result.gameObject.hideFlags = HideFlags.HideInHierarchy;
-            result.gameObject.SetActive(false);
-            return result;
-        }
-        protected override void Destroy(T instance)
-        {
-            Object.Destroy(instance);
-        }
         public override T Pop()
         {
             T instance = base.Pop();
-            instance.OnPop();
             instance.gameObject.hideFlags = HideFlags.None;
             instance.gameObject.SetActive(true);
+            instance.OnPop();
+            //SceneManager.MoveGameObjectToScene(instance.gameObject, SceneManager.GetActiveScene());
             return instance;
         }
         public override void Push(T instance)
         {
             instance.gameObject.hideFlags = HideFlags.HideInHierarchy;
-            instance.OnPush();
             instance.gameObject.SetActive(false);
+            instance.OnPush();
+
+            //experimental.
+            //bool hasParent = instance.transform.parent != null;
+            //if (hasParent)
+            //{
+            //    instance.transform.SetParent(null);
+            //    //SceneManager.MoveGameObjectToScene(instance.gameObject, SceneManager.GetActiveScene());
+            //}
+
+            //Object.DontDestroyOnLoad(instance);
+
             base.Push(instance);
+        }
+        protected override T Create()
+        {
+            T result = base.Create();
+            result.gameObject.SetActive(false);
+            result.OnCreate();
+            //Object.DontDestroyOnLoad(result);
+            return result;
         }
         public override void Clear()
         {
             foreach (T item in poolList)
             {
-                Object.Destroy(item);
-            }
+                Object.Destroy(item.gameObject);
+            }   
             base.Clear();
         }
     }

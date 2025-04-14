@@ -12,7 +12,7 @@ namespace Swift_Blade
         private List<ShopSlotUI> shopSlots = new List<ShopSlotUI>();
 
         [SerializeField] private ShopSlotUI shopSlotPrefab;
-        [SerializeField] private Transform parent;
+        [SerializeField] private Transform  parent;
 
         public void SetItems(ItemTableSO itemTable, int itemCount)
         {
