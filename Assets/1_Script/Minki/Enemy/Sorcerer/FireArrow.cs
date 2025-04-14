@@ -39,10 +39,6 @@ namespace Swift_Blade.Pool
                     Hit(health);
                 }
             }
-            else
-            {
-                deadFlag = true;
-            }
         }
 
         private void Hit(IHealth health)
