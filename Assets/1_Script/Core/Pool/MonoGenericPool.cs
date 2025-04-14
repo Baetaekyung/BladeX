@@ -20,7 +20,7 @@ namespace Swift_Blade.Pool
             }
 
             T prefab = prefabSO.GetMono as T;
-            monoPool = new MonoPool<T>(prefab, preCreate: prefabSO.GetPreCreate);
+            monoPool = new MonoPool<T>(prefab);//, preCreate: prefabSO.GetPreCreate);
 
             Debug.Assert(prefab != null, $"failed to cast Mono to T. {prefabSO.name}");
         }

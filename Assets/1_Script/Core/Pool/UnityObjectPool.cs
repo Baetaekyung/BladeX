@@ -33,19 +33,24 @@ namespace Swift_Blade.Pool
         where T : Object
     {
         protected readonly T prefab;
-        //protected readonly Transform poolParent;
-        //protected virtual string PoolParentName { get; private set; }
         public UnityObjectPool(T prefab, int initialPoolCapacity = 10, int maxCapacity = 1000, int preCreate = 10) : base(initialPoolCapacity, maxCapacity)
         {
-            //poolParent = new GameObject(PoolParentName).transform;
-            //poolParent.parent = UnityObjectPool.GetBaseParent;
-            //poolParent.hideFlags = HideFlags.HideInHierarchy;
             this.prefab = prefab;
 
             for (int i = 0; i < preCreate; i++)
             {
                 Push(Create());
             }
+        }
+        protected override T Create()
+        {
+            T result = Object.Instantiate(prefab);
+            result.hideFlags = HideFlags.HideInHierarchy;
+            return result;
+        }
+        protected override void Destroy(T instance)
+        {
+            Object.Destroy(instance);
         }
     }
 }
