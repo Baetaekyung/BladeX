@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Swift_Blade
 {
@@ -111,6 +112,22 @@ namespace Swift_Blade
                 ColorType.TURQUOISE => (0, 1, 1),
                 ColorType.BLACK     => (1, 1, 1),
                 _ => throw new Exception("rgb each value must be 1 or 0")
+            };
+
+            return rgb;
+        }
+        public static Color GetColorRGBUnity(ColorType colorType)
+        {
+            Color rgb = colorType switch
+            {
+                ColorType.RED => Color.red,
+                ColorType.GREEN => Color.green,
+                ColorType.BLUE => Color.blue,
+                ColorType.YELLOW => Color.yellow,
+                ColorType.PURPLE => new Color(1, 0, 1),
+                ColorType.TURQUOISE => new Color(0, 1, 1),
+                ColorType.BLACK => new Color(1, 1, 1),
+                _ => throw new ArgumentOutOfRangeException("ColorType has no matching color" + colorType)
             };
 
             return rgb;
