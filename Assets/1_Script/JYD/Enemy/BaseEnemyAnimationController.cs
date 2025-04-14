@@ -64,21 +64,18 @@ namespace Swift_Blade.Enemy
         public void StartManualMove(float _moveSpeed = 0)
         {
             attackMoveSpeed = _moveSpeed == 0 ? defaultAttackMoveSpeed : _moveSpeed;
-
             isManualMove = true;
-
             NavMeshAgent.enabled = false;
         }
         public virtual void StopManualMove()
         {
             attackMoveSpeed = defaultAttackMoveSpeed;
-
-            // NavMeshAgent.Warp(transform.position);
+            
+            NavMeshAgent.Warp(transform.position);
             isManualMove = false;
-
             NavMeshAgent.enabled = true;
         }
-
+        
         public virtual void StopAllAnimationEvents()
         {
             StopAnimationEnd();
