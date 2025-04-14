@@ -1,11 +1,10 @@
 using Swift_Blade.Pool;
 using DG.Tweening;
 using UnityEngine;
-using DG.Tweening;
-
 
 namespace Swift_Blade
 {
+
     public class WeaponOrb : BaseOrb
     {
         [SerializeField] private WeaponSO weapon;
