@@ -111,7 +111,7 @@ namespace Swift_Blade.Combat.Health
         {
             return currentHealth / maxHealth;
         }
-
+        
         public virtual void ChangeParryState()
         {
             animationController.StopAllAnimationEvents();

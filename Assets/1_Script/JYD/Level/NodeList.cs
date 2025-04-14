@@ -96,18 +96,8 @@ public class NodeDictionary : IEnumerable<List<Node>>
         if (nodeList.ContainsKey(nodeType) && nodeList[nodeType].Count > 0)
         {
             List<Node> nodes = nodeList[nodeType];
-            
-            nodes = nodes.OrderBy(x => x.GetAppearCount()).ToList();
-            int minValue = nodes[0].GetAppearCount();
-            nodes.RemoveAll(x => x.GetAppearCount() > minValue); 
-            
-            if (nodes.Count == 1 && nodes[0].nodeName == SceneManager.GetActiveScene().name)
-            {
-                return nodes[0];
-            }
-            
-            Node selectedNode  = nodes[Random.Range(0, nodes.Count)];
-                            
+            Node selectedNode = SelectRandomNode(nodes);
+                                        
             if (IsValidScene(selectedNode.nodeName))
                 return selectedNode;
             
@@ -119,11 +109,30 @@ public class NodeDictionary : IEnumerable<List<Node>>
         return null;
     }
     
+    private Node SelectRandomNode(List<Node> nodes)
+    {
+        nodes = nodes.OrderBy(x => x.GetAppearCount()).ToList();
+        int minValue = nodes[0].GetAppearCount();
+        nodes.RemoveAll(x => x.GetAppearCount() > minValue); 
+        
+        if (nodes.Count == 1 && nodes[0].nodeName == SceneManager.GetActiveScene().name)
+        {
+            return nodes[0];
+        }
+        
+        return nodes[Random.Range(0, nodes.Count)];
+    }
+    
     public List<NodeType> GetNodeTypes(int currentNodeIndex)
     {
         List<NodeType> nodeTypes = new List<NodeType>();
         
-        if (currentNodeIndex % 6 == 0)
+        if (currentNodeIndex % 7 == 0)
+        {
+            canAppearSpecialNode = true;
+            nodeTypes.Add(NodeType.Rest);
+        }
+        else if (currentNodeIndex % 6 == 0)
         {
             nodeTypes.Add(NodeType.Boss);
         }
@@ -140,12 +149,14 @@ public class NodeDictionary : IEnumerable<List<Node>>
                 case 3 : nodeTypes.Add(NodeType.Challenge);
                     break;
             }
+            
+            nodeTypes.Add(NodeType.Exp);         
         }
         else
         {
             nodeTypes.Add(NodeType.Exp);         
         }
-        
+                
         return nodeTypes;
     }
     
@@ -174,6 +185,7 @@ namespace Swift_Blade.Level
         [SerializeField] private Door.Door pointDoor;
         [SerializeField] private Door.Door challengeDoor;
         [SerializeField] private Door.Door bossDoor;
+        [SerializeField] private Door.Door restDoor;
         
         [Header("Chest")]
         [SerializeField] private Chest chest;
@@ -218,6 +230,9 @@ namespace Swift_Blade.Level
                 case NodeType.Boss:
                     item.SetPortalPrefab(bossDoor);
                     break;
+                case NodeType.Rest:
+                    item.SetPortalPrefab(restDoor);
+                    break;
                 case NodeType.None:
                     break;
             }
@@ -232,6 +247,7 @@ namespace Swift_Blade.Level
             for (int i = 0; i < nodeTypes.Count; i++)
             {
                 nodes[i] = nodeDictionary.GetRandomNode(nodeTypes[i]);
+                Debug.Log($"Next Door is {nodes[i]}");
             }
             
             return nodes;
@@ -239,9 +255,10 @@ namespace Swift_Blade.Level
 
         public string GetNodeName(NodeType nodeType)
         {
+            ++currentNodeIndex;
             return nodeDictionary[nodeType];
         }
-
+        
         public Chest GetChest()
         {
             return chest;

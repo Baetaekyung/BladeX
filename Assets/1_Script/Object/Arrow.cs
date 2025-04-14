@@ -57,14 +57,18 @@ namespace Swift_Blade.Pool
                 }
                 else
                 {
+                    Vector3 hitPosition = other.ClosestPoint(transform.position);
+                    PlayDustParticle(hitPosition);
+                    
                     Hit(health);
                 }
             }
             else
             {
+                Vector3 hitPosition = other.ClosestPoint(transform.position);
+                PlayDustParticle(hitPosition);
+                                
                 AudioManager.PlayWithInit(groundHitAudio.GetRandomAudio,true);
-                
-                MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
                 MonoGenericPool<Arrow>.Push(this);
             }
         }
@@ -78,6 +82,9 @@ namespace Swift_Blade.Pool
             }
             else
             {
+                Vector3 particlePosition = other.ClosestPoint(transform.position);
+                PlayDustParticle(particlePosition);
+                
                 Hit(health);
             }
         }
@@ -85,13 +92,16 @@ namespace Swift_Blade.Pool
         private void Hit(IHealth health)
         {
             health.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
-            
             AudioManager.PlayWithInit(bodyHitAudio.GetRandomAudio,true);
-            
-            MonoGenericPool<DustParticle>.Pop().transform.position = transform.position;
             MonoGenericPool<Arrow>.Push(this);
         }
             
+        private void PlayDustParticle(Vector3 particlePosition)
+        {
+            MonoGenericPool<DustParticle>.Pop().transform.position = particlePosition;
+        }
+        
+        
         private void Reflection(Transform player)
         {
             deadFlag = false;
