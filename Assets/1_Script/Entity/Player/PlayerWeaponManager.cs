@@ -103,12 +103,12 @@ namespace Swift_Blade
             WeaponHandler leftWeaponHandler = weapon.LeftWeaponHandler;
             if (leftWeaponHandler != null)
             {
-                Function(leftWeaponHandler, leftHandleTransform, colorGameobject, ref leftWeaponInstance, ref leftTrailHandle);
+                SetWeaponHandle(leftWeaponHandler, leftHandleTransform, colorGameobject, ref leftWeaponInstance, ref leftTrailHandle);
             }
             WeaponHandler rightWeaponHandler = weapon.RightWeaponHandler;
             if (rightWeaponHandler != null)
             {
-                Function(weapon.RightWeaponHandler, rightdHandleTransform, colorGameobject, ref rightWeaponInstance, ref rightTrailHandle);
+                SetWeaponHandle(weapon.RightWeaponHandler, rightdHandleTransform, colorGameobject, ref rightWeaponInstance, ref rightTrailHandle);
             }
 
             CurrentWeapon = weapon;
@@ -130,7 +130,7 @@ namespace Swift_Blade
 
             return;
 
-            static void Function(WeaponHandler weaponHandler, Transform weaponHandleTransform, GameObject colorGameobject, ref WeaponHandler weaponHandleInstance,
+            static void SetWeaponHandle(WeaponHandler weaponHandler, Transform weaponHandleTransform, GameObject colorGameobject, ref WeaponHandler weaponHandleInstance,
                 ref GameObject trailInstance)
             {
                 WeaponHandler weaponHandle = CreateWeaponHandle(weaponHandler, weaponHandleTransform);
@@ -145,10 +145,9 @@ namespace Swift_Blade
                 }
             }
 
-            static TResult CreateWeaponHandle<TResult>(TResult prefab, Transform parent)
-                where TResult : MonoBehaviour
+            static WeaponHandler CreateWeaponHandle(WeaponHandler prefab, Transform parent)
             {
-                TResult result = Instantiate(prefab, parent);
+                WeaponHandler result = Instantiate(prefab, parent);
                 result.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
                 return result;
             }
