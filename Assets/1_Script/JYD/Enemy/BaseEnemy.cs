@@ -140,6 +140,7 @@ namespace Swift_Blade.Enemy
             StopImmediately();
                                     
             enemyCollider.enabled = false;
+            NavmeshAgent.avoidancePriority = 0;
             NavmeshAgent.enabled = false;
             
             if(owner != null)

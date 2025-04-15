@@ -9,12 +9,14 @@ namespace Swift_Blade
 {
     public class SkillIngredientSlot : SkillSlotBase
     {
+        private const float COLOR_CHANGE_DURATION = 1f;
         public static event Action<ColorType> OnSkillStageEvent;
 
         [SerializeField] private Image itemImage;
         [SerializeField] private Image colorInfoIcon;
 
         private SkillData _skillData;
+        private Tween     _tween;
 
         public SkillData GetSkillData => _skillData;
 
@@ -40,7 +42,14 @@ namespace Swift_Blade
                 SetSlotImage(null);
 
                 _skillData = null;
-                colorInfoIcon.color = new Color(1, 1, 1, 0.7f);
+
+                if (_tween != null)
+                    _tween.Kill();
+
+                Color curCol = colorInfoIcon.color;
+
+                _tween = DOVirtual.Float(0, 1, COLOR_CHANGE_DURATION,
+                    (t) => colorInfoIcon.color = Color.Lerp(curCol, new Color(1, 1, 1, 0.7f), t));
 
                 return;
             }
@@ -48,8 +57,15 @@ namespace Swift_Blade
             SetSlotImage(data.skillIcon);
             
             (int r, int g, int b) = ColorUtils.GetRGBColor(data.colorType);
+
             Color newColor = new Color(r, g, b, 0.7f);
-            colorInfoIcon.color = newColor;
+            Color currentColor = colorInfoIcon.color;
+
+            if (_tween != null)
+                _tween.Kill();
+
+            _tween = DOVirtual.Float(0, 1, COLOR_CHANGE_DURATION,
+                (t) => colorInfoIcon.color = Color.Lerp(currentColor, newColor, t));
 
             _skillData = data;
         }

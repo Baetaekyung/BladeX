@@ -9,6 +9,7 @@ namespace Swift_Blade
 {
     public class SkillSlotToMix : SkillSlotBase
     {
+        private const float COLOR_CHANGE_DURATION = 0.6f;
         public static event Action<ColorType> OnSkillStageEvent;
 
         [SerializeField] private Image skillIcon;
@@ -16,6 +17,8 @@ namespace Swift_Blade
 
         private SkillMixer _skillMixer;
         private SkillData  _skillData;
+
+        private Tween _tween;
 
         private void Awake()
         {
@@ -28,15 +31,26 @@ namespace Swift_Blade
             {
                 SetSlotImage(null);
                 _skillData = null;
-                skillColorImage.color = Color.clear;
+
+                if (_tween != null)
+                    _tween.Kill();
+
+                Color currentColor = skillColorImage.color;
+                _tween = DOVirtual.Float(0, 1, COLOR_CHANGE_DURATION,
+                    (t) => skillColorImage.color = Color.Lerp(currentColor, Color.clear, t));
 
                 return;
             }
 
             (int r, int g, int b) = ColorUtils.GetRGBColor(data.colorType);
             Color newColor = new Color(r, g, b, 1);
+            Color curColor = skillColorImage.color;
 
-            skillColorImage.color = newColor;
+            if(_tween != null)
+                _tween.Kill();
+
+            _tween = DOVirtual.Float(0, 1, COLOR_CHANGE_DURATION,
+                (t) => skillColorImage.color = Color.Lerp(curColor, newColor, t));
 
             SetSlotImage(data.skillIcon);
 

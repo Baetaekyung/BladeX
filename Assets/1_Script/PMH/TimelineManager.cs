@@ -1,20 +1,18 @@
+using Swift_Blade.Feeling;
 using UnityEngine;
 using DG.Tweening;
-using Swift_Blade.Feeling;
-using Unity.Cinemachine;
 
-namespace Swift_Blade
+namespace Swift_Blade.Timeline
 {
-    public class TimelineCameraShake : MonoBehaviour
+    public class TimelineManager : MonoBehaviour
     {
 
         [SerializeField] private CameraShakeType ShakeType;
-        [SerializeField] private CinemachineCamera cam;
-
-        [SerializeField] private Transform imagin, txt;
-
+        [SerializeField] private Transform txt;
         [SerializeField] private Transform[] pillars;
 
+        [SerializeField] private SceneManagerSO sceneManagerSo;
+        
         private void Awake()
         {
             foreach (Transform t in pillars)
@@ -25,8 +23,8 @@ namespace Swift_Blade
         public void CameraShakeCallback()
         {
             CameraShakeManager.Instance.DoShake(ShakeType);
-            Debug.Log("´«¹°ÀÌ³ª");
-
+            //Debug.Log("´«¹°ÀÌ³ª");
+            
             txt.DOMove(new Vector3(1404, 115, 0),0.8f);
 
             foreach(Transform t in pillars)
@@ -38,5 +36,11 @@ namespace Swift_Blade
                 compo.AddForce(new Vector3( -5, -5, 0) * 2, ForceMode.Impulse );
             }
         }
+
+        public void GoToBossScene(string sceneName)
+        {
+            sceneManagerSo.LoadScene(sceneName);
+        }
+        
     }
 }

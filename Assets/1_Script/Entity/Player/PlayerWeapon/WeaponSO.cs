@@ -1,14 +1,13 @@
-using Swift_Blade.Audio;
-using System;
 using System.Collections.Generic;
-using UnityEngine;
-using DG.Tweening;
 using Swift_Blade.Feeling;
-using Swift_Blade.Combat.Feedback;
+using Swift_Blade.Audio;
+using UnityEngine;
+using System;
+using Swift_Blade.Pool;
 
 namespace Swift_Blade
 {
-    [CreateAssetMenu(fileName = "WeaponSO", menuName = "SO/Weapon")]
+    [CreateAssetMenu(fileName = "WeaponSO", menuName = "SO/Weapon/NormalSword")]
     public class WeaponSO : ScriptableObject
     {
         [field: Header("Damage")]
@@ -43,6 +42,9 @@ namespace Swift_Blade
         private const float BASE_ROLL_DELAY = 1f;
         public float GetSpecialDelay => BASE_SPECIAL_DELAY + specialModifier;
         public float GetRollDelay => BASE_ROLL_DELAY + rollModifier;
+        
+        protected Transform playerTransform;
+                                
         private void OnValidate()
         {
             ColorType banType = ~(ColorType.RED | ColorType.BLUE | ColorType.GREEN);
@@ -69,18 +71,31 @@ namespace Swift_Blade
         public Action GetSpecialBehaviour(Player entity)
         {
             Action result = default;
+
+            if (playerTransform == null)
+                playerTransform = entity.GetPlayerTransform;
+            
             switch (ColorType)
             {
                 case ColorType.RED:
-                    result = () => { entity.GetStateMachine.ChangeState(PlayerStateEnum.Parry); };
+                    result = () =>
+                    {
+                        entity.GetStateMachine.ChangeState(PlayerStateEnum.Parry);
+                    };
                     break;
                 case ColorType.GREEN:
-                    result = () => { entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.HEALTH, nameof(StatType.HEALTH), 5, 3); };
+                    result = () =>
+                    {
+                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.HEALTH, 
+                            nameof(StatType.HEALTH), 5, 3 , 
+                            PlayParticle);
+                    };
                     break;
                 case ColorType.BLUE:
                     result = () =>
                     {
-                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.ATTACKSPEED, nameof(StatType.ATTACKSPEED), 3, 1);
+                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.ATTACKSPEED, 
+                            nameof(StatType.ATTACKSPEED), 3, 1 , PlayParticle,StopParticle);
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.MOVESPEED, nameof(StatType.MOVESPEED), 3, 1);
                     };
                     break;
@@ -89,5 +104,17 @@ namespace Swift_Blade
             }
             return result;
         }
+
+        protected virtual void PlayParticle()
+        {
+        }
+
+        protected virtual void StopParticle()
+        {
+            
+        }
+        
+        
+        
     }
 }

@@ -116,15 +116,19 @@ namespace Swift_Blade.Pool
             Vector3 velocity = transform.forward;
             rigidBody.linearVelocity = velocity * speed;
         }
-        
-        public void OnPop()
+
+        public void OnPush()
         {
             rigidBody.angularVelocity = Vector3.zero;
             rigidBody.linearVelocity = Vector3.zero;
-            trailRenderer.Clear();
-            deadFlag = false;
             transform.localScale = originScale;
             
+            trailRenderer.Clear();
+            deadFlag = false;
+        }
+
+        public void OnPop()
+        {
             pushTimer = 0;
         }
     }

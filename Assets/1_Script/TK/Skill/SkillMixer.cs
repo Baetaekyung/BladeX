@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Swift_Blade.Skill;
 using System;
 using System.Collections.Generic;
@@ -8,13 +9,19 @@ namespace Swift_Blade
 {
     public class SkillMixer : MonoBehaviour
     {
+        private const float COLOR_RESULT_SHOW_DELAY = 2.5f;
+
         [SerializeField] private SkillTable          skillTable;
         [SerializeField] private SkillIngredientSlot leftSlot;
         [SerializeField] private SkillIngredientSlot rightSlot;
         [SerializeField] private Image resultImage;
 
+        private bool _canMix;
+
         private SkillData skillDataOnStage1;
         private SkillData skillDataOnStage2;
+
+        private Tween _tween;
 
         private List<ColorType> ingredientColorTypes = new List<ColorType>();
 
@@ -48,7 +55,14 @@ namespace Swift_Blade
             }
 
             (int r, int g, int b) = ColorUtils.GetRGBColor(getColorType);
-            Color resultColor = new Color(r, g, b, 0.7f);
+            Color resultColor = new Color(r, g, b, 0.9f);
+            Color currentColor = resultImage.color;
+
+            if (_tween != null)
+                _tween.Kill();
+
+            _tween = DOVirtual.Color(currentColor, resultColor, COLOR_RESULT_SHOW_DELAY,
+                (cor) => resultImage.color = cor).OnComplete(() => _canMix = true);
 
             resultImage.color = resultColor;
         }
@@ -56,13 +70,18 @@ namespace Swift_Blade
         private void HandleResultColorRemove(ColorType colorType)
         {
             ingredientColorTypes.Remove(colorType);
+            _canMix = false;
 
             if(ingredientColorTypes.Count == 0)
             {
+                if (_tween != null)
+                    _tween.Kill();
+
                 resultImage.color = Color.clear;
                 return;
             }
 
+            //ingredient color is mixed color
             ColorType getColorType = ColorUtils.GetColor(ingredientColorTypes);
 
             if (getColorType == ColorType.RED || getColorType == ColorType.BLUE || getColorType == ColorType.GREEN)
@@ -70,15 +89,18 @@ namespace Swift_Blade
                 resultImage.color = Color.clear;
                 return;
             }
-
+            
             (int r, int g, int b) = ColorUtils.GetRGBColor(getColorType);
-            Color resultColor = new Color(r, g, b, 0.7f);
+            Color resultColor = new Color(r, g, b, 0.9f);
 
             resultImage.color = resultColor;
         }
 
         public void MixSkill()
         {
+            if (_canMix == false)
+                return;
+
             if (IsReadyToMix() == false)
             {
                 PopupManager.Instance.LogMessage("섞을 스킬을 등록하여 주세요.");
@@ -108,6 +130,11 @@ namespace Swift_Blade
 
             leftSlot.DeleteSkillData();
             rightSlot.DeleteSkillData();
+
+            if (_tween != null)
+                _tween.Kill();
+
+            resultImage.color = Color.clear;
 
             skillDataOnStage1 = null;
             skillDataOnStage2 = null;
