@@ -3951,7 +3951,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &287984276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15738,13 +15738,13 @@ GameObject:
   - component: {fileID: 1002184339}
   - component: {fileID: 1002184338}
   - component: {fileID: 1002184344}
-  - component: {fileID: 1002184345}
   - component: {fileID: 1002184342}
   - component: {fileID: 1002184343}
   - component: {fileID: 1002184346}
+  - component: {fileID: 1002184345}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: PlayerCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16001,6 +16001,7 @@ MonoBehaviour:
   m_Events:
     m_Signals:
     - {fileID: 11400000, guid: d9afae0b298528d4294a5e1c4a712786, type: 2}
+    - {fileID: 11400000, guid: ab078a0044c321746b2a070888338544, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
@@ -16016,6 +16017,20 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 1
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1002184345}
+          m_TargetAssemblyTypeName: Swift_Blade.Timeline.TimelineManager, Assembly-CSharp
+          m_MethodName: GoToBossScene
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Stage_1_Boss
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1002184345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16028,15 +16043,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ce69add90ecef42a80279e6fcbb794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShakeType: 7
-  cam: {fileID: 0}
-  imagin: {fileID: 1264643638}
+  ShakeType: 9
   txt: {fileID: 367681675}
   pillars:
   - {fileID: 136726723}
   - {fileID: 89240783}
   - {fileID: 784795962}
   - {fileID: 1733087295}
+  sceneManagerSo: {fileID: 11400000, guid: a2d8f67d9c116a8499c86ab4cb0ed966, type: 2}
 --- !u!114 &1002184346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61612,9 +61626,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultAttackMoveSpeed: 24
-  animationEnd: 0
+  animationEnd: 1
   isManualRotate: 0
-  isManualMove: 0
+  isManualMove: 1
   maxAnimationSpeed: 1.2
   minAnimationSpeed: 1.2
   cameraShakeType: 3
