@@ -7,7 +7,7 @@ using Swift_Blade.Pool;
 
 namespace Swift_Blade
 {
-    [CreateAssetMenu(fileName = "WeaponSO", menuName = "SO/Weapon")]
+    [CreateAssetMenu(fileName = "WeaponSO", menuName = "SO/Weapon/NormalSword")]
     public class WeaponSO : ScriptableObject
     {
         [field: Header("Damage")]
@@ -40,11 +40,9 @@ namespace Swift_Blade
         private const float BASE_ROLL_DELAY = 1f;
         public float GetSpecialDelay => BASE_SPECIAL_DELAY + specialModifier;
         public float GetRollDelay => BASE_ROLL_DELAY + rollModifier;
-
-        [SerializeField] private PoolPrefabMonoBehaviourSO specialParticle;
-        private Transform playerTransform;
         
-        
+        protected Transform playerTransform;
+                                
         private void OnValidate()
         {
             ColorType banType = ~(ColorType.RED | ColorType.BLUE | ColorType.GREEN);
@@ -71,10 +69,9 @@ namespace Swift_Blade
         public Action GetSpecialBehaviour(Player entity)
         {
             Action result = default;
+
             if (playerTransform == null)
-            {
                 playerTransform = entity.GetPlayerTransform;
-            }
             
             switch (ColorType)
             {
@@ -87,13 +84,16 @@ namespace Swift_Blade
                 case ColorType.GREEN:
                     result = () =>
                     {
-                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.HEALTH, nameof(StatType.HEALTH), 5, 3 , PlayHexagonParticle);
+                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.HEALTH, 
+                            nameof(StatType.HEALTH), 5, 3 , 
+                            PlayParticle);
                     };
                     break;
                 case ColorType.BLUE:
                     result = () =>
                     {
-                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.ATTACKSPEED, nameof(StatType.ATTACKSPEED), 3, 1 , PlayBlastEffect);
+                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.ATTACKSPEED, 
+                            nameof(StatType.ATTACKSPEED), 3, 1 , PlayParticle,StopParticle);
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.MOVESPEED, nameof(StatType.MOVESPEED), 3, 1);
                     };
                     break;
@@ -103,29 +103,15 @@ namespace Swift_Blade
             return result;
         }
 
-        private void PlayBlastEffect()
+        protected virtual void PlayParticle()
         {
-            MonoGenericPool<HexagonParticle>.Initialize(specialParticle);
-            
-            HexagonParticle hexagonParticle = MonoGenericPool<HexagonParticle>.Pop();
-            hexagonParticle.transform.SetParent(playerTransform);
-            hexagonParticle.transform.position = playerTransform.position + new Vector3(0,1f,0);
-        }
-        
-        private void StopBlastEffect()
-        {
-            
-        }
-        
-        private void PlayHexagonParticle()
-        {
-            MonoGenericPool<HexagonParticle>.Initialize(specialParticle);
-            
-            HexagonParticle hexagonParticle = MonoGenericPool<HexagonParticle>.Pop();
-            hexagonParticle.transform.SetParent(playerTransform);
-            hexagonParticle.transform.position = playerTransform.position + new Vector3(0,1f,0);
         }
 
+        protected virtual void StopParticle()
+        {
+            
+        }
+        
         
         
     }
