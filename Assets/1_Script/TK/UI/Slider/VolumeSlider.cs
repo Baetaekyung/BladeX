@@ -21,6 +21,11 @@ namespace Swift_Blade
             volumeSlider.value = volume;
         }
 
+        private void Start()
+        {
+            HandleVolumeChanged(volume);
+        }
+
         private void HandleVolumeChanged(float value)
         {
             volume = value;

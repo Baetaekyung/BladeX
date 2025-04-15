@@ -173,7 +173,7 @@ namespace Swift_Blade
             {
                 _itemDatas.Remove(QuickSlotItem);
                 _itemTable.Remove(QuickSlotItem);
-                Inventory.itemInventory.Remove(QuickSlotItem);
+                Inventory.itemInventory.RemoveAll(item => item.itemName == QuickSlotItem.itemName);
 
                 ChangeQuickSlotItem();
                 UpdateAllSlots();
