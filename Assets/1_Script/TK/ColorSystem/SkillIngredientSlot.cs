@@ -56,9 +56,7 @@ namespace Swift_Blade
 
             SetSlotImage(data.skillIcon);
             
-            (int r, int g, int b) = ColorUtils.GetRGBColor(data.colorType);
-
-            Color newColor = new Color(r, g, b, 0.7f);
+            Color newColor = ColorUtils.GetCustomColor(data.colorType);
             Color currentColor = colorInfoIcon.color;
 
             if (_tween != null)
