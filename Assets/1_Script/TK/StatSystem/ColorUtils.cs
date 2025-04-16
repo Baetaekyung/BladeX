@@ -100,7 +100,7 @@ namespace Swift_Blade
             return type;
         }
 
-        public static (int r, int g, int b) GetRGBColor(ColorType colorType)
+        public static (int r, int g, int b) GetRGBColorTuple(ColorType colorType)
         {
             (int, int, int) rgb = colorType switch
             {
@@ -116,6 +116,25 @@ namespace Swift_Blade
 
             return rgb;
         }
+
+        public static Color GetCustomColor(ColorType colorType, float alpha = 0.9f)
+        {
+            (float r, float g, float b) = colorType switch
+            {
+                // if think it's not good, change values
+                ColorType.RED => (0.86f, 0.3f, 0.3f),
+                ColorType.GREEN => (0.54f, 0.86f, 0.31f),
+                ColorType.BLUE => (0.25f, 0.46f, 1),
+                ColorType.YELLOW => (0.95f, 0.95f, 0.41f),
+                ColorType.PURPLE => (0.62f, 0.31f, 1f),
+                ColorType.TURQUOISE => (0.4f, 0.99f, 0.99f),
+                ColorType.BLACK => (1, 1, 1),
+                _ => throw new Exception("rgb each value must be 1 or 0")
+            };
+
+            return new Color(r, g, b, alpha);
+        }
+
         public static Color GetColorRGBUnity(ColorType colorType)
         {
             Color rgb = colorType switch

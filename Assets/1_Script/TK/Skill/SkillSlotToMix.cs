@@ -42,8 +42,7 @@ namespace Swift_Blade
                 return;
             }
 
-            (int r, int g, int b) = ColorUtils.GetRGBColor(data.colorType);
-            Color newColor = new Color(r, g, b, 1);
+            Color newColor = ColorUtils.GetCustomColor(data.colorType);
             Color curColor = skillColorImage.color;
 
             if(_tween != null)
