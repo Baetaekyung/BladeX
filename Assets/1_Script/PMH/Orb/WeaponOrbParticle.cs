@@ -8,35 +8,28 @@ namespace Swift_Blade
         [SerializeField] private ParticleSystem ps1;
         [SerializeField] private ParticleSystem ps2;
 
-        [SerializeField] private ParticleSystem ps_model;
+        private ParticleSystem ps_model;
 
-        [SerializeField] private WeaponSO def;
-        private void Awake()
-        {
-            Setup(def);
-        }
-        public void Setup(WeaponSO weapon)
+        public void SetWeapon(WeaponSO weapon)
         {
             Color color = ColorUtils.GetColorRGBUnity(weapon.ColorType);
+
             SetParticleColor(ps, color);
             SetParticleColor(ps1, color);
             SetParticleColor(ps2, color);
 
-            //todo : this doesn't work
-            ParticleSystem.ShapeModule shapeModule = ps_model.shape;
-            shapeModule.mesh = null;// weapon.PreviewMesh;
-
+            if (ps_model != null)
+            {
+                Destroy(ps_model.gameObject);
+            }
+            ps_model = Instantiate(weapon.PreviewMeshParticle, transform);
+            ps_model.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         }
         private void SetParticleColor(ParticleSystem particleSystem, Color color)
         {
+            particleSystem.Clear();
             ParticleSystem.MainModule mainModule = particleSystem.main;
             mainModule.startColor = color;
         }
-        private void SetParticleColor(ParticleSystem.MainModule targetMainModule, Color color)
-        {
-            ParticleSystem.MainModule mainModule = targetMainModule;
-            mainModule.startColor = color;
-        }
-
     }
 }

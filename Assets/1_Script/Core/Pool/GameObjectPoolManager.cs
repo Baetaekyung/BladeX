@@ -33,7 +33,7 @@ namespace Swift_Blade.Pool
         }
         public static void Initialize(IEnumerable<PoolPrefabGameObjectSO> poolPrefabSOs)
         {
-            foreach (var item in poolPrefabSOs)
+            foreach (PoolPrefabGameObjectSO item in poolPrefabSOs)
             {
                 Initialize(item);
             }

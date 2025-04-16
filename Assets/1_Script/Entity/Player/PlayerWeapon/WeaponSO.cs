@@ -15,6 +15,11 @@ namespace Swift_Blade
         [field: SerializeField] public float AdditionalHeavyDamage { get; private set; }
         [field: SerializeField] public float RollAttackDamage { get; private set; }
 
+        [field: Header("Pick Up peview")]
+        [field: SerializeField] public ParticleSystem PreviewMeshParticle { get; private set; }
+
+        [SerializeField] private SerializableDictionary<EAudioType, BaseAudioSO> audioDictionary;
+        public IReadOnlyDictionary<EAudioType, BaseAudioSO> GetAudioDictionary => audioDictionary;
         [field: Header("Feeling")]
         [field: SerializeField] public CameraShakeType WeaponCameraShkaeType { get; private set; }
         [field: SerializeField] public CameraFocusSO WeaponCameraFocus { get; private set; }
@@ -24,17 +29,14 @@ namespace Swift_Blade
         [field: SerializeField] public RuntimeAnimatorController WeaponAnimator { get; private set; }
         [field: SerializeField] public WeaponHandler LeftWeaponHandler { get; set; }
         [field: SerializeField] public WeaponHandler RightWeaponHandler { get; set; }
-        [field:SerializeField] public Mesh PreviewMesh { get; private set; }
+        [field: SerializeField, Range(1, 3)] public float CastRange { get; private set; }
 
-        [SerializeField] private SerializableDictionary<EAudioType, BaseAudioSO> audioDictionary;
-        public IReadOnlyDictionary<EAudioType, BaseAudioSO> GetAudioDictionary => audioDictionary;
         /// <summary>
         /// color is limited to (red, blu, green)
         /// </summary>
         [field: SerializeField] public ColorType ColorType { get; private set; }
         [SerializeField] private float specialModifier;
         [SerializeField] private float rollModifier;
-        [field: SerializeField, Range(1, 3)] public float CastRange { get; private set; }
 
         private const float BASE_SPECIAL_DELAY = 1f;
         private const float BASE_ROLL_DELAY = 1f;
