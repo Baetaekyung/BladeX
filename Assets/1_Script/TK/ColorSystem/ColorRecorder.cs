@@ -63,7 +63,6 @@ namespace Swift_Blade
 
                 _statCompo.IncreaseColorValue(colorType, 1);
                 recordedIncreasedAmount += 1; //Record success count
-                OnColorChanged?.Invoke();
 
                 // min is 5, max is 100
                 _upgradePercent = Mathf.Clamp(
@@ -75,6 +74,7 @@ namespace Swift_Blade
                 PopupManager.Instance.LogMessage("[ ½ÇÆÐ ]");
 
             colorSettingUI.SetStatInfoUI(recordedIncreasedAmount, _upgradePercent);
+            OnColorChanged?.Invoke();
         }
 
         public bool CheckValidToDecrease()

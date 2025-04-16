@@ -1,6 +1,5 @@
 using DG.Tweening;
 using Swift_Blade.Skill;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -72,7 +71,7 @@ namespace Swift_Blade
             ingredientColorTypes.Remove(colorType);
             _canMix = false;
 
-            if(ingredientColorTypes.Count == 0)
+            if(ingredientColorTypes.Count < 2)
             {
                 if (_tween != null)
                     _tween.Kill();
@@ -82,18 +81,18 @@ namespace Swift_Blade
             }
 
             //ingredient color is mixed color
-            ColorType getColorType = ColorUtils.GetColor(ingredientColorTypes);
+            //ColorType getColorType = ColorUtils.GetColor(ingredientColorTypes);
 
-            if (getColorType == ColorType.RED || getColorType == ColorType.BLUE || getColorType == ColorType.GREEN)
-            {
-                resultImage.color = Color.clear;
-                return;
-            }
+            //if (getColorType == ColorType.RED || getColorType == ColorType.BLUE || getColorType == ColorType.GREEN)
+            //{
+            //    resultImage.color = Color.clear;
+            //    return;
+            //}
             
-            (int r, int g, int b) = ColorUtils.GetRGBColor(getColorType);
-            Color resultColor = new Color(r, g, b, 0.9f);
+            //(int r, int g, int b) = ColorUtils.GetRGBColor(getColorType);
+            //Color resultColor = new Color(r, g, b, 0.9f);
 
-            resultImage.color = resultColor;
+            //resultImage.color = resultColor;
         }
 
         public void MixSkill()

@@ -166,6 +166,7 @@ namespace Swift_Blade
                 return;
 
             QuickSlotItem.itemObject.ItemEffect(Player.Instance);
+            Inventory.itemInventory.Remove(QuickSlotItem);
             _itemDatas[QuickSlotItem]--;
 
             //아이템 다 쓰면 넘어가기
@@ -173,12 +174,12 @@ namespace Swift_Blade
             {
                 _itemDatas.Remove(QuickSlotItem);
                 _itemTable.Remove(QuickSlotItem);
-                Inventory.itemInventory.RemoveAll(item => item.itemName == QuickSlotItem.itemName);
 
                 ChangeQuickSlotItem();
-                UpdateAllSlots();
             }
+
             UpdateQuickSlotUI(QuickSlotItem);
+            SetQuickSlotItem();
         }
 
         private void ChangeQuickSlotItem()
