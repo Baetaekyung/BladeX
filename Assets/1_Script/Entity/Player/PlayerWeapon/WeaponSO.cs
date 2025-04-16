@@ -87,7 +87,7 @@ namespace Swift_Blade
                     {
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.HEALTH, 
                             nameof(StatType.HEALTH), 5, 3 , 
-                            PlayParticle);
+                            PlayParticle,StopParticle);
                     };
                     break;
                 case ColorType.BLUE:

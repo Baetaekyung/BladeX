@@ -191,10 +191,16 @@ namespace Swift_Blade.Level
         [SerializeField] private Chest chest;
         
         private int currentNodeIndex = 0;
-         
-        private void OnEnable()
+
+        public void RestNodeIndex()
         {
             currentNodeIndex = 0;
+        }
+        
+        private void OnEnable()
+        {
+            RestNodeIndex();
+            
             nodeDictionary = new NodeDictionary(nodelist);
             
             foreach (var node in nodeDictionary)
@@ -203,7 +209,6 @@ namespace Swift_Blade.Level
                 {
                     AssignDoor(item);
                 }
-                
             }
             
         }

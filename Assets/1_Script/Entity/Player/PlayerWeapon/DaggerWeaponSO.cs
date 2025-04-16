@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Swift_Blade.Pool;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -9,9 +11,10 @@ namespace Swift_Blade
     {
         [SerializeField] private PoolPrefabMonoBehaviourSO blastParticle;
         [SerializeField] private PoolPrefabMonoBehaviourSO twingcleParticle;
+
+        private Stack<TwingcleParticle> twingcles = new Stack<TwingcleParticle>();
         
-        private List<TwingcleParticle> twingcles = new List<TwingcleParticle>(10);
-        
+
         protected override void PlayParticle()
         {
             MonoGenericPool<MagicBlastParticle>.Initialize(blastParticle);
@@ -25,15 +28,21 @@ namespace Swift_Blade
             twingcle.transform.SetParent(playerTransform);
             twingcle.transform.position = playerTransform.position + new Vector3(0,0.25f,0);
             
-            twingcles.Add(twingcle);
+            twingcles.Push(twingcle);
         }
-
+        
         protected override void StopParticle()
         {
-            foreach (var item in twingcles)
+            if(twingcles.Count <= 0)return;
+            
+            //Debug.Log(twingcles.Count);
+
+            while (twingcles.Count != 0)
             {
-                MonoGenericPool<TwingcleParticle>.Push(item);
+                TwingcleParticle t = twingcles.Pop();
+                MonoGenericPool<TwingcleParticle>.Push(t);
             }
+            
             twingcles.Clear();
         }
     }
