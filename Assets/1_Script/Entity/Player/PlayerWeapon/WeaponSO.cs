@@ -3,7 +3,6 @@ using Swift_Blade.Feeling;
 using Swift_Blade.Audio;
 using UnityEngine;
 using System;
-using Swift_Blade.Pool;
 
 namespace Swift_Blade
 {

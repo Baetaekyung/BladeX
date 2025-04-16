@@ -14,8 +14,7 @@ namespace Swift_Blade
         [SerializeField] private PoolPrefabMonoBehaviourSO levelUpParticle;
         [SerializeField] private Transform levelUpEffectTrm;
         [SerializeField] private PoolPrefabMonoBehaviourSO healParticle;
-        
-        
+                
         private void Start()
         {
             Player.LevelStat.OnLevelUp += LevelUpEffect;
