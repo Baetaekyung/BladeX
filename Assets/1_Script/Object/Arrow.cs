@@ -37,11 +37,15 @@ namespace Swift_Blade.Pool
         
         private void Update()
         {
-            pushTimer += Time.deltaTime;
-            if (pushTimer > pushTime)
+            if (deadFlag == false)
             {
-                MonoGenericPool<Arrow>.Push(this);
+                pushTimer += Time.deltaTime;
+                if (pushTimer > pushTime)
+                {
+                    MonoGenericPool<Arrow>.Push(this);
+                }
             }
+            
         }
 
         private void OnTriggerEnter(Collider other)
@@ -124,12 +128,13 @@ namespace Swift_Blade.Pool
             transform.localScale = originScale;
             
             trailRenderer.Clear();
-            deadFlag = false;
+          
         }
 
         public void OnPop()
         {
             pushTimer = 0;
+            deadFlag = false;
         }
     }
 }
