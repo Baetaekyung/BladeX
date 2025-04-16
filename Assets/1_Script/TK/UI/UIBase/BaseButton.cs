@@ -22,7 +22,7 @@ namespace Swift_Blade.UI
             _button.onClick.AddListener(ClickEvent);
             _button.onClick.AddListener(ClickAnimation);
         }
-
+                
         private void ClickAnimation()
         {
             if (_isAnimationUI is false) return;

@@ -17,6 +17,7 @@ namespace Swift_Blade.Combat.Caster
         private float GetBaseDamage => _statCompo.GetStat(damageStat).Value;
 
         private readonly Collider[] hitColliders = new Collider[10];
+        private HashSet<IHealth> damagedEntities;
         
         public void EntityComponentAwake(Entity entity)
         {
@@ -26,6 +27,7 @@ namespace Swift_Blade.Combat.Caster
         public void EntityComponentStart(Entity entity)
         {
             _statCompo = entity.GetEntityComponent<PlayerStatCompo>();
+            damagedEntities = new HashSet<IHealth>();
         }
 
         public override bool Cast()
@@ -63,22 +65,22 @@ namespace Swift_Blade.Combat.Caster
         }
         public bool Cast(float additionalDamage = 0, float additionalCastingDistance = 0, bool stun = false)
         {
+            damagedEntities.Clear();
+            
             Vector3 startPos = GetStartPosition();
             Vector3 endPos = startPos + _visualTrm.forward * (_castingRange + additionalCastingDistance);
-
+            
             Collider[] hitColliders = Physics.OverlapSphere(endPos, _casterRadius, whatIsTarget);
-
+            
             bool isHit = false;
-            HashSet<IHealth> damagedEntities = new HashSet<IHealth>();
-
+            
             foreach (Collider hitCollider in hitColliders)
             {
                 if (hitCollider.TryGetComponent(out IHealth health))
                 {
-                    if (damagedEntities.Contains(health))
+                    if (!damagedEntities.Add(health))
                         continue;
-
-                    damagedEntities.Add(health);
+                    
                     isHit = true;
 
                     Vector3 hitPoint = hitCollider.ClosestPoint(startPos);

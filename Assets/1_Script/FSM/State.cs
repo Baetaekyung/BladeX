@@ -1,4 +1,3 @@
-using UnityEngine;
 using System;
 namespace Swift_Blade.FSM.States
 {

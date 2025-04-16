@@ -68,14 +68,17 @@ namespace Swift_Blade
         {
             _currentItemIndex = 0;
 
+            //인벤토리 초기화
             Inventory.itemSlots = new List<ItemSlot>();
             Inventory.currentInventoryCapacity = 0;
 
+            // 빈 인벤토리 슬롯 채워주기
             for (int i = 0; i < itemSlots.Count; i++)
             {
                 Inventory.itemSlots.Add(itemSlots[i]);
             }
 
+            // 빈 장비 슬롯 채워주기
             for (int i = 0; i < EquipmentDatas.Count; i++)
             {
                 var slot = GetMatchTypeEquipSlot(EquipmentDatas[i].equipmentData.slotType);
@@ -170,7 +173,7 @@ namespace Swift_Blade
             {
                 _itemDatas.Remove(QuickSlotItem);
                 _itemTable.Remove(QuickSlotItem);
-                Inventory.itemInventory.Remove(QuickSlotItem);
+                Inventory.itemInventory.RemoveAll(item => item.itemName == QuickSlotItem.itemName);
 
                 ChangeQuickSlotItem();
                 UpdateAllSlots();

@@ -748,27 +748,13 @@ MonoBehaviour:
   parryEvents:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 414072090729032406}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp
         m_MethodName: ChangeParryState
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5648526737877272758}
-        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Throw.ThrowAnimatorController,
-          Assembly-CSharp
-        m_MethodName: SetStone
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: Swift_Blade.Combat.Projectile.BaseThrow,
-            Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1882,8 +1868,8 @@ GameObject:
   - component: {fileID: 7925636756258443965}
   - component: {fileID: 3295370776352808448}
   - component: {fileID: 5648526737877272758}
-  - component: {fileID: 414072090729032406}
   - component: {fileID: 7993616426684101907}
+  - component: {fileID: 1583423388494991771}
   m_Layer: 7
   m_Name: ThrowEnemy
   m_TagString: Untagged
@@ -2094,7 +2080,7 @@ MonoBehaviour:
           m_Value0: 11193741891816028713
           m_Value1: 6166421327794185596
         Name: EnemyHealth
-        m_Value: {fileID: 414072090729032406}
+        m_Value: {fileID: 1583423388494991771}
 --- !u!114 &5648526737877272758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2117,80 +2103,6 @@ MonoBehaviour:
   throwHolder: {fileID: 7253000906501766831}
   bodyCollider: {fileID: 8831949040120544517}
   originCollider: {fileID: 1345906694638014179}
---- !u!114 &414072090729032406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7635556846246885292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a970b73a23fd204d93af0d5583e55dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnHitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2338241206480034310}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDeadEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5648526737877272758}
-        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Throw.ThrowAnimatorController,
-          Assembly-CSharp
-        m_MethodName: StopManualCollider
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 7993616426684101907}
-        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Throw.ThrowEnemy, Assembly-CSharp
-        m_MethodName: DeadEvent
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4921919369570887881}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.CoinBurstFeedback,
-          Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  maxHealth: 10
-  isDead: 0
-  currentHealth: 0
-  BehaviorGraphAgent: {fileID: 3295370776352808448}
-  changeBossState: {fileID: 0}
-  isKnockback: 0
 --- !u!114 &7993616426684101907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2213,10 +2125,84 @@ MonoBehaviour:
   checkForward: {fileID: 5283008461669598587}
   whatIsWall:
     serializedVersion: 2
-    m_Bits: 32000
-  maxDistance: 1.55
+    m_Bits: 31872
+  maxDistance: 0.93
   showGizmo: 1
   weapon: {fileID: 0}
+--- !u!114 &1583423388494991771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7635556846246885292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5abd4885823500844a13182ba0e424fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnHitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2338241206480034310}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4921919369570887881}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.CoinBurstFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5648526737877272758}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Throw.ThrowAnimatorController,
+          Assembly-CSharp
+        m_MethodName: StopAllAnimationEvents
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7993616426684101907}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Throw.ThrowEnemy, Assembly-CSharp
+        m_MethodName: DeadEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  maxHealth: 20
+  isDead: 0
+  currentHealth: 0
+  BehaviorGraphAgent: {fileID: 3295370776352808448}
+  changeBossState: {fileID: 0}
+  isKnockback: 0
 --- !u!1 &7772009172095154921
 GameObject:
   m_ObjectHideFlags: 0

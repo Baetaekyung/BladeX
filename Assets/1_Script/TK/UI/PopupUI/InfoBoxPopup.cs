@@ -54,7 +54,6 @@ namespace Swift_Blade
                 }).SetLink(gameObject, LinkBehaviour.KillOnDestroy);
             }
             
-            PopupManager.Instance.InfoBoxRemain = false;
             _raycaster.enabled = false;
         }
 

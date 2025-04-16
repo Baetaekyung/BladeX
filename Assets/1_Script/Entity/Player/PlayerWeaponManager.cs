@@ -97,47 +97,57 @@ namespace Swift_Blade
                 }
             }
 
-            //instansiate new weapon visuals
-            if (weapon.LeftWeaponHandler != null)
-            {
-                WeaponHandler handle = CreateWeaponHandle(weapon.LeftWeaponHandler, leftHandleTransform);
-                leftWeaponInstance = handle;
-                leftTrailHandle = Instantiate(colorTrails[weapon.ColorType], leftWeaponInstance.TrailTransform);
-                leftTrailHandle.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-                leftTrailHandle.SetActive(false);
-            }
+            GameObject colorGameobject = colorTrails[weapon.ColorType];
+            Debug.Assert(colorGameobject != null, "can't find color");
 
-            if (weapon.RightWeaponHandler != null)
+            WeaponHandler leftWeaponHandler = weapon.LeftWeaponHandler;
+            if (leftWeaponHandler != null)
             {
-                WeaponHandler handle = CreateWeaponHandle(weapon.RightWeaponHandler, rightdHandleTransform);
-                rightWeaponInstance = handle;
-                rightTrailHandle = Instantiate(colorTrails[weapon.ColorType], rightWeaponInstance.TrailTransform);
-                rightTrailHandle.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-                rightTrailHandle.SetActive(false);
+                SetWeaponHandle(leftWeaponHandler, leftHandleTransform, colorGameobject, ref leftWeaponInstance, ref leftTrailHandle);
+            }
+            WeaponHandler rightWeaponHandler = weapon.RightWeaponHandler;
+            if (rightWeaponHandler != null)
+            {
+                SetWeaponHandle(weapon.RightWeaponHandler, rightdHandleTransform, colorGameobject, ref rightWeaponInstance, ref rightTrailHandle);
             }
 
             CurrentWeapon = weapon;
-
-            playerAnimator.GetAnimator.runtimeAnimatorController = weapon.WeaponAnimator;
-            playerAnimator.GetAnimator.Rebind();
 
             audioTrigger.AudioType = weapon.GetAudioDictionary;
             playerDamageCaster.CastingRange = weapon.CastRange;
 
             playerFsm.ChangeState(PlayerStateEnum.Move);
 
+            //feedback settings
             hitStopFeedback.HitStopData = weapon.WeaponHitStop;
             cameraFocusFeedback.FocusData = weapon.WeaponCameraFocus;
             cameraShakeFeedback.ShakeType = weapon.WeaponCameraShkaeType;
+
+            playerAnimator.GetAnimator.runtimeAnimatorController = weapon.WeaponAnimator;
+            playerAnimator.GetAnimator.Rebind();
 
             isInitializedInThisScene = true;
 
             return;
 
-            static TResult CreateWeaponHandle<TResult>(TResult prefab, Transform parent)
-                where TResult : MonoBehaviour
+            static void SetWeaponHandle(WeaponHandler weaponHandler, Transform weaponHandleTransform, GameObject colorGameobject, ref WeaponHandler weaponHandleInstance,
+                ref GameObject trailInstance)
             {
-                TResult result = Instantiate(prefab, parent);
+                WeaponHandler weaponHandle = CreateWeaponHandle(weaponHandler, weaponHandleTransform);
+                weaponHandleInstance = weaponHandle;
+
+                Transform trailTransform = weaponHandleInstance.TrailTransform;
+                if (trailTransform != null)
+                {
+                    trailInstance = Instantiate(colorGameobject, trailTransform);
+                    trailInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                    trailInstance.SetActive(false);
+                }
+            }
+
+            static WeaponHandler CreateWeaponHandle(WeaponHandler prefab, Transform parent)
+            {
+                WeaponHandler result = Instantiate(prefab, parent);
                 result.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
                 return result;
             }

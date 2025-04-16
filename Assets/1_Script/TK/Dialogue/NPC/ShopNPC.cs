@@ -19,7 +19,8 @@ namespace Swift_Blade
         
         private void Awake()
         {
-            animator = transform.GetChild(0).GetComponent<Animator>();
+            if(transform.childCount > 0)
+                animator = transform.GetChild(0).GetComponent<Animator>();
 
             shopItems = shopItems.GetClonedItemTable();
             _isShopSetted = false;
@@ -28,7 +29,9 @@ namespace Swift_Blade
         public override void Interact()
         {
             TalkWithNPC(HandleOpenShop);
-            PlayRandomAnimation();
+
+            if(animator != null)
+                PlayRandomAnimation();
         }
 
         protected override void TalkWithNPC(Action dialogueEndEvent = null)
@@ -37,9 +40,11 @@ namespace Swift_Blade
             
             void HandleDialogueEndEvent()
             {
+                if (animator != null)
+                    ClearAnimation();
+
                 dialogueEndEvent?.Invoke();
                 OnDialogueEndEvent?.Invoke();
-                ClearAnimation();
             }
         }
 

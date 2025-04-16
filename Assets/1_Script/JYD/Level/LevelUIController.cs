@@ -58,7 +58,7 @@ namespace Swift_Blade.Level
             {
                 SceneManager.LoadScene(sceneName);
                 FadeOut(onComplete);
-            });
+            }).SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
         private void FadeOut(Action onComplete)
         {
@@ -66,7 +66,7 @@ namespace Swift_Blade.Level
             fadeImage.DOFade(0, fadeOutTime).OnComplete(() =>
             {
                 isFading = false;
-            });
+            }).SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
         
         private void SetActiveClearPanel()
@@ -87,7 +87,7 @@ namespace Swift_Blade.Level
         {
             header.DOKill();
             
-            Sequence sequence = DOTween.Sequence();
+            Sequence sequence = DOTween.Sequence().SetLink(gameObject, LinkBehaviour.KillOnDestroy);
             sequence.Append(FadeOutElements());
             sequence.Append(header.rectTransform.DOSizeDelta(new Vector2(header.rectTransform.sizeDelta.x, 0),headerSizeUpDuration));
             sequence.AppendCallback(()=>header.gameObject.SetActive(false));                
@@ -96,7 +96,7 @@ namespace Swift_Blade.Level
         
         private void FadeInElements()
         {
-            Sequence sequence = DOTween.Sequence();
+            Sequence sequence = DOTween.Sequence().SetLink(gameObject, LinkBehaviour.KillOnDestroy);
 
             foreach (var item in elements)
             {
@@ -121,7 +121,7 @@ namespace Swift_Blade.Level
 
         private Tween FadeOutElements()
         {
-            Sequence fadeSequence = DOTween.Sequence();
+            Sequence fadeSequence = DOTween.Sequence().SetLink(gameObject, LinkBehaviour.KillOnDestroy);
             
             foreach (var item in buttonTexts)
             {

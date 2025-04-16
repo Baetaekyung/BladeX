@@ -10,12 +10,13 @@ namespace Swift_Blade
     {
         public SerializableDictionary<PopupType, PopupUI> popups = new();
 
+        public bool isLayerTextInfo;
+
+        [SerializeField] private InfoBoxPopup infoBoxPopup;
+        [SerializeField] private Transform    popupCanvasTrm;
+
         private List<PopupUI> _popupList = new List<PopupUI>();
         public event Action   OnPopUpOpenOrClose;
-
-        [SerializeField] private float infoRemainTime = 2f;
-        private float infoTimer = 0f;
-        private bool  infoboxRemain = false;
 
         public bool IsRemainPopup
         {
@@ -36,12 +37,6 @@ namespace Swift_Blade
             }
         }
 
-        public bool InfoBoxRemain
-        {
-            get => infoboxRemain;
-            set => infoboxRemain = value;
-        }
-
         private void Start()
         {
             InitPopups();
@@ -57,26 +52,6 @@ namespace Swift_Blade
         {
             OpenCloseInventory();
             PopDownInput();
-            CheckInfoBox();
-        }
-
-        private void CheckInfoBox()
-        {
-            if (infoboxRemain)
-            {
-                if (infoTimer < infoRemainTime)
-                    infoTimer += Time.unscaledDeltaTime;
-                else
-                {
-                    infoTimer = 0f;
-                    infoboxRemain = false;
-
-                    if (GetRemainPopup(PopupType.InfoBox))
-                    {
-                        PopDown(PopupType.InfoBox);
-                    }
-                }
-            }
         }
         
         private void PopDownInput()
@@ -219,19 +194,22 @@ namespace Swift_Blade
             DelayPopup(PopupType.Text, 1f, () => PopDown(PopupType.Text));
         }
 
-        public void LogInfoBox(string message)
+        public void LogInfoBox(string message, float timer = 1.5f)
         {
             //if popup remain in screen
             if (GetRemainPopup(PopupType.InfoBox) != null)
             {
-                PopupUI remain = GetRemainPopup(PopupType.InfoBox);
-                InfoBoxPopup remainInfobox = remain as InfoBoxPopup;
+                if(isLayerTextInfo == false)
+                {
+                    PopupUI remain = GetRemainPopup(PopupType.InfoBox);
+                    InfoBoxPopup infoB = remain as InfoBoxPopup;
+                    infoB.SetInfoBox("");
+                }
+
+                InfoBoxPopup remainInfobox = Instantiate(infoBoxPopup, popupCanvasTrm);
 
                 remainInfobox.SetInfoBox(message);
-
-                infoTimer = 0f;
-                infoboxRemain = true;
-
+                remainInfobox.DelayPopup(1.0f, () => Destroy(remainInfobox.gameObject));
                 return;
             }
 
@@ -239,10 +217,7 @@ namespace Swift_Blade
             InfoBoxPopup infoPopup = popup as InfoBoxPopup;
 
             infoPopup.SetInfoBox(message);
-            PopUp(PopupType.InfoBox);
-
-            infoTimer = 0f;
-            infoboxRemain = true;
+            DelayPopup(PopupType.InfoBox, timer, () => PopDown(PopupType.InfoBox));
         }
 
         public void AllPopDown()

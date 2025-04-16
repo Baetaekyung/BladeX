@@ -5,16 +5,18 @@ namespace Swift_Blade
 {
     public abstract class BaseOrb : MonoBehaviour, IInteractable
     {
-        [SerializeField] private float startFadeScale;
-        [SerializeField] private float collectFadeEndDuration;
+        [SerializeField] protected float startFadeScale;
+        [SerializeField] protected float collectFadeEndDuration;
 
         [SerializeField] private Material[] colors;
         private MeshRenderer itemRenderer;
 
+        protected virtual bool CanInteract => !isCollected;
         private bool isCollected;
-        protected static int a = 23;
 
-        private void Awake()
+        private Tween interactTween;
+
+        protected virtual void Awake()
         {
             itemRenderer = GetComponent<MeshRenderer>();
             const float START_FADE_DURATION = 0.75f;
@@ -23,37 +25,44 @@ namespace Swift_Blade
                 .SetEase(Ease.OutElastic)
                 .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
-
         public void SetColor(ColorType color)
         {
             itemRenderer.material = colors[(int)color];
         }
-
         void IInteractable.Interact()
         {
-            if (isCollected)
+            if (!CanInteract)
             {
                 return;
             }
 
-            isCollected = true;
-
-            HandleInteract(CreateDefaultCallback());
+            Interact();
         }
-        protected abstract TweenCallback CreateDefaultCallback();
-        protected void HandleInteract(TweenCallback onComplete)
+        protected virtual Tween InteractTween()
         {
-            bool isCallbackNull = onComplete == null;
-            Debug.Assert(!isCallbackNull, "default callback is null");
-            Collect(onComplete);
-        }
-        protected void Collect(TweenCallback onComplete)
-        {
-            transform.DOScale(0.01f, collectFadeEndDuration)
+            return transform.DOScale(0.01f, collectFadeEndDuration)
                 .SetDelay(0.1f)
                 .SetEase(Ease.OutExpo)
-                .SetLink(gameObject, LinkBehaviour.KillOnDestroy)
-                .OnComplete(onComplete);
+                .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+        }
+        protected virtual TweenCallback CollectTweenCallback() => null;
+        protected virtual void Interact()
+        {
+            isCollected = true;
+
+            if (interactTween != null)
+            {
+                interactTween.Kill();
+            }
+
+            interactTween = InteractTween();
+
+            TweenCallback onComplete = CollectTweenCallback();
+            bool isCallbackNull = onComplete == null;
+            if (!isCallbackNull)
+            {
+                interactTween.OnComplete(onComplete);
+            }
         }
     }
 }

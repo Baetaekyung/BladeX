@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat.Health
 {
-    public class BaseEnemyHealth : BaseEntityHealth, IHealth
+    public class BaseEnemyHealth : BaseEntityHealth
     {
         public event Action<float> OnChangeHealthEvent; 
         public float currentHealth;
@@ -17,7 +17,7 @@ namespace Swift_Blade.Combat.Health
         [SerializeField] protected BehaviorGraphAgent BehaviorGraphAgent;
         [SerializeField] protected ChangeBossState changeBossState;
                         
-        private BaseEnemyAnimationController animationController;
+        protected BaseEnemyAnimationController animationController;
         private Rigidbody enemyRigidbody;
         private NavMeshAgent navMeshAgent;
         
@@ -75,7 +75,7 @@ namespace Swift_Blade.Combat.Health
             }
             
         }
-
+        
         public override void Dead()
         {
             InventoryManager.Inventory.AddCoin(AddRandomCoin());
@@ -111,8 +111,8 @@ namespace Swift_Blade.Combat.Health
         {
             return currentHealth / maxHealth;
         }
-
-        public void ChangeParryState()
+        
+        public virtual void ChangeParryState()
         {
             animationController.StopAllAnimationEvents();
             TriggerState(BossState.Hurt);

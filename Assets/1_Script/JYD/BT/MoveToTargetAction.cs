@@ -21,14 +21,16 @@ public class MoveToTargetAction : Action
     [SerializeReference] public BlackboardVariable<float> attackDistance;
     private float distance;
 
-    private LayerMask whatIsObstacle;
+    private LayerMask whatIsObstacle ;//=  LayerMask.GetMask("Wall" , "Obstacle","Ground");
     private Vector3 targetPos;
+    
+    
     protected override Status OnStart()
     {
         if (Target.Value == null) 
             return Status.Failure;
         
-        whatIsObstacle = LayerMask.GetMask("Wall" , "Obstacle");
+        whatIsObstacle = LayerMask.GetMask("Wall" , "Obstacle","Ground");
         Agent.Value.speed = MoveSpeed.Value;
         
         return CheckDistance();
