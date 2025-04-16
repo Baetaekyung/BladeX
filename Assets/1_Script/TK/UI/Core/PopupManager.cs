@@ -37,10 +37,8 @@ namespace Swift_Blade
             }
         }
 
-        protected override void Awake()
+        private void Start()
         {
-            base.Awake();
-
             InitPopups();
         }
 

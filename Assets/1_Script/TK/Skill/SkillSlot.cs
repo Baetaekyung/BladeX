@@ -52,8 +52,7 @@ namespace Swift_Blade
             skillManager.currentSkillCount++;
             skillManager.SetSkillCountUI(skillManager.currentSkillCount, skillManager.maxSkillCount);
 
-            (int r, int g, int b) = ColorUtils.GetRGBColor(data.colorType);
-            Color newColor = new Color(r, g, b, 0.8f);
+            Color newColor = ColorUtils.GetCustomColor(data.colorType, 0.8f);
             Color currentColor = backgroundImage.color;
 
             if (_tween != null)

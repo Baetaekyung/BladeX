@@ -165,9 +165,11 @@ namespace Swift_Blade
             if (QuickSlotItem.itemObject.CanUse() == false)
                 return;
 
-            QuickSlotItem.itemObject.ItemEffect(Player.Instance);
             Inventory.itemInventory.Remove(QuickSlotItem);
+
             _itemDatas[QuickSlotItem]--;
+
+            QuickSlotItem.itemObject.ItemEffect(Player.Instance);
 
             //아이템 다 쓰면 넘어가기
             if (_itemDatas[QuickSlotItem] <= 0)
@@ -175,11 +177,15 @@ namespace Swift_Blade
                 _itemDatas.Remove(QuickSlotItem);
                 _itemTable.Remove(QuickSlotItem);
 
-                ChangeQuickSlotItem();
-            }
+                QuickSlotItem.ItemSlot.SetItemData(null);
 
-            UpdateQuickSlotUI(QuickSlotItem);
-            SetQuickSlotItem();
+                ChangeQuickSlotItem();
+                UpdateAllSlots();
+            }
+            else
+            {
+                QuickSlotItem.ItemSlot.SetItemData(QuickSlotItem);
+            }
         }
 
         private void ChangeQuickSlotItem()
@@ -344,10 +350,17 @@ namespace Swift_Blade
 
         public int GetItemCount(ItemDataSO itemData)
         {
+            if (_itemDatas == null)
+                return -1;
+
+            if (itemData == null)
+                return -1;
+
+            if (_itemDatas.ContainsKey(itemData) == false)
+                return -1;
+
             if (_itemDatas.TryGetValue(itemData, out var count))
-            {
                 return count;
-            }
 
             return -1;
         }

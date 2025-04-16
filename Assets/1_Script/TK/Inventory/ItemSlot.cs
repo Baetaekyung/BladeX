@@ -111,7 +111,8 @@ namespace Swift_Blade
             if (sprite == null)
             {
                 itemImage.sprite = emptySprite;
-                itemImage.color = Color.clear;
+                itemImage.color  = Color.clear;
+                countText.text   = string.Empty;
             }
             else
             {
@@ -163,14 +164,21 @@ namespace Swift_Blade
             {
                 EquipmentData equipData = _itemDataSO.equipmentData;
 
-                (int a, int b, int c) = ColorUtils.GetRGBColor(equipData.colorType);
-                Color newColor = new Color(a, b, c, 0.26f);
+                Color newColor = ColorUtils.GetCustomColor(equipData.colorType, 0.3f);
                 itemBackground.color = newColor;
             }
         }
 
         public virtual void SetItemData(ItemDataSO newItemData)
         {
+            if(newItemData == null)
+            {
+                _itemDataSO = null;
+                SetItemUI(null);
+
+                return;
+            }
+
             _itemDataSO = newItemData;
             
             int count = InvenManager.GetItemCount(newItemData);
