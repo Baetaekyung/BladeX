@@ -16,7 +16,7 @@ namespace Swift_Blade
 
         private Tween interactTween;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             itemRenderer = GetComponent<MeshRenderer>();
             const float START_FADE_DURATION = 0.75f;

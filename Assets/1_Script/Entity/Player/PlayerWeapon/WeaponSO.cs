@@ -7,7 +7,7 @@ using Swift_Blade.Pool;
 
 namespace Swift_Blade
 {
-    [CreateAssetMenu(fileName = "WeaponSO", menuName = "SO/Weapon")]
+    [CreateAssetMenu(fileName = "WeaponSO", menuName = "SO/Weapon/NormalSword")]
     public class WeaponSO : ScriptableObject
     {
         [field: Header("Damage")]
@@ -15,6 +15,11 @@ namespace Swift_Blade
         [field: SerializeField] public float AdditionalHeavyDamage { get; private set; }
         [field: SerializeField] public float RollAttackDamage { get; private set; }
 
+        [field: Header("Pick Up peview")]
+        [field: SerializeField] public ParticleSystem PreviewMeshParticle { get; private set; }
+
+        [SerializeField] private SerializableDictionary<EAudioType, BaseAudioSO> audioDictionary;
+        public IReadOnlyDictionary<EAudioType, BaseAudioSO> GetAudioDictionary => audioDictionary;
         [field: Header("Feeling")]
         [field: SerializeField] public CameraShakeType WeaponCameraShkaeType { get; private set; }
         [field: SerializeField] public CameraFocusSO WeaponCameraFocus { get; private set; }
@@ -24,27 +29,22 @@ namespace Swift_Blade
         [field: SerializeField] public RuntimeAnimatorController WeaponAnimator { get; private set; }
         [field: SerializeField] public WeaponHandler LeftWeaponHandler { get; set; }
         [field: SerializeField] public WeaponHandler RightWeaponHandler { get; set; }
-        [field:SerializeField] public Mesh PreviewMesh { get; private set; }
+        [field: SerializeField, Range(1, 3)] public float CastRange { get; private set; }
 
-        [SerializeField] private SerializableDictionary<EAudioType, BaseAudioSO> audioDictionary;
-        public IReadOnlyDictionary<EAudioType, BaseAudioSO> GetAudioDictionary => audioDictionary;
         /// <summary>
         /// color is limited to (red, blu, green)
         /// </summary>
         [field: SerializeField] public ColorType ColorType { get; private set; }
         [SerializeField] private float specialModifier;
         [SerializeField] private float rollModifier;
-        [field: SerializeField, Range(1, 3)] public float CastRange { get; private set; }
 
         private const float BASE_SPECIAL_DELAY = 1f;
         private const float BASE_ROLL_DELAY = 1f;
         public float GetSpecialDelay => BASE_SPECIAL_DELAY + specialModifier;
         public float GetRollDelay => BASE_ROLL_DELAY + rollModifier;
-
-        [SerializeField] private PoolPrefabMonoBehaviourSO specialParticle;
-        private Transform playerTransform;
         
-        
+        protected Transform playerTransform;
+                                
         private void OnValidate()
         {
             ColorType banType = ~(ColorType.RED | ColorType.BLUE | ColorType.GREEN);
@@ -71,10 +71,9 @@ namespace Swift_Blade
         public Action GetSpecialBehaviour(Player entity)
         {
             Action result = default;
+
             if (playerTransform == null)
-            {
                 playerTransform = entity.GetPlayerTransform;
-            }
             
             switch (ColorType)
             {
@@ -87,13 +86,16 @@ namespace Swift_Blade
                 case ColorType.GREEN:
                     result = () =>
                     {
-                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.HEALTH, nameof(StatType.HEALTH), 5, 3 , PlayHexagonParticle);
+                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.HEALTH, 
+                            nameof(StatType.HEALTH), 5, 3 , 
+                            PlayParticle);
                     };
                     break;
                 case ColorType.BLUE:
                     result = () =>
                     {
-                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.ATTACKSPEED, nameof(StatType.ATTACKSPEED), 3, 1 , PlayBlastEffect);
+                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.ATTACKSPEED, 
+                            nameof(StatType.ATTACKSPEED), 3, 1 , PlayParticle,StopParticle);
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.MOVESPEED, nameof(StatType.MOVESPEED), 3, 1);
                     };
                     break;
@@ -103,29 +105,15 @@ namespace Swift_Blade
             return result;
         }
 
-        private void PlayBlastEffect()
+        protected virtual void PlayParticle()
         {
-            MonoGenericPool<HexagonParticle>.Initialize(specialParticle);
-            
-            HexagonParticle hexagonParticle = MonoGenericPool<HexagonParticle>.Pop();
-            hexagonParticle.transform.SetParent(playerTransform);
-            hexagonParticle.transform.position = playerTransform.position + new Vector3(0,1f,0);
-        }
-        
-        private void StopBlastEffect()
-        {
-            
-        }
-        
-        private void PlayHexagonParticle()
-        {
-            MonoGenericPool<HexagonParticle>.Initialize(specialParticle);
-            
-            HexagonParticle hexagonParticle = MonoGenericPool<HexagonParticle>.Pop();
-            hexagonParticle.transform.SetParent(playerTransform);
-            hexagonParticle.transform.position = playerTransform.position + new Vector3(0,1f,0);
         }
 
+        protected virtual void StopParticle()
+        {
+            
+        }
+        
         
         
     }
