@@ -8,6 +8,10 @@ namespace Swift_Blade
     public class GreatSwordWeaponSO : WeaponSO
     {
         [SerializeField] private PoolPrefabMonoBehaviourSO hexagonParticle;
+        [SerializeField] private ShieldEffect shieldEffect;
+
+        private ShieldEffect currentShieldEffect;
+        
         protected override void PlayParticle()
         {
             MonoGenericPool<HexagonParticle>.Initialize(this.hexagonParticle);
@@ -15,6 +19,14 @@ namespace Swift_Blade
             HexagonParticle hexagonParticle = MonoGenericPool<HexagonParticle>.Pop();
             hexagonParticle.transform.SetParent(playerTransform);
             hexagonParticle.transform.position = playerTransform.position + new Vector3(0,1f,0);
+            
+            currentShieldEffect = Instantiate(shieldEffect , playerTransform.position ,Quaternion.identity);
+            currentShieldEffect.PlayShield(playerTransform);
+        }
+
+        protected override void StopParticle()
+        {
+            currentShieldEffect.StopShield();
         }
     }
 }

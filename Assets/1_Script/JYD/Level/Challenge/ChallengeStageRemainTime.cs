@@ -1,17 +1,17 @@
-﻿
+﻿using UnityEngine;
+
 namespace Swift_Blade.UI
 {
     public class ChallengeStageRemainTime
     {
-        private float remainTime;
+        private int remainTime;
         
         public void SetRemainTime(float _remainTime)
         {
-                        
-            remainTime = _remainTime;
+            remainTime = Mathf.RoundToInt(_remainTime);
         }
 
-        public float GetRemainTime()
+        public int GetRemainTime()
         {
             return remainTime;
         }

@@ -1,3 +1,4 @@
+using System;
 using Swift_Blade.Pool;
 using UnityEngine;
 using DG.Tweening;
@@ -21,7 +22,12 @@ namespace Swift_Blade.Level.Door
         [SerializeField] private Transform door;
         [SerializeField] private Transform cage;
         [SerializeField] private string sceneName;
-                
+
+        private void Awake()
+        {
+            MonoGenericPool<DustUpParticle>.Initialize(dustPrefab);   
+        }
+
         private void Start()
         {
             if (isDefaultPortal)
