@@ -18,21 +18,19 @@ namespace Swift_Blade
         [SerializeField] private float upFloorHeight, downFloorHeight;
         [SerializeField] private float liftDuration = 2f;
 
-        private void Update()
-        {
-
-        }
         private void SetPlatUpdown()
         {
             IsDowned = !IsDowned;
 
             if (IsDowned)
             {
+                Debug.Log("위로위업");
                 PlatformTrm.DOMoveY(upFloorHeight, liftDuration);
                 StartCoroutine("CheckThisMoveCoroutine");
             }
             else
             {
+                Debug.Log("내려간다저바닥으로");
                 PlatformTrm.DOMoveY(downFloorHeight, liftDuration);
                 StartCoroutine("CheckThisMoveCoroutine");
             }
@@ -47,6 +45,11 @@ namespace Swift_Blade
 
             yield return new WaitForSeconds(onBoardTime);
             PlatformTrm.DOMoveY(downFloorHeight, liftDuration);
+
+            IsDowned = false;
+            IsMoving = true;
+            yield return new WaitForSeconds(liftDuration);
+            IsMoving = false;
         }
         private void OnCollisionEnter(Collision collision)
         {
@@ -68,6 +71,7 @@ namespace Swift_Blade
 
         public void Interact()
         {
+            if (IsPlayerOnthePanel == false) return;
             if (IsMoving) return;
             SetPlatUpdown();
         }
