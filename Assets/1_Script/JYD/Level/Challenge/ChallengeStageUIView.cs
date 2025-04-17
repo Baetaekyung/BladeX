@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using TMPro;
 
@@ -8,9 +9,15 @@ namespace Swift_Blade.UI
     {
         public TextMeshProUGUI remainText;
         
-        public void SetText(float _remainCount)
+        private void Start()
         {
-            remainText.SetText(_remainCount.ToString());
+            PopupManager.Instance.LogMessage("끝까지 살아남아라");
+        }
+        
+        public void SetText(int _remainCount)
+        {
+            
+            remainText.SetText(_remainCount != 0 ?_remainCount.ToString() : "");
         }
         
     }
