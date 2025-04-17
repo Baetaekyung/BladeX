@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Swift_Blade.Pool;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace Swift_Blade

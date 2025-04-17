@@ -1,8 +1,8 @@
+using Swift_Blade.Combat.Health;
 using System.Collections;
 using System.Linq;
-using DG.Tweening;
-using Swift_Blade.Combat.Health;
 using UnityEngine;
+using UnityEngine.Windows.WebCam;
 
 namespace Swift_Blade
 {
@@ -17,10 +17,11 @@ namespace Swift_Blade
         private Material[] shieldMats;
         private Transform[] shieldTrms;
         
-        
-        
         private const string TINT_COLOR = "_TintColor";
+        private const float MAX_ALPHA_VALUE = 0.4f;
 
+        private bool IsfadeInCompleted = false; 
+            
         private Transform followTrm;
         private PlayerHealth health;
         
@@ -54,7 +55,19 @@ namespace Swift_Blade
                 StopShield();
                 return;
             }
-            
+
+            if (IsfadeInCompleted == false)
+            {
+                IsfadeInCompleted = true;
+
+                StopAllCoroutines();
+
+                foreach (var item in shieldMats)
+                {
+                    CompleteFade(item,MAX_ALPHA_VALUE);
+                }
+            }
+                                    
             StartCoroutine(FadeCoroutine(mat, 0f, fadeOutTime));
         }
 
@@ -67,11 +80,14 @@ namespace Swift_Blade
 
         private IEnumerator PlayShieldCoroutine()
         {
-            yield return new WaitForSeconds(delayTime);
-                        
+            for (float timer = 0; timer < delayTime; timer += Time.deltaTime)
+            {
+                yield return null;
+            }
+            
             foreach (var mat in shieldMats)
             {
-                StartCoroutine(FadeCoroutine(mat, 0.4f, fadeInTime));
+                StartCoroutine(FadeCoroutine(mat, MAX_ALPHA_VALUE, fadeInTime));
             }
         }
 
@@ -82,7 +98,11 @@ namespace Swift_Blade
                 yield return StartCoroutine(FadeCoroutine(mat, 0f, fadeOutTime));
             }
 
-            yield return new WaitForSeconds(fadeOutTime);  // FadeOut이 끝날 때까지 기다림
+            for (float timer = 0; timer < fadeOutTime; timer += Time.deltaTime)
+            {
+                yield return null;
+            }
+            
             Destroy(gameObject);
         }
 
@@ -91,7 +111,7 @@ namespace Swift_Blade
             Color c = material.GetColor(TINT_COLOR);
             float startValue = c.a;
             float elapsedTime = 0f;
-
+            
             while (elapsedTime < time)
             {
                 c.a = Mathf.Lerp(startValue, endValue, elapsedTime / time);
@@ -99,9 +119,19 @@ namespace Swift_Blade
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
-
-            c.a = endValue; // 마지막 값을 정확히 설정
-            material.SetColor(TINT_COLOR, c);
+            
+            CompleteFade(material , endValue);
         }
+
+        private void CompleteFade(Material material, float endValue)
+        {
+            IsfadeInCompleted = true;
+            
+            Color c = material.GetColor(TINT_COLOR);
+            c.a = endValue;
+            material.SetColor(TINT_COLOR, c);
+            
+        }
+        
     }
 }
