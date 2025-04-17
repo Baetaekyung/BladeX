@@ -40,7 +40,6 @@ namespace Swift_Blade
         public float increaseAmount;
         public float colorMultiplier; //if color value == 1, value increase 1 * colorMultiplier
         public float modifiedValue = 0;
-        public float dbgValue = 0;
 
         public float buffTimer = 0f;
 

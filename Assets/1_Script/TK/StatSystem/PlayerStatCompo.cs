@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Swift_Blade
 {
@@ -12,12 +13,26 @@ namespace Swift_Blade
         public int       colorValue;
     }
 
+    [Serializable]
+    public struct DebugStat
+    {
+        public string name;
+        public float value;
+        
+        public DebugStat(string n, float v)
+        {
+            name = n;
+            value = v;
+        }
+    }
+
     public class PlayerStatCompo : StatComponent, IEntityComponent, IEntityComponentStart
     {
         public static List<ColorStat> colorStats = new List<ColorStat>();
         public event  Action ColorValueChangedAction;
 
         public List<ColorStat> defaultColorStat = new List<ColorStat>();
+        [SerializeField] private List<DebugStat> DebugStats = new();
 
         private PlayerHealth _playerHealth;
 
@@ -50,8 +65,14 @@ namespace Swift_Blade
                 foreach (ColorStat colorStat in colorStats)
                 {
                     if(stat.colorType == colorStat.colorType)
-                        stat.ColorValue = colorStat.colorValue;
+                        GetStat(stat).ColorValue = colorStat.colorValue;
                 }
+            }
+
+            DebugStats.Clear();
+            foreach(StatSO stat in _statDatas)
+            {
+                DebugStats.Add(new DebugStat(stat.statName, stat.Value));
             }
         }
 
