@@ -21,9 +21,9 @@ namespace Swift_Blade
 
         public static ColorType GetColor(List<ColorType> colors)
         {
-            int redColor   = 0;
+            int redColor = 0;
             int greenColor = 0;
-            int blueColor  = 0;
+            int blueColor = 0;
 
             foreach (var color in colors)
             {
@@ -104,13 +104,13 @@ namespace Swift_Blade
         {
             (int, int, int) rgb = colorType switch
             {
-                ColorType.RED       => (1, 0, 0),
-                ColorType.GREEN     => (0, 1, 0),
-                ColorType.BLUE      => (0, 0, 1),
-                ColorType.YELLOW    => (1, 1, 0),
-                ColorType.PURPLE    => (1, 0, 1),
+                ColorType.RED => (1, 0, 0),
+                ColorType.GREEN => (0, 1, 0),
+                ColorType.BLUE => (0, 0, 1),
+                ColorType.YELLOW => (1, 1, 0),
+                ColorType.PURPLE => (1, 0, 1),
                 ColorType.TURQUOISE => (0, 1, 1),
-                ColorType.BLACK     => (1, 1, 1),
+                ColorType.BLACK => (1, 1, 1),
                 _ => throw new Exception("rgb each value must be 1 or 0")
             };
 
@@ -150,6 +150,13 @@ namespace Swift_Blade
             };
 
             return rgb;
+        }
+        public static bool ContainsNonRGBColor(this ColorType ColorType)
+        {
+            ColorType banType = ~(ColorType.RED | ColorType.BLUE | ColorType.GREEN);
+
+            bool result = (ColorType & banType) != 0 || ColorType == ColorType.YELLOW;
+            return result;
         }
     }
 }
