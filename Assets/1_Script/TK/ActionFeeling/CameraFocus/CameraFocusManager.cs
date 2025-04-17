@@ -9,7 +9,7 @@ namespace Swift_Blade.Feeling
     [MonoSingletonUsage(MonoSingletonFlags.DontDestroyOnLoad)]
     public class CameraFocusManager : MonoSingleton<CameraFocusManager>
     {
-        private const float DEFAULT_CAMERA_FOV = 46f; //기본 FOV
+        private const float DEFAULT_CAMERA_FOV = 46f; //Default FOV
         private int currentLayered = 1;
 
         [Header("포커스 할 카메라")]

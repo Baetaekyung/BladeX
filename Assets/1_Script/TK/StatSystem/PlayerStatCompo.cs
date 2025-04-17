@@ -9,7 +9,7 @@ namespace Swift_Blade
     public class ColorStat
     {
         public ColorType colorType;
-        public int colorValue;
+        public int       colorValue;
     }
 
     public class PlayerStatCompo : StatComponent, IEntityComponent, IEntityComponentStart
@@ -53,11 +53,6 @@ namespace Swift_Blade
                         stat.ColorValue = colorStat.colorValue;
                 }
             }
-
-#if UNITY_EDITOR // For Debuging
-            foreach (StatSO stat in _defaultStats)
-                stat.dbgValue = stat.Value;
-#endif
         }
 
         public void BuffToStat(StatType statType, string buffKey, float buffTime, float buffAmount
@@ -116,13 +111,6 @@ namespace Swift_Blade
         public void IncreaseColorValue(ColorType colorType, int increaseAmount)
         {
             ColorStat colorStat = GetColorStat(colorType);
-
-            //if (colorType == ColorType.GREEN)
-            //{
-            //    float healthHandler = GetStat(StatType.HEALTH).colorMultiplier * increaseAmount;
-
-            //    PlayerHealth.CurrentHealth++;
-            //}
 
             colorStat.colorValue += increaseAmount;
             ColorValueChange();
