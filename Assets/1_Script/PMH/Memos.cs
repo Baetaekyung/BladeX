@@ -7,10 +7,14 @@ namespace Swift_Blade
     {
         [SerializeField] private string m_talker;
         [SerializeField] private string m_scripts;
+        [SerializeField] private string m_secondScripts;
+
+        [SerializeField] private DialogueDataSO dialogueSO;
 
         private DialogueDataSO m_dialogueData;
 
         [SerializeField] private Door doorTrm;
+        [SerializeField] private ParticleSystem[] fireworks;
 
         private void Awake()
         {
@@ -19,17 +23,37 @@ namespace Swift_Blade
             TalkingData talkingData = new TalkingData();
             talkingData.talker = m_talker;
             talkingData.dialogueMessage = m_scripts;
+            m_dialogueData.dialougueDatas.Clear();
             m_dialogueData.dialougueDatas.Add(talkingData);
         }
         public void Interact()
         {
             if (DialogueManager.Instance.IsDialogueOpen) return;
 
-            DialogueManager.Instance.StartDialogue(m_dialogueData);
+            DialogueManager.Instance.StartDialogue(dialogueSO);
 
-            if(doorTrm is not null)
+            /*
+            void SecondDialogue()
+            {
+                if (m_secondScripts == "" && m_secondScripts is null) return;
+                Debug.Log("µÎ¹ø¤Š");
+
+                TalkingData talkingData = new TalkingData();
+                talkingData.talker = m_talker;
+                talkingData.dialogueMessage = m_secondScripts;
+                m_dialogueData.dialougueDatas.Clear();
+                m_dialogueData.dialougueDatas.Add(talkingData);
+
+                DialogueManager.Instance.StartDialogue(m_dialogueData);
+            }*/
+            if (doorTrm is not null)
             {
                 doorTrm.UpDoor();
+
+                foreach(var firework in fireworks)
+                {
+                    firework.Play();
+                }
             }
         }
     }
