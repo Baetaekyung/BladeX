@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Swift_Blade
 {
@@ -53,10 +54,11 @@ namespace Swift_Blade
 
         private void StartNewDialogue(DialogueDataSO dialogueData)
         {
+            dialogueUI.GetAcceptButton.GetComponent<Image>().color = Color.clear;
             dialogueUI.GetCancelButton.onClick.AddListener(CancelDialogue);
             dialogueUI.GetAcceptButton.onClick.RemoveAllListeners();
-            dialogueUI.GetAcceptButton.gameObject.SetActive(false);
             dialogueUI.ClearMessageBox();
+
             _sb.Clear();
                 
             if(_dialogueRoutine != null)
@@ -126,7 +128,7 @@ namespace Swift_Blade
 
         private void Accept(DialogueDataSO dialogueData)
         {   
-            dialogueUI.GetAcceptButton.gameObject.SetActive(true);
+            dialogueUI.GetAcceptButton.GetComponent<Image>().color = Color.white;
 
             dialogueUI.GetAcceptButton.onClick.AddListener(InvokeAcceptEvent);
             dialogueUI.GetAcceptButton.onClick.AddListener(InvokeAllDialogueEvents);
@@ -161,10 +163,7 @@ namespace Swift_Blade
         }
 
         private void SkipDialogueMessage()
-        {
-            if (_isDialogueOpen == false)
-                return;
-            
+        {   
             if(Input.GetKeyDown(KeyCode.Return))
             {
                 _isForcedMessageSkip = true; //강제 메세지 스킵

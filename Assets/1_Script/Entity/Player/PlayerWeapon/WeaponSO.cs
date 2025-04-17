@@ -3,7 +3,6 @@ using Swift_Blade.Feeling;
 using Swift_Blade.Audio;
 using UnityEngine;
 using System;
-using Swift_Blade.Pool;
 
 namespace Swift_Blade
 {
@@ -94,7 +93,7 @@ namespace Swift_Blade
                     {
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.HEALTH, 
                             nameof(StatType.HEALTH), 5, 3 , 
-                            PlayParticle);
+                            PlayParticle,StopParticle);
                     };
                     break;
                 case ColorType.BLUE:

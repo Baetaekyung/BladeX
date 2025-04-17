@@ -1,5 +1,6 @@
 using Swift_Blade.Audio;
 using Swift_Blade.Combat;
+using Swift_Blade.Combat.Health;
 using UnityEngine;
 
 namespace Swift_Blade.Pool
@@ -95,7 +96,11 @@ namespace Swift_Blade.Pool
         
         private void Hit(IHealth health)
         {
-            health.TakeDamage(new ActionData() { damageAmount = 1, stun = true });
+            health.TakeDamage(new ActionData()
+            {
+                damageAmount = health is PlayerHealth ? 1 : 4, stun = true
+            });
+            
             AudioManager.PlayWithInit(bodyHitAudio.GetRandomAudio,true);
             MonoGenericPool<Arrow>.Push(this);
         }

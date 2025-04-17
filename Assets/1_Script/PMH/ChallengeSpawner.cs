@@ -56,6 +56,7 @@ namespace Swift_Blade.Level
                 
                 if (endTimer >= endTimeSecond)
                 {
+                    challengeStageUI.SetText(0);
                     yield break; 
                 }
             }

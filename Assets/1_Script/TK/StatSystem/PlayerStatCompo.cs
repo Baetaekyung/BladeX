@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Swift_Blade
 {
@@ -9,7 +10,20 @@ namespace Swift_Blade
     public class ColorStat
     {
         public ColorType colorType;
-        public int colorValue;
+        public int       colorValue;
+    }
+
+    [Serializable]
+    public struct DebugStat
+    {
+        public string name;
+        public float value;
+        
+        public DebugStat(string n, float v)
+        {
+            name = n;
+            value = v;
+        }
     }
 
     public class PlayerStatCompo : StatComponent, IEntityComponent, IEntityComponentStart
@@ -18,6 +32,7 @@ namespace Swift_Blade
         public event  Action ColorValueChangedAction;
 
         public List<ColorStat> defaultColorStat = new List<ColorStat>();
+        [SerializeField] private List<DebugStat> DebugStats = new();
 
         private PlayerHealth _playerHealth;
 
@@ -50,14 +65,15 @@ namespace Swift_Blade
                 foreach (ColorStat colorStat in colorStats)
                 {
                     if(stat.colorType == colorStat.colorType)
-                        stat.ColorValue = colorStat.colorValue;
+                        GetStat(stat).ColorValue = colorStat.colorValue;
                 }
             }
 
-#if UNITY_EDITOR // For Debuging
-            foreach (StatSO stat in _defaultStats)
-                stat.dbgValue = stat.Value;
-#endif
+            DebugStats.Clear();
+            foreach(StatSO stat in _statDatas)
+            {
+                DebugStats.Add(new DebugStat(stat.statName, stat.Value));
+            }
         }
 
         public void BuffToStat(StatType statType, string buffKey, float buffTime, float buffAmount
@@ -116,13 +132,6 @@ namespace Swift_Blade
         public void IncreaseColorValue(ColorType colorType, int increaseAmount)
         {
             ColorStat colorStat = GetColorStat(colorType);
-
-            //if (colorType == ColorType.GREEN)
-            //{
-            //    float healthHandler = GetStat(StatType.HEALTH).colorMultiplier * increaseAmount;
-
-            //    PlayerHealth.CurrentHealth++;
-            //}
 
             colorStat.colorValue += increaseAmount;
             ColorValueChange();

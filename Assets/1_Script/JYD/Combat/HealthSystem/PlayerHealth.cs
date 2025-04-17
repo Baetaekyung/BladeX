@@ -10,10 +10,12 @@ namespace Swift_Blade.Combat.Health
         ,IEntityComponentStart
     {
         public event Action<float, float, int> OnHealthUpdateEvent;
-
+        public event Action<int> OnShieldBreakEvent;
+        
         private const float DAMAGE_INTERVAL = 0.75f;
         public static float CurrentHealth;
         public UnityEvent OnHealEvent;
+        
         
         [SerializeField] private StatSO         healthStat;
         [SerializeField] private float          defaultHealth = 4;
@@ -34,6 +36,10 @@ namespace Swift_Blade.Combat.Health
                 _shieldAmount = Mathf.Max(value, 0);
             }
         }
+
+       
+        
+        
         public StatSO GetHealthStat => healthStat;
         public bool IsPlayerInvincible { get; set; }
         
@@ -63,13 +69,14 @@ namespace Swift_Blade.Combat.Health
         public override void TakeDamage(ActionData actionData)
         {
             if (_lastDamageTime + DAMAGE_INTERVAL > Time.time || isDead || IsPlayerInvincible) return;
-                        
+            
             //repac...
             if(ShieldAmount > 0)
             {
                 int tempHealth = ShieldAmount - Mathf.RoundToInt(actionData.damageAmount);
                 ShieldAmount -= Mathf.RoundToInt(actionData.damageAmount);
-
+                OnShieldBreakEvent?.Invoke(ShieldAmount);
+                
                 if(tempHealth < 0)
                 {
                     CurrentHealth -= tempHealth;

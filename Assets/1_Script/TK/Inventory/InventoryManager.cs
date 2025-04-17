@@ -113,6 +113,7 @@ namespace Swift_Blade
                 }
                 else
                 {
+                    Debug.Log("It is equipment");
                     AssignItemToSlot(i, matchSlot, emptySlot);
                     Inventory.currentInventoryCapacity++;
                 }
@@ -121,17 +122,17 @@ namespace Swift_Blade
             SetQuickSlotItem();
             UpdateAllSlots();
 
-            static void AssignItemToSlot(int i, ItemSlot matchSlot, ItemSlot emptySlot)
+            static void AssignItemToSlot(int index, ItemSlot matchSlot, ItemSlot emptySlot)
             {
                 if (matchSlot != null)
                 {
-                    matchSlot.SetItemData(Inventory.itemInventory[i]);
-                    Inventory.itemInventory[i].ItemSlot = matchSlot;
+                    matchSlot.SetItemData(Inventory.itemInventory[index]);
+                    Inventory.itemInventory[index].ItemSlot = matchSlot;
                 }
                 else
                 {
-                    emptySlot.SetItemData(Inventory.itemInventory[i]);
-                    Inventory.itemInventory[i].ItemSlot = emptySlot;
+                    emptySlot.SetItemData(Inventory.itemInventory[index]);
+                    Inventory.itemInventory[index].ItemSlot = emptySlot;
                 }
             }
         }
@@ -288,6 +289,8 @@ namespace Swift_Blade
             var emptySlot = GetEmptySlot();
             emptySlot.SetItemData(newItem);
             newItem.ItemSlot = emptySlot;
+
+            Inventory.itemInventory.Add(newItem);
             
             UpdateAllSlots();
         }
