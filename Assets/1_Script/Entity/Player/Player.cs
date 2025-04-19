@@ -26,7 +26,7 @@ namespace Swift_Blade
     public class Player : Entity
     {
         public static Player Instance { get; private set; }
-        public static event Action OnDead;
+        //public static event Action OnDead;
         public bool IsPlayerDead { get; private set; }
         public static event Action Debug_Updt;
         private readonly FiniteStateMachine<PlayerStateEnum> playerStateMachine = new();

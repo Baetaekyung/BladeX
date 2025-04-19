@@ -12,7 +12,7 @@ namespace Swift_Blade.Audio
 
         public event Action OnEndCallback;
 
-        [Header("Preplaced")]
+        [Header("Preplace")]
         [SerializeField] private BaseAudioSO defaultAudioSO;
         [SerializeField] private bool overrideVolume;
         private bool isPrePlaced = true;
