@@ -30,8 +30,8 @@ namespace Swift_Blade.Enemy.Goblin
 
         public override void StopAllAnimationEvents()
         {
-            base.StopAllAnimationEvents();
             StopManualKnockback();
+            base.StopAllAnimationEvents();
         }
     }
 }
