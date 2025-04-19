@@ -164,7 +164,7 @@ namespace Swift_Blade
             {
                 EquipmentData equipData = _itemDataSO.equipmentData;
 
-                Color newColor = ColorUtils.GetCustomColor(equipData.colorType, 0.3f);
+                Color newColor = ColorUtils.GetColorRGBUnity(equipData.colorType);
                 itemBackground.color = newColor;
             }
         }

@@ -1,63 +1,78 @@
 using UnityEngine;
 using DG.Tweening;
 using Swift_Blade.Pool;
+using System;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Level
 {
-    public enum ChestType //에 따라서 나올 아이템 확률 조작? (예정)
+    public enum ChestType
     {
         Bronze,
         Silver,
-        Gold
+        Gold,
     }
 
     public class Chest : MonoBehaviour, IInteractable
     {
-        private Transform playerTrm;
+        [Header("Prelace")]
+        [SerializeField] private bool prePlaced;
+        [SerializeField] private ChestType chestType;
 
-        //[SerializeField] private float shootAngle = -15f;
-        //[SerializeField] private Vector2 shootPower;
-
-        [SerializeField] private BaseOrb orb;
-        [SerializeField] private ItemTableSO itemTableSO;
+        [Header("Settings")]
+        [SerializeField] private BaseOrb orbItem;
+        [SerializeField] private BaseOrb orbWeapon;
+        [SerializeField] private BaseOrb orbSkill;
 
         [SerializeField] private PoolPrefabMonoBehaviourSO shinyParticlePrefab;
         [SerializeField] private Transform shinyParticleTrm;
 
         [SerializeField] private Transform[] visuals;
 
+        //private Transform playerTrm;
         private Transform chestLid;
-        private ChestType chestType;
         private new Rigidbody rigidbody;
 
         private bool isOpen = false;
 
-        private void Start()
+        private void Awake()
         {
             MonoGenericPool<ShinyParticle>.Initialize(shinyParticlePrefab);
             rigidbody = GetComponent<Rigidbody>();
 
-            SetRandomChestType();
+            if (prePlaced)
+            {
+                SetChest(chestType);
+            }
+            else
+            {
+                SetRandomChestType();
+            }
 
-            Vector3 lookDirection = (Camera.main.transform.forward - transform.position).normalized;
-            lookDirection.y = 0;
-
-            transform.rotation = Quaternion.LookRotation(lookDirection);
-
+            //Vector3 lookDirection = (Camera.main.transform.forward - transform.position).normalized;
+            //lookDirection.y = 0;
+            //
+            //transform.rotation = Quaternion.LookRotation(lookDirection);
         }
-
-        private void SetRandomChestType()
+        private void SetChest(ChestType chestType)
         {
-            for (int i = 0; i < visuals.Length; i++)
+            int visualsLength = visuals.Length;
+            for (int i = 0; i < visualsLength; i++)
             {
                 visuals[i].gameObject.SetActive(false);
             }
 
-            int n = Random.Range(0, 3);
-            chestType = (ChestType)n;
-            visuals[n].gameObject.SetActive(true);
-            chestLid = visuals[n].GetChild(0);
-
+            this.chestType = chestType;
+            int index = (int)chestType;
+            Transform chestTransform = visuals[index];
+            chestTransform.gameObject.SetActive(true);
+            chestLid = chestTransform.GetChild(0);
+        }
+        private void SetRandomChestType()
+        {
+            int randomIndex = Random.Range(0, visuals.Length);
+            ChestType randomChestType = (ChestType)randomIndex;
+            SetChest(randomChestType);
         }
         private void OpenChest()
         {
@@ -67,14 +82,14 @@ namespace Swift_Blade.Level
             gameObject.layer = LayerMask.NameToLayer("Default");
 
             OpenChestAnimations();
-            InstItemOrb();
-            GetRandomItem();
+            InstansiateItemOrb();
+            //GetRandomItem();
             ShinyParticle shinyParticle = MonoGenericPool<ShinyParticle>.Pop();
             shinyParticle.transform.position = shinyParticleTrm.position;
         }
         private void OpenChestAnimations()
         {
-            Vector3 openLidAngle = new Vector3(-90, transform.eulerAngles.y, transform.eulerAngles.z);
+            Vector3 openLidAngle = new Vector3(-120, transform.eulerAngles.y, transform.eulerAngles.z);
             chestLid.DORotate(openLidAngle, 0.3f)
                 .SetEase(Ease.OutQuad);
 
@@ -83,48 +98,46 @@ namespace Swift_Blade.Level
                 .SetDelay(0.3f);
             rigidbody.DORotate(rigidbody.rotation.eulerAngles + new Vector3(5, 0, 0), 0.1f);
         }
-
-        private void InstItemOrb()
+        private void InstansiateItemOrb()
         {
             Vector3 spawnPos = transform.localPosition + new Vector3(0, 0.7f, 0);
-            BaseOrb orbInstance = Instantiate(orb, spawnPos, Quaternion.identity);
-            orbInstance.SetColor((ColorType)Random.Range(0, 3));
-            
+            BaseOrb orbTarget = GetOrb(chestType);
+            Instantiate(orbTarget, spawnPos, Quaternion.identity);
+            //orbInstance.SetRandom();// (ColorType)Random.Range(0, 3));
+
             //orbInstance.transform.DOMoveY(transform.position.y + 3f, 0.4f)
             //    .SetEase(Ease.InBack)
             //    .SetLink(orbInstance.gameObject, LinkBehaviour.KillOnDestroy);
-
         }
-        private ItemDataSO GetRandomItem()
+        private BaseOrb GetOrb(ChestType chestType)
         {
-            int itemCount = itemTableSO.itemTable.Count;
-            int randomIndex = Random.Range(0, itemCount);
-
-            return itemTableSO.itemTable[randomIndex].itemData;
-
-            //InventoryManager.Instance.AddItemToEmptySlot(item.itemData);
-            //인벤토리SO에 add엠티
+            BaseOrb result = chestType switch
+            {
+                ChestType.Bronze => orbItem,
+                ChestType.Silver => orbSkill,
+                ChestType.Gold => orbWeapon,
+                _ => throw new ArgumentOutOfRangeException($"{chestType} is not available")
+            };
+            return result;
         }
-
-        public void Interact()
+        void IInteractable.Interact()
         {
-            //Debug.Log("열려라참깨");
             OpenChest();
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Player"))
-            {
-                playerTrm = other.transform;
-            }
-        }
-        private void OnTriggerExit(Collider other)
-        {
-            if (playerTrm != null && other.CompareTag("Player"))
-            {
-                playerTrm = null;
-            }
-        }
+        //private void OnTriggerEnter(Collider other)
+        //{
+        //    if (other.CompareTag("Player"))
+        //    {
+        //        playerTrm = other.transform;
+        //    }
+        //}
+        //private void OnTriggerExit(Collider other)
+        //{
+        //    if (playerTrm != null && other.CompareTag("Player"))
+        //    {
+        //        playerTrm = null;
+        //    }
+        //}
     }
 }

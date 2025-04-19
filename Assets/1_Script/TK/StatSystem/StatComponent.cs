@@ -33,15 +33,6 @@ namespace Swift_Blade
 
                 return;
             }
-            
-            //StatSO[] tempStatSo = new StatSO[_statDatas.Length];
-
-            //for (int i = 0; i < _statDatas.Length; i++)
-            //{
-            //    tempStatSo[i] = _statDatas[i];
-            //}
-
-            //_stats = tempStatSo;
         }
 
         public StatSO GetStat(StatSO stat)
