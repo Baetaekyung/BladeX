@@ -52,6 +52,9 @@ namespace Swift_Blade
         {
             OpenCloseInventory();
             PopDownInput();
+
+            if (Input.GetKeyDown(KeyCode.P))
+                PopUp(PopupType.Status);
         }
         
         private void PopDownInput()
