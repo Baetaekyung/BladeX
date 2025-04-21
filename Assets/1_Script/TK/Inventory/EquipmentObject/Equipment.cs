@@ -8,14 +8,18 @@ namespace Swift_Blade
         [SerializeField]
         protected EquipmentData   equipData;
         protected PlayerStatCompo _playerStat;
+        protected PlayerVisualController _playerVisualController;
+        //플레이어외형을결정하는오브젝트
         
         public virtual void OnEquipment()
         {
             HandleStatAdder();
+            OnEquipParts();
         }
         
         public virtual void OffEquipment()
         {
+            OffEquipParts();
             HandleStatRemover();
         }
         
@@ -73,6 +77,17 @@ namespace Swift_Blade
             }
 
             _playerStat.DecreaseColorValue(equipData.colorType, equipData.colorAdder);
+        }
+
+        private void OnEquipParts()
+        {
+            _playerVisualController = Player.Instance?.GetEntityComponent<PlayerVisualController>();
+            _playerVisualController.OnParts(equipData.partsName);
+        }
+        private void OffEquipParts()
+        {
+            _playerVisualController = Player.Instance?.GetEntityComponent<PlayerVisualController>();
+            _playerVisualController.OffParts(equipData.partsName);
         }
     }
 }

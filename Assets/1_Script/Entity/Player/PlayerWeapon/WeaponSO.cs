@@ -46,19 +46,25 @@ namespace Swift_Blade
                                 
         private void OnValidate()
         {
-            ColorType banType = ~(ColorType.RED | ColorType.BLUE | ColorType.GREEN);
+            //ColorType banType = ~(ColorType.RED | ColorType.BLUE | ColorType.GREEN);
 
-            if ((ColorType & banType) != 0)
+            //if ((ColorType & banType) != 0)
+            //{
+            //    Debug.LogError($"{nameof(ColorType)} contains banned type");
+            //    Debug.Log(ColorType);
+            //    ColorType = ColorType.RED;
+            //}
+            ////can't detect yellow because enum is not a flag
+            //else if (ColorType == ColorType.YELLOW)
+            //{
+            //    Debug.LogError("yellow yellow");
+            //    ColorType = ColorType.RED;
+            //}
+            bool containsBannedColor = ColorType.ContainsNonRGBColor();
+            if (containsBannedColor)
             {
                 Debug.LogError($"{nameof(ColorType)} contains banned type");
-                Debug.Log(ColorType);
-                ColorType = ColorType.RED;
-            }
-            //can't detect yellow because enum is not a flag
-            else if (ColorType == ColorType.YELLOW)
-            {
-                Debug.LogError("yellow yellow");
-                ColorType = ColorType.RED;
+                ColorType = ColorType.RED;//def
             }
 
             int enumLength = Enum.GetValues(typeof(EAudioType)).Length;

@@ -19,6 +19,8 @@ namespace Swift_Blade
     {
         public SerializableDictionary<StatType, float> statModifier = new();
 
+        [SerializeField] public string partsName;
+
         [HideInInspector]
         public string itemSerialCode; //스텟에 더할때 구별해주는 번호
         public Sprite equipmentIcon;
@@ -31,6 +33,10 @@ namespace Swift_Blade
         {
             if (String.IsNullOrEmpty(itemSerialCode))
                 itemSerialCode = Guid.NewGuid().ToString();
+
+            string dataName = name.ToString();
+            dataName = dataName.Substring(2, dataName.Length - 8);
+            partsName = dataName;
         }
     }
 }
