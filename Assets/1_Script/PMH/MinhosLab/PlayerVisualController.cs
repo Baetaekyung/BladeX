@@ -13,11 +13,6 @@ namespace Swift_Blade
 
         public void OnParts(string partsName)
         {
-            foreach(GameObject part in equipVisuals.Values)
-            {
-                part.SetActive(false);
-            }
-
             if(equipVisuals.TryGetValue(partsName, out var equipVisual))
             {
                 equipVisual.SetActive(true);
