@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -25,6 +26,11 @@ namespace Swift_Blade
     public class ItemTableSO : ScriptableObject
     {
         public List<ItemGoods> itemTable = new List<ItemGoods>();
+        public List<ItemDataSO> ToItemDataSOList()
+        {
+            List<ItemDataSO> result = new List<ItemDataSO>(itemTable.Select(goods => goods.itemData));
+            return result;
+        }
 
         public ItemTableSO GetClonedItemTable()
         {
