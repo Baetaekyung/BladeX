@@ -187,8 +187,6 @@ namespace Swift_Blade.Level
         [SerializeField] private Door.Door bossDoor;
         [SerializeField] private Door.Door restDoor;
         
-        [Header("Chest")]
-        [SerializeField] private Chest chest;
         
         private int currentNodeIndex = 0;
 
@@ -264,9 +262,6 @@ namespace Swift_Blade.Level
             return nodeDictionary[nodeType];
         }
         
-        public Chest GetChest()
-        {
-            return chest;
-        }
+       
     }
 }

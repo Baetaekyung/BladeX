@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
+using UnityEngine;
 using System.Text;
 using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace Swift_Blade
 {
@@ -19,13 +16,13 @@ namespace Swift_Blade
         {
             _sb.Clear();
 
-            _sb.Append(colorType.ToString()).
-                Append(": ").
-                Append(colorValue.ToString()).
-                Append("\t").Append("\t").Append("\t").
-                Append("강화 성공 확률: ").
-                Append(upgradePercent);
-
+            _sb.//Append(colorType.ToString()).
+                Append("  ").
+                Append(upgradePercent).
+                Append("%").
+                Append("\n").Append("\n").
+                Append(colorValue.ToString());
+                
             colorInfoText.text = _sb.ToString();
         }
     }
