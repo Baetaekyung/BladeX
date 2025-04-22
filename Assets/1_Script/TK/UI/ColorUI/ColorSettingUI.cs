@@ -17,12 +17,12 @@ namespace Swift_Blade
             _sb.Clear();
 
             _sb.//Append(colorType.ToString()).
-                Append("  ").
+                Append("+").
+                Append(colorValue.ToString()).
+                Append("\n").Append("\n").Append("\n").
                 Append(upgradePercent).
-                Append("%").
-                Append("\n").Append("\n").
-                Append(colorValue.ToString());
-                
+                Append("%");
+            
             colorInfoText.text = _sb.ToString();
         }
     }
