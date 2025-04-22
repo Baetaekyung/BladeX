@@ -34,16 +34,17 @@ namespace Swift_Blade.Level.Door
             {
                 SetScene(nodeList.GetNodeName(NodeType.Exp));
             }
-            else
-            {
-                Vector3 direction = Camera.main.transform.position - door.position;
-                direction.y = 0; 
-                door.rotation = Quaternion.LookRotation(direction);
-            }
-
-           
+                       
             //DOVirtual.DelayedCall(delay, (UpDoor()));
         }
+
+        private void Rotate()
+        {
+            Vector3 direction = Camera.main.transform.position - door.position;
+            direction.y = 0; 
+            door.rotation = Quaternion.LookRotation(-direction);
+        }
+               
         /*private void OnEnable()
         {
             cinemachineCamera.Priority = 1;
@@ -71,11 +72,19 @@ namespace Swift_Blade.Level.Door
             yield return new WaitUntil(() => isFinished);
         }*/
         
+        public void SetScene(string _sceneName)
+        {
+            sceneName = _sceneName;
+        }
+        
+                
         public void UpDoor()
         {
             bool isFinished = false;
+            
             Sequence sequence = DOTween.Sequence();
             sequence.AppendInterval(enterDelay);
+            sequence.AppendCallback(Rotate);
             sequence.Append(door.DOMoveY(transform.position.y + 0.25f, enterDuration));
             sequence.OnComplete(() => isFinished = true);
 
@@ -89,10 +98,7 @@ namespace Swift_Blade.Level.Door
             sceneManager.LoadScene(sceneName);
         }
 
-        public void SetScene(string _sceneName)
-        {
-            sceneName = _sceneName;
-        }
+       
         
     }
 }
