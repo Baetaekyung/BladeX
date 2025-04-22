@@ -7,7 +7,10 @@ namespace Swift_Blade
     public class ColorSettingUI : MonoBehaviour
     {
         [Space(10)]
-        [SerializeField] private TextMeshProUGUI colorInfoText;
+        [SerializeField] private TextMeshProUGUI upgradeCountText;
+        [SerializeField] private TextMeshProUGUI upgradePercentText;
+        
+        
         [SerializeField] private ColorType       colorType;
 
         private readonly StringBuilder _sb = new();
@@ -15,15 +18,15 @@ namespace Swift_Blade
         public void SetStatInfoUI(int colorValue, int upgradePercent)
         {
             _sb.Clear();
-
-            _sb.//Append(colorType.ToString()).
-                Append("+").
-                Append(colorValue.ToString()).
-                Append("\n").Append("\n").Append("\n").
-                Append(upgradePercent).
-                Append("%");
+            _sb.Append("+").Append(colorValue.ToString());
+            upgradeCountText.text = _sb.ToString();
             
-            colorInfoText.text = _sb.ToString();
+            _sb.Clear();
+            _sb.Append(upgradePercent.ToString());
+            _sb.Append("%");
+            
+            upgradePercentText.SetText(_sb);
+            
         }
     }
 }
