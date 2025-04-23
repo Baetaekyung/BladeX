@@ -4,8 +4,8 @@ namespace Swift_Blade.Combat.Caster
 {
     public class BaseEnemyKnockbackCaster : BaseEnemyCaster
     {
-        [SerializeField] private float _knockbackPower = 2f;
-        
+        [SerializeField] private float _knockbackPower = 3200f;
+
         public override bool Cast()
         {
             if (IsNotObstacleLine() == false)
@@ -26,7 +26,7 @@ namespace Swift_Blade.Combat.Caster
             
             if (isHit && hit.collider.TryGetComponent(out IHealth health))
             {
-                Vector3 knockbackDirection = hit.transform.position - startPos;
+                Vector3 knockbackDirection = hit.transform.position - transform.position;
                 knockbackDirection.y = 0f;
                 knockbackDirection.Normalize();
 
