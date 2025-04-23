@@ -1,5 +1,7 @@
 using Swift_Blade.Audio;
+using Swift_Blade.Pool;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Swift_Blade.FSM.States
@@ -118,20 +120,40 @@ namespace Swift_Blade.FSM.States
         //protected sealed override void OnMovementSetTrigger(Vector3 value) => playerMovement.SetAdditionalVelocity(value);
         protected sealed override void OnAttackTrigger(EAttackType eAttackType)
         {
-            if (eAttackType == EAttackType.Normal)
+            IReadOnlyDictionary<EAttackType, PoolPrefabGameObjectSO> particleDictionary = PlayerWeaponManager.CurrentWeapon.GetParticleDictionary;
+            WeaponSO currentWeapon = PlayerWeaponManager.CurrentWeapon;
+
+            bool isStun;
+            float damage;
+
+            switch (eAttackType)
             {
-                player.GetPlayerDamageCaster.Cast(PlayerWeaponManager.CurrentWeapon.AdditionalNormalDamage, 0, false);
-                //player.GetPlayerDamageCaster.Cast();
+                case EAttackType.Normal:
+                    damage = currentWeapon.AdditionalNormalDamage;
+                    isStun = false;
+                    break;
+                case EAttackType.Heavy:
+                    damage = currentWeapon.AdditionalHeavyDamage;
+                    isStun = true;
+                    break;
+                case EAttackType.RollAttack:
+                    damage = currentWeapon.RollAttackDamage;
+                    isStun = false;
+                    break;  
+                default:
+                    throw new ArgumentOutOfRangeException($"{eAttackType}");
             }
-            if (eAttackType == EAttackType.Heavy)
+
+             if(particleDictionary.TryGetValue(eAttackType, out PoolPrefabGameObjectSO value))
             {
-                player.GetPlayerDamageCaster.Cast(PlayerWeaponManager.CurrentWeapon.AdditionalHeavyDamage, 0, true);
-                //player.GetEntityComponent<PlayerStatCompo>().GetStyleMeter.SuccessHit();
+                GameObject particleGameObject = GameObjectPoolManager.Pop(value);
+                Transform playerVisualTransform = player.GetPlayerTransform;
+                Vector3 particleResultPosition = playerVisualTransform.position + playerVisualTransform.forward * 1.5f;
+                Debug.DrawRay(particleResultPosition, Vector3.up, Color.magenta, 3);
+                particleGameObject.transform.position = particleResultPosition;
             }
-            if (eAttackType == EAttackType.RollAttack)
-            {
-                player.GetPlayerDamageCaster.Cast(PlayerWeaponManager.CurrentWeapon.RollAttackDamage, 0, false);
-            }
+
+            player.GetPlayerDamageCaster.Cast(damage, 0, isStun);
         }
     }
 }
