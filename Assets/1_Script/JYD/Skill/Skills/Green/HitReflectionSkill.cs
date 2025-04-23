@@ -13,6 +13,8 @@ namespace Swift_Blade.Skill
         [SerializeField] private float knockbackForce;
         [SerializeField] private LayerMask whatIsTarget;
         private float skillRadius = 10;
+                
+        
         public override void Initialize()
         {
             MonoGenericPool<ShockWaveParticle>.Initialize(skillParticle);
@@ -47,7 +49,7 @@ namespace Swift_Blade.Skill
                 {
                     ActionData actionData = new ActionData
                     {
-                        damageAmount = 1,
+                        damageAmount = 8,
                         knockbackForce = knockbackForce,
                         knockbackDirection = (closeTarget.position - player.GetPlayerTransform.position).normalized,
                         stun = true

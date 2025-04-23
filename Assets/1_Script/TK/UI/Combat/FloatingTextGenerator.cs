@@ -1,8 +1,6 @@
-using DG.Tweening;
-using Swift_Blade.Pool;
 using UnityEngine;
 
-namespace Swift_Blade
+namespace Swift_Blade.Pool
 {
     public class FloatingTextGenerator : MonoSingleton<FloatingTextGenerator>
     {
@@ -10,6 +8,12 @@ namespace Swift_Blade
 
         private bool _isInitialized = false;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            MonoGenericPool<FloatingText>.Initialize(floatingTextPoolSO);
+        }
+        
         public void GenerateText(string message, Vector3 position, Color color)
         {
             FloatingText text = GenerateText(position);

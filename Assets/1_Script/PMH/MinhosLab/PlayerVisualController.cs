@@ -4,7 +4,9 @@ namespace Swift_Blade
 {
     public class PlayerVisualController : MonoBehaviour, IEntityComponent
     {
-        [SerializeField] private SerializableDictionary<string, GameObject> equipVisuals;
+        [SerializeField] private EquipmentListSO equipListSO;
+
+        [SerializeField] private Transform HelmetVisual, BodiesVisual;
 
         public void EntityComponentAwake(Entity entity)
         {
@@ -13,22 +15,63 @@ namespace Swift_Blade
 
         public void OnParts(string partsName)
         {
-            foreach(GameObject part in equipVisuals.Values)
+            if(equipListSO.equipmentName.TryGetValue(partsName, out var equipmentType))
             {
-                part.SetActive(false);
-            }
-
-            if(equipVisuals.TryGetValue(partsName, out var equipVisual))
-            {
-                equipVisual.SetActive(true);
+                if(equipmentType == EquipmentType.Heads)
+                {
+                    foreach (Transform t in HelmetVisual.transform)
+                    {
+                        Debug.Log(t.name);
+                        if (t.name == partsName)
+                        {
+                            Debug.Log("찾았다장비");
+                            t.gameObject.SetActive(true);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Transform t in BodiesVisual.transform)
+                    {
+                        Debug.Log(t.name);
+                        if (t.name == partsName)
+                        {
+                            Debug.Log("찾았다장비");
+                            t.gameObject.SetActive(true);
+                        }
+                    }
+                }
             }
         }
 
         public void OffParts(string partsName)
         {
-            if (equipVisuals.TryGetValue(partsName, out var equipVisual))
+            if (equipListSO.equipmentName.TryGetValue(partsName, out var equipmentType))
             {
-                equipVisual.SetActive(false);
+                if (equipmentType == EquipmentType.Heads)
+                {
+                    foreach (Transform t in HelmetVisual.transform)
+                    {
+                        Debug.Log(t.name);
+                        if (t.name == partsName)
+                        {
+                            Debug.Log("찾았다장비");
+                            t.gameObject.SetActive(false);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Transform t in BodiesVisual.transform)
+                    {
+                        Debug.Log(t.name);
+                        if (t.name == partsName)
+                        {
+                            Debug.Log("찾았다장비");
+                            t.gameObject.SetActive(false);
+                        }
+                    }
+                }
             }
         }
     }
