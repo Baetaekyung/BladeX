@@ -42,8 +42,7 @@ namespace Swift_Blade.Enemy.Boss
         }
 
         private void ResetLocalPositionAndRotation() {
-            transform.localPosition = Vector3.zero;
-            transform.localRotation = Quaternion.identity;
+            transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
         }
 
         private void CastFlameshrower(int index) => _flameshrowerCasters[index].Cast();
