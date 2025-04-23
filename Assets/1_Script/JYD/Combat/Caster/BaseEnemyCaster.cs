@@ -49,7 +49,7 @@ namespace Swift_Blade.Combat.Caster
             return isHit;
         }
 
-        private void TryParry(RaycastHit hit, PlayerParryController parryController, IHealth health, ActionData actionData)
+        protected virtual void TryParry(RaycastHit hit, PlayerParryController parryController, IHealth health, ActionData actionData)
         {
             bool isLookingAtAttacker = IsFacingEachOther(hit.transform.GetComponentInParent<Player>().GetPlayerTransform , transform);
             bool canInterval = Time.time > lastParryTime + parryInterval;
