@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Skill
 {
-    public abstract class SkillData : ScriptableObject
+    public abstract class SkillData : ScriptableObject, IPlayerEquipable
     {
         public string skillName;
         public Sprite skillIcon;
@@ -12,6 +12,11 @@ namespace Swift_Blade.Skill
         public SkillType skillType;
         public StatType statType;
         public ColorType colorType;
+        ColorType IPlayerEquipable.GetColor => colorType;
+        Sprite IPlayerEquipable.GetSprite => skillIcon;
+        string IPlayerEquipable.DisplayName => skillName;
+
+
         [Tooltip("색깔 스탯의 영향을 얼마나 받을지")] public float colorRatio;
         [Tooltip("성공 확률")][Range(1,100)] public int random;
                 
@@ -37,6 +42,6 @@ namespace Swift_Blade.Skill
         {
             return Random.Range(0, 100) <= random;
         }
-        
+
     }
 }

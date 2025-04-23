@@ -15,11 +15,12 @@ namespace Swift_Blade
     }
     
     [CreateAssetMenu(fileName = "EquipmentData", menuName = "SO/Equipment/EquipmentData")]
-    public class EquipmentData : ScriptableObject
+    public class EquipmentData : ScriptableObject, IPlayerEquipable
     {
         public SerializableDictionary<StatType, float> statModifier = new();
 
         [SerializeField] public string partsName;
+        [SerializeField] private string displayName;
 
         [HideInInspector]
         public string itemSerialCode; //스텟에 더할때 구별해주는 번호
@@ -28,6 +29,11 @@ namespace Swift_Blade
         public EquipmentSlotType slotType;
         public ColorType         colorType;
         public int               colorAdder;
+
+        ColorType IPlayerEquipable.GetColor => colorType;
+        Sprite IPlayerEquipable.GetSprite => equipmentIcon;
+        string IPlayerEquipable.DisplayName => displayName;
+
 
         private void OnValidate()
         {
@@ -38,5 +44,6 @@ namespace Swift_Blade
             dataName = dataName.Substring(2, dataName.Length - 8);
             partsName = dataName;
         }
+
     }
 }

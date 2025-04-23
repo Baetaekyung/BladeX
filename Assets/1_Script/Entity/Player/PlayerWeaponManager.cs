@@ -65,14 +65,13 @@ namespace Swift_Blade
         {
             playerAnimator = entity.GetEntityComponent<PlayerAnimator>();
             playerDamageCaster = entity.GetEntityComponent<PlayerDamageCaster>();
+            
             SetWeapon(CurrentWeapon != null ? CurrentWeapon : defaultWeapon);
         }
-        private void Update()
+        public void SetDefaultWeapon()
         {
-            if (Input.GetKeyDown(KeyCode.F3))
-            {
-                SetWeapon(defaultWeapon);
-            }
+            //SetWeapon(defaultWeapon);
+            CurrentWeapon = defaultWeapon;
         }
         public void SetWeapon(WeaponSO weapon)
         {
