@@ -55,7 +55,7 @@ namespace Swift_Blade.Combat.Health
         public void EntityComponentStart(Entity entity)
         {
             statCompo = _player.GetEntityComponent<PlayerStatCompo>();
-            rigidbody = _player.GetComponent<Rigidbody>();
+            rigidbody = _player.GetComponentInChildren<Rigidbody>();
             
             healthStat = statCompo.GetStat(StatType.HEALTH);
             maxHealth = healthStat.Value;
