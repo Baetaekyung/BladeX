@@ -8,10 +8,12 @@ public enum SkillType
 {
     Attack,
     Rolling,
-    Special,//c key
+    Parry,
     Hit,
     Dead,
-    Active
+    Shield,
+    SpeedUp,
+    None
 }
 namespace Swift_Blade.Skill
 {
@@ -41,8 +43,10 @@ namespace Swift_Blade.Skill
                 {
                     { SkillType.Attack, OnAttackEventSkill },
                     { SkillType.Rolling, OnRollingEventSkill },
-                    { SkillType.Special, OnSpecialEventSkill },
+                    { SkillType.Parry, OnSpecialEventSkill },
                     { SkillType.Hit, OnHitEventSkill },
+                    { SkillType.Shield, OnHitEventSkill },
+                    { SkillType.SpeedUp, OnHitEventSkill },
                     { SkillType.Dead, OnDeadEventSkill }
                 };
 
@@ -86,18 +90,19 @@ namespace Swift_Blade.Skill
         {
             _player = entity as Player;
         }
-
+        
         public void EntityComponentStart(Entity entity)
         {
             SkillManager.Instance.LoadSkillData();
-
+            
             InitializeSkill();
         }
-
+        
         private void InitializeSkill()
         {
             foreach (var skill in currentSkillList)
             {
+                skill.SetPlayerStatCompo(_player.GetPlayerStat);
                 skill.Initialize();
             }
         }
@@ -108,14 +113,15 @@ namespace Swift_Blade.Skill
 
             if (currentSkillList.Contains(skillData))
                 return;
-
+            
             if (skillEvents.ContainsKey(skillData.skillType))
             {
                 skillEvents[skillData.skillType] += skillData.UseSkill;
                 currentSkillList.Add(skillData);
                 ++slotCount;
-
+                
                 skillData.Initialize();
+                skillData.SetPlayerStatCompo(_player.GetPlayerStat);
             }
         }
 

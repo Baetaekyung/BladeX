@@ -25,9 +25,9 @@ namespace Swift_Blade.Combat
         public void EntityComponentStart(Entity entity)
         {
             playerStatCompo = player.GetEntityComponent<PlayerStatCompo>();
-            ParryEvents.AddListener(() => player.GetSkillController.UseSkill(SkillType.Special));
+            ParryEvents.AddListener(() => player.GetSkillController.UseSkill(SkillType.Parry));
         }
-
+        
         private void OnDestroy()
         {
             ParryEvents.RemoveAllListeners();
