@@ -1,8 +1,5 @@
-using System;
 using DG.Tweening;
 using Swift_Blade.UI;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace Swift_Blade
 {
@@ -10,25 +7,18 @@ namespace Swift_Blade
     {
         public override void Popup()
         {
-            cG.alpha = 1f;
-
-            if(cG != null)
-            {
-                cG.transform.DOScaleX(1, fadeTime)
-                    .SetEase(Ease.OutCirc)
-                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
-            }
+            cG.DOFade(1, fadeTime)
+                .SetEase(Ease.OutCirc)
+                .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
 
             _raycaster.enabled = true;
         }
 
         public override void PopDown()
         {
-            if(cG != null)
-            {
-                cG.transform.DOScaleX(0, fadeTime).SetEase(Ease.OutCirc)
-                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
-            }
+            cG.DOFade(0, fadeTime).SetEase(Ease.InCirc)
+                .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+
             _raycaster.enabled = false;
         }
 

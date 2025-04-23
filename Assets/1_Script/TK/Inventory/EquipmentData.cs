@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -13,13 +14,40 @@ namespace Swift_Blade
         RING,
         SHOES
     }
+
+    public enum EquipmentTag
+    {
+        NONE = 0,
+        BARBARIAN,
+        KNIGHT,
+        ROGUE,
+        DEMON,
+        DRAGON,
+        MUTANT,
+        HOLY,
+        UNHOLY,
+        ALL = 99
+    }
+
+    public enum EquipmentRarity
+    {
+        NONE = 0,
+        COMMON,
+        RARE,
+        UNIQUE,
+        EPIC,
+        END = 99
+    }
     
     [CreateAssetMenu(fileName = "EquipmentData", menuName = "SO/Equipment/EquipmentData")]
     public class EquipmentData : ScriptableObject
     {
         public SerializableDictionary<StatType, float> statModifier = new();
 
-        [SerializeField] public string partsName;
+        public List<EquipmentTag> tags;
+        public EquipmentRarity    rarity;
+
+        public string partsName;
 
         [HideInInspector]
         public string itemSerialCode; //스텟에 더할때 구별해주는 번호

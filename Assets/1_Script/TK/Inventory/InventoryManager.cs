@@ -233,7 +233,12 @@ namespace Swift_Blade
         //아이템을 클릭했을 때 커서에 표시되는 UI
         public void UpdateItemInformationUI(ItemDataSO itemData)
         {
-            SetInfoUI(itemData);
+            SetEquipmentInfoUI(itemData);
+        }
+
+        public void UpdateItemInformationUI(WeaponSO weapon)
+        {
+            SetWeaponInfoUI(weapon);
         }
 
         public void ChangeToInventory()
@@ -252,13 +257,20 @@ namespace Swift_Blade
             titleText.text = "스킬 슬롯";
         }
 
-        private void SetInfoUI(ItemDataSO itemData)
+        private void SetEquipmentInfoUI(ItemDataSO itemData)
         {
             itemIcon.sprite      = itemData ? itemData.itemImage : null;
             itemIcon.color       = itemData ? Color.white : Color.clear;
-            itemName.text        = itemData ? itemData.itemName : String.Empty;
-            itemDescription.text = itemData ? itemData.description : String.Empty;
-            itemTypeInfo.text    = itemData ? itemData.itemType.ToString() : String.Empty;
+            itemName.text        = itemData ? itemData.itemName : string.Empty;
+            itemDescription.text = itemData ? itemData.description : string.Empty;
+            itemTypeInfo.text    = itemData ? itemData.itemType.ToString() : string.Empty;
+        }
+
+        private void SetWeaponInfoUI(WeaponSO weapon)
+        {
+            itemIcon.color    = weapon ? Color.white : Color.clear;
+            itemName.text     = weapon ? weapon.name : string.Empty;
+            itemTypeInfo.text = weapon ? "무기" : string.Empty;
         }
 
         public void AddItemToMatchSlot(ItemDataSO newItem)
@@ -322,7 +334,7 @@ namespace Swift_Blade
             ItemDataSO tempItemData = matchSlot.GetSlotItemData();
             
             var baseEquip = tempItemData.itemObject as Equipment;
-            baseEquip?.OffEquipment();
+            baseEquip.OffEquipment();
             
             EquipmentDatas.Remove(tempItemData);
             Inventory.currentEquipment.Remove(tempItemData.equipmentData);
@@ -366,6 +378,16 @@ namespace Swift_Blade
                 return count;
 
             return -1;
+        }
+
+        public void SetWeaponData(WeaponSO weapon)
+        {
+            EquipmentSlot weaponSlot = 
+                equipSlots.FirstOrDefault(slot => slot.GetSlotType == EquipmentSlotType.WEAPON);
+
+            Debug.Assert(weaponSlot != null, "Weapon slot is missing");
+
+            weaponSlot.SetWeaponData(weapon);
         }
     }
 }
