@@ -80,14 +80,15 @@ namespace Swift_Blade.Level.Door
                 
         public void UpDoor()
         {
-            bool isFinished = false;
-            
             Sequence sequence = DOTween.Sequence();
             sequence.AppendInterval(enterDelay);
             sequence.AppendCallback(Rotate);
             sequence.Append(door.DOMoveY(transform.position.y + 0.25f, enterDuration));
-            sequence.OnComplete(() => isFinished = true);
-
+            sequence.OnComplete(() =>
+            {
+                var isFinished = true;
+            });
+            
             DustUpParticle dustParticle = MonoGenericPool<DustUpParticle>.Pop();
             dustParticle.transform.position = transform.position;
         }

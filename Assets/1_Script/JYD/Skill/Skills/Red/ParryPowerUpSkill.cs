@@ -7,7 +7,7 @@ namespace Swift_Blade.Skill
     [CreateAssetMenu(fileName = "ParryPowerUpSkill", menuName = "SO/Skill/Red/ParryPowerUp")]
     public class ParryPowerUpSkill : SkillData
     {
-        [Range(0.1f,5f)]  [SerializeField] private float attackIncreaseAmount;
+        [Range(0.1f,10f)]  [SerializeField] private float attackIncreaseAmount;
         [Range(0.1f,10f)] [SerializeField] private float increaseTime;
         private float increaseTimer;
         private bool canUseSkill = true;
@@ -32,7 +32,7 @@ namespace Swift_Blade.Skill
                 if (isSkillUp == false)
                 {
                     isSkillUp = true;
-                    player.GetPlayerStat.AddModifier(statType , skillName , attackIncreaseAmount);
+                    player.GetPlayerStat.AddModifier(statType , skillName , attackIncreaseAmount * GetColorRatio());
                 }
                 
                 increaseTimer += Time.deltaTime;
