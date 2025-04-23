@@ -10,6 +10,13 @@ public struct VignetteInfo
     public Color color;
     public float intensity;
     public float smoothness;
+
+    public VignetteInfo(Color color, float intensity, float smoothness)
+    {
+        this.color = color;
+        this.intensity = intensity;
+        this.smoothness = smoothness;
+    }
 }
 
 namespace Swift_Blade.Combat.Feedback
@@ -33,14 +40,21 @@ namespace Swift_Blade.Combat.Feedback
                 Debug.LogError("Blood Screen Feedback Profile is null");
             
             profile.TryGet(out vignette);
-            ApplyVignetteInfo(origin);
+            ApplyVignetteInfo(ref origin , new VignetteInfo(vignette.color.value , vignette.intensity.value , vignette.smoothness.value));
         }
         
-        private void ApplyVignetteInfo(VignetteInfo info)
+        private void ApplyVignetteInfo(ref VignetteInfo info1,VignetteInfo info2)
         {
-            vignette.color.value = info.color;
-            vignette.intensity.value = info.intensity;
-            vignette.smoothness.value = info.smoothness;
+            info1.color = info2.color;
+            info1.intensity = info2.intensity;
+            info1.smoothness = info2.smoothness;
+        }
+        
+        private void ApplyVignetteInfo(Vignette info1,VignetteInfo info2)
+        {
+            info1.color.value = info2.color;
+            info1.intensity.value = info2.intensity;
+            info1.smoothness.value = info2.smoothness;
         }
 
         [ContextMenu("Test")]
@@ -98,7 +112,7 @@ namespace Swift_Blade.Combat.Feedback
 
         public override void ResetFeedback()
         {
-            ApplyVignetteInfo(origin);
+            ApplyVignetteInfo(vignette,origin);
         }
     }
 }

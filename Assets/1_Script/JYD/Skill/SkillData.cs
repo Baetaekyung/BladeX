@@ -24,6 +24,9 @@ namespace Swift_Blade.Skill
         
         [Space(40)]
         public PoolPrefabMonoBehaviourSO skillParticle;
+
+        private PlayerStatCompo statCompo;
+        
         
         public virtual void Initialize(){}
         
