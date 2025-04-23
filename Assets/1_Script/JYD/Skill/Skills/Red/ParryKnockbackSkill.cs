@@ -3,15 +3,22 @@ using System.Linq;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Pool;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Swift_Blade.Skill
 {
     [CreateAssetMenu(fileName = "ParryknockbackSkill", menuName = "SO/Skill/Red/ParryKnockback")]
     public class ParryKnockbackSkill : SkillData
     {
-        [SerializeField] private float knockbackForce;
-        [SerializeField] private float knockbackRadius;
+        [SerializeField] private float defualtKnockbackForce;
+        [SerializeField] private float defaultKnockbackRadius;
+        
+        [SerializeField] private float maxKnockbackForce;
+        [SerializeField] private float maxKnockbackRadius;
+        
         [SerializeField] private LayerMask whatIsTarget;
+        
+        
         
         public override void Initialize()
         {
@@ -24,17 +31,19 @@ namespace Swift_Blade.Skill
             
             if (targets == null)
             {
-                targets = Physics.OverlapSphere(player.GetPlayerTransform.position , knockbackRadius ,whatIsTarget).Select(x => x.transform).ToArray();
+                targets = Physics.OverlapSphere(player.GetPlayerTransform.position , Mathf.Min(maxKnockbackRadius,defaultKnockbackRadius + GetColorRatio()) ,whatIsTarget).Select(x => x.transform).ToArray();
             }
             
             foreach (var item in targets)
             {
                 if (item.TryGetComponent(out BaseEnemyHealth health))
                 {
-                    ActionData actionData = new ActionData();
-                    actionData.knockbackForce = knockbackForce;
-                    actionData.knockbackDirection = (item.position - player.GetPlayerTransform.position).normalized;
-                    actionData.stun = true;
+                    ActionData actionData = new ActionData
+                    {
+                        knockbackForce = Mathf.Min(maxKnockbackForce, defualtKnockbackForce * GetColorRatio()),
+                        knockbackDirection = (item.position - player.GetPlayerTransform.position).normalized,
+                        stun = true
+                    };
                     
                     health.TakeDamage(actionData);
                     

@@ -34,6 +34,7 @@ namespace Swift_Blade
         /// color is limited to (red, blu, green)
         /// </summary>
         [field: SerializeField] public ColorType ColorType { get; private set; }
+        
         [SerializeField] private float specialModifier;
         [SerializeField] private float rollModifier;
 
@@ -86,6 +87,7 @@ namespace Swift_Blade
                     result = () =>
                     {
                         entity.GetStateMachine.ChangeState(PlayerStateEnum.Parry);
+                                                
                     };
                     break;
                 case ColorType.GREEN:
@@ -94,6 +96,8 @@ namespace Swift_Blade
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.HEALTH, 
                             nameof(StatType.HEALTH), 5, 3 , 
                             PlayParticle,StopParticle);
+                        
+                        entity.GetSkillController.UseSkill(SkillType.Shield);
                     };
                     break;
                 case ColorType.BLUE:
@@ -102,6 +106,8 @@ namespace Swift_Blade
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.ATTACKSPEED, 
                             nameof(StatType.ATTACKSPEED), 3, 1 , PlayParticle,StopParticle);
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.MOVESPEED, nameof(StatType.MOVESPEED), 3, 1);
+                        
+                        entity.GetSkillController.UseSkill(SkillType.SpeedUp);
                     };
                     break;
                 default:

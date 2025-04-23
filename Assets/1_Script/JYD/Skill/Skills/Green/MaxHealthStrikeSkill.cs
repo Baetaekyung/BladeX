@@ -28,7 +28,7 @@ namespace Swift_Blade
                     if (item.TryGetComponent(out BaseEnemyHealth health))
                     {
                         ActionData actionData = new ActionData();
-                        actionData.damageAmount = attackIncreaseAmount;
+                        actionData.damageAmount = attackIncreaseAmount * GetColorRatio();
                         health.TakeDamage(actionData);
                     }
                     

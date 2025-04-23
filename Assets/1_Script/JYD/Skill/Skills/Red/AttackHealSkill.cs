@@ -9,7 +9,9 @@ namespace Swift_Blade
     {
         [SerializeField] private int skillCount;
         [SerializeField] private int healAmount;
-              
+
+        private const int MAX_HEAL_AMOUNT = 2;
+        
         private int skillCounter;
         
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
@@ -17,10 +19,10 @@ namespace Swift_Blade
             ++skillCounter;
             if (skillCounter >= skillCount)
             {
-                float randomValue = UnityEngine.Random.Range(0,100);
-                if (randomValue < random)
+                if (TryUseSkill())
                 {
-                    player.GetPlayerHealth.TakeHeal(healAmount);    
+                    int healthAmount = Mathf.RoundToInt(healAmount * GetColorRatio());
+                    player.GetPlayerHealth.TakeHeal(Mathf.Min(MAX_HEAL_AMOUNT, healthAmount));
                 }
                 
                 skillCounter = 0;
