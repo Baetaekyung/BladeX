@@ -70,13 +70,25 @@ namespace Swift_Blade.Combat.Health
             
             OnHealthUpdateEvent?.Invoke(maxHealth, CurrentHealth, ShieldAmount);
         }
-        
+
+        /*private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                ActionData actionData = new ActionData();
+                actionData.knockbackDirection = -_player.GetPlayerTransform.forward;
+                actionData.knockbackForce = 3200;
+                
+                TakeDamage(actionData);
+            }
+        }
+        */
+
         public override void TakeDamage(ActionData actionData)
         {
             if (_lastDamageTime + DAMAGE_INTERVAL > Time.time || isDead || IsPlayerInvincible) return;
-
-            StartKnockback(actionData);
             
+            StartKnockback(actionData);
             
             if(ShieldAmount > 0)
             {
@@ -156,11 +168,9 @@ namespace Swift_Blade.Combat.Health
         private IEnumerator Knockback(Vector3 knockbackDirection, float knockbackForce)
         {
             isKnockback = true;
-            
-            rigidbody.freezeRotation = true;
-                
+                        
             rigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
-
+            
             yield return waitForFixedUpdate;
             
             float timeout = 0.5f; 
@@ -176,9 +186,7 @@ namespace Swift_Blade.Combat.Health
             rigidbody.angularVelocity = Vector3.zero;
             
             yield return new WaitForFixedUpdate();
-            
-            rigidbody.freezeRotation = false;
-            
+                    
             isKnockback = false;
         }
         
