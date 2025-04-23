@@ -18,7 +18,7 @@ namespace Swift_Blade.Skill
         {
             if(targets == null || !targets.Any())return;
             if(player.GetPlayerHealth.IsFullHealth == false)return;
-
+            
             int value = Mathf.RoundToInt(GetColorRatio());
             if(TryUseSkill(value) == false)return;
             
@@ -31,7 +31,7 @@ namespace Swift_Blade.Skill
                     enemyHealth.ChangeParryState();
                 }
             }
-                        
+            
         }
     }
 }
