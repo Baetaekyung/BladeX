@@ -63,7 +63,7 @@ namespace Swift_Blade
 
         [Header("Cache")]
         private readonly List<ContactPoint> contactPointList = new();
-        
+
         public float GetMaxStamina => initialRollStamina;
         public float SpeedMultiplierDefault { get; set; } = 1;
         //public float SpeedMultiplierForward { get; set; } = 1;
@@ -152,7 +152,6 @@ namespace Swift_Blade
             Vector3 forceResult = forceVetor * forceCurve.Evaluate(curveValue);
 
             Vector3 addition = AdditionalVelocity + dashResult + forceResult;
-            UI_DebugPlayer.DebugText(0, forceResult, "fR", DBG_UI_KEYS.Keys_PlayerAction);
             Vector3 result = speed * input + addition;
             result.y += yVal;
             controller.linearVelocity = result;
@@ -223,13 +222,5 @@ namespace Swift_Blade
                 if (newPointY < bottomY) lowestContactPointBottom = newContactPoint;
             }
         }
-
-        //private void OnDrawGizmos()
-        //{
-        //    Gizmos.color = Color.red;
-        //    Vector3 pointYOffset = transform.position + Vector3.up * bottomYOffset;
-        //    Gizmos.DrawLine(transform.position, pointYOffset);
-        //    Gizmos.DrawRay(pointYOffset, Vector3.right);
-        //}
     }
 }
