@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Swift_Blade.Pool;
 using UnityEngine;
 
 namespace Swift_Blade.Combat.Caster
@@ -102,7 +103,7 @@ namespace Swift_Blade.Combat.Caster
                         FloatingTextGenerator.Instance.GenerateText(Mathf
                             .RoundToInt(damageAmount).ToString(), hitPoint);
                     }
-
+                    
                     ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, stun);
 
                     OnCastDamageEvent?.Invoke(actionData);

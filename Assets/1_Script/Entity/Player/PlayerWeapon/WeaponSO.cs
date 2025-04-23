@@ -7,7 +7,7 @@ using System;
 namespace Swift_Blade
 {
     [CreateAssetMenu(fileName = "WeaponSO", menuName = "SO/Weapon/NormalSword")]
-    public class WeaponSO : ScriptableObject
+    public class WeaponSO : ScriptableObject, IPlayerEquipable
     {
         [field: Header("Damage")]
         [field: SerializeField] public float AdditionalNormalDamage { get; private set; }
@@ -29,11 +29,18 @@ namespace Swift_Blade
         [field: SerializeField] public WeaponHandler LeftWeaponHandler { get; set; }
         [field: SerializeField] public WeaponHandler RightWeaponHandler { get; set; }
         [field: SerializeField, Range(1, 3)] public float CastRange { get; private set; }
+        [SerializeField] private string weaponName;
+        [SerializeField] private Sprite weaponSprite;
 
         /// <summary>
         /// color is limited to (red, blu, green)
         /// </summary>
         [field: SerializeField] public ColorType ColorType { get; private set; }
+        ColorType IPlayerEquipable.GetColor => ColorType;
+        Sprite IPlayerEquipable.GetSprite => weaponSprite;
+        string IPlayerEquipable.DisplayName => weaponName;
+
+
         [SerializeField] private float specialModifier;
         [SerializeField] private float rollModifier;
 
@@ -118,8 +125,6 @@ namespace Swift_Blade
         {
             
         }
-        
-        
-        
+
     }
 }

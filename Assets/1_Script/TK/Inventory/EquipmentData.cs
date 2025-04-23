@@ -40,22 +40,28 @@ namespace Swift_Blade
     }
     
     [CreateAssetMenu(fileName = "EquipmentData", menuName = "SO/Equipment/EquipmentData")]
-    public class EquipmentData : ScriptableObject
+    public class EquipmentData : ScriptableObject, IPlayerEquipable
     {
         public SerializableDictionary<StatType, float> statModifier = new();
 
         public List<EquipmentTag> tags;
         public EquipmentRarity    rarity;
 
-        public string partsName;
+        [SerializeField] private string partsName;
+        [SerializeField] private string displayName;
 
         [HideInInspector]
-        public string itemSerialCode; //½ºÅÝ¿¡ ´õÇÒ¶§ ±¸º°ÇØÁÖ´Â ¹øÈ£
+        public string itemSerialCode; //ï¿½ï¿½ï¿½Ý¿ï¿½ ï¿½ï¿½ï¿½Ò¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½È£
         public Sprite equipmentIcon;
 
         public EquipmentSlotType slotType;
         public ColorType         colorType;
         public int               colorAdder;
+
+        ColorType IPlayerEquipable.GetColor => colorType;
+        Sprite IPlayerEquipable.GetSprite => equipmentIcon;
+        string IPlayerEquipable.DisplayName => displayName;
+
 
         private void OnValidate()
         {
@@ -66,5 +72,6 @@ namespace Swift_Blade
             dataName = dataName.Substring(2, dataName.Length - 8);
             partsName = dataName;
         }
+
     }
 }

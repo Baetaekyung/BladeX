@@ -41,6 +41,8 @@ namespace Swift_Blade
         private GameObject interactable;
         private Tween playerInvincibleTween;
 
+        private BaseOrb lastOrb;
+
         [Header("General")]
         [SerializeField] private Transform visualTransform;
         [SerializeField] private Transform playerTransform;
@@ -132,7 +134,6 @@ namespace Swift_Blade
         {
             base.Awake();
 
-
             if (Instance == null)
                 Instance = this;
             level.Init(SceneManagerSO);
@@ -176,6 +177,7 @@ namespace Swift_Blade
             playerHealth.OnDeadEvent.AddListener(
                 () =>
                 {
+                    GetEntityComponent<PlayerWeaponManager>().SetDefaultWeapon();
                     playerStateMachine.ChangeState(PlayerStateEnum.Dead);
                     IsPlayerDead = true;
                 });
@@ -214,11 +216,15 @@ namespace Swift_Blade
             //Debug.DrawRay(Vector3.zero + Vector3.up * 0.9f, rrr, Color.red);
             //Debug.DrawRay(Vector3.zero + Vector3.up * 1.2f, finalRr, Color.blue);
 
+            if (lastOrb != null)
+            {
+                InGameUIManager.Instance.SetInfoBoxPosition(lastOrb.transform.position);
+            }
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                IInteractable interactable = GetClosestInteractable;
-                if (interactable != null)
+                IInteractable currentInteractable = GetClosestInteractable;
+                if (currentInteractable != null)
                 {
                     //if (false && Input.GetKey(KeyCode.LeftShift))
                     //{
@@ -226,19 +232,25 @@ namespace Swift_Blade
                     //    Debug.Log("unsub");
                     //}
                     //else
+                    //{
+                    currentInteractable.Interact();
+                    //interactable.OnEndCallbackSubscribe(OnEndCallback);
+                    //playerStateMachine.ChangeState(PlayerStateEnum.Interact);
+                    //}
+                    //void OnEndCallback()
+                    //{
+                    //    interactable.OnEndCallbackUnsubscribe(OnEndCallback);
+                    //    //playerStateMachine.ChangeState(PlayerStateEnum.Move);
+                    //}
+                    if(interactable.TryGetComponent(out BaseOrb orb))
                     {
-                        interactable.Interact();
-                        //interactable.OnEndCallbackSubscribe(OnEndCallback);
-                        //playerStateMachine.ChangeState(PlayerStateEnum.Interact);
-                    }
-                    void OnEndCallback()
-                    {
-                        interactable.OnEndCallbackUnsubscribe(OnEndCallback);
-                        //playerStateMachine.ChangeState(PlayerStateEnum.Move);
+                        lastOrb = orb;
+                        InGameUIManager.Instance.SetInfoBoxAlpha(1);
+                        IPlayerEquipable equipable = orb.GetEquipable;
+                        InGameUIManager.Instance.SetInfoBox(equipable);
                     }
                 }
             }
-            Debug_Updt?.Invoke();
             if (Input.GetKeyDown(KeyCode.F1))
                 UI_DebugPlayer.Instance.ShowDebugUI = !UI_DebugPlayer.Instance.ShowDebugUI;
         }
@@ -246,12 +258,11 @@ namespace Swift_Blade
         {
             const float radius = 1.3f;
             Vector3 playerPosition = visualTransform.position;
-            Debug.DrawRay(playerPosition, Vector3.right * radius, Color.magenta);
-            Debug.DrawRay(playerPosition, Vector3.forward * radius, Color.magenta);
             int hitCount = Physics.OverlapSphereNonAlloc(playerPosition, radius, buffer_overlapSphereResult, lm_interactable);
 
             float smallestDistance = Mathf.Infinity;
-            GameObject result = null;
+            GameObject hitObject = null;
+            GameObject orbHitObject = null;
 
             for (int i = 0; i < hitCount; i++)
             {
@@ -267,13 +278,35 @@ namespace Swift_Blade
                 if (smallestDistance > sqrDistance)
                 {
                     smallestDistance = sqrDistance;
-                    result = item.gameObject;
+                    hitObject = item.gameObject;
+                    if (item.TryGetComponent(out BaseOrb orb))
+                    {
+                        orbHitObject = item.gameObject;
+                    }
                 }
             }
+            UI_DebugPlayer.DebugText(0, hitObject == null, "hitObject");
 
-            interactable = result;
+            bool isOtherOrb = orbHitObject != interactable;
 
-            if (result != null) Debug.DrawRay(result.transform.position, Vector3.up, Color.red);
+            interactable = hitObject;
+
+            if (orbHitObject != null)
+            {
+                Debug.DrawRay(orbHitObject.transform.position + Vector3.up, Vector3.up, Color.magenta, 0.1f);
+                if (isOtherOrb && orbHitObject.TryGetComponent(out BaseOrb orb))
+                {
+                    lastOrb = orb;
+                    InGameUIManager.Instance.SetInfoBoxAlpha(1);
+                    IPlayerEquipable equipable = orb.GetEquipable;
+                    InGameUIManager.Instance.SetInfoBox(equipable);
+                }
+            }
+            else
+            {
+                lastOrb = null;
+                InGameUIManager.Instance.SetInfoBoxAlpha(0);
+            }
         }
 
         public void Attack(EComboState previousState, EComboState nonImmediateState = EComboState.None)
@@ -287,6 +320,5 @@ namespace Swift_Blade
             playerAttackState.ClearComboHistory();
         }
         public PlayerStateEnum GetCurrentState() => playerStateMachine.GetState();
-
     }
 }
