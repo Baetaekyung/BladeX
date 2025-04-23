@@ -2,7 +2,7 @@ using UnityEngine.Events;
 using Swift_Blade.UI;
 using UnityEngine;
 using System;
-using UnityEngine.Serialization;
+using System.Collections;
 
 namespace Swift_Blade.Combat.Health
 {
@@ -28,6 +28,10 @@ namespace Swift_Blade.Combat.Health
 
         public float GetCurrentHealth => CurrentHealth;
 
+        private Rigidbody rigidbody;
+        private bool isKnockback;
+        private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+        
         public int ShieldAmount
         {
             get => _shieldAmount;
@@ -51,7 +55,8 @@ namespace Swift_Blade.Combat.Health
         public void EntityComponentStart(Entity entity)
         {
             statCompo = _player.GetEntityComponent<PlayerStatCompo>();
-
+            rigidbody = _player.GetComponent<Rigidbody>();
+            
             healthStat = statCompo.GetStat(StatType.HEALTH);
             maxHealth = healthStat.Value;
             
@@ -69,8 +74,10 @@ namespace Swift_Blade.Combat.Health
         public override void TakeDamage(ActionData actionData)
         {
             if (_lastDamageTime + DAMAGE_INTERVAL > Time.time || isDead || IsPlayerInvincible) return;
+
+            StartKnockback(actionData);
             
-            //repac...
+            
             if(ShieldAmount > 0)
             {
                 int tempHealth = ShieldAmount - Mathf.RoundToInt(actionData.damageAmount);
@@ -136,5 +143,45 @@ namespace Swift_Blade.Combat.Health
         }
 
         public bool IsFullHealth => Mathf.Approximately(CurrentHealth , healthStat.Value);
+
+        #region KnockBack
+        private void StartKnockback(ActionData actionData)
+        {
+            if(actionData.knockbackDirection == default || actionData.knockbackForce == 0 || isKnockback)return;
+            
+            StartCoroutine(
+                Knockback(actionData.knockbackDirection , actionData.knockbackForce));
+        }
+        
+        private IEnumerator Knockback(Vector3 knockbackDirection, float knockbackForce)
+        {
+            isKnockback = true;
+            
+            rigidbody.freezeRotation = true;
+                
+            rigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+
+            yield return waitForFixedUpdate;
+            
+            float timeout = 0.5f; 
+            float timer = 0f;
+            
+            while (rigidbody.linearVelocity.sqrMagnitude > 0.01f && timer < timeout) 
+            {
+                timer += Time.deltaTime;
+                yield return null;
+            }
+            
+            rigidbody.linearVelocity = Vector3.zero;
+            rigidbody.angularVelocity = Vector3.zero;
+            
+            yield return new WaitForFixedUpdate();
+            
+            rigidbody.freezeRotation = false;
+            
+            isKnockback = false;
+        }
+        
+        #endregion
     }
 }

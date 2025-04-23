@@ -24,6 +24,8 @@ namespace Swift_Blade.Combat.Health
         [Header("Knockback info")]
         public bool isKnockback = false;
         
+        private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+        
         private const float DAMAGE_INTERVAL = 0.1f;
         private float lastDamageTime;
         
@@ -137,7 +139,7 @@ namespace Swift_Blade.Combat.Health
     
             enemyRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
             
-            yield return new WaitForFixedUpdate();
+            yield return waitForFixedUpdate;
     
             float timeout = 0.5f; 
             float timer = 0f;

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Swift_Blade.Pool;
 using System.Linq;
+using Swift_Blade.Combat.Health;
 using UnityEngine;
 
 namespace Swift_Blade.Skill
@@ -28,24 +29,41 @@ namespace Swift_Blade.Skill
             if (isUpgrade == false && targets.Count() >= targetCount)
             {
                 isUpgrade = true;
+                PopupManager.Instance.LogInfoBox($"{skillName}이 발동 됐습니다!");
                 
                 RedWaveParticle redWaveParticle = MonoGenericPool<RedWaveParticle>.Pop();
                 redWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,1,0);
                 
-                player.GetPlayerStat.GetStat(statType).AddModifier(skillName, increaseValue);
+                
             }
             else if(isUpgrade && targets.Count() < targetCount)
             {
                 isUpgrade = false;
-                
-                player.GetPlayerStat.GetStat(statType).RemoveModifier(skillName);
+                PopupManager.Instance.LogInfoBox($"{skillName}이 해제 됐습니다");
             }
             
         }
         
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
+            if(isUpgrade == false)return;
             
+            foreach (var item in targets)
+            {
+                if (item.TryGetComponent(out BaseEnemyHealth health))
+                {
+                    ActionData actionData = new ActionData
+                    {
+                        damageAmount = Mathf.RoundToInt(increaseValue * GetColorRatio())
+                    };
+                    
+                    FloatingTextGenerator.Instance.GenerateText(actionData.damageAmount.ToString(),
+                        item.position + new Vector3(0,0.5f,0));
+                    
+                    health.TakeDamage(actionData);   
+                    
+                }
+            }
         }
         
     }

@@ -17,16 +17,21 @@ namespace Swift_Blade.Skill
         string IPlayerEquipable.DisplayName => skillName;
 
 
-        [Tooltip("»ö±ò ½ºÅÈÀÇ ¿µÇâÀ» ¾ó¸¶³ª ¹ÞÀ»Áö")] public float colorRatio;
-        [Tooltip("¼º°ø È®·ü")][Range(1,100)] public int random;
-                
+        [Tooltip("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ó¸¶³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")] public float colorRatio;
+        [Tooltip("ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½")][Range(1,100)] public int random;
+        [Tooltip("ï¿½Ö´ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¼ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")][Range(1,100)] public int maxRandom;
+        
         [TextArea] public string skillDescription;
         
         [Space(40)]
         public PoolPrefabMonoBehaviourSO skillParticle;
 
-        private PlayerStatCompo statCompo;
+        protected PlayerStatCompo statCompo;
         
+        public void SetPlayerStatCompo(PlayerStatCompo playerStatCompo)
+        {
+            statCompo = playerStatCompo;
+        }
         
         public virtual void Initialize(){}
         
@@ -38,10 +43,20 @@ namespace Swift_Blade.Skill
         
         public abstract void UseSkill(Player player, IEnumerable<Transform> targets = null);
         
-        protected bool TryUseSkill()
+        protected bool TryUseSkill(int value = 0)
         {
-            return Random.Range(0, 100) <= random;
+            return Random.Range(0, 100) <= Mathf.Min(maxRandom, random + value);
         }
-
+        
+        protected float GetColorRatio()
+        {
+            if (statCompo == null)
+            {
+                Debug.LogError("Skill Error : statCompo is null");
+                return 0;
+            }
+            
+            return statCompo.GetColorStatValue(colorType) * colorRatio;
+        }
     }
 }
