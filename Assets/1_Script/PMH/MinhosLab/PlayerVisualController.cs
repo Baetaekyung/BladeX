@@ -13,65 +13,49 @@ namespace Swift_Blade
             
         }
 
-        public void OnParts(string partsName)
+        public void OnParts(string equipment)
         {
-            if(equipListSO.equipmentName.TryGetValue(partsName, out var equipmentType))
+            if(equipListSO.equipmentList.TryGetValue(equipment, out var partsName))
             {
-                if(equipmentType == EquipmentType.Heads)
+                GameObject go = null;
+                if (HelmetVisual.Find(partsName) is not null)
                 {
-                    foreach (Transform t in HelmetVisual.transform)
-                    {
-                        Debug.Log(t.name);
-                        if (t.name == partsName)
-                        {
-                            Debug.Log("찾았다장비");
-                            t.gameObject.SetActive(true);
-                        }
-                    }
+                    Debug.Log("헬멧에 있습니다");
+                    go = HelmetVisual.Find(partsName).gameObject;
                 }
                 else
                 {
-                    foreach (Transform t in BodiesVisual.transform)
-                    {
-                        Debug.Log(t.name);
-                        if (t.name == partsName)
-                        {
-                            Debug.Log("찾았다장비");
-                            t.gameObject.SetActive(true);
-                        }
-                    }
+                    Debug.Log("갑옷에 있습니다");
+                    go = BodiesVisual.Find(partsName).gameObject;
                 }
+
+                go.SetActive(true);
             }
         }
 
-        public void OffParts(string partsName)
+        public void OffParts(string equipment)
         {
-            if (equipListSO.equipmentName.TryGetValue(partsName, out var equipmentType))
+            if (equipListSO.equipmentList.TryGetValue(equipment, out var partsName))
             {
-                if (equipmentType == EquipmentType.Heads)
+                GameObject go = null;
+                if (HelmetVisual.Find(partsName) is not null)
                 {
-                    foreach (Transform t in HelmetVisual.transform)
-                    {
-                        Debug.Log(t.name);
-                        if (t.name == partsName)
-                        {
-                            Debug.Log("찾았다장비");
-                            t.gameObject.SetActive(false);
-                        }
-                    }
+                    go = HelmetVisual.Find(partsName).gameObject;
                 }
                 else
                 {
-                    foreach (Transform t in BodiesVisual.transform)
-                    {
-                        Debug.Log(t.name);
-                        if (t.name == partsName)
-                        {
-                            Debug.Log("찾았다장비");
-                            t.gameObject.SetActive(false);
-                        }
-                    }
+                    go = BodiesVisual.Find(partsName).gameObject;
                 }
+
+                go.SetActive(false);
+            }
+        }
+
+        private void SetOffVisuals(Transform t)
+        {
+            foreach(Transform child in t)
+            {
+                child.gameObject.SetActive(false);
             }
         }
     }

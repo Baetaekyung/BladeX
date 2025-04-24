@@ -2,6 +2,7 @@ using Swift_Blade.Inputs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,6 +32,8 @@ namespace Swift_Blade
         [SerializeField] private TextMeshProUGUI itemName;
         [SerializeField] private TextMeshProUGUI itemDescription;
         [SerializeField] private TextMeshProUGUI itemTypeInfo;
+
+        private StringBuilder _sb = new StringBuilder();
 
 
         //-------------------------------------------------------------
@@ -221,6 +224,9 @@ namespace Swift_Blade
                 if (!itemSlots[i].GetSlotItemData()
                     && itemSlots[i] is EquipmentSlot equipSlot)
                 {
+                    if (equipSlot.GetSlotType == EquipmentSlotType.WEAPON)
+                        continue;
+
                     itemSlots[i].SetItemUI(equipSlot.GetInfoIcon);
                 }
                 //빈 슬롯이면 empty 이미지
@@ -240,7 +246,12 @@ namespace Swift_Blade
         //아이템을 클릭했을 때 커서에 표시되는 UI
         public void UpdateItemInformationUI(ItemDataSO itemData)
         {
-            SetInfoUI(itemData);
+            SetEquipmentInfoUI(itemData);
+        }
+
+        public void UpdateItemInformationUI(WeaponSO weapon)
+        {
+            SetWeaponInfoUI(weapon);
         }
 
         public void ChangeToInventory()
@@ -259,13 +270,61 @@ namespace Swift_Blade
             titleText.text = "스킬 슬롯";
         }
 
-        private void SetInfoUI(ItemDataSO itemData)
+        private void SetEquipmentInfoUI(ItemDataSO itemData)
         {
             itemIcon.sprite      = itemData ? itemData.itemImage : null;
             itemIcon.color       = itemData ? Color.white : Color.clear;
-            itemName.text        = itemData ? itemData.itemName : String.Empty;
-            itemDescription.text = itemData ? itemData.description : String.Empty;
-            itemTypeInfo.text    = itemData ? itemData.itemType.ToString() : String.Empty;
+            itemName.text        = itemData ? itemData.itemName : string.Empty;
+            itemDescription.text = itemData ? itemData.description : string.Empty;
+
+            #region InformationUpdate
+            if (itemData != null)
+            {
+                if (itemData.IsEquipment())
+                {
+                    _sb.Clear();
+
+                    _sb.AppendLine(EquipmentUtility.GetRarityColorText(itemData.equipmentData.rarity));
+
+                    if(itemData.equipmentData.tags.Count == 0)
+                    {
+                        _sb.Append("<color=orange>태그 없음</color>");
+                    }
+                    else
+                    {
+                        foreach (var tag in itemData.equipmentData.tags)
+                        {
+                            _sb.Append($"<color=orange>[ {EquipmentUtility.GetTagToKorean(tag)} ]</color>")
+                                .Append(" ");
+                        }
+                    }
+
+                    string equipInfo = _sb.ToString();
+                    itemTypeInfo.fontSize = 24f;
+                    itemTypeInfo.text = equipInfo;
+                }
+                else
+                {
+                    itemTypeInfo.fontSize = 42f;
+                    itemTypeInfo.text = "아이템";
+                }
+            }
+            else
+            {
+                itemTypeInfo.text = string.Empty;
+            }
+            #endregion
+        }
+
+        private void SetWeaponInfoUI(WeaponSO weapon)
+        {
+            itemIcon.sprite      = weapon ? weapon.WeaponIcon : null;
+            itemIcon.color       = weapon ? Color.white : Color.clear;
+            itemName.text        = weapon ? weapon.name : string.Empty;
+            itemDescription.text = weapon ? weapon.WeaponDescription : string.Empty;
+
+            itemTypeInfo.fontSize = 42f;
+            itemTypeInfo.text    = weapon ? "무기" : string.Empty;
         }
 
         public void AddItemToMatchSlot(ItemDataSO newItem)
@@ -329,7 +388,7 @@ namespace Swift_Blade
             ItemDataSO tempItemData = matchSlot.GetSlotItemData();
             
             var baseEquip = tempItemData.itemObject as Equipment;
-            baseEquip?.OffEquipment();
+            baseEquip.OffEquipment();
             
             EquipmentDatas.Remove(tempItemData);
             Inventory.currentEquipment.Remove(tempItemData.equipmentData);
@@ -373,6 +432,16 @@ namespace Swift_Blade
                 return count;
 
             return -1;
+        }
+
+        public void SetWeaponData(WeaponSO weapon)
+        {
+            EquipmentSlot weaponSlot = 
+                equipSlots.FirstOrDefault(slot => slot.GetSlotType == EquipmentSlotType.WEAPON);
+
+            Debug.Assert(weaponSlot != null, "Weapon slot is missing");
+
+            weaponSlot.SetWeaponData(weapon);
         }
     }
 }

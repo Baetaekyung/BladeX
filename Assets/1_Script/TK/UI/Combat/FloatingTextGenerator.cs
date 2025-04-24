@@ -6,11 +6,10 @@ namespace Swift_Blade.Pool
     {
         [SerializeField] private PoolPrefabMonoBehaviourSO floatingTextPoolSO;
 
-        private bool _isInitialized = false;
-
         protected override void Awake()
         {
             base.Awake();
+
             MonoGenericPool<FloatingText>.Initialize(floatingTextPoolSO);
         }
         
@@ -37,13 +36,6 @@ namespace Swift_Blade.Pool
 
         private FloatingText GenerateText(Vector3 position)
         {
-            if(_isInitialized == false)
-            {
-                //Lazy Initialize
-                MonoGenericPool<FloatingText>.Initialize(floatingTextPoolSO);
-                _isInitialized = true;
-            }
-
             var floatingText = MonoGenericPool<FloatingText>.Pop();
 
             floatingText.transform.position = position;

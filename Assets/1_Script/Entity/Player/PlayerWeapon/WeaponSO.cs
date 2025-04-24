@@ -35,6 +35,11 @@ namespace Swift_Blade
         [SerializeField] private string weaponName;
         [SerializeField] private Sprite weaponSprite;
 
+        [field: Header("Weapon Information")]
+        [field: SerializeField] public string WeaponName { get; private set; }
+        [field: SerializeField] public Sprite WeaponIcon { get; private set; }
+        [field: SerializeField, TextArea] public string WeaponDescription { get; private set; }
+
         /// <summary>
         /// color is limited to (red, blu, green)
         /// </summary>
