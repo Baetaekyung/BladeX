@@ -7,8 +7,9 @@ namespace Swift_Blade.Skill
     [CreateAssetMenu(fileName = "HitSpeedUp", menuName = "SO/Skill/Blue/HitSpeedUp")]
     public class HitAttackSpeedUpAndMoveSpeedUp : SkillData
     {
-        [Range(0.1f, 10)] [SerializeField] private float increaseAmount;
+        [Range(0.1f, 20f)] [SerializeField] private float increaseAmount;
         [Range(0.1f,10f)][SerializeField] private float decreaseTime;
+                
         private float decreaseTimer = 0;
         private bool isOnSkill;
         
@@ -23,17 +24,17 @@ namespace Swift_Blade.Skill
             if(isOnSkill)return;
             
             isOnSkill = true;
-            
-            float healthDifference = player.GetPlayerStat.GetStat(StatType.HEALTH).Value - player.GetPlayerHealth.GetCurrentHealth;
-            
-            var statCompo = player.GetPlayerStat;
-             
             ResetStat(player);
+
+            int healthDifference = Mathf.RoundToInt(player.GetPlayerStat.GetStat(StatType.HEALTH).Value -
+                                                    player.GetPlayerHealth.GetCurrentHealth);
+            float increaseSpeed = increaseAmount * healthDifference * GetColorRatio();
             
-            statCompo.AddModifier(StatType.MOVESPEED, skillName , increaseAmount * healthDifference);            
-            statCompo.AddModifier(StatType.ATTACKSPEED, skillName , increaseAmount * healthDifference);      
-                        
+            statCompo.AddModifier(StatType.MOVESPEED, skillName ,increaseSpeed );            
+            statCompo.AddModifier(StatType.ATTACKSPEED, skillName , increaseSpeed);      
+            
             MonoGenericPool<BlueWaveParticle>.Pop().transform.position =  player.GetPlayerTransform.position + new Vector3(0,1,0);
+            
         }
         
         public override void SkillUpdate(Player player, IEnumerable<Transform> targets = null)
