@@ -13,11 +13,14 @@ namespace Swift_Blade.Skill
         {
             MonoGenericPool<ImpactDirt>.Initialize(skillParticle);
         }
-
+        
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
             if(targets == null || !targets.Any())return;
             if(player.GetPlayerHealth.IsFullHealth == false)return;
+            
+            int value = Mathf.RoundToInt(GetColorRatio());
+            if(TryUseSkill(value) == false)return;
             
             MonoGenericPool<ImpactDirt>.Pop().transform.position = targets.First().transform.position + new Vector3(0,1,0);
             
@@ -28,7 +31,7 @@ namespace Swift_Blade.Skill
                     enemyHealth.ChangeParryState();
                 }
             }
-                        
+            
         }
     }
 }
