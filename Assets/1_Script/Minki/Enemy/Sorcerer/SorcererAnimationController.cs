@@ -22,6 +22,10 @@ namespace Swift_Blade.Enemy.Boss
         [SerializeField] private FireArrow _fireArrowPrefab;
         [SerializeField] private Transform _fireArrowSpawnTrm;
 
+        [Header("Fire Projectile")]
+        [SerializeField] private PoolPrefabMonoBehaviourSO _fireProjectile;
+        [SerializeField] private Transform _fireProjectileSpawnTrm;
+
         [Header("Explosion")]
         [SerializeField] private PoolPrefabMonoBehaviourSO _explosion;
         [SerializeField] private Transform _explosionSpawnTrm;
@@ -37,8 +41,9 @@ namespace Swift_Blade.Enemy.Boss
         {
             base.Start();
             
+            MonoGenericPool<CloseExplosionParticle>.Initialize(_closeExplosion);
+            MonoGenericPool<FireProjectile>.Initialize(_fireProjectile);
             MonoGenericPool<ExplosionParticle>.Initialize(_explosion);
-            MonoGenericPool<ExplosionParticle>.Initialize(_closeExplosion);
         }
 
         private void ResetLocalPositionAndRotation() {
@@ -60,6 +65,17 @@ namespace Swift_Blade.Enemy.Boss
         private void SpawnFireArrow()
         {
             Instantiate(_fireArrowPrefab, _fireArrowSpawnTrm.position, _fireArrowSpawnTrm.rotation);
+        }
+
+        private void SpawnFireProjectile()
+        {
+            for(int i = 0; i < 10; ++i)
+            {
+                FireProjectile projectile = MonoGenericPool<FireProjectile>.Pop();
+                projectile.transform.position = _fireProjectileSpawnTrm.position;
+
+                projectile.SetAngle(36f * i);
+            }
         }
 
         private void SpawnExplosionEffect()

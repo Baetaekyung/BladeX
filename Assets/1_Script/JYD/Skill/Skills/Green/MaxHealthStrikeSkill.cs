@@ -10,8 +10,7 @@ namespace Swift_Blade
     public class MaxHealthStrikeSkill : SkillData
     { 
         [Range(0.1f, 5f)] [SerializeField]  private float attackIncreaseAmount;
-       
-        
+                
         public override void Initialize()
         {
             MonoGenericPool<GreenWaveParticle>.Initialize(skillParticle);    
@@ -19,22 +18,30 @@ namespace Swift_Blade
         
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
-            if (TryUseSkill() && player.GetPlayerHealth.IsFullHealth && targets != null)
+            if (player.GetPlayerHealth.IsFullHealth && targets != null)
             {
                 GreenWaveParticle greenWaveParticle = MonoGenericPool<GreenWaveParticle>.Pop();
-                greenWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0, 1, 0);
-                foreach (var item in targets)
+                greenWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0, 0.5f, 0);
+                
+                ApplyDamage(targets);
+            }
+        }
+
+        private void ApplyDamage(IEnumerable<Transform> targets)
+        {
+            foreach (var item in targets)
+            {
+                if (item.TryGetComponent(out BaseEnemyHealth health))
                 {
-                    if (item.TryGetComponent(out BaseEnemyHealth health))
-                    {
-                        ActionData actionData = new ActionData();
-                        actionData.damageAmount = attackIncreaseAmount * GetColorRatio();
-                        health.TakeDamage(actionData);
-                    }
-                    
+                    ActionData actionData = new ActionData();
+                    float damage = attackIncreaseAmount * GetColorRatio();
+                    FloatingTextGenerator.Instance.GenerateText(damage.ToString(),
+                        health.transform.position + new Vector3(0,0.5f,0));
+                        
+                    actionData.damageAmount = damage;
+                    health.TakeDamage(actionData);
                 }
             }
         }
-             
     }
 }
