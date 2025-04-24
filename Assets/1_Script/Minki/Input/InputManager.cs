@@ -9,23 +9,26 @@ namespace Swift_Blade.Inputs
         Movement_Forward, Movement_Left, Movement_Back, Movement_Right, Roll, Parry, Inventory, ChangeQuick, UseQuick, Attack1, Attack2
     }
 
+    [MonoSingletonUsage(MonoSingletonFlags.DontDestroyOnLoad)]
+    [DefaultExecutionOrder(-200)]
     public class InputManager : MonoSingleton<InputManager>
     {
-        public event Action RollEvent;
-        public event Action ParryEvent;
-        public event Action InventoryEvent;
-        public event Action ChangeQuickEvent;
-        public event Action UseQuickEvent;
-        public event Action Attack1Event;
-        public event Action Attack2Event;
-        
+        public static event Action RollEvent;
+        public static event Action ParryEvent;
+        public static event Action InventoryEvent;
+        public static event Action ChangeQuickEvent;
+        public static event Action UseQuickEvent;
+        public static event Action Attack1Event;
+        public static event Action Attack2Event;
+
         [SerializeField] private CustomInputSO _input;
 
         private Plane _plane;
-        
+
         public Vector2 InputDirection => _input.Movement;
+        public Vector3 InputDirectionVector3 => new Vector3(InputDirection.x, 0, InputDirection.y);
         public Vector2 MousePos => _input.MousePosition;
-        public Vector2 MousePosWorld
+        public Vector3 MousePosWorld
         {
             get
             {
@@ -37,32 +40,39 @@ namespace Swift_Blade.Inputs
                     Vector3 hitPoint = ray.GetPoint(distance);
                     return hitPoint;
                 }
-                
-                return Vector2.zero;
+
+                return Vector3.zero;
             }
         }
 
-        protected override void Awake() {
+        protected override void Awake()
+        {
             base.Awake();
 
             _plane = new Plane();
 
-            if(_input == null)
+            if (_input == null)
                 Debug.LogWarning("[InputManager] InputSO is null.");
 
-            _input.RollEvent += HandleRoll;
-            _input.ParryEvent += HandleParry;
-            _input.InventoryEvent += HandleInventory;
-            _input.ChangeQuickEvent += HandleChangeQuick;
-            _input.UseQuickEvent += HandleUseQuick;
-            _input.Attack1Event += HandleAttack1;
-            _input.Attack2Event += HandleAttack2;
+            CustomInputSO.RollEvent += HandleRoll;
+            CustomInputSO.ParryEvent += HandleParry;
+            CustomInputSO.InventoryEvent += HandleInventory;
+            CustomInputSO.ChangeQuickEvent += HandleChangeQuick;
+            CustomInputSO.UseQuickEvent += HandleUseQuick;
+            CustomInputSO.Attack1Event += HandleAttack1;
+            CustomInputSO.Attack2Event += HandleAttack2;
         }
 
         protected override void OnDestroy()
         {
-            _input.ResetInputs();
-
+            //_input.ResetInputs();
+            //RollEvent = null;
+            //ParryEvent = null;
+            //InventoryEvent = null;
+            //ChangeQuickEvent = null;
+            //UseQuickEvent = null;
+            //Attack1Event = null;
+            //Attack2Event = null;
             base.OnDestroy();
         }
 
@@ -72,7 +82,7 @@ namespace Swift_Blade.Inputs
 
             InputAction inputAction = null;
 
-            switch(type) 
+            switch (type)
             {
                 case InputType.Movement_Forward:
                 case InputType.Movement_Left:
@@ -105,17 +115,19 @@ namespace Swift_Blade.Inputs
 
             InputActionRebindingExtensions.RebindingOperation operation = inputAction.PerformInteractiveRebinding();
 
-            if((int)type < 4)
+            if ((int)type < 4)
                 operation.WithTargetBinding((int)type + 1).Start();
 
-            if(mouseEnable)
+            if (mouseEnable)
                 operation.WithControlsExcluding("Mouse");
 
             operation.WithCancelingThrough("<keyboard>/escape")
-                .OnComplete(op => {
+                .OnComplete(op =>
+                {
                     op.Dispose();
                     _input.CustomInput.Player.Enable();
-                }).OnCancel(op => {
+                }).OnCancel(op =>
+                {
                     op.Dispose();
                     _input.CustomInput.Player.Enable();
                 }).Start();
@@ -123,50 +135,57 @@ namespace Swift_Blade.Inputs
 
         #region Handle
 
-        private void HandleRoll() {
-            if(PopupManager.Instance.IsRemainPopup)
+        private void HandleRoll()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
                 return;
 
             RollEvent?.Invoke();
         }
 
-        private void HandleParry() {
-            if(PopupManager.Instance.IsRemainPopup)
+        private void HandleParry()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
                 return;
 
             ParryEvent?.Invoke();
         }
 
-        private void HandleInventory() {
-            if(PopupManager.Instance.IsRemainPopup)
+        private void HandleInventory()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
                 return;
 
             InventoryEvent?.Invoke();
         }
 
-        private void HandleChangeQuick() {
-            if(PopupManager.Instance.IsRemainPopup)
+        private void HandleChangeQuick()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
                 return;
 
             ChangeQuickEvent?.Invoke();
         }
 
-        private void HandleUseQuick() {
-            if(PopupManager.Instance.IsRemainPopup)
+        private void HandleUseQuick()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
                 return;
 
             UseQuickEvent?.Invoke();
         }
 
-        private void HandleAttack1() {
-            if(PopupManager.Instance.IsRemainPopup)
+        private void HandleAttack1()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
                 return;
 
             Attack1Event?.Invoke();
         }
 
-        private void HandleAttack2() {
-            if(PopupManager.Instance.IsRemainPopup)
+        private void HandleAttack2()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
                 return;
 
             Attack2Event?.Invoke();

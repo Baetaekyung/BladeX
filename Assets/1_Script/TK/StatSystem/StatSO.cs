@@ -9,7 +9,6 @@ namespace Swift_Blade
     {
         HEALTH,
         DAMAGE,
-        MINATTACK_INC, //최소 공격력 보정
         ATTACKSPEED,
         MOVESPEED,
         DASH_INVINCIBLE_TIME,
@@ -150,7 +149,6 @@ namespace Swift_Blade
 
         public IEnumerator DelayBuffRoutine(string buffKey, float buffTime, float buffAmount)
         {
-            //todo: Refectoring..
             if (statType == StatType.HEALTH)
             {
                 buffTimer = buffTime;
