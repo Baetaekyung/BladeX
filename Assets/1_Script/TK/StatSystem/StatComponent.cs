@@ -71,6 +71,7 @@ namespace Swift_Blade
             }
         }
 
+        public static StatSO[] GetAllStats() => _statDatas;
         public float GetColorValue(StatSO stat) => GetStat(stat).ColorValue;
     }
 }
