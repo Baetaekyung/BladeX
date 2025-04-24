@@ -30,6 +30,10 @@ namespace Swift_Blade.FSM
         {
             CurrentState.Current?.Invoke();
         }
+        public void Exit()
+        {
+            CurrentState.Exit();
+        }
         public StateEnum GetState()
         {
             foreach (KeyValuePair<StateEnum, State<StateEnum>> kvp in stateDictionary)

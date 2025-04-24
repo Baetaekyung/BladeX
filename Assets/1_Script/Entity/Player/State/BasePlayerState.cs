@@ -1,4 +1,5 @@
 using Swift_Blade.Audio;
+using Swift_Blade.Inputs;
 using Swift_Blade.Pool;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Swift_Blade.FSM.States
         protected virtual bool BaseAllowAttackInput { get; } = true;
         protected virtual bool BaseAllowSpecialInput { get; } = true;
         protected virtual bool BaseAllowDashInput { get; } = true;
-        protected Vector3 GetResultVector => playerInput.CameraRotationOnlyY * playerInput.GetInputDirectionRaw;
+        protected Vector3 GetResultVector => playerInput.CameraRotationOnlyY * InputManager.Instance.InputDirectionVector3;
 
         protected float GetSpecialDelay => PlayerWeaponManager.CurrentWeapon.GetSpecialDelay;
         protected float GetRollDelay => PlayerWeaponManager.CurrentWeapon.GetRollDelay;
@@ -39,25 +40,19 @@ namespace Swift_Blade.FSM.States
             base.Enter();
             //additionalZValue = 0;
             playerMovement.UseMouseLock = false;
+            InputManager.Attack1Event += InputEventAttack1;
+            InputManager.Attack2Event += InputEventAttack2;
+            InputManager.ParryEvent += InputEventParry;
+            InputManager.RollEvent += InputEventRoll;
         }
         public override void Update()
         {
+            base.Update();
             if (PopupManager.Instance.IsRemainPopup) return;
-
-            if (Input.GetKeyDown(KeyCode.Mouse0) && BaseAllowAttackInput)
-                OnAttackInput(EComboState.LightAttack);
-            if (Input.GetKeyDown(KeyCode.Mouse1) && BaseAllowAttackInput)
-                OnAttackInput(EComboState.PowerAttack);
-
-            if (Input.GetKeyDown(KeyCode.C) && BaseAllowSpecialInput)
-                OnSpecialInput();
-
-            if (Input.GetKeyDown(KeyCode.Space) && BaseAllowDashInput && playerInput.GetInputDirectionRaw.sqrMagnitude > 0.25f && playerMovement.CanRoll)
-                OnDashInput();
 
             //movement
             Quaternion CameraRotation = playerInput.CameraRotationOnlyY;
-            Vector3 localInput = playerInput.GetInputDirectionRaw;
+            Vector3 localInput = InputManager.Instance.InputDirectionVector3;
             Vector3 resultVector = CameraRotation * localInput;
 
             OnApplyMovement(resultVector);
@@ -71,6 +66,34 @@ namespace Swift_Blade.FSM.States
 
             player.GetPlayerAnimator.GetAnimator.SetFloat("X", anim_inputLocal.x);
             player.GetPlayerAnimator.GetAnimator.SetFloat("Z", anim_inputLocal.z);
+        }
+        public override void Exit()
+        {
+            base.Exit();
+            InputManager.Attack1Event -= InputEventAttack1;
+            InputManager.Attack2Event -= InputEventAttack2;
+            InputManager.ParryEvent -= InputEventParry;
+            InputManager.RollEvent -= InputEventRoll;
+        }
+        private void InputEventAttack1()
+        {
+            if (BaseAllowAttackInput)
+                OnAttackInput(EComboState.LightAttack);
+        }
+        private void InputEventAttack2()
+        {
+            if (BaseAllowAttackInput)
+                OnAttackInput(EComboState.PowerAttack);
+        }
+        private void InputEventParry()
+        {
+            if (BaseAllowSpecialInput)
+                OnSpecialInput();
+        }
+        private void InputEventRoll()
+        {
+            if (BaseAllowDashInput && InputManager.Instance.InputDirectionVector3.sqrMagnitude > 0.25f && playerMovement.CanRoll)
+                OnDashInput();
         }
         /// <summary>
         /// </summary>
