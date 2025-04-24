@@ -32,10 +32,10 @@ namespace Swift_Blade
     public enum EquipmentRarity
     {
         NONE = 0,
-        COMMON,
-        RARE,
-        UNIQUE,
-        EPIC,
+        COMMON = 1,
+        RARE = 2,
+        UNIQUE = 3,
+        EPIC = 4,
         END = 99
     }
     
@@ -62,7 +62,7 @@ namespace Swift_Blade
         Sprite IPlayerEquipable.GetSprite => equipmentIcon;
         string IPlayerEquipable.DisplayName => displayName;
 
-
+        public string GetPartsName => partsName;
         private void OnValidate()
         {
             if (String.IsNullOrEmpty(itemSerialCode))

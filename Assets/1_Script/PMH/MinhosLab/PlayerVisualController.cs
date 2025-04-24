@@ -21,7 +21,6 @@ namespace Swift_Blade
                 {
                     foreach (Transform t in HelmetVisual.transform)
                     {
-                        Debug.Log(t.name);
                         if (t.name == partsName)
                         {
                             Debug.Log("찾았다장비");
@@ -33,7 +32,6 @@ namespace Swift_Blade
                 {
                     foreach (Transform t in BodiesVisual.transform)
                     {
-                        Debug.Log(t.name);
                         if (t.name == partsName)
                         {
                             Debug.Log("찾았다장비");

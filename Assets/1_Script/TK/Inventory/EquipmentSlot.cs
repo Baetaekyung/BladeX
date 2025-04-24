@@ -21,16 +21,16 @@ namespace Swift_Blade
                 transform.DOScale(1.05f, 0.2f);
             }
 
-            if (!_itemDataSO)
+            if (!_itemDataSO && GetSlotType != EquipmentSlotType.WEAPON)
                 return;
             
             if(GetSlotType == EquipmentSlotType.WEAPON)
             {
-                InvenManager.UpdateItemInformationUI(_weaponData);
+                InvenManager.UpdateItemInformationUI(weapon: _weaponData);
             }
             else
             {
-                InvenManager.UpdateItemInformationUI(_itemDataSO);
+                InvenManager.UpdateItemInformationUI(itemData: _itemDataSO);
             }
         }
 
@@ -42,17 +42,11 @@ namespace Swift_Blade
                 transform.DOScale(1f, 0.2f);
             }
             
-            if (!_itemDataSO)
+            if (!_itemDataSO && GetSlotType != EquipmentSlotType.WEAPON)
                 return;
-            
-            if(GetSlotType != EquipmentSlotType.WEAPON)
-            {
-                InvenManager.UpdateItemInformationUI(itemData: null);
-            }
-            else
-            {
-                InvenManager.UpdateItemInformationUI(weapon: null);
-            }
+
+            InvenManager.UpdateItemInformationUI(itemData: null);
+            InvenManager.UpdateItemInformationUI(weapon: null);
         }
 
         public override void OnPointerDown(PointerEventData eventData)
@@ -107,7 +101,19 @@ namespace Swift_Blade
 
             _weaponData = weapon;
 
+            SetItemUI(weapon.WeaponIcon);
             InvenManager.UpdateAllSlots();
+        }
+
+        public override void SetItemUI(Sprite sprite)
+        {
+            if(GetSlotType != EquipmentSlotType.WEAPON)
+                base.SetItemUI(sprite);
+            else
+            {
+                SetItemImage(sprite);
+                itemBackground.color = Color.clear;
+            }
         }
     }
 }

@@ -127,6 +127,8 @@ namespace Swift_Blade
 
             isInitializedInThisScene = true;
 
+            InventoryManager.Instance.SetWeaponData(weapon);
+
             return;
 
             static void SetWeaponHandle(WeaponHandler weaponHandler, Transform weaponHandleTransform, GameObject colorGameobject, ref WeaponHandler weaponHandleInstance,

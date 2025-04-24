@@ -8,7 +8,7 @@ namespace Swift_Blade
         public override void Popup()
         {
             cG.DOFade(1, fadeTime)
-                .SetEase(Ease.OutCirc)
+                .SetEase(Ease.InCirc)
                 .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
 
             _raycaster.enabled = true;

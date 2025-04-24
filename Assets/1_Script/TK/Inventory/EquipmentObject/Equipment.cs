@@ -30,7 +30,7 @@ namespace Swift_Blade
 
         public void HandleStatAdder()
         {
-            _playerStat = Player.Instance?.GetEntityComponent<PlayerStatCompo>();
+            _playerStat = Player.Instance.GetEntityComponent<PlayerStatCompo>();
 
             if (!_playerStat)
                 return;
@@ -65,7 +65,14 @@ namespace Swift_Blade
 
             foreach (var tag in equipData.tags)
             {
-                Player.Instance.GetEntityComponent<PlayerTagCompo>().AddTagCount(tag);
+                var tagCompo = Player.Instance.GetEntityComponent<PlayerTagCompo>();
+
+                if(tagCompo != null)
+                {
+                    tagCompo.AddTagCount(tag);
+                }
+                else
+                    Debug.Log("Please add component to player, CompoName: PlayerTagCompo");
             }
 
             _playerStat.IncreaseColorValue(equipData.colorType, equipData.colorAdder);
@@ -106,12 +113,12 @@ namespace Swift_Blade
         private void OnEquipParts()
         {
             _playerVisualController = Player.Instance?.GetEntityComponent<PlayerVisualController>();
-            _playerVisualController.OnParts(equipData.partsName);
+            _playerVisualController.OnParts(equipData.GetPartsName);
         }
         private void OffEquipParts()
         {
             _playerVisualController = Player.Instance?.GetEntityComponent<PlayerVisualController>();
-            _playerVisualController.OffParts(equipData.partsName);
+            _playerVisualController.OffParts(equipData.GetPartsName);
         }
     }
 }

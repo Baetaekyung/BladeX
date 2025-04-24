@@ -92,7 +92,7 @@ namespace Swift_Blade
 
         public virtual void OnPointerExit(PointerEventData eventData)
         {
-            InvenManager.UpdateItemInformationUI(null);
+            InvenManager.UpdateItemInformationUI(itemData: null);
             
             if (accentFrame.gameObject.activeSelf)
                 accentFrame.gameObject.SetActive(false);
@@ -104,7 +104,7 @@ namespace Swift_Blade
             }
         }
 
-        public void SetItemUI(Sprite sprite)
+        public virtual void SetItemUI(Sprite sprite)
         {
             SetBackgroundColor();
 
@@ -120,7 +120,7 @@ namespace Swift_Blade
             }
         }
 
-        private void SetItemImage(Sprite sprite)
+        protected void SetItemImage(Sprite sprite)
         {
             if (this is not EquipmentSlot)
             {
@@ -165,7 +165,10 @@ namespace Swift_Blade
                 EquipmentData equipData = _itemDataSO.equipmentData;
 
                 Color newColor = ColorUtils.GetColorRGBUnity(equipData.colorType);
-                itemBackground.color = newColor;
+
+                float colorMultiplier = (int)_itemDataSO.equipmentData.rarity * 0.25f;
+
+                itemBackground.color = newColor * colorMultiplier;
             }
         }
 

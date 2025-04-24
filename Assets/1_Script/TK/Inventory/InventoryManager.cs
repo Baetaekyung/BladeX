@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,6 +31,8 @@ namespace Swift_Blade
         [SerializeField] private TextMeshProUGUI itemName;
         [SerializeField] private TextMeshProUGUI itemDescription;
         [SerializeField] private TextMeshProUGUI itemTypeInfo;
+
+        private StringBuilder _sb = new StringBuilder();
 
 
         //-------------------------------------------------------------
@@ -214,6 +217,9 @@ namespace Swift_Blade
                 if (!itemSlots[i].GetSlotItemData()
                     && itemSlots[i] is EquipmentSlot equipSlot)
                 {
+                    if (equipSlot.GetSlotType == EquipmentSlotType.WEAPON)
+                        continue;
+
                     itemSlots[i].SetItemUI(equipSlot.GetInfoIcon);
                 }
                 //빈 슬롯이면 empty 이미지
@@ -263,14 +269,55 @@ namespace Swift_Blade
             itemIcon.color       = itemData ? Color.white : Color.clear;
             itemName.text        = itemData ? itemData.itemName : string.Empty;
             itemDescription.text = itemData ? itemData.description : string.Empty;
-            itemTypeInfo.text    = itemData ? itemData.itemType.ToString() : string.Empty;
+
+            #region InformationUpdate
+            if (itemData != null)
+            {
+                if (itemData.IsEquipment())
+                {
+                    _sb.Clear();
+
+                    _sb.AppendLine(EquipmentUtility.GetRarityColorText(itemData.equipmentData.rarity));
+
+                    if(itemData.equipmentData.tags.Count == 0)
+                    {
+                        _sb.Append("<color=orange>태그 없음</color>");
+                    }
+                    else
+                    {
+                        foreach (var tag in itemData.equipmentData.tags)
+                        {
+                            _sb.Append($"<color=orange>[ {EquipmentUtility.GetTagToKorean(tag)} ]</color>")
+                                .Append(" ");
+                        }
+                    }
+
+                    string equipInfo = _sb.ToString();
+                    itemTypeInfo.fontSize = 24f;
+                    itemTypeInfo.text = equipInfo;
+                }
+                else
+                {
+                    itemTypeInfo.fontSize = 42f;
+                    itemTypeInfo.text = "아이템";
+                }
+            }
+            else
+            {
+                itemTypeInfo.text = string.Empty;
+            }
+            #endregion
         }
 
         private void SetWeaponInfoUI(WeaponSO weapon)
         {
-            itemIcon.color    = weapon ? Color.white : Color.clear;
-            itemName.text     = weapon ? weapon.name : string.Empty;
-            itemTypeInfo.text = weapon ? "무기" : string.Empty;
+            itemIcon.sprite      = weapon ? weapon.WeaponIcon : null;
+            itemIcon.color       = weapon ? Color.white : Color.clear;
+            itemName.text        = weapon ? weapon.name : string.Empty;
+            itemDescription.text = weapon ? weapon.WeaponDescription : string.Empty;
+
+            itemTypeInfo.fontSize = 42f;
+            itemTypeInfo.text    = weapon ? "무기" : string.Empty;
         }
 
         public void AddItemToMatchSlot(ItemDataSO newItem)

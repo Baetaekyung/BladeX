@@ -61,7 +61,6 @@ namespace Swift_Blade
 
             EquipmentData equipData = CreateInstance<EquipmentData>();
             equipData.rarity = _rarity;
-            equipData.partsName = _partName;
 
             #endregion
 

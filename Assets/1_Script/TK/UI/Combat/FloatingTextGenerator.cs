@@ -12,12 +12,6 @@ namespace Swift_Blade.Pool
 
             MonoGenericPool<FloatingText>.Initialize(floatingTextPoolSO);
         }
-
-        protected override void Awake()
-        {
-            base.Awake();
-            MonoGenericPool<FloatingText>.Initialize(floatingTextPoolSO);
-        }
         
         public void GenerateText(string message, Vector3 position, Color color)
         {
