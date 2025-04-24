@@ -13,16 +13,27 @@ namespace Swift_Blade.Pool
         private float _startAngle;
         private float _pushTimer;
 
+        private ParticleSystem _particleSystem;
+
+        public void OnCreate()
+        {
+            _particleSystem = GetComponentInChildren<ParticleSystem>();
+        }
+
         public void OnPop()
         {
             _speed = _originSpeed;
             _pushTimer = 0f;
+            
+            _particleSystem.Clear();
         }
 
         public void SetAngle(float angle)
         {
             transform.eulerAngles = new Vector3(0f, angle, 0f);
             _startAngle = angle;
+            
+            _particleSystem.Play();
         }
         
         private void Update()
