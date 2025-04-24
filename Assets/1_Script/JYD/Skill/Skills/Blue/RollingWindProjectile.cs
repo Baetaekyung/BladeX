@@ -8,11 +8,15 @@ namespace Swift_Blade.Skill
     public class RollingWindProjectile : SkillData
     {
         [SerializeField] private int skillCount;
-        [Range(1,4)][SerializeField] private int projectileCount = 1;
         
         private readonly Vector3[] directions = new Vector3[4];
         private int skillCounter = 0;
-                
+
+        private int projectileCount = 1;
+        
+        private const int MIN_SKILL_COUNT = 1;
+        private const int MAX_SKILL_COUNT = 4;
+        
         public override void Initialize()
         {
             MonoGenericPool<WindProjectileParticle>.Initialize(skillParticle);
@@ -31,9 +35,12 @@ namespace Swift_Blade.Skill
             }
             
             ++skillCounter;
+            
+            int count = Mathf.Clamp(Mathf.FloorToInt(GetColorRatio()), MIN_SKILL_COUNT, MAX_SKILL_COUNT);
+            
             if (skillCounter >= skillCount)
             {
-                for (int i = 0; i  < projectileCount; i++)
+                for (int i = 0; i  < count; i++)
                 {
                     WindProjectileParticle windProjectileParticle = MonoGenericPool<WindProjectileParticle>.Pop();
                     windProjectileParticle.transform.position = player.GetPlayerTransform.position;

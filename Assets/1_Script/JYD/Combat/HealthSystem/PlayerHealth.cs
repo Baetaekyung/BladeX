@@ -83,7 +83,7 @@ namespace Swift_Blade.Combat.Health
             }
         }
         */
-
+        
         public override void TakeDamage(ActionData actionData)
         {
             if (_lastDamageTime + DAMAGE_INTERVAL > Time.time || isDead || IsPlayerInvincible) return;
