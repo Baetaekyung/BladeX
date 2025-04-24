@@ -1,3 +1,4 @@
+using Swift_Blade.Inputs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,8 +66,24 @@ namespace Swift_Blade
             }
             
             InitializeSlots();
-        }
+            InputManager.ChangeQuickEvent += InputEventQuick;
+            InputManager.UseQuickEvent += InputEventUseQuick;
 
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            InputManager.ChangeQuickEvent -= InputEventQuick;
+            InputManager.UseQuickEvent -= InputEventUseQuick;
+        }
+        private void InputEventQuick()
+        {
+            ChangeQuickSlotItem();
+        }
+        private void InputEventUseQuick()
+        {
+            UseQuickSlotItem();
+        }
         public void InitializeSlots()
         {
             _currentItemIndex = 0;
@@ -151,16 +168,6 @@ namespace Swift_Blade
             
             UpdateAllSlots();
         }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                UseQuickSlotItem();
-
-            if (Input.GetKeyDown(KeyCode.Tab))
-                ChangeQuickSlotItem();
-        }
-
         private void UseQuickSlotItem()
         {
             if (QuickSlotItem == null)
@@ -277,7 +284,7 @@ namespace Swift_Blade
                 {
                     _sb.Clear();
 
-                    _sb.AppendLine(EquipmentUtility.GetRarityColorText(itemData.equipmentData.rarity));
+                    _sb.AppendLine(KoreanUtility.GetRarityColorText(itemData.equipmentData.rarity));
 
                     if(itemData.equipmentData.tags.Count == 0)
                     {
@@ -287,7 +294,7 @@ namespace Swift_Blade
                     {
                         foreach (var tag in itemData.equipmentData.tags)
                         {
-                            _sb.Append($"<color=orange>[ {EquipmentUtility.GetTagToKorean(tag)} ]</color>")
+                            _sb.Append($"<color=orange>[ {KoreanUtility.GetTagToKorean(tag)} ]</color>")
                                 .Append(" ");
                         }
                     }

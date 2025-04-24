@@ -10,6 +10,7 @@ using DG.Tweening;
 using System;
 using Swift_Blade.Combat.Health;
 using UnityEngine.Serialization;
+using Swift_Blade.Inputs;
 
 namespace Swift_Blade
 {
@@ -320,5 +321,9 @@ namespace Swift_Blade
             playerAttackState.ClearComboHistory();
         }
         public PlayerStateEnum GetCurrentState() => playerStateMachine.GetState();
+        private void OnDestroy()
+        {
+            playerStateMachine.Exit();
+        }
     }
 }

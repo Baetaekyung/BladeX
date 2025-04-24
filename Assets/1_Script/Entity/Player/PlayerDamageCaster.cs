@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Swift_Blade.Pool;
@@ -7,15 +8,15 @@ namespace Swift_Blade.Combat.Caster
 {
     public class PlayerDamageCaster : LayerCaster, IEntityComponent, IEntityComponentStart
     {
+        public event Action<HashSet<IHealth>> OnHitDamagable;
+
         public float CastingRange { get => _castingRange; set => _castingRange = value; }
 
         [SerializeField] private Transform _visualTrm;
         [SerializeField] private PlayerMovement _playerMovement;
-        [SerializeField] private StatSO damageStat;
 
         private Player _player;
         private PlayerStatCompo _statCompo;
-        private float GetBaseDamage => _statCompo.GetStat(damageStat).Value;
 
         private readonly Collider[] hitColliders = new Collider[10];
         private HashSet<IHealth> damagedEntities;
@@ -27,7 +28,8 @@ namespace Swift_Blade.Combat.Caster
 
         public void EntityComponentStart(Entity entity)
         {
-            _statCompo = entity.GetEntityComponent<PlayerStatCompo>();
+            _statCompo = _player.GetEntityComponent<PlayerStatCompo>();
+
             damagedEntities = new HashSet<IHealth>();
         }
 
@@ -49,7 +51,7 @@ namespace Swift_Blade.Combat.Caster
                     Vector3 hitPoint = hitCollider.ClosestPoint(startPos);
                     Vector3 hitNormal = (hitPoint - hitCollider.transform.position).normalized;
 
-                    float damageAmount = _statCompo.GetStat(damageStat).Value;
+                    float damageAmount = _statCompo.GetStat(StatType.DAMAGE).Value;
 
                     ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, false);
                     ApplyDamage(health, actionData);
@@ -86,15 +88,18 @@ namespace Swift_Blade.Combat.Caster
                     Vector3 hitPoint = hitCollider.ClosestPoint(startPos);
                     Vector3 hitNormal = (hitPoint - hitCollider.transform.position).normalized;
 
-                    float damageAmount = _statCompo.GetStat(damageStat).Value + additionalDamage;
+                    float damageAmount = _statCompo.GetStat(StatType.DAMAGE).Value;
+                    damageAmount += additionalDamage;
+
                     float critialPercent = _statCompo.GetStat(StatType.CRITICAL_CHANCE).Value;
                     float critialDamageMultiplier = _statCompo.GetStat(StatType.CRITICAL_DAMAGE).Value;
 
-                    bool  isCritial = Random.Range(0, 100f) < critialPercent;
+                    bool  isCritial = UnityEngine.Random.Range(0, 100f) < critialPercent;
 
                     if (isCritial)
                     {
                         damageAmount = (damageAmount * (critialDamageMultiplier / 100f));
+
                         FloatingTextGenerator.Instance.GenerateText(Mathf
                             .RoundToInt(damageAmount).ToString(), hitPoint, Color.yellow);
                     }
@@ -103,10 +108,11 @@ namespace Swift_Blade.Combat.Caster
                         FloatingTextGenerator.Instance.GenerateText(Mathf
                             .RoundToInt(damageAmount).ToString(), hitPoint);
                     }
-                    
+
                     ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, stun);
 
                     OnCastDamageEvent?.Invoke(actionData);
+                    OnHitDamagable?.Invoke(damagedEntities);
 
                     health.TakeDamage(actionData);
                 }

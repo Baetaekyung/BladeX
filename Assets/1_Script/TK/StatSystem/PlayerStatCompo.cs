@@ -55,10 +55,10 @@ namespace Swift_Blade
         {
             base.Initialize();
 
-            UpdateColorValueToStat();
+            UpdateStat();
         }
 
-        private void UpdateColorValueToStat()
+        private void UpdateStat()
         {
             foreach (StatSO stat in _defaultStats)
             {
@@ -98,6 +98,7 @@ namespace Swift_Blade
             stat.OnBuffEnd += HandleBuffEnd; 
 
             _playerHealth.HealthUpdate();
+            UpdateStat();
 
             void HandleBuffEnd()
             {
@@ -117,6 +118,7 @@ namespace Swift_Blade
                 }
 
                 endCallback?.Invoke();
+                UpdateStat();
             }
             void RemoveDuplicatedBuff(string buffKey, StatSO stat, Coroutine buffRoutine)
             {
@@ -126,6 +128,7 @@ namespace Swift_Blade
                 stat.currentBuffDictionary.Remove(buffKey);
                 stat.buffTimer = 0;
                 stat.OnBuffEnd = null;
+                UpdateStat();
             }
         }
 
@@ -149,7 +152,7 @@ namespace Swift_Blade
         {
             ColorValueChangedAction?.Invoke();
 
-            UpdateColorValueToStat();
+            UpdateStat();
             Player.Instance.GetEntityComponent<PlayerHealth>().HealthUpdate();
         }
 

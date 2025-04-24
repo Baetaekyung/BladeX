@@ -1,3 +1,4 @@
+using Swift_Blade.Inputs;
 using System;
 using System.Reflection;
 using UnityEngine;
@@ -6,13 +7,13 @@ namespace Swift_Blade
 {
     public class PlayerInput : MonoBehaviour, IEntityComponent, IEntityComponentStart
     {
-        public Vector3 GetInputDirectionRaw { get; private set; }
-        public Vector3 GetInputDirection { get; private set; }
-        public Vector3 GetInputDirectionRawRotated => CameraRotationOnlyY * GetInputDirectionRaw;
-        public Vector3 GetInputDirectionRotated => CameraRotationOnlyY * GetInputDirection;
+        //public Vector3 GetInputDirectionRaw { get; private set; }
+        //public Vector3 GetInputDirection { get; private set; }
+        public Vector3 GetInputDirectionRawRotated => CameraRotationOnlyY * InputManager.Instance.InputDirectionVector3;
+        //public Vector3 GetInputDirectionRotated => CameraRotationOnlyY * GetInputDirection;
         public Vector3 GetMousePositionWorld { get; private set; }
         public Vector3 GetMouseDirection { get; private set; }
-        public Vector2 GetRollDirection => new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
+        //public Vector2 GetRollDirection => new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
         /// <summary>
         /// im not sure if this is valid
         /// </summary>
@@ -22,7 +23,6 @@ namespace Swift_Blade
 
         private PlayerCamera playerCamera;
         private PlayerMovement playerMovement;
-        public static event Action OnParryInput;
         private Plane plane;
         public void EntityComponentAwake(Entity entity)
         {
@@ -41,12 +41,8 @@ namespace Swift_Blade
             plane.SetNormalAndPosition(Vector3.up, playerMovement.transform.position);
             void LegacyInput()
             {
-                if (Input.GetKeyDown(KeyCode.C))
-                    OnParryInput?.Invoke();
-                GetInputDirectionRaw = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-                GetInputDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
                 Vector3 mousePos = Input.mousePosition;
-                Ray mouseRay = playerCamera.GetPlayerCamera.ScreenPointToRay(mousePos);//GetStaticCamera.ScreenPointToRay(mousePos);
+                Ray mouseRay = playerCamera.GetPlayerCamera.ScreenPointToRay(mousePos);
                 Debug.DrawRay(mouseRay.origin, mouseRay.direction * 20, Color.red);
                 if (plane.Raycast(mouseRay, out float distance))
                 {
