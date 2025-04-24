@@ -11,6 +11,7 @@ namespace Swift_Blade.Pool
         public override void OnPop()
         {
             base.OnPop();
+            
             if(windRigidbody == null)
                 windRigidbody = GetComponent<Rigidbody>();
             
@@ -34,6 +35,8 @@ namespace Swift_Blade.Pool
                 actionData.damageAmount = 1;
                 health.TakeDamage(actionData);
             }
+            
+            //MonoGenericPool<WindProjectileParticle>.Push(this);            
         }
 
         public void SetDirection(Vector3 _direction)
