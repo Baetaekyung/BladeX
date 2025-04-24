@@ -50,7 +50,7 @@ namespace Swift_Blade.Skill
                 if (closeTarget != null && closeTarget.TryGetComponent(out BaseEnemyHealth health))
                 {
                     float damage = damageAmount * GetColorRatio();
-                    Debug.Log($"{damage} : damageAmount : {damageAmount} , ColorRatio: {GetColorRatio()}");
+                    //Debug.Log($"{damage} : damageAmount : {damageAmount} , ColorRatio: {GetColorRatio()}");
                     
                     ActionData actionData = new ActionData
                     {
@@ -59,7 +59,7 @@ namespace Swift_Blade.Skill
                         knockbackDirection = (closeTarget.position - player.GetPlayerTransform.position).normalized,
                         stun = true
                     };
-
+                    
                     health.TakeDamage(actionData);
                     FloatingTextGenerator.Instance.
                         GenerateText(damage.ToString() , 
