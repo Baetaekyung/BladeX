@@ -7,13 +7,13 @@ namespace Swift_Blade.Inputs
     [CreateAssetMenu(fileName = "CustomInput", menuName = "SO/CustomInput")]
     public class CustomInputSO : ScriptableObject, CustomInput.IPlayerActions
     {
-        public event Action RollEvent;
-        public event Action ParryEvent;
-        public event Action InventoryEvent;
-        public event Action ChangeQuickEvent;
-        public event Action UseQuickEvent;
-        public event Action Attack1Event;
-        public event Action Attack2Event;
+        public static event Action RollEvent;
+        public static event Action ParryEvent;
+        public static event Action InventoryEvent;
+        public static event Action ChangeQuickEvent;
+        public static event Action UseQuickEvent;
+        public static event Action Attack1Event;
+        public static event Action Attack2Event;
 
         public Vector2 Movement { get; private set; }
         public Vector2 MousePosition { get; private set; }
@@ -29,11 +29,14 @@ namespace Swift_Blade.Inputs
                 _input = new CustomInput();
                 _input.Player.SetCallbacks(this);
             }
+
+            _input.Player.Enable();
         }
 
         private void OnDisable()
         {
             _input.Player.SetCallbacks(null);
+            _input.Player.Disable();
         }
 
         public void ResetInputs()

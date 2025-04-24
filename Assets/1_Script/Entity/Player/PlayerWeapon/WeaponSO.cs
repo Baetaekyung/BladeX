@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Swift_Blade.Feeling;
 using Swift_Blade.Audio;
+using Swift_Blade.Pool;
 using UnityEngine;
 using System;
 
@@ -18,7 +19,9 @@ namespace Swift_Blade
         [field: SerializeField] public ParticleSystem PreviewMeshParticle { get; private set; }
 
         [SerializeField] private SerializableDictionary<EAudioType, BaseAudioSO> audioDictionary;
+        [SerializeField] private SerializableDictionary<EAttackType, PoolPrefabGameObjectSO> particleDictinary;
         public IReadOnlyDictionary<EAudioType, BaseAudioSO> GetAudioDictionary => audioDictionary;
+        public IReadOnlyDictionary<EAttackType, PoolPrefabGameObjectSO> GetParticleDictionary => particleDictinary;
         [field: Header("Feeling")]
         [field: SerializeField] public CameraShakeType WeaponCameraShkaeType { get; private set; }
         [field: SerializeField] public CameraFocusSO WeaponCameraFocus { get; private set; }
