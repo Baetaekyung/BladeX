@@ -46,10 +46,6 @@ namespace Swift_Blade.Enemy.Boss
             MonoGenericPool<ExplosionParticle>.Initialize(_explosion);
         }
 
-        private void ResetLocalPositionAndRotation() {
-            transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
-        }
-
         private void CastFlameshrower(int index) => _flameshrowerCasters[index].Cast();
         private void SuicideBomb() => _suicideCaster.Cast();
 
