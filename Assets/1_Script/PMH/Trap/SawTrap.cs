@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using Swift_Blade.Combat.Health;
 
 namespace Swift_Blade
 {
@@ -16,6 +17,8 @@ namespace Swift_Blade
 
         private bool isActive;
         private float timer;
+
+        private Collider coll;
         private void Awake()
         {
             trapSaw.localPosition = new Vector3(0, 0.3f, GetZValue());
@@ -53,6 +56,14 @@ namespace Swift_Blade
             const float xActive = -180f;
             const float xInactive = 0;
             return isActive ? new Vector3(xActive, 0, 0) : new Vector3(xInactive, 0, 0);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out BaseEntityHealth health))
+            {
+                health.TakeDamage(new ActionData { damageAmount = 1, stun = health is PlayerHealth });
+            }
         }
     }
 }
