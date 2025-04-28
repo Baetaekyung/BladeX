@@ -20,6 +20,9 @@ namespace Swift_Blade
         [SerializeField] private Image iconImage;
 
         [SerializeField] private TextMeshProUGUI itemInfoTitle;
+
+        private float transparencyInfo;
+        private Tween transparencyTween;
         public void EnableBoss(bool enable)
         {
             EnableBossUIs(enable);
@@ -39,9 +42,18 @@ namespace Swift_Blade
                     .OnComplete(() => bossHealthBarUI.gameObject.SetActive(false));
             }
         }
-        public void SetInfoBoxAlpha(float alpha)
+        public void SetInfoBoxAlpha(float alpha, bool tweenAnimationSkip = true)
         {
-            itemInfoCanvasGroup.alpha = alpha;
+            if (tweenAnimationSkip)
+            {
+                itemInfoCanvasGroup.alpha = alpha;
+            }
+            else
+            {
+                if (transparencyTween != null) transparencyTween.Kill();
+                transparencyTween = DOTween.To(() => transparencyInfo, x => itemInfoCanvasGroup.alpha = x, 1, 0.2f)
+                    .SetEase(Ease.OutSine);
+            }
         }
         public void SetInfoBoxPosition(Vector3 worldPosition)
         {
