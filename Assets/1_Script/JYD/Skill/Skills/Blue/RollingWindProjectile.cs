@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Skill
 {
-    [CreateAssetMenu(fileName = "RollingWindProjectileSkill", menuName = "SO/Skill/Blue/WindProjectile")]
+    [CreateAssetMenu(fileName = "RollingWindProjectileSkill", menuName = "SO/Skill/Blue/RollingWindProjectile")]
     public class RollingWindProjectile : SkillData
     {
         [SerializeField] private PoolPrefabMonoBehaviourSO blueCircle;
@@ -32,7 +32,7 @@ namespace Swift_Blade.Skill
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
             if(TryUseSkill() == false)return;
-            
+
             DOVirtual.DelayedCall(EXECUTE_DELAY , () =>
             {
                 if (directions == null || directions.Length != skillCount)
