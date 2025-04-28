@@ -50,9 +50,10 @@ namespace Swift_Blade
             }
             else
             {
+                const float duration = 0.1f;
                 if (transparencyTween != null) transparencyTween.Kill();
-                transparencyTween = DOTween.To(() => transparencyInfo, x => itemInfoCanvasGroup.alpha = x, 1, 0.2f)
-                    .SetEase(Ease.OutSine);
+                transparencyTween = DOTween.To(() => 0.5f, x => itemInfoCanvasGroup.alpha = x, alpha, duration)
+                    .SetEase(Ease.InSine);
             }
         }
         public void SetInfoBoxPosition(Vector3 worldPosition)

@@ -26,7 +26,7 @@ namespace Swift_Blade.Combat.Health
         
         private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
         
-        private const float DAMAGE_INTERVAL = 0.4f;
+        private const float DAMAGE_INTERVAL = 0.1f;
         private float lastDamageTime;
         
         protected virtual void Start()

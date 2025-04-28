@@ -74,6 +74,8 @@ namespace Swift_Blade
         [Header("SceneManager")]
         [SerializeField] private SceneManagerSO SceneManagerSO;
 
+        private bool isItemFadeTweening;
+
         public void AddCombo(AttackComboSO attackComboSO)
         {
             comboList.Add(attackComboSO);
@@ -135,6 +137,8 @@ namespace Swift_Blade
         protected override void Awake()
         {
             base.Awake();
+
+            InGameUIManager.Instance.SetInfoBoxAlpha(0, true);
 
             if (Instance == null)
                 Instance = this;
@@ -233,7 +237,6 @@ namespace Swift_Blade
                     {
                         lastOrb = orb;
                         InGameUIManager.Instance.SetInfoBoxAlpha(1, false);
-                        print("show");
                         IPlayerEquipable equipable = orb.GetEquipable;
                         InGameUIManager.Instance.SetInfoBox(equipable);
                     }
@@ -288,13 +291,15 @@ namespace Swift_Blade
                     InGameUIManager.Instance.SetInfoBoxAlpha(1, false);
                     IPlayerEquipable equipable = orb.GetEquipable;
                     InGameUIManager.Instance.SetInfoBox(equipable);
-                    print("show");
+                    isItemFadeTweening = true;
                 }
             }
-            else
+            else if(isItemFadeTweening)
             {
+                isItemFadeTweening = false;
                 lastOrb = null;
-                InGameUIManager.Instance.SetInfoBoxAlpha(0);
+                InGameUIManager.Instance.SetInfoBoxAlpha(0, false);
+                print("hide");
             }
         }
 
