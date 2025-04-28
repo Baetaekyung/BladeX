@@ -40,6 +40,7 @@ namespace Swift_Blade
 
         private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
         private GameObject interactable;
+        private GameObject interactableOrb;
         private Tween playerInvincibleTween;
 
         private BaseOrb lastOrb;
@@ -72,6 +73,8 @@ namespace Swift_Blade
 
         [Header("SceneManager")]
         [SerializeField] private SceneManagerSO SceneManagerSO;
+
+        private bool isItemFadeTweening;
 
         public void AddCombo(AttackComboSO attackComboSO)
         {
@@ -134,6 +137,8 @@ namespace Swift_Blade
         protected override void Awake()
         {
             base.Awake();
+
+            InGameUIManager.Instance.SetInfoBoxAlpha(0, true);
 
             if (Instance == null)
                 Instance = this;
@@ -199,23 +204,8 @@ namespace Swift_Blade
         private void Update()
         {
             playerStateMachine.UpdateState();
-            //if (Input.GetKeyDown(KeyCode.Z))
-            //    AudioEmitter.Dbg2();
 
             mousePosition.position = GetPlayerInput.GetMousePositionWorld;
-
-            //Vector3 rr = GetPlayerTransform.InverseTransformDirection(GetPlayerInput.GetInputDirectionRawRotated);
-            //Debug.DrawRay(Vector3.zero + Vector3.up * 0.7f, rr, Color.red);
-
-            //d = GetPlayerTransform.rotation;
-            //Quaternion originQuat = d;
-            //d = Quaternion.Inverse(d);
-            //Quaternion quat = d;
-            //Vector3 rrr = quat * GetPlayerInput.GetInputDirectionRawRotated;
-            //rrr.z = 0;
-            //Vector3 finalRr = originQuat * rrr;
-            //Debug.DrawRay(Vector3.zero + Vector3.up * 0.9f, rrr, Color.red);
-            //Debug.DrawRay(Vector3.zero + Vector3.up * 1.2f, finalRr, Color.blue);
 
             if (lastOrb != null)
             {
@@ -243,10 +233,10 @@ namespace Swift_Blade
                     //    interactable.OnEndCallbackUnsubscribe(OnEndCallback);
                     //    //playerStateMachine.ChangeState(PlayerStateEnum.Move);
                     //}
-                    if(interactable.TryGetComponent(out BaseOrb orb))
+                    if (interactable.TryGetComponent(out BaseOrb orb))
                     {
                         lastOrb = orb;
-                        InGameUIManager.Instance.SetInfoBoxAlpha(1);
+                        InGameUIManager.Instance.SetInfoBoxAlpha(1, false);
                         IPlayerEquipable equipable = orb.GetEquipable;
                         InGameUIManager.Instance.SetInfoBox(equipable);
                     }
@@ -264,6 +254,7 @@ namespace Swift_Blade
             float smallestDistance = Mathf.Infinity;
             GameObject hitObject = null;
             GameObject orbHitObject = null;
+            BaseOrb orb = null;
 
             for (int i = 0; i < hitCount; i++)
             {
@@ -280,33 +271,35 @@ namespace Swift_Blade
                 {
                     smallestDistance = sqrDistance;
                     hitObject = item.gameObject;
-                    if (item.TryGetComponent(out BaseOrb orb))
+                    if (item.TryGetComponent(out orb))
                     {
                         orbHitObject = item.gameObject;
                     }
                 }
             }
-            UI_DebugPlayer.DebugText(0, hitObject == null, "hitObject");
-
-            bool isOtherOrb = orbHitObject != interactable;
+            bool isOtherOrb = orbHitObject != interactableOrb;
 
             interactable = hitObject;
+            interactableOrb = orbHitObject;
 
             if (orbHitObject != null)
             {
-                Debug.DrawRay(orbHitObject.transform.position + Vector3.up, Vector3.up, Color.magenta, 0.1f);
-                if (isOtherOrb && orbHitObject.TryGetComponent(out BaseOrb orb))
+                Debug.DrawRay(orbHitObject.transform.position + Vector3.up, Vector3.up, Color.magenta);
+                if (isOtherOrb && orb != null)
                 {
                     lastOrb = orb;
-                    InGameUIManager.Instance.SetInfoBoxAlpha(1);
+                    InGameUIManager.Instance.SetInfoBoxAlpha(1, false);
                     IPlayerEquipable equipable = orb.GetEquipable;
                     InGameUIManager.Instance.SetInfoBox(equipable);
+                    isItemFadeTweening = true;
                 }
             }
-            else
+            else if(isItemFadeTweening)
             {
+                isItemFadeTweening = false;
                 lastOrb = null;
-                InGameUIManager.Instance.SetInfoBoxAlpha(0);
+                InGameUIManager.Instance.SetInfoBoxAlpha(0, false);
+                print("hide");
             }
         }
 

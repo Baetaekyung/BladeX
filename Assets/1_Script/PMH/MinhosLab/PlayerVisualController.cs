@@ -6,7 +6,7 @@ namespace Swift_Blade
     {
         [SerializeField] private EquipmentListSO equipListSO;
 
-        [SerializeField] private Transform HelmetVisual, BodiesVisual;
+        [SerializeField] private Transform HelmetVisual, HelmetVisual2, BodiesVisual;
 
         public void EntityComponentAwake(Entity entity)
         {
@@ -22,6 +22,11 @@ namespace Swift_Blade
                 {
                     Debug.Log("«Ô∏‰ø° ¿÷Ω¿¥œ¥Ÿ");
                     go = HelmetVisual.Find(partsName).gameObject;
+                }
+                else if (HelmetVisual2.Find(partsName) is not null)
+                {
+                    Debug.Log("«Ô∏‰2ø° ¿÷Ω¿¥œ¥Ÿ");
+                    go = HelmetVisual2.Find(partsName).gameObject;
                 }
                 else
                 {
@@ -41,6 +46,11 @@ namespace Swift_Blade
                 if (HelmetVisual.Find(partsName) is not null)
                 {
                     go = HelmetVisual.Find(partsName).gameObject;
+                }
+                else if (HelmetVisual2.Find(partsName) is not null)
+                {
+                    Debug.Log("«Ô∏‰2ø° ¿÷Ω¿¥œ¥Ÿ");
+                    go = HelmetVisual2.Find(partsName).gameObject;
                 }
                 else
                 {
