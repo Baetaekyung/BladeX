@@ -71,6 +71,9 @@ namespace Swift_Blade
             if (tagCount < minTagCount)
                 return false;
 
+            if (_playerDmgCaster == null)
+                return false;
+
             return true;
         }
     }
