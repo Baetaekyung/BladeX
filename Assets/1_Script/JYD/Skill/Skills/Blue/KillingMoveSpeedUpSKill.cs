@@ -14,6 +14,9 @@ namespace Swift_Blade.Skill
         [Range(0.1f, 5)] [SerializeField] private float increaseTime;
         private float timer = 0;
         private DirectionArrowParticle directionArrowParticle;
+
+        private bool useSkill;
+        
         public override void Initialize()
         {
             MonoGenericPool<BlueWaveParticle>.Initialize(skillParticle);
@@ -26,9 +29,10 @@ namespace Swift_Blade.Skill
             {
                 if (item.TryGetComponent(out BaseEnemyHealth health) && health.isDead)
                 {
+                    useSkill = true;
                     ResetSkill();
                     PushDirectionArrowParticle();
-                    
+
                     PopupManager.Instance.LogInfoBox($"{skillName}¿Ã Ω««‡µ ");
                     
                     BlueWaveParticle blueWaveParticle = MonoGenericPool<BlueWaveParticle>.Pop();
@@ -36,7 +40,7 @@ namespace Swift_Blade.Skill
                     blueWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.5f,0);
                     
                     directionArrowParticle = MonoGenericPool<DirectionArrowParticle>.Pop();
-                    directionArrowParticle.transform.SetParent(player.GetPlayerTransform);
+                    directionArrowParticle.SetFollowTransform(player.GetPlayerTransform);
                     directionArrowParticle.transform.position = player.GetPlayerTransform.position + 
                                                                 new Vector3(0,1.7f,0);
                     
@@ -50,16 +54,18 @@ namespace Swift_Blade.Skill
 
         public override void SkillUpdate(Player player, IEnumerable<Transform> targets = null)
         {
-            timer += Time.deltaTime;
-            if (timer >= increaseTime)
+            if (useSkill)
             {
-                PopupManager.Instance.LogInfoBox($"{skillName}¿Ã «ÿ¿Áµ ");
-
-                PushDirectionArrowParticle();
-                
-                ResetSkill();
+                timer += Time.deltaTime;
+                if (timer >= increaseTime)
+                {
+                    useSkill = false;
+                                        
+                    PopupManager.Instance.LogInfoBox($"{skillName}¿Ã «ÿ¿Áµ ");
+                    PushDirectionArrowParticle();
+                    ResetSkill();
+                }
             }
-            
         }
 
         public override void ResetSkill()
@@ -67,7 +73,7 @@ namespace Swift_Blade.Skill
             timer = 0;
             statCompo.RemoveModifier(statType , skillName);
         }
-
+        
         private void PushDirectionArrowParticle()
         {
             if (directionArrowParticle != null)
