@@ -2,8 +2,26 @@ using UnityEngine;
 
 namespace Swift_Blade
 {
-    public static class EquipmentUtility
+    public static class KoreanUtility
     {
+        public static string GetStatTypeToKorean(StatType statType)
+        {
+            string statToKorean = statType switch
+            {
+                StatType.HEALTH => "체력",
+                StatType.DAMAGE => "공격력",
+                StatType.ATTACKSPEED => "공격속도",
+                StatType.MOVESPEED => "이동속도",
+                StatType.DASH_INVINCIBLE_TIME => "구르기무적시간",
+                StatType.PARRY_CHANCE => "특수능력지속시간",
+                StatType.CRITICAL_CHANCE => "치명타확률",
+                StatType.CRITICAL_DAMAGE => "치명타데미지",
+                _ => "Error"
+            };
+
+            return statToKorean;
+        }
+
         public static string GetTagToKorean(EquipmentTag tag)
         {
             string tagKorean = tag switch

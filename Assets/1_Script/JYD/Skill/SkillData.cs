@@ -17,9 +17,9 @@ namespace Swift_Blade.Skill
         string IPlayerEquipable.DisplayName => skillName;
 
 
-        [Tooltip("���� ������ ������ �󸶳� ������")] public float colorRatio;
-        [Tooltip("���� Ȯ��")][Range(1,100)] public int random;
-        [Tooltip("�ִ�� ���ϼ� �ִ� ������")][Range(1,100)] public int maxRandom;
+        [Tooltip("비율")] public float colorRatio;
+        [Tooltip("확률")][Range(1,100)] public int random;
+        [Tooltip("이거보다 높아질순 없음")][Range(1,100)] public int maxRandom;
         
         [TextArea] public string skillDescription;
         

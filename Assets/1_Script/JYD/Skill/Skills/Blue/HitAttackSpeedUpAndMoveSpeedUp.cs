@@ -53,8 +53,8 @@ namespace Swift_Blade.Skill
         
         private void ResetStat(Player player)
         {
-            player.GetPlayerStat.RemoveModifier(StatType.MOVESPEED, skillName);
-            player.GetPlayerStat.RemoveModifier(StatType.ATTACKSPEED, skillName);
+            statCompo.RemoveModifier(StatType.MOVESPEED, skillName);
+            statCompo.RemoveModifier(StatType.ATTACKSPEED, skillName);
         }
         
         public override void ResetSkill()

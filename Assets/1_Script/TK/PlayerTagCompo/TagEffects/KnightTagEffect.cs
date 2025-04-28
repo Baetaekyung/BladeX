@@ -1,5 +1,5 @@
 using Swift_Blade.Combat.Caster;
-using Swift_Blade.Combat.Health;
+using System;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -28,18 +28,7 @@ namespace Swift_Blade
             if(tagCount < minTagCount)
                 return;
 
-            if(tagCount >= maxTagCount)
-            {
-                _playerDmgCaster.OnCastDamageEvent.RemoveListener(HandleBuffShield);
-            }
-            else if(tagCount >= middleTagCount)
-            {
-                _playerDmgCaster.OnCastDamageEvent.RemoveListener(HandleBuffShield);
-            }
-            else if(tagCount >= minTagCount)
-            {
-                _playerDmgCaster.OnCastDamageEvent.RemoveListener(HandleBuffShield);
-            }
+            _playerDmgCaster.OnCastDamageEvent.RemoveListener(HandleBuffShield);
         }
 
         public override void EnableTagEffect(int tagCount)
@@ -49,32 +38,33 @@ namespace Swift_Blade
 
             if (tagCount >= maxTagCount)
             {
-                _currentPercent = maxSetEffectPercent;
-
-                _playerDmgCaster.OnCastDamageEvent.AddListener(HandleBuffShield);
+                OnTagEffect(maxSetEffectPercent);
             }
             else if (tagCount >= middleTagCount)
             {
-                _currentPercent = middleSetEffectPercent;
-
-                _playerDmgCaster.OnCastDamageEvent.AddListener(HandleBuffShield);
+                OnTagEffect(middleSetEffectPercent);
             }
             else if (tagCount >= minTagCount)
             {
-                _currentPercent = minSetEffectPercent;
-
-                _playerDmgCaster.OnCastDamageEvent.AddListener(HandleBuffShield);
+                OnTagEffect(minSetEffectPercent);
             }
+        }
+
+        private void OnTagEffect(int percent)
+        {
+            _currentPercent = percent;
+
+            _playerDmgCaster.OnCastDamageEvent.AddListener(HandleBuffShield);
         }
 
         //Dont need action data.. hmm...
         private void HandleBuffShield(ActionData actionData)
         {
             //확률에 맞지 않음
-            if (Random.Range(0, 101) > _currentPercent)
+            if (UnityEngine.Random.Range(0, 101) > _currentPercent)
                 return;
 
-            _playerStatCompo.BuffToStat(StatType.HEALTH, nameof(KnightTagEffect), 3f, 1f);
+            _playerStatCompo.BuffToStat(StatType.HEALTH, Guid.NewGuid().ToString(), 3f, 1f);
         }
 
         public override bool IsValidToEnable(int tagCount)

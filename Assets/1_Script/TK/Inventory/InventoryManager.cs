@@ -284,7 +284,7 @@ namespace Swift_Blade
                 {
                     _sb.Clear();
 
-                    _sb.AppendLine(EquipmentUtility.GetRarityColorText(itemData.equipmentData.rarity));
+                    _sb.AppendLine(KoreanUtility.GetRarityColorText(itemData.equipmentData.rarity));
 
                     if(itemData.equipmentData.tags.Count == 0)
                     {
@@ -294,7 +294,7 @@ namespace Swift_Blade
                     {
                         foreach (var tag in itemData.equipmentData.tags)
                         {
-                            _sb.Append($"<color=orange>[ {EquipmentUtility.GetTagToKorean(tag)} ]</color>")
+                            _sb.Append($"<color=orange>[ {KoreanUtility.GetTagToKorean(tag)} ]</color>")
                                 .Append(" ");
                         }
                     }

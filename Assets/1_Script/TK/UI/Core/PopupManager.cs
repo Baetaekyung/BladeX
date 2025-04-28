@@ -216,7 +216,7 @@ namespace Swift_Blade
                 }
 
                 InfoBoxPopup remainInfobox = Instantiate(infoBoxPopup, popupCanvasTrm);
-
+                
                 remainInfobox.SetInfoBox(message);
                 remainInfobox.DelayPopup(1.0f, () => Destroy(remainInfobox.gameObject));
                 return;

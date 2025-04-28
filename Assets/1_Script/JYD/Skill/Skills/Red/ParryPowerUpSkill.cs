@@ -32,7 +32,7 @@ namespace Swift_Blade.Skill
                 if (isSkillUp == false)
                 {
                     isSkillUp = true;
-                    player.GetPlayerStat.AddModifier(statType , skillName , attackIncreaseAmount * GetColorRatio());
+                    statCompo.AddModifier(statType , skillName , attackIncreaseAmount * GetColorRatio());
                 }
                 
                 increaseTimer += Time.deltaTime;
@@ -40,7 +40,7 @@ namespace Swift_Blade.Skill
                 if (increaseTimer >= increaseTime)
                 {
                     ResetSkill();
-                    player.GetPlayerStat.RemoveModifier(statType , skillName);
+                    statCompo.RemoveModifier(statType , skillName);
                 }
                 
             }

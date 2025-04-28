@@ -18,7 +18,7 @@ namespace Swift_Blade.Pool
                 //Debug.LogError($"field:monoPool is already initialized. {prefabSO.name}");
                 return;
             }
-
+            
             T prefab = prefabSO.GetMono as T;
             monoPool = new MonoPool<T>(prefab);//, preCreate: prefabSO.GetPreCreate);
 
