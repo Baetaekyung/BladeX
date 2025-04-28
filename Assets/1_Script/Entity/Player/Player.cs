@@ -138,8 +138,6 @@ namespace Swift_Blade
         {
             base.Awake();
 
-            InGameUIManager.Instance.SetInfoBoxAlpha(0, true);
-
             if (Instance == null)
                 Instance = this;
             level.Init(SceneManagerSO);
@@ -201,6 +199,11 @@ namespace Swift_Blade
                     //onHitChannel.RaiseEvent(this);
                 });
         }
+        protected override void Start()
+        {
+            base.Start();
+            InGameUIManager.Instance.SetInfoBoxAlpha(0, true);
+        }
         private void Update()
         {
             playerStateMachine.UpdateState();
@@ -236,7 +239,7 @@ namespace Swift_Blade
                     if (interactable.TryGetComponent(out BaseOrb orb))
                     {
                         lastOrb = orb;
-                        InGameUIManager.Instance.SetInfoBoxAlpha(1, false);
+                        InGameUIManager.Instance.SetInfoBoxAlpha(1, true);
                         IPlayerEquipable equipable = orb.GetEquipable;
                         InGameUIManager.Instance.SetInfoBox(equipable);
                     }
