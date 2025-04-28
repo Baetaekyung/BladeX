@@ -43,7 +43,6 @@ namespace Swift_Blade
             float duration = 1.5f;
 
             Sequence sequence = DOTween.Sequence();
-
             sequence.Append(transform.DOMove(offsetPos, duration));
             sequence.Append(transform.DOMove(offsetPos2, duration));
         }

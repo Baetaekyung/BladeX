@@ -27,7 +27,7 @@ public partial class MoveToTargetAndCheckPlayerAction : Action
         if (Target.Value == null || Player.Value == null)
             return Status.Failure;
                 
-        whatIsObstacle = LayerMask.GetMask("Wall" , "Obstacle","Ground");
+        whatIsObstacle = LayerMask.GetMask("Wall" , "Obstacle","Ground","Throwable");
         
         Agent.Value.speed = MoveSpeed.Value;
         UpdateDistances();

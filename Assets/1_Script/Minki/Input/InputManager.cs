@@ -80,39 +80,7 @@ namespace Swift_Blade.Inputs
         {
             _input.CustomInput.Player.Disable();
 
-            InputAction inputAction = null;
-
-            switch (type)
-            {
-                case InputType.Movement_Forward:
-                case InputType.Movement_Left:
-                case InputType.Movement_Back:
-                case InputType.Movement_Right:
-                    inputAction = _input.CustomInput.Player.Movement;
-                    break;
-                case InputType.Roll:
-                    inputAction = _input.CustomInput.Player.Roll;
-                    break;
-                case InputType.Parry:
-                    inputAction = _input.CustomInput.Player.Parry;
-                    break;
-                case InputType.Inventory:
-                    inputAction = _input.CustomInput.Player.Inventory;
-                    break;
-                case InputType.ChangeQuick:
-                    inputAction = _input.CustomInput.Player.ChangeQuick;
-                    break;
-                case InputType.UseQuick:
-                    inputAction = _input.CustomInput.Player.UseQuick;
-                    break;
-                case InputType.Attack1:
-                    inputAction = _input.CustomInput.Player.Attack1;
-                    break;
-                case InputType.Attack2:
-                    inputAction = _input.CustomInput.Player.Attack2;
-                    break;
-            }
-
+            InputAction inputAction = InputTypeToInputAction(type);
             InputActionRebindingExtensions.RebindingOperation operation = inputAction.PerformInteractiveRebinding();
 
             if ((int)type < 4)
@@ -131,6 +99,32 @@ namespace Swift_Blade.Inputs
                     op.Dispose();
                     _input.CustomInput.Player.Enable();
                 }).Start();
+        }
+
+        public string GetCurrentKeyByType(InputType type)
+        {
+            InputAction inputAction = InputTypeToInputAction(type);
+
+            if((int)type < 4)
+                return inputAction.GetBindingDisplayString((int)type + 1);
+                
+            return inputAction.GetBindingDisplayString();
+        }
+
+        private InputAction InputTypeToInputAction(InputType type)
+        {
+            return type switch
+            {
+                InputType.Movement_Forward or InputType.Movement_Left or InputType.Movement_Back or InputType.Movement_Right => _input.CustomInput.Player.Movement,
+                InputType.Roll => _input.CustomInput.Player.Roll,
+                InputType.Parry => _input.CustomInput.Player.Parry,
+                InputType.Inventory => _input.CustomInput.Player.Inventory,
+                InputType.ChangeQuick => _input.CustomInput.Player.ChangeQuick,
+                InputType.UseQuick => _input.CustomInput.Player.UseQuick,
+                InputType.Attack1 => _input.CustomInput.Player.Attack1,
+                InputType.Attack2 => _input.CustomInput.Player.Attack2,
+                _ => default,
+            };
         }
 
         #region Handle
