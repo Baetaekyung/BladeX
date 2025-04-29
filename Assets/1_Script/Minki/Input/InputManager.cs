@@ -13,6 +13,8 @@ namespace Swift_Blade.Inputs
     [DefaultExecutionOrder(-200)]
     public class InputManager : MonoSingleton<InputManager>
     {
+        public static event Action RebindEndEvent;
+
         public static event Action RollEvent;
         public static event Action ParryEvent;
         public static event Action InventoryEvent;
@@ -93,12 +95,13 @@ namespace Swift_Blade.Inputs
                 .OnComplete(op =>
                 {
                     op.Dispose();
+                    RebindEndEvent?.Invoke();
                     _input.CustomInput.Player.Enable();
                 }).OnCancel(op =>
                 {
                     op.Dispose();
                     _input.CustomInput.Player.Enable();
-                }).Start();
+                }).Start();            
         }
 
         public string GetCurrentKeyByType(InputType type)

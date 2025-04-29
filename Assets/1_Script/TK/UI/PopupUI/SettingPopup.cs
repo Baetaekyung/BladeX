@@ -1,13 +1,20 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace Swift_Blade.UI
 {
     public class SettingPopup : PopupUI
     {
+        [SerializeField] private GameObject normalSettingPanel;
+        [SerializeField] private GameObject keymapSettingPanel;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            SetToNormalPanel();
+        }
+
         public override void Popup()
         {
             if(cG != null)
@@ -31,6 +38,18 @@ namespace Swift_Blade.UI
                     .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
             }
             _raycaster.enabled = false;
+        }
+
+        public void SetToNormalPanel()
+        {
+            normalSettingPanel.SetActive(true);
+            keymapSettingPanel.SetActive(false);
+        }
+
+        public void SetToKeymapPanel()
+        {
+            normalSettingPanel.SetActive(false);
+            keymapSettingPanel.SetActive(true);
         }
     }
 }
