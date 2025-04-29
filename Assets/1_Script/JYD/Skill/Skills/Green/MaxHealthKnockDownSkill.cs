@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Pool;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Swift_Blade.Skill
@@ -28,7 +29,11 @@ namespace Swift_Blade.Skill
             {
                 if (item.TryGetComponent(out BaseEnemyHealth enemyHealth))
                 {
-                    enemyHealth.ChangeParryState();
+                    ActionData actionData = new ActionData
+                    {
+                        stun = true
+                    };
+                    enemyHealth.TakeDamage(actionData);
                 }
             }
             

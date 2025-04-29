@@ -305,7 +305,7 @@ namespace Swift_Blade
                 print("hide");
             }
         }
-
+        
         public void Attack(EComboState previousState, EComboState nonImmediateState = EComboState.None)
         {
             playerAttackState.PreviousComboState = previousState;

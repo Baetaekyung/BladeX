@@ -58,12 +58,14 @@ namespace Swift_Blade.Combat.Health
         
         public override void TakeDamage(ActionData actionData)
         {
-            if(isDead || !IsDamageTime())return;
+            if((isDead || !IsDamageTime()) && actionData.stun == false)return;
             
             lastDamageTime = Time.time; 
             
             currentHealth -= actionData.damageAmount;
             OnChangeHealthEvent?.Invoke(GetHealthPercent());
+            
+            print(actionData.stun);
             
             if(actionData.stun)
                 ChangeParryState();
@@ -94,7 +96,7 @@ namespace Swift_Blade.Combat.Health
         {
             return Random.Range(1,10);
         } 
-
+        
         public override void TakeHeal(float amount)
         {
             currentHealth += amount;
