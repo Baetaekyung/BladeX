@@ -12,7 +12,6 @@ namespace Swift_Blade
     {
         [SerializeField] private int skillCount;
         private int skillCounter = 0;
-        [SerializeField] private int skillDamage;
         [SerializeField] private float skillRadius;
         [SerializeField] private LayerMask whatIsTarget;
 
@@ -41,9 +40,8 @@ namespace Swift_Blade
                         if (item.TryGetComponent(out BaseEnemyHealth health))
                         {
                             ActionData actionData = new ActionData();
-                            actionData.damageAmount = skillDamage;
                             actionData.stun = true;
-                        
+                            
                             health.TakeDamage(actionData);
                         }
                 
