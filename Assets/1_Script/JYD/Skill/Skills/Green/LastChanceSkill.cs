@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Skill
 {
+    [CreateAssetMenu(fileName = "LastChanceSkill", menuName = "SO/Skill/Green/LastChanceSkill")]
     public class LastChanceSkill : SkillData
     {
         [SerializeField] private VolumeProfile profile;

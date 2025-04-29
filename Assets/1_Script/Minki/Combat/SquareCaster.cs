@@ -3,15 +3,9 @@ using UnityEngine.Events;
 
 namespace Swift_Blade.Combat.Caster
 {
-    public class SquareCaster : MonoBehaviour, ICasterAble
+    public class SquareCaster : LayerCaster, ICasterAble
     {
         [SerializeField] private Vector3 _casterHalfSize;
-        [SerializeField] [Range(0f, 10f)] private float _casterInterpolation = 0.5f;
-        [SerializeField] [Range(0f, 10f)] private float _castingRange = 1f;
-
-        public LayerMask targetLayer;
-        public UnityEvent<ActionData> OnCastDamageEvent;
-        public UnityEvent OnCastEvent;
 
         [Space(20)] public bool CanCurrentAttackParry = true;
         [Space(10)] public UnityEvent parryEvents;
@@ -20,13 +14,18 @@ namespace Swift_Blade.Combat.Caster
         protected const float parryInterval = 0.5f;
         protected float lastParryTime;
         
-        public bool Cast()
+        public override bool Cast()
         {
+            if (IsNotObstacleLine() == false)
+            {
+                return false;
+            }
+
             OnCastEvent?.Invoke();
             
             Vector3 startPos = GetStartPosition();
 
-            bool isHit = Physics.BoxCast(startPos, _casterHalfSize, transform.forward, out RaycastHit hit, transform.rotation, _castingRange, targetLayer);
+            bool isHit = Physics.BoxCast(startPos, _casterHalfSize, transform.forward, out RaycastHit hit, transform.rotation, _castingRange, whatIsTarget);
             
             if (isHit && hit.collider.TryGetComponent(out IHealth health))
             {
@@ -45,11 +44,6 @@ namespace Swift_Blade.Combat.Caster
             CanCurrentAttackParry = true;
 
             return isHit;
-        }
-        
-        protected Vector3 GetStartPosition()
-        {
-            return transform.position + transform.forward * -_casterInterpolation * 2;
         }
 
         private void TryParry(RaycastHit hit, PlayerParryController parryController, IHealth health, ActionData actionData)
@@ -77,12 +71,6 @@ namespace Swift_Blade.Combat.Caster
             float playerDot = Vector3.Dot(player.forward, playerToEnemy);
             
             return playerDot > 0;
-        }
-       
-        protected virtual void ApplyDamage(IHealth health,ActionData actionData)
-        {
-            OnCastDamageEvent?.Invoke(actionData);
-            health.TakeDamage(actionData);
         }
 
         #if UNITY_EDITOR
