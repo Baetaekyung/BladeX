@@ -17,7 +17,7 @@ namespace Swift_Blade
 
         public override void Initialize()
         {
-            MonoGenericPool<ThunderParticle>.Initialize(skillParticle);
+            MonoGenericPool<LightingSpark>.Initialize(skillParticle);
         }
 
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
@@ -41,12 +41,13 @@ namespace Swift_Blade
                         {
                             ActionData actionData = new ActionData();
                             actionData.stun = true;
+                            actionData.hurtType = 1;
                             
                             health.TakeDamage(actionData);
                         }
                 
-                        ThunderParticle th = MonoGenericPool<ThunderParticle>.Pop();
-                        th.transform.position = item.transform.position + new Vector3(0,1,0);
+                        LightingSpark th = MonoGenericPool<LightingSpark>.Pop();
+                        th.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.4f,0);
                     }
                 }
                 

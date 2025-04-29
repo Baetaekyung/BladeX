@@ -11,8 +11,10 @@ public struct ActionData
     
     public Vector3 knockbackDirection;
     public float knockbackForce;
+
+    public int hurtType;
     
-    public ActionData( Vector3 hitPoint,  Vector3 hitNormal, float damageAmount, bool stun, Vector3 knockbackDirection = default, float knockbackForce = 0f )
+    public ActionData( Vector3 hitPoint,  Vector3 hitNormal, float damageAmount, bool stun, Vector3 knockbackDirection = default, float knockbackForce = 0f, int hurtType = 0)
     {
         this.hitPoint = hitPoint;
         this.hitNormal = hitNormal;
@@ -21,6 +23,7 @@ public struct ActionData
         
         this.knockbackDirection = knockbackDirection;
         this.knockbackForce = knockbackForce;
+        this.hurtType = hurtType;
     }
     
 }

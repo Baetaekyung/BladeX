@@ -1,7 +1,9 @@
-using UnityEngine.Rendering.PostProcessing;
 using System.Collections.Generic;
+using DG.Tweening;
+using Swift_Blade.Pool;
 using UnityEngine.Rendering;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace Swift_Blade.Skill
 {
@@ -13,16 +15,23 @@ namespace Swift_Blade.Skill
         [Range(0.1f, 10)] [SerializeField] private float attackIncreaseValue;
         [Range(0.1f, 10)] [SerializeField] private float attackSpeedIncreaseValue;
         [Range(0.1f, 10)] [SerializeField] private float moveSpeedIncreaseValue;
+        
+        [Range(0.1f, 1)] [SerializeField] private float chromaticAberrationIntensity;
+        [Range(0.1f, 2)] [SerializeField] private float chromaticAberrationDuration;
         private bool canUpgrade = false;
         
         private ChromaticAberration chromaticAberration;
         
+        public override void Initialize()
+        {
+            profile.TryGet(out chromaticAberration);
+        }
+
         public override void SkillUpdate(Player player, IEnumerable<Transform> targets = null)
         {
             if (canUpgrade == false && player.GetPlayerHealth.GetCurrentHealth > 1)
             {
                 ResetSkill();
-                
             }
         }
 
@@ -31,6 +40,13 @@ namespace Swift_Blade.Skill
             if (player.GetPlayerHealth.GetCurrentHealth <= 1 && canUpgrade)
             {
                 canUpgrade = false;
+                    
+                Debug.Log("¤µ¤´¤²");
+                
+                DOVirtual.Float(chromaticAberration.intensity.value , chromaticAberrationIntensity,chromaticAberrationDuration ,x =>
+                {
+                    chromaticAberration.intensity.value = x;
+                });
                 
                 statCompo.AddModifier(StatType.DAMAGE,skillName,attackIncreaseValue);
                 statCompo.AddModifier(StatType.ATTACKSPEED,skillName,attackSpeedIncreaseValue);
@@ -40,6 +56,11 @@ namespace Swift_Blade.Skill
         
         public override void ResetSkill()
         {
+            DOVirtual.Float(chromaticAberration.intensity.value ,0 ,chromaticAberrationDuration ,x =>
+            {
+                chromaticAberration.intensity.value = x;
+            });
+            
             canUpgrade = true;
             
             statCompo.RemoveModifier(StatType.DAMAGE,skillName);
