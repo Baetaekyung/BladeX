@@ -42040,7 +42040,7 @@ MonoBehaviour:
   parryEvents:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6895625097253760448}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp
         m_MethodName: ChangeParryState
         m_Mode: 1
@@ -45459,7 +45459,8 @@ GameObject:
   - component: {fileID: 3575926326915301583}
   - component: {fileID: 1344055792727759508}
   - component: {fileID: 5492742793706994907}
-  - component: {fileID: 6895625097253760448}
+  - component: {fileID: 4311412928646841214}
+  - component: {fileID: 1277640053400689167}
   m_Layer: 7
   m_Name: SwrodBoss
   m_TagString: Untagged
@@ -45739,7 +45740,7 @@ MonoBehaviour:
   prickEffect: {fileID: 11400000, guid: 448e4fac51f97074d8eb268a9334c66c, type: 2}
   prickTrm1: {fileID: 6666297108255584503}
   prickTrm2: {fileID: 882628041340589753}
---- !u!114 &6895625097253760448
+--- !u!114 &4311412928646841214
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45748,7 +45749,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5782296022825403814}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a970b73a23fd204d93af0d5583e55dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f41c83b0947a7e42b835429320400e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnHitEvent:
@@ -45800,6 +45801,33 @@ MonoBehaviour:
   BehaviorGraphAgent: {fileID: 1908999335113879507}
   changeBossState: {fileID: 0}
   isKnockback: 0
+--- !u!114 &1277640053400689167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5782296022825403814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d48c280d01c7b4e8bfb4226af1c632, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponName: SM_Wep_Sword_Large_01
+  weapons:
+  - {fileID: 7307799705064874111}
+  - {fileID: 8932080191700528298}
+  - {fileID: 2754198445295203337}
+  heads: []
+  helmets: []
+  Chests: []
+  RightArms: []
+  LeftArms: []
+  RightShoulders: []
+  LeftShoulders: []
+  Pants: []
+  RightLegs: []
+  leftLegs: []
 --- !u!1 &5783172332564757590
 GameObject:
   m_ObjectHideFlags: 0
@@ -72129,6 +72157,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6fa756c603368045a35e5b45a1b84cb, type: 3}
+--- !u!1 &2754198445295203337 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 194264, guid: e6fa756c603368045a35e5b45a1b84cb, type: 3}
+  m_PrefabInstance: {fileID: 2754198445295272657}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2754198445295461645 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 452572, guid: e6fa756c603368045a35e5b45a1b84cb, type: 3}
@@ -72206,5 +72239,10 @@ PrefabInstance:
 --- !u!4 &8932080191700435152 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 458314, guid: 11b84f6e8e1190b46b3d40c72c9fe522, type: 3}
+  m_PrefabInstance: {fileID: 8932080191700565658}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8932080191700528298 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 102960, guid: 11b84f6e8e1190b46b3d40c72c9fe522, type: 3}
   m_PrefabInstance: {fileID: 8932080191700565658}
   m_PrefabAsset: {fileID: 0}

@@ -6,8 +6,8 @@ namespace Swift_Blade.Enemy
     public class EnemyWeapon : MonoBehaviour
     {
         private float rotateDuration = 0.7f;
-        private float rotateSpeed = 720; // 1초에 360도
-
+        private float rotateSpeed = 240;
+    
         private void Awake()
         {
             transform.parent = null;
@@ -19,7 +19,7 @@ namespace Swift_Blade.Enemy
         {
             StartCoroutine(RotateOverTime());
         }
-
+        
         private IEnumerator RotateOverTime()
         {
             float elapsed = 0f;
