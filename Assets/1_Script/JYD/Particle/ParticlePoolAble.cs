@@ -24,7 +24,10 @@ namespace Swift_Blade.Pool
             pushTimer += Time.deltaTime;
 
             if (pushTimer >= pushTime)
+            {
+                pushTimer = 0;
                 Push();
+            }
         }
 
         protected virtual void Push()

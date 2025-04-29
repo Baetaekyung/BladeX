@@ -12,7 +12,7 @@ namespace Swift_Blade.Skill
         private float attackCounter = 0;
        
         [SerializeField] private int skillDamage = 0;
-
+        
         public override void Initialize()
         {
             if (skillParticle == null || skillParticle.GetMono == null)
@@ -20,7 +20,7 @@ namespace Swift_Blade.Skill
                 Debug.LogError("SkillEffectPrefab or its MonoBehaviour is null.");
                 return;
             }
-
+            
             attackCounter = 0;
             MonoGenericPool<ThunderParticle>.Initialize(skillParticle);
         }
@@ -38,9 +38,9 @@ namespace Swift_Blade.Skill
                         if(item.TryGetComponent(out BaseEnemyHealth health))
                         {
                             ActionData actionData= new ActionData();
-                            actionData.damageAmount = skillDamage;
+                            actionData.damageAmount = skillDamage * GetColorRatio();
                             actionData.stun = true;
-                        
+                            
                             health.TakeDamage(actionData);
                         
                             ThunderParticle th = MonoGenericPool<ThunderParticle>.Pop();
