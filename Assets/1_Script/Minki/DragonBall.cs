@@ -69,6 +69,7 @@ namespace Swift_Blade.Pool
                 {
                     ActionData actionData = new ActionData(transform.position, Vector3.up, _damage, false);
                     health.TakeDamage(actionData);
+                    FloatingTextGenerator.Instance.GenerateText(Mathf.RoundToInt(_damage).ToString(), other.transform.position);
                 }
             }
         }
