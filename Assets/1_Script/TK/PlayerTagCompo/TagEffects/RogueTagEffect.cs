@@ -11,10 +11,6 @@ namespace Swift_Blade
         private PlayerDamageCaster _playerDmgCaster;
         private PlayerStatCompo _playerStatCompo;
 
-        [SerializeField, Range(0, 100)] private int minStealPercent;
-        [SerializeField, Range(0, 100)] private int middleStealPercent;
-        [SerializeField, Range(0, 100)] private int maxStealPercent;
-
         private int _currentPercent;
 
         // °è¼ö´Â 1 ½ºÅÝ¾÷
@@ -35,23 +31,31 @@ namespace Swift_Blade
             _playerStatCompo = player.GetEntityComponent<PlayerStatCompo>();
         }
 
-        public override void EnableTagEffect(int tagCount)
+        protected override void TagEnableEffect(int tagCount)
         {
-            if (minTagCount > tagCount)
-                return;
-
-            if (tagCount >= maxTagCount)
-                OnTagEffect(maxStealPercent, maxStealAmount);
-            else if (tagCount >= middleTagCount)
-                OnTagEffect(middleStealPercent, middleStealAmount);
-            else if (tagCount >= minTagCount)
-                OnTagEffect(minStealPercent, minStealAmount);
+            throw new NotImplementedException();
         }
-
-        public override void DisableTagEffect(int tagCount)
+        protected override void TagDisableEffect()
         {
-            _playerDmgCaster.OnCastDamageEvent.RemoveListener(HandleStealStat);
+            throw new NotImplementedException();
         }
+        //public override void EnableTagEffect(int tagCount)
+        //{
+        //    if (minTagCount > tagCount)
+        //        return;
+
+        //    if (tagCount >= maxTagCount)
+        //        OnTagEffect(maxEffectPercent, maxStealAmount);
+        //    else if (tagCount >= middleTagCount)
+        //        OnTagEffect(middleEffectPercent, middleStealAmount);
+        //    else if (tagCount >= minTagCount)
+        //        OnTagEffect(minEffectPercent, minStealAmount);
+        //}
+
+        //public override void DisableTagEffect(int tagCount)
+        //{
+        //    _playerDmgCaster.OnCastDamageEvent.RemoveListener(HandleStealStat);
+        //}
 
         private void OnTagEffect(int percent, int amount)
         {
@@ -83,12 +87,5 @@ namespace Swift_Blade
                 .LogInfoBox($"StatÀ» ÈÉÃÆ½À´Ï´Ù. ÈÉÄ£ ½ºÅÝ: {KoreanUtility.GetStatTypeToKorean(randomType)}");
         }
 
-        public override bool IsValidToEnable(int tagCount)
-        {
-            if (minTagCount > tagCount)
-                return false;
-
-            return true;
-        }
     }
 }

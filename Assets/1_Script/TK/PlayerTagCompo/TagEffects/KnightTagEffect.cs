@@ -22,33 +22,40 @@ namespace Swift_Blade
             _playerDmgCaster = player.GetEntityComponent<PlayerDamageCaster>();
             _playerStatCompo = player.GetEntityComponent<PlayerStatCompo>();
         }
-
-        public override void DisableTagEffect(int tagCount)
+        protected override void TagEnableEffect(int tagCount)
         {
-            if(tagCount < minTagCount)
-                return;
-
-            _playerDmgCaster.OnCastDamageEvent.RemoveListener(HandleBuffShield);
+            throw new NotImplementedException();
         }
-
-        public override void EnableTagEffect(int tagCount)
+        protected override void TagDisableEffect()
         {
-            if (tagCount < minTagCount)
-                return;
-
-            if (tagCount >= maxTagCount)
-            {
-                OnTagEffect(maxSetEffectPercent);
-            }
-            else if (tagCount >= middleTagCount)
-            {
-                OnTagEffect(middleSetEffectPercent);
-            }
-            else if (tagCount >= minTagCount)
-            {
-                OnTagEffect(minSetEffectPercent);
-            }
+            throw new NotImplementedException();
         }
+        //public override void DisableTagEffect(int tagCount)
+        //{
+        //    if(tagCount < minTagCount)
+        //        return;
+
+        //    _playerDmgCaster.OnCastDamageEvent.RemoveListener(HandleBuffShield);
+        //}
+
+        //public override void EnableTagEffect(int tagCount)
+        //{
+        //    if (tagCount < minTagCount)
+        //        return;
+
+        //    if (tagCount >= maxTagCount)
+        //    {
+        //        OnTagEffect(maxSetEffectPercent);
+        //    }
+        //    else if (tagCount >= middleTagCount)
+        //    {
+        //        OnTagEffect(middleSetEffectPercent);
+        //    }
+        //    else if (tagCount >= minTagCount)
+        //    {
+        //        OnTagEffect(minSetEffectPercent);
+        //    }
+        //}
 
         private void OnTagEffect(int percent)
         {
@@ -65,14 +72,6 @@ namespace Swift_Blade
                 return;
 
             _playerStatCompo.BuffToStat(StatType.HEALTH, Guid.NewGuid().ToString(), 3f, 1f);
-        }
-
-        public override bool IsValidToEnable(int tagCount)
-        {
-            if (tagCount >= minTagCount)
-                return true;
-
-            return false;
         }
     }
 }
