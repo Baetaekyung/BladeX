@@ -15,7 +15,7 @@ namespace Swift_Blade
                 StatType.DASH_INVINCIBLE_TIME => "구르기무적시간",
                 StatType.PARRY_CHANCE => "특수능력지속시간",
                 StatType.CRITICAL_CHANCE => "치명타확률",
-                StatType.CRITICAL_DAMAGE => "치명타데미지",
+                StatType.CRITICAL_DAMAGE => "치명타데미지%",
                 _ => "Error"
             };
 

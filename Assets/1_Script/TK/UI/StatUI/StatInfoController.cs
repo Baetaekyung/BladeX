@@ -9,6 +9,7 @@ namespace Swift_Blade
 
         private StatInfoUI[] _statInfos;
         private PlayerStatCompo _playerStatCompo;
+        private StatSO[] _currentStats;
 
         private bool _isStatShowed = false;
 
@@ -19,6 +20,12 @@ namespace Swift_Blade
 
             _playerStatCompo.OnStatChanged += UpdateStatInfos;
             _playerStatCompo.ColorValueChangedAction += UpdateStatInfos;
+
+            _currentStats = StatComponent.GetAllStats();
+            foreach(var stat in _currentStats)
+            {
+                stat.OnValueChanged += UpdateStatInfos;
+            }
 
             UpdateStatInfos();
 
@@ -39,6 +46,10 @@ namespace Swift_Blade
         private void OnDestroy()
         {
             _playerStatCompo.OnStatChanged -= UpdateStatInfos;
+            foreach (var stat in _currentStats)
+            {
+                stat.OnValueChanged -= UpdateStatInfos;
+            }
         }
 
         private void UpdateStatInfos()
@@ -46,11 +57,10 @@ namespace Swift_Blade
             for (int i = 0; i < _statInfos.Length; i++)
                 _statInfos[i].gameObject.SetActive(false);
 
-            StatSO[] stats = StatComponent.GetAllStats();
-            for (int i = 0; i < stats.Length; i++)
+            for (int i = 0; i < _currentStats.Length; i++)
             {
                 _statInfos[i].gameObject.SetActive(true);
-                _statInfos[i].SetUI(stats[i]);
+                _statInfos[i].SetUI(_currentStats[i]);
             }
         }
     }

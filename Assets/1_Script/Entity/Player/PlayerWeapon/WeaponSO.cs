@@ -37,7 +37,6 @@ namespace Swift_Blade
 
         [field: Header("Weapon Information")]
         [field: SerializeField] public string WeaponName { get; private set; }
-        [field: SerializeField] public Sprite WeaponIcon { get; private set; }
         [field: SerializeField, TextArea] public string WeaponDescription { get; private set; }
 
         /// <summary>
