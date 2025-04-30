@@ -16,11 +16,15 @@ namespace Swift_Blade
         }
         protected override void TagEnableEffect(int tagCount)
         {
-            //statCompo.AddModifier(StatType.DAMAGE, name, )
+            print("do" + tagCount);
+            StatSO stat = statCompo.GetStat(StatType.DAMAGE);
+            stat.SetModifier(name, tagCount);
         }
         protected override void TagDisableEffect()
         {
-
+            print("no");
+            StatSO stat = statCompo.GetStat(StatType.DAMAGE);
+            stat.RemoveModifier(name);
         }
         private void OnTagEffect(int percent)
         {
