@@ -18,21 +18,30 @@ namespace Swift_Blade.Combat.Projectile
         private bool canExplosion;
         private bool hasExploded; // 무한루프 방지용 플래그
         private readonly Collider[] targets = new Collider[10];
-
+        
+        private LayerMask whatIsEnemy;
+        
         protected override void Start()
         {
             base.Start();
+            whatIsEnemy = LayerMask.NameToLayer("Enemy");
+                        
             MonoGenericPool<ExplosionParticle>.Initialize(explosionSO);
         }
 
         private void OnCollisionEnter(Collision other)
         {
-            if (canExplosion)
+            if (CheckEnemyLayer(other) && canExplosion)
             {
                 Explosion(other.GetContact(0).point);
             }
         }
+
         
+        private bool CheckEnemyLayer(Collision other)
+        {
+            return other.gameObject.layer != whatIsEnemy;
+        }
         private void Explosion(Vector3 explosionPoint)
         {
             if (canExplosion == false || hasExploded) 
@@ -42,7 +51,7 @@ namespace Swift_Blade.Combat.Projectile
             hasExploded = true;
             
             int counts = Physics.OverlapSphereNonAlloc(explosionPoint, explosionRadius, targets, whatIsTarget);
-
+            
             for (int i = 0; i < counts; i++)
             {
                 var target = targets[i].GetComponentInChildren<IHealth>();
