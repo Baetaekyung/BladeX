@@ -13,10 +13,6 @@ namespace Swift_Blade
 
         [SerializeField] private float detectRange;
 
-        [SerializeField, Range(0, 10f)] private float maxEffectTick;
-        [SerializeField, Range(0, 10f)] private float middleEffectTick;
-        [SerializeField, Range(0, 10f)] private float minEffectTick;
-
         [SerializeField] private LayerMask lm_Enemy;
         [SerializeField] private float maxEffectDamage;
         [SerializeField] private float middleEffectDamage;
@@ -31,35 +27,42 @@ namespace Swift_Blade
 
             _playerTrm = player.transform.GetChild(0);
         }
-
-        public override void DisableTagEffect(int tagCount)
+        protected override void TagEnableEffect(int tagCount)
         {
-            CancelInvoke(nameof(HandleDamage));
-
-            if(_currentEffect != null)
-            {
-                Destroy(_currentEffect);
-                _currentEffect = null;
-            }
+            throw new System.NotImplementedException();
         }
-
-        public override void EnableTagEffect(int tagCount)
+        protected override void TagDisableEffect()
         {
-            if (tagCount < minTagCount)
-                return;
-
-            if (tagCount >= maxTagCount)
-                SetEffect(maxEffectTick, maxEffectDamage);
-            else if (tagCount >= middleTagCount)
-                SetEffect(middleEffectTick, middleEffectDamage);
-            else if (tagCount >= minTagCount)
-                SetEffect(minEffectTick, minEffectDamage);
-
-            InvokeRepeating(nameof(HandleDamage), _currentTick, _currentTick);
-
-            _currentEffect = Instantiate(effect, _playerTrm);
-            _currentEffect.transform.localPosition = Vector3.up * 0.15f;
+            throw new System.NotImplementedException();
         }
+        //public override void DisableTagEffect(int tagCount)
+        //{
+        //    //CancelInvoke(nameof(HandleDamage));
+
+        //    if(_currentEffect != null)
+        //    {
+        //        Destroy(_currentEffect);
+        //        _currentEffect = null;
+        //    }
+        //}
+
+        //public override void EnableTagEffect(int tagCount)
+        //{
+        //    if (tagCount < minTagCount)
+        //        return;
+
+        //    if (tagCount >= maxTagCount)
+        //        SetEffect(maxEffectPercent, maxEffectDamage);
+        //    else if (tagCount >= middleTagCount)
+        //        SetEffect(minEffectPercent, middleEffectDamage);
+        //    else if (tagCount >= minTagCount)
+        //        SetEffect(minEffectPercent, minEffectDamage);
+
+        //    //InvokeRepeating(nameof(HandleDamage), _currentTick, _currentTick);
+
+        //    _currentEffect = Instantiate(effect, _playerTrm);
+        //    _currentEffect.transform.localPosition = Vector3.up * 0.15f;
+        //}
 
         private void SetEffect(float tick, float damage)
         {
@@ -96,15 +99,6 @@ namespace Swift_Blade
                 }
             }
         }
-
-        public override bool IsValidToEnable(int tagCount)
-        {
-            if (tagCount < minTagCount)
-                return false;
-
-            return true;
-        }
-
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;

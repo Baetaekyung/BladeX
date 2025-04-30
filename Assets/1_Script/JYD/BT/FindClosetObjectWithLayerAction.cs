@@ -17,12 +17,12 @@ public partial class FindClosetObjectWithLayerAction : Action
     
     protected override Status OnStart()
     {
+        whatIsStone = 1 << LayerMask.NameToLayer("Throwable"); 
+        
         int count = Physics.OverlapSphereNonAlloc(Agent.Value.position, radius.Value, nearTargets, whatIsStone);
-                
+        
         if (count == 0)
             return Status.Failure;
-        
-        whatIsStone = 1 << LayerMask.NameToLayer("Throwable"); 
         
         Transform closestObject = null;
         float closestDistance = float.MaxValue;
@@ -43,7 +43,7 @@ public partial class FindClosetObjectWithLayerAction : Action
             Object.Value = closestObject;
             return Status.Success;
         }
-
+        
         return Status.Failure;
     }
     

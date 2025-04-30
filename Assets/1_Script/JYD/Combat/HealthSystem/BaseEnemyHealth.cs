@@ -65,8 +65,6 @@ namespace Swift_Blade.Combat.Health
             currentHealth -= actionData.damageAmount;
             OnChangeHealthEvent?.Invoke(GetHealthPercent());
             
-            print(actionData.stun);
-            
             if(actionData.stun)
                 ChangeParryState();
             

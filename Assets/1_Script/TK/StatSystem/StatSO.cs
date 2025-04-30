@@ -71,31 +71,42 @@ namespace Swift_Blade
         
         public bool IsMax => Mathf.Approximately(Value, MaxValue);
         public bool IsMin => Mathf.Approximately(Value, MinValue);
+        //public void SetModifier(object key, float newValue)
+        //{
+        //    if (modifyValueByKeys.TryGetValue(key, out var previousValue))
+        //    {
+        //        RemoveModifier(key);
+        //    }
 
-        public void AddModifier(object key, float value)
+        //    //AddValue();
+        //}
+        public void AddModifier(object key, float newValue)
         {
-            if (modifyValueByKeys.TryGetValue(key, out var val))
+            if (modifyValueByKeys.TryGetValue(key, out var prevValue))
             {
-                if(val > value)
+                if(prevValue > newValue)
                 {
                     return;
                 }
                 else
                 {
                     RemoveModifier(key);
-                    modifiedValue += value;
-                    modifyValueByKeys.Add(key, value);
 
-                    OnValueChanged?.Invoke();
+                    AddValue();
                 }
 
                 return;
             }
-            
-            modifiedValue += value;
-            modifyValueByKeys.Add(key, value);
-                        
-            OnValueChanged?.Invoke();
+
+            AddValue();
+
+            void AddValue()
+            {
+                modifiedValue += newValue;
+                modifyValueByKeys.Add(key, newValue);
+
+                OnValueChanged?.Invoke();
+            }
         }
 
         public void RemoveModifier(object key)

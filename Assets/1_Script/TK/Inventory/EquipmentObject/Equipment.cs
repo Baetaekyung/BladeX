@@ -29,9 +29,6 @@ namespace Swift_Blade
             if (!_playerStat)
                 return;
 
-            if (equipData.statModifier.Count == 0)
-                return;
-
             //Stat add part
             foreach (var stat in equipData.statModifier)
             {
@@ -66,9 +63,6 @@ namespace Swift_Blade
             if (_playerStat == null)
                 return;
 
-            if (equipData.statModifier.Count == 0) //is not upgrade stats
-                return;
-
             foreach (var stat in equipData.statModifier)
             {
                 //Key is StatType
@@ -92,6 +86,17 @@ namespace Swift_Blade
                 equipData.colorAdder + GetRarityColorValue());
         }
 
+        private void OnEquipParts()
+        {
+            _playerVisualController = Player.Instance?.GetEntityComponent<PlayerVisualController>();
+            _playerVisualController.OnParts(equipData.GetPartsName);
+        }
+        private void OffEquipParts()
+        {
+            _playerVisualController = Player.Instance?.GetEntityComponent<PlayerVisualController>();
+            _playerVisualController.OffParts(equipData.GetPartsName);
+        }
+
         private int GetRarityColorValue()
         {
             int rarityColor = equipData.rarity switch
@@ -106,18 +111,6 @@ namespace Swift_Blade
             };
 
             return rarityColor;
-
-        }
-
-        private void OnEquipParts()
-        {
-            _playerVisualController = Player.Instance?.GetEntityComponent<PlayerVisualController>();
-            _playerVisualController.OnParts(equipData.GetPartsName);
-        }
-        private void OffEquipParts()
-        {
-            _playerVisualController = Player.Instance?.GetEntityComponent<PlayerVisualController>();
-            _playerVisualController.OffParts(equipData.GetPartsName);
         }
     }
 }

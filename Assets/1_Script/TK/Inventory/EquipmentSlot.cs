@@ -101,7 +101,7 @@ namespace Swift_Blade
 
             _weaponData = weapon;
 
-            SetItemUI(weapon.WeaponIcon);
+            SetItemUI((weapon as IPlayerEquipable).GetSprite);
             InvenManager.UpdateAllSlots();
         }
 

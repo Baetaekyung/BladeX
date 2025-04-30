@@ -20,20 +20,20 @@ namespace Swift_Blade
                 GameObject go = null;
                 if (HelmetVisual.Find(partsName) is not null)
                 {
-                    Debug.Log("«Ô∏‰ø° ¿÷Ω¿¥œ¥Ÿ");
+                    //Debug.Log("«Ô∏‰ø° ¿÷Ω¿¥œ¥Ÿ");
                     go = HelmetVisual.Find(partsName).gameObject;
                 }
                 else if (HelmetVisual2.Find(partsName) is not null)
                 {
-                    Debug.Log("«Ô∏‰2ø° ¿÷Ω¿¥œ¥Ÿ");
+                    //Debug.Log("«Ô∏‰2ø° ¿÷Ω¿¥œ¥Ÿ");
                     go = HelmetVisual2.Find(partsName).gameObject;
                 }
                 else
                 {
-                    Debug.Log("∞©ø ø° ¿÷Ω¿¥œ¥Ÿ");
+                    //Debug.Log("∞©ø ø° ¿÷Ω¿¥œ¥Ÿ");
                     go = BodiesVisual.Find(partsName).gameObject;
                 }
-
+                if (go == null) return;
                 go.SetActive(true);
             }
         }

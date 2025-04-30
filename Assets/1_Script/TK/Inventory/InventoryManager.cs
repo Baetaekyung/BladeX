@@ -318,7 +318,7 @@ namespace Swift_Blade
 
         private void SetWeaponInfoUI(WeaponSO weapon)
         {
-            itemIcon.sprite      = weapon ? weapon.WeaponIcon : null;
+            itemIcon.sprite      = weapon ? (weapon as IPlayerEquipable).GetSprite : null;
             itemIcon.color       = weapon ? Color.white : Color.clear;
             itemName.text        = weapon ? weapon.name : string.Empty;
             itemDescription.text = weapon ? weapon.WeaponDescription : string.Empty;
