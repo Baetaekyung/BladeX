@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Swift_Blade.Pool
@@ -34,22 +35,30 @@ namespace Swift_Blade.Pool
             _startAngle = angle;
             
             _particleSystem.Play();
+
+            StartCoroutine(MoveCoroutine());
         }
-        
-        private void Update()
+
+        private IEnumerator MoveCoroutine()
         {
-            float percent = Mathf.Clamp(_pushTimer / _pushTime, 0f, 1f);
-            float currentAngle = Mathf.Lerp(0f, 360f, percent);
-            transform.eulerAngles = new Vector3(0f, _startAngle + currentAngle, 0f);
+            float percent;
+            float currentAngle;
 
-            _speed += 10f * Time.deltaTime;
-            transform.Translate(Vector3.forward * (_speed * Time.deltaTime));
-
-            _pushTimer += Time.deltaTime;
-            if (_pushTimer > _pushTime)
+            while(_pushTimer < _pushTime)
             {
-                MonoGenericPool<FireProjectile>.Push(this);
+                _pushTimer += Time.deltaTime;
+                percent = _pushTimer / _pushTime;
+
+                currentAngle = Mathf.Lerp(0f, 360f, percent);
+                transform.eulerAngles = new Vector3(0f, _startAngle + currentAngle, 0f);
+
+                _speed += 10f * Time.deltaTime;
+                transform.Translate(Vector3.forward * (_speed * Time.deltaTime));
+                
+                yield return null;
             }
+            
+            MonoGenericPool<FireProjectile>.Push(this);
         }
 
         private void OnTriggerEnter(Collider other)
