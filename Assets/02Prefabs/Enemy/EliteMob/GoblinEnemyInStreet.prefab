@@ -32154,9 +32154,9 @@ GameObject:
   - component: {fileID: 7583609243381672223}
   - component: {fileID: 2697194309666641709}
   - component: {fileID: 5013447229700229539}
-  - component: {fileID: 4664362950419918974}
   - component: {fileID: 6643126959885087117}
   - component: {fileID: 3669204044569326016}
+  - component: {fileID: 8739837499371599086}
   m_Layer: 7
   m_Name: GoblinEnemyInStreet
   m_TagString: Untagged
@@ -32307,7 +32307,7 @@ MonoBehaviour:
           m_Value0: 15252200985774186846
           m_Value1: 6006074403945827629
         Name: EnemyHealth
-        m_Value: {fileID: 4664362950419918974}
+        m_Value: {fileID: 8739837499371599086}
 --- !u!136 &7583609243381672223
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -32385,79 +32385,6 @@ MonoBehaviour:
   Pants: []
   RightLegs: []
   leftLegs: []
---- !u!114 &4664362950419918974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6326984885958572818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a970b73a23fd204d93af0d5583e55dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnHitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8087195371192975988}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedbck.FlashFeedback, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDeadEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6643126959885087117}
-        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Goblin.GoblinAnimator, Assembly-CSharp
-        m_MethodName: StopAllAnimationEvents
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1062018363620789388}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.CoinBurstFeedback,
-          Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3669204044569326016}
-        m_TargetAssemblyTypeName: Swift_Blade.Boss.Goblin.GoblinEnemy, Assembly-CSharp
-        m_MethodName: DeadEvent
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  maxHealth: 10
-  isDead: 0
-  currentHealth: 0
-  BehaviorGraphAgent: {fileID: 7561101348180281554}
-  changeBossState: {fileID: 0}
-  isKnockback: 0
 --- !u!114 &6643126959885087117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32508,6 +32435,79 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   checkTargetRadius: 12.68
+--- !u!114 &8739837499371599086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6326984885958572818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c82e6b637b3874282af5bd1c7d2656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnHitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8087195371192975988}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6643126959885087117}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Goblin.GoblinAnimator, Assembly-CSharp
+        m_MethodName: StopAllAnimationEvents
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1062018363620789388}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.CoinBurstFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3669204044569326016}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.BaseEnemy, Assembly-CSharp
+        m_MethodName: DeadEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  maxHealth: 25
+  isDead: 0
+  currentHealth: 0
+  BehaviorGraphAgent: {fileID: 7561101348180281554}
+  changeBossState: {fileID: 0}
+  isKnockback: 0
 --- !u!1 &6358376004863621638
 GameObject:
   m_ObjectHideFlags: 0
@@ -36850,7 +36850,7 @@ MonoBehaviour:
   parryEvents:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4664362950419918974}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BossBaseHealth, Assembly-CSharp
         m_MethodName: ChangeParryState
         m_Mode: 1
