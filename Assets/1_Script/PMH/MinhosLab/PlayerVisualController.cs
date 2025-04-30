@@ -8,11 +8,21 @@ namespace Swift_Blade
 
         [SerializeField] private Transform HelmetVisual, HelmetVisual2, BodiesVisual, HipVisual;
         [SerializeField] private Transform LeftShoesVisuals, RightShoesVisuals;
-        [SerializeField] private Transform DefaultTorso;
 
+        [Header("Default vis")]
+        [SerializeField] private Transform DefaultHelemt;
+        [SerializeField] private Transform DefaultTorso;
+        [SerializeField] private Transform DefaultHip;
+        [SerializeField] private Transform DefaultShoesLeft;
+        [SerializeField] private Transform DefaultShoesRight;
+
+        [Header("Visuals")]
         [SerializeField] private Transform[] Visuals;
 
+        private bool objIsHelmet = false;
         private bool objIsTorso = false;
+        private bool objIsHip = false;
+        private bool objIsShoes = false;
 
         public void EntityComponentAwake(Entity entity)
         {
@@ -41,9 +51,13 @@ namespace Swift_Blade
                     go.SetActive(true);
                 }
 
-                if(objIsTorso)
+                if (objIsHelmet) DefaultHelemt.gameObject.SetActive(false);
+                if (objIsTorso) DefaultTorso.gameObject.SetActive(false);
+                if (objIsHip) DefaultHip.gameObject.SetActive(false);
+                if(objIsShoes)
                 {
-                    DefaultTorso.gameObject.SetActive(false);
+                    DefaultShoesLeft.gameObject.SetActive(false);
+                    DefaultShoesRight.gameObject.SetActive(false);
                 }
             }
         }
@@ -71,22 +85,32 @@ namespace Swift_Blade
                     go.SetActive(false);
                 }
 
-                if (objIsTorso)
+                if (objIsHelmet) DefaultHelemt.gameObject.SetActive(true);
+                if (objIsTorso) DefaultTorso.gameObject.SetActive(true);
+                if (objIsHip) DefaultHip.gameObject.SetActive(true);
+                if (objIsShoes)
                 {
-                    DefaultTorso.gameObject.SetActive(true);
+                    DefaultShoesLeft.gameObject.SetActive(true);
+                    DefaultShoesRight.gameObject.SetActive(true);
                 }
             }
         }
 
         private GameObject GetVisualObj(string partsName)
         {
+            objIsHelmet = false;
             objIsTorso = false;
+            objIsHip = false;
+            objIsShoes = false;
 
             GameObject go = null;
 
             foreach(Transform parentVis in Visuals)
             {
+                objIsHelmet = (parentVis.name == "Male_Head_No_Elements"); // || parentVis.name == "Helmet" 머리를 가리는게 이쏘 안가리는게 잇음
                 objIsTorso = (parentVis.name == "Male_03_Torso");
+                objIsHip = (parentVis.name == "Male_Head_No_Elements");
+                objIsShoes = (parentVis.name == "Male_11_Leg_Right" || parentVis.name == "Male_12_Leg_Left");
 
                 go = GetFindObj(parentVis, partsName);
                 if(go != null)
