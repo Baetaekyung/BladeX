@@ -49,6 +49,12 @@ namespace Swift_Blade.Enemy
             Animator.SetFloat(ATTACK_SPEED ,animationSpeed);
         }
 
+        public void MultipleAnimationSpeed(float ratio)
+        {
+            float animationSpeedNormalized = Animator.GetFloat(ATTACK_SPEED) * ratio;
+            Animator.SetFloat(ATTACK_SPEED ,animationSpeedNormalized);
+        }
+        
         private void Cast()
         {
             caster.Cast();
