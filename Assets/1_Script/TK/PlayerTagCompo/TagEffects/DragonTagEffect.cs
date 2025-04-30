@@ -1,108 +1,52 @@
-using Swift_Blade.Combat.Caster;
-using Swift_Blade.Pool;
-using System.Runtime.CompilerServices;
 using UnityEngine;
+using Swift_Blade.Pool;
 
 namespace Swift_Blade
 {
     public class DragonTagEffect : TagEffectBase
     {
-        [SerializeField] private GameObject effect;
-        private Transform _playerTrm;
-        private GameObject _currentEffect;
+        [SerializeField] private float _damage;
+        [SerializeField] private PoolPrefabMonoBehaviourSO _dragonBall;
 
-        [SerializeField] private float detectRange;
+        private Transform _playerTransform;
 
-        [SerializeField] private LayerMask lm_Enemy;
-        [SerializeField] private float maxEffectDamage;
-        [SerializeField] private float middleEffectDamage;
-        [SerializeField] private float minEffectDamage;
-
-        private float _currentTick;
-        private float _currentDamage;
+        private DragonBall[] _dragonBalls;
 
         public override void Initialize(Player player)
         {
             base.Initialize(player);
 
-            _playerTrm = player.transform.GetChild(0);
-        }
-        protected override void TagEnableEffect(int tagCount)
-        {
-            throw new System.NotImplementedException();
-        }
-        protected override void TagDisableEffect()
-        {
-            throw new System.NotImplementedException();
-        }
-        //public override void DisableTagEffect(int tagCount)
-        //{
-        //    //CancelInvoke(nameof(HandleDamage));
+            _playerTransform = player.transform.GetChild(0);
 
-        //    if(_currentEffect != null)
-        //    {
-        //        Destroy(_currentEffect);
-        //        _currentEffect = null;
-        //    }
-        //}
-
-        //public override void EnableTagEffect(int tagCount)
-        //{
-        //    if (tagCount < minTagCount)
-        //        return;
-
-        //    if (tagCount >= maxTagCount)
-        //        SetEffect(maxEffectPercent, maxEffectDamage);
-        //    else if (tagCount >= middleTagCount)
-        //        SetEffect(minEffectPercent, middleEffectDamage);
-        //    else if (tagCount >= minTagCount)
-        //        SetEffect(minEffectPercent, minEffectDamage);
-
-        //    //InvokeRepeating(nameof(HandleDamage), _currentTick, _currentTick);
-
-        //    _currentEffect = Instantiate(effect, _playerTrm);
-        //    _currentEffect.transform.localPosition = Vector3.up * 0.15f;
-        //}
-
-        private void SetEffect(float tick, float damage)
-        {
-            _currentTick = tick;
-            _currentDamage = damage;
-        }
-
-        private void HandleDamage()
-        {
-            RaycastHit[] hits = new RaycastHit[10];
-
-            int cnt = Physics.SphereCastNonAlloc(
-                _playerTrm.transform.position,
-                detectRange,
-                _playerTrm.transform.up,
-                hits,
-                Mathf.Infinity,
-                lm_Enemy);
-
-            if (cnt == 0)
-                return;
-
-            for(int i = 0; i < cnt; i++)
+            MonoGenericPool<DragonBall>.Initialize(_dragonBall);
+            
+            _dragonBalls = new DragonBall[3];
+            for(int i = 0; i < 3; ++i)
             {
-                if (hits[i].collider.TryGetComponent(out IHealth health))
-                {
-                    Vector3 hitPoint = hits[i].collider.ClosestPoint(hits[i].point);
+                DragonBall dragonBall = MonoGenericPool<DragonBall>.Pop();
+                dragonBall.Initialize(_damage, 120 * i);
 
-                    ActionData ack = new ActionData(hitPoint, hits[i].normal, _currentDamage, false);
-                    health.TakeDamage(ack);
+                dragonBall.transform.SetParent(_playerTransform);
+                dragonBall.transform.localPosition = Vector3.zero;
 
-                    FloatingTextGenerator.Instance.GenerateText(Mathf
-                            .RoundToInt(_currentDamage).ToString(), hitPoint);
-                }
+                _dragonBalls[i] = dragonBall;
             }
         }
-        private void OnDrawGizmosSelected()
+
+        protected override void TagEnableEffect(int tagCount)
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, detectRange);
+            for(int i = 0; i < 3; ++i)
+            {
+                _dragonBalls[i].Enable();
+            }
+        }
+
+        protected override void TagDisableEffect()
+        {
+            for(int i = 0; i < 3; ++i)
+            {
+                _dragonBalls[i].Disable();
+            }
         }
     }
 }
