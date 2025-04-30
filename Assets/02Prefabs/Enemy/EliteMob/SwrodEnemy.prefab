@@ -31933,6 +31933,22 @@ MonoBehaviour:
   maxDistance: 1.07
   showGizmo: 0
   weapon: {fileID: 0}
+  OnSlowEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5446975462660907785}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.ChangeMatFeedback,
+          Assembly-CSharp
+        m_MethodName: ChangeMat
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3934571686737857051
 GameObject:
   m_ObjectHideFlags: 0
@@ -58849,6 +58865,7 @@ GameObject:
   - component: {fileID: 2840029255627781192}
   - component: {fileID: 8022966292899397068}
   - component: {fileID: 2996055124802451808}
+  - component: {fileID: 5446975462660907785}
   m_Layer: 7
   m_Name: Feedback
   m_TagString: Untagged
@@ -58917,6 +58934,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinBurst: {fileID: 11400000, guid: 9d4e0c6884558134e9d04e669da364ed, type: 2}
   random: 80
+--- !u!114 &5446975462660907785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7555956772869858807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ddee58795e3ce6409b97f4089dd7958, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  root: {fileID: 9142303646647914277}
+  changeMat: {fileID: 2100000, guid: b9603da0cd2cec64f886c932a751302d, type: 2}
+  _meshRenderers: []
 --- !u!1 &7572378662027066068
 GameObject:
   m_ObjectHideFlags: 0
