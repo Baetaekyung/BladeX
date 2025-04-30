@@ -26,8 +26,8 @@ namespace Swift_Blade.Combat.Health
         
         private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
         
-        private const float DAMAGE_INTERVAL = 0.1f;
-        private float lastDamageTime;
+        protected const float DAMAGE_INTERVAL = 0.1f;
+        protected float lastDamageTime;
         
         protected virtual void Start()
         {
@@ -58,7 +58,7 @@ namespace Swift_Blade.Combat.Health
         
         public override void TakeDamage(ActionData actionData)
         {
-            if(isDead || !IsDamageTime())return;
+            if((isDead || !IsDamageTime()) && actionData.stun == false)return;
             
             lastDamageTime = Time.time; 
             
@@ -85,7 +85,7 @@ namespace Swift_Blade.Combat.Health
             base.Dead();
         }
 
-        private bool IsDamageTime()
+        protected bool IsDamageTime()
         {
             return Time.time > lastDamageTime + DAMAGE_INTERVAL;
         }
@@ -94,14 +94,14 @@ namespace Swift_Blade.Combat.Health
         {
             return Random.Range(1,10);
         } 
-
+        
         public override void TakeHeal(float amount)
         {
             currentHealth += amount;
             currentHealth = Mathf.Min(currentHealth , maxHealth);
         }
                 
-        private void TriggerState(BossState state)
+        protected void TriggerState(BossState state)
         {
             if(isDead)return;
             
