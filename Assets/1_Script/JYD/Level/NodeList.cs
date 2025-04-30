@@ -6,7 +6,9 @@ using Random = UnityEngine.Random;
 using UnityEngine;
 using System;
 using System.Linq;
+using System.Text;
 using NUnit.Framework;
+using UnityEngine.Serialization;
 
 public enum NodeType
 {
@@ -62,6 +64,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
     private bool canSecondAppearSpecialNode = true;
     
     private const byte APPEAR_SPECIAL_NODE_PERCENT = 16;//100 / 6 = 16.xxx
+    
     public NodeDictionary(Node[] nodes)
     {
         nodeList = new Dictionary<NodeType, List<Node>>();
@@ -116,6 +119,11 @@ public class NodeDictionary : IEnumerable<List<Node>>
 
     #region Public
 
+    public void Add(Node newNode)
+    {
+        nodeList[newNode.nodeType].Add(newNode);
+    }
+    
     public string this[NodeType type] => nodeList[type][Random.Range(0 , nodeList[type].Count)].nodeName;
     
     public void InitSpecialNodes()
@@ -202,6 +210,8 @@ namespace Swift_Blade.Level
     [CreateAssetMenu(fileName = "NodeList", menuName = "SO/Scene/NodeList")]
     public class NodeList : ScriptableObject
     {
+        int stageCount = 0;
+        
         [SerializeField] private Node[] nodelist;
         private NodeDictionary nodeDictionary;
         
@@ -212,20 +222,26 @@ namespace Swift_Blade.Level
         [SerializeField] private Door.Door challengeDoor;
         [SerializeField] private Door.Door bossDoor;
         [SerializeField] private Door.Door restDoor;
-                
+        
         private int currentNodeIndex = 0;
+
+        private readonly StringBuilder stageName = new StringBuilder();
         
         public void RestNodeIndex()
         {
             nodeDictionary.InitSpecialNodes();
             currentNodeIndex = 0;
         }
-        
+                
         private void OnEnable()
         {
             nodeDictionary = new NodeDictionary(nodelist);
             RestNodeIndex();
-                        
+            
+            stageCount = 0;
+            stageName.Clear();
+            stageName.Append("Stage_");
+            
             foreach (var node in nodeDictionary)
             {
                 foreach (var item in node)
@@ -233,15 +249,19 @@ namespace Swift_Blade.Level
                     AssignDoor(item);
                 }
             }
-            
         }
-
+        
         private void AssignDoor(Node item)
         {
+           
             switch (item.nodeType)
             {
                 case NodeType.Exp:
+                    ++stageCount;
+                    item.nodeName = stageName.Append(stageCount).ToString();
                     item.SetPortalPrefab(expDoor);
+                    stageName.Remove(stageName.Length - stageCount.ToString().Length, stageCount.ToString().Length);
+                    
                     break;
                 case NodeType.Event:
                     item.SetPortalPrefab(eventDoor);
