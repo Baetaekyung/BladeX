@@ -157,6 +157,11 @@ namespace Swift_Blade.Enemy
             if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, whatIsWall)) return true;
             return false;
         }
+
+        public void SetMotionSpeed(float speed)
+        {
+            baseAnimationController.SetAnimationSpeed(speed);
+        }
         
         protected virtual void OnDrawGizmos()
         {

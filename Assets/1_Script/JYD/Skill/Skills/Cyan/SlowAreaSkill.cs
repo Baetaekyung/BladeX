@@ -3,6 +3,7 @@ using Swift_Blade.Enemy;
 using Swift_Blade.Pool;
 using UnityEngine;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 
 namespace Swift_Blade.Skill
 {
@@ -12,6 +13,7 @@ namespace Swift_Blade.Skill
         public float disableTime = 3f;
         public float radius;
         public float minSlowValue;
+        public LayerMask whatIsEnemy;
         
         private float disableTimer;
         private bool useSkill;
@@ -45,12 +47,16 @@ namespace Swift_Blade.Skill
                 
                 disableTimer += Time.deltaTime;
                 
-                targets = Physics.OverlapSphere(areaTyphoonParticle.transform.position, radius).Select(c => c.transform);
+                targets = Physics.OverlapSphere(areaTyphoonParticle.transform.position, radius,whatIsEnemy).Select(c => c.transform);
                 foreach (var item in targets)
                 {
-                    float multipleAnimationSpeed = Mathf.Max(minSlowValue, (1 - GetColorRatio()));
+                    float animationSpeed = Mathf.Max(minSlowValue,0.6f);
                     
-                    item.GetComponent<BaseEnemyAnimationController>().MultipleAnimationSpeed(multipleAnimationSpeed);
+                    if (item.TryGetComponent(out BaseEnemy enemy))
+                    {
+                        enemy.SetMotionSpeed(animationSpeed);
+                    }
+                    
                 }
                 
                 if (disableTimer >= disableTime)
