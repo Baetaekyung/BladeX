@@ -144,6 +144,14 @@ namespace Swift_Blade.Skill
                 skillEvents[type]?.Invoke(_player, targets);
             }
         }
+
+        private void OnDrawGizmosSelected()
+        {
+            foreach (var item in skillDatas)
+            {
+                item.DrawGizmo(_player);
+            }
+        }
     }
 }
 

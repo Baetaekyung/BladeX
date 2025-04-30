@@ -58,5 +58,10 @@ namespace Swift_Blade.Skill
             
             return statCompo.GetColorStatValue(colorType) * colorRatio;
         }
+
+        public virtual void DrawGizmo(Player player)
+        {
+            
+        }
     }
 }
