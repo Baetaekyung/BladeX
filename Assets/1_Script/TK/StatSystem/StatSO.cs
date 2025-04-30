@@ -73,7 +73,6 @@ namespace Swift_Blade
         public bool IsMin => Mathf.Approximately(Value, MinValue);
         public void SetModifier(object key, float newValue)
         {
-            Debug.Log("bef" + modifiedValue);
             if (modifyValueByKeys.TryGetValue(key, out float previousValue))
             {
                 modifiedValue -= previousValue;
@@ -84,7 +83,6 @@ namespace Swift_Blade
                 modifyValueByKeys.Add(key, newValue);
             }
             modifiedValue += newValue;
-            Debug.Log(modifiedValue);
             OnValueChanged?.Invoke();
         }
         public void AddModifier(object key, float newValue)
