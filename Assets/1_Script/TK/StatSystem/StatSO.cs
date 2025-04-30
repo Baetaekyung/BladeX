@@ -44,7 +44,7 @@ namespace Swift_Blade
 
         public Dictionary<string, Coroutine> currentBuffDictionary = new Dictionary<string, Coroutine>();
         
-        private Dictionary<object, float> modifyValueByKeys = new Dictionary<object, float>();
+        private Dictionary<object, float> modifyValueByKeys = new Dictionary<object, float>(16);
 
         public int ColorValue
         {
@@ -71,15 +71,22 @@ namespace Swift_Blade
         
         public bool IsMax => Mathf.Approximately(Value, MaxValue);
         public bool IsMin => Mathf.Approximately(Value, MinValue);
-        //public void SetModifier(object key, float newValue)
-        //{
-        //    if (modifyValueByKeys.TryGetValue(key, out var previousValue))
-        //    {
-        //        RemoveModifier(key);
-        //    }
-
-        //    //AddValue();
-        //}
+        public void SetModifier(object key, float newValue)
+        {
+            Debug.Log("bef" + modifiedValue);
+            if (modifyValueByKeys.TryGetValue(key, out float previousValue))
+            {
+                modifiedValue -= previousValue;
+                modifyValueByKeys[key] = newValue;
+            }
+            else
+            {
+                modifyValueByKeys.Add(key, newValue);
+            }
+            modifiedValue += newValue;
+            Debug.Log(modifiedValue);
+            OnValueChanged?.Invoke();
+        }
         public void AddModifier(object key, float newValue)
         {
             if (modifyValueByKeys.TryGetValue(key, out var prevValue))
