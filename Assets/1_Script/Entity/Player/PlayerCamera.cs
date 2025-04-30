@@ -11,7 +11,9 @@ namespace Swift_Blade
         [SerializeField] private Transform resultTransform;
         [SerializeField] private Camera playerCamera;
         [SerializeField] private Camera staticCamera;
-        
+        public Camera GetPlayerCamera => playerCamera;
+        public Camera GetStaticCamera => staticCamera;
+
         [Header("Level Clear")]
         [SerializeField] private SceneManagerSO sceneManager;
         [SerializeField] private CameraFocusSO focusData;
@@ -40,8 +42,6 @@ namespace Swift_Blade
                 return Quaternion.Euler(resultVector);
             }
         }
-        public Camera GetPlayerCamera => playerCamera;
-        public Camera GetStaticCamera => staticCamera;
         public void EntityComponentAwake(Entity entity)
         {
             cinemachinePositionComposer = GetComponentInChildren<CinemachinePositionComposer>();

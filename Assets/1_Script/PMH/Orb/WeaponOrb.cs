@@ -12,6 +12,8 @@ namespace Swift_Blade
         [SerializeField] private PoolPrefabMonoBehaviourSO blastPrefab;
         protected override bool CanInteract => PlayerWeaponManager.CurrentWeapon != defaultItem;
         protected override IReadOnlyList<WeaponSO> GetReadonlyList => weapons;
+        public override IPlayerEquipable GetEquipable => defaultItem;
+
 
         protected override void Awake()
         {

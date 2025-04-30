@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Swift_Blade.Skill
 {
-    public abstract class SkillData : ScriptableObject
+    public abstract class SkillData : ScriptableObject, IPlayerEquipable
     {
         public string skillName;
         public Sprite skillIcon;
@@ -12,16 +12,26 @@ namespace Swift_Blade.Skill
         public SkillType skillType;
         public StatType statType;
         public ColorType colorType;
-        [Tooltip("»ö±ò ½ºÅÈÀÇ ¿µÇâÀ» ¾ó¸¶³ª ¹ŞÀ»Áö")] public float colorRatio;
-        [Tooltip("¼º°ø È®·ü")][Range(1,100)] public int random;
-                
+        ColorType IPlayerEquipable.GetColor => colorType;
+        Sprite IPlayerEquipable.GetSprite => skillIcon;
+        string IPlayerEquipable.DisplayName => skillName;
+
+
+        [Tooltip("ë¹„ìœ¨")] public float colorRatio;
+        [Tooltip("í™•ë¥ ")][Range(1,100)] public int random;
+        [Tooltip("ì´ê±°ë³´ë‹¤ ë†’ì•„ì§ˆìˆœ ì—†ìŒ")][Range(1,100)] public int maxRandom;
+        
         [TextArea] public string skillDescription;
         
         [Space(40)]
         public PoolPrefabMonoBehaviourSO skillParticle;
 
-        private PlayerStatCompo statCompo;
+        protected PlayerStatCompo statCompo;
         
+        public void SetPlayerStatCompo(PlayerStatCompo playerStatCompo)
+        {
+            statCompo = playerStatCompo;
+        }
         
         public virtual void Initialize(){}
         
@@ -33,10 +43,25 @@ namespace Swift_Blade.Skill
         
         public abstract void UseSkill(Player player, IEnumerable<Transform> targets = null);
         
-        protected bool TryUseSkill()
+        protected bool TryUseSkill(int value = 0)
         {
-            return Random.Range(0, 100) <= random;
+            return Random.Range(0, 100) <= Mathf.Min(maxRandom, random + value);
         }
         
+        protected float GetColorRatio()
+        {
+            if (statCompo == null)
+            {
+                Debug.LogError("Skill Error : statCompo is null");
+                return 0;
+            }
+            
+            return statCompo.GetColorStatValue(colorType) * colorRatio;
+        }
+
+        public virtual void DrawGizmo(Player player)
+        {
+            
+        }
     }
 }

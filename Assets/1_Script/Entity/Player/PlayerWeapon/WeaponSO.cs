@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using Swift_Blade.Feeling;
 using Swift_Blade.Audio;
+using Swift_Blade.Pool;
 using UnityEngine;
 using System;
 
 namespace Swift_Blade
 {
     [CreateAssetMenu(fileName = "WeaponSO", menuName = "SO/Weapon/NormalSword")]
-    public class WeaponSO : ScriptableObject
+    public class WeaponSO : ScriptableObject, IPlayerEquipable
     {
         [field: Header("Damage")]
         [field: SerializeField] public float AdditionalNormalDamage { get; private set; }
@@ -18,7 +19,9 @@ namespace Swift_Blade
         [field: SerializeField] public ParticleSystem PreviewMeshParticle { get; private set; }
 
         [SerializeField] private SerializableDictionary<EAudioType, BaseAudioSO> audioDictionary;
+        [SerializeField] private SerializableDictionary<EAttackType, PoolPrefabGameObjectSO> particleDictinary;
         public IReadOnlyDictionary<EAudioType, BaseAudioSO> GetAudioDictionary => audioDictionary;
+        public IReadOnlyDictionary<EAttackType, PoolPrefabGameObjectSO> GetParticleDictionary => particleDictinary;
         [field: Header("Feeling")]
         [field: SerializeField] public CameraShakeType WeaponCameraShkaeType { get; private set; }
         [field: SerializeField] public CameraFocusSO WeaponCameraFocus { get; private set; }
@@ -29,11 +32,22 @@ namespace Swift_Blade
         [field: SerializeField] public WeaponHandler LeftWeaponHandler { get; set; }
         [field: SerializeField] public WeaponHandler RightWeaponHandler { get; set; }
         [field: SerializeField, Range(1, 3)] public float CastRange { get; private set; }
+        [SerializeField] private string weaponName;
+        [SerializeField] private Sprite weaponSprite;
+
+        [field: Header("Weapon Information")]
+        [field: SerializeField] public string WeaponName { get; private set; }
+        [field: SerializeField, TextArea] public string WeaponDescription { get; private set; }
 
         /// <summary>
         /// color is limited to (red, blu, green)
         /// </summary>
         [field: SerializeField] public ColorType ColorType { get; private set; }
+        ColorType IPlayerEquipable.GetColor => ColorType;
+        Sprite IPlayerEquipable.GetSprite => weaponSprite;
+        string IPlayerEquipable.DisplayName => weaponName;
+
+
         [SerializeField] private float specialModifier;
         [SerializeField] private float rollModifier;
 
@@ -86,6 +100,7 @@ namespace Swift_Blade
                     result = () =>
                     {
                         entity.GetStateMachine.ChangeState(PlayerStateEnum.Parry);
+                                                
                     };
                     break;
                 case ColorType.GREEN:
@@ -94,6 +109,8 @@ namespace Swift_Blade
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.HEALTH, 
                             nameof(StatType.HEALTH), 5, 3 , 
                             PlayParticle,StopParticle);
+                        
+                        entity.GetSkillController.UseSkill(SkillType.Shield);
                     };
                     break;
                 case ColorType.BLUE:
@@ -102,6 +119,8 @@ namespace Swift_Blade
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.ATTACKSPEED, 
                             nameof(StatType.ATTACKSPEED), 3, 1 , PlayParticle,StopParticle);
                         entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.MOVESPEED, nameof(StatType.MOVESPEED), 3, 1);
+                        
+                        entity.GetSkillController.UseSkill(SkillType.SpeedUp);
                     };
                     break;
                 default:
@@ -118,8 +137,6 @@ namespace Swift_Blade
         {
             
         }
-        
-        
-        
+
     }
 }

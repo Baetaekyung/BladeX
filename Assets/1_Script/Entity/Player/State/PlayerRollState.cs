@@ -104,7 +104,7 @@ namespace Swift_Blade.FSM.States
         }
         protected override void OnAnimationEndTrigger()
         {
-            if(forceChangeToAttack)
+            if (forceChangeToAttack)
             {
                 player.Attack(lastPreviousState, lastNonImeediateState);
                 return;

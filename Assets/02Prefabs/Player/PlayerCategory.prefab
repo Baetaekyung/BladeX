@@ -11738,7 +11738,6 @@ MonoBehaviour:
       m_Calls: []
   _visualTrm: {fileID: 4103815729079207692}
   _playerMovement: {fileID: 8177067181426564885}
-  damageStat: {fileID: 11400000, guid: addd3b36185f6454791024df16a78c27, type: 2}
 --- !u!1 &2397190681358233135
 GameObject:
   m_ObjectHideFlags: 0
@@ -20043,7 +20042,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5646933182214469030
 Transform:
   m_ObjectHideFlags: 0
@@ -40342,6 +40341,7 @@ GameObject:
   - component: {fileID: 814462047537304845}
   - component: {fileID: 8928013613842272787}
   - component: {fileID: 2072265066507459340}
+  - component: {fileID: 1788020742849744543}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -40681,7 +40681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26a599977c9f08e4ea24418051ee4665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parryTime: 1.5
+  parryTime: 0.3
   ParryEvents:
     m_PersistentCalls:
       m_Calls:
@@ -40766,7 +40766,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: addd3b36185f6454791024df16a78c27, type: 2}
   - {fileID: 11400000, guid: 9acacd0351ff5034288827f2fd5d989f, type: 2}
   - {fileID: 11400000, guid: 62e0b58eb0b17624eada6e77313bb27e, type: 2}
-  - {fileID: 11400000, guid: 767e668fa576b314f8585eb576607da2, type: 2}
   - {fileID: 11400000, guid: a8b230152c0f47445936c1bc790e3a7d, type: 2}
   - {fileID: 11400000, guid: 465725b2f77c5884ea64889534ee5bcc, type: 2}
   defaultColorStat:
@@ -40853,6 +40852,28 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1788020742849744543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7389977111463853842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56a440bb1cc3ddb4b8fbbf2a3b594301, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tagEffects:
+    _keyValueList:
+    - key: 1
+      value: {fileID: 3256988300763308564, guid: 32f8cc3adf9c2604cb72b6b788dd7431, type: 3}
+    - key: 2
+      value: {fileID: 1233081790098189374, guid: f5be53f44e6e8fa4dabb57bec30c81bd, type: 3}
+    - key: 3
+      value: {fileID: 8343540915186477748, guid: 534d4d217450a0349b642f55d6f4db9f, type: 3}
+    - key: 5
+      value: {fileID: 6980984654591698726, guid: d054cb9b49969914cb23158f13a80e4a, type: 3}
 --- !u!1 &7396908040629326032
 GameObject:
   m_ObjectHideFlags: 0
@@ -52469,7 +52490,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5454848825457468703
 Transform:
   m_ObjectHideFlags: 0

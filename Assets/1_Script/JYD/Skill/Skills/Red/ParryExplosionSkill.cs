@@ -13,7 +13,8 @@ namespace Swift_Blade.Skill
         public Vector2 explosionAdjustment;
         public float skillRadius;
         public LayerMask whatIsTarget;
-                
+
+        public float maxDamage;
         
         public override void Initialize()
         {
@@ -35,10 +36,12 @@ namespace Swift_Blade.Skill
             {
                 if (TryUseSkill() && item.TryGetComponent(out BaseEnemyHealth health))
                 {
-                    ActionData actionData = new ActionData();
-                    actionData.damageAmount = skillDamage;
+                    ActionData actionData = new ActionData
+                    {
+                        damageAmount = Mathf.Min(maxDamage, skillDamage * GetColorRatio())
+                    };
                     health.TakeDamage(actionData);
-
+                    
                     SmallExplosionParticle smallExplosionParticle = MonoGenericPool<SmallExplosionParticle>.Pop();
                     smallExplosionParticle.transform.position =
                         explosionPosition;

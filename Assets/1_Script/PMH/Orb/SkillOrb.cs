@@ -9,6 +9,8 @@ namespace Swift_Blade
     {
         [SerializeField] private SkillTable entireSkillTable;
         protected override IReadOnlyList<SkillData> GetReadonlyList => null;
+        public override IPlayerEquipable GetEquipable => defaultItem;
+
         protected override void Start()
         {
             if (defaultItem == null)

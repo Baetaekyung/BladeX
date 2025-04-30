@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Swift_Blade.Inputs;
 using Swift_Blade.UI;
 using UnityEngine;
 
@@ -13,10 +14,10 @@ namespace Swift_Blade
         public bool isLayerTextInfo;
 
         [SerializeField] private InfoBoxPopup infoBoxPopup;
-        [SerializeField] private Transform    popupCanvasTrm;
+        [SerializeField] private Transform popupCanvasTrm;
 
         private List<PopupUI> _popupList = new List<PopupUI>();
-        public event Action   OnPopUpOpenOrClose;
+        public event Action OnPopUpOpenOrClose;
 
         public bool IsRemainPopup
         {
@@ -40,8 +41,17 @@ namespace Swift_Blade
         private void Start()
         {
             InitPopups();
+            InputManager.InventoryEvent += InputEventInventory;
         }
-
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            InputManager.InventoryEvent -= InputEventInventory;
+        }
+        private void InputEventInventory()
+        {
+            OpenCloseInventory();
+        }
         private void InitPopups()
         {
             foreach (var popupUI in popups.Values)
@@ -50,13 +60,12 @@ namespace Swift_Blade
 
         private void Update()
         {
-            OpenCloseInventory();
             PopDownInput();
 
             if (Input.GetKeyDown(KeyCode.P))
                 PopUp(PopupType.Status);
         }
-        
+
         private void PopDownInput()
         {
             if (Input.GetKeyDown(KeyCode.Escape)
@@ -70,22 +79,19 @@ namespace Swift_Blade
         {
             if (popups.ContainsKey(PopupType.Inventory) == false)
                 return;
-            
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                if (GetRemainPopup(PopupType.Inventory) != null)
-                    PopDown(PopupType.Inventory);
-                else
-                    PopUp(PopupType.Inventory);
-            }
+
+            if (GetRemainPopup(PopupType.Inventory) != null)
+                PopDown(PopupType.Inventory);
+            else
+                PopUp(PopupType.Inventory);
         }
 
         public void PopUp(PopupType popupType)
         {
             if (_popupList.Contains(popups[popupType])) return;
-            
+
             _popupList.Add(popups[popupType]);
-            if(Player.Instance != null)
+            if (Player.Instance != null)
                 Player.Instance.GetEntityComponent<PlayerMovement>().InputDirection = Vector3.zero;
 
             popups[popupType].Popup();
@@ -93,11 +99,11 @@ namespace Swift_Blade
 
             OnPopUpOpenOrClose?.Invoke();
         }
-        
+
         public void DelayPopup(PopupType popupType, float delay)
         {
             if (_popupList.Contains(popups[popupType])) return;
-            
+
             _popupList.Add(popups[popupType]);
 
             popups[popupType].DelayPopup(delay);
@@ -109,7 +115,7 @@ namespace Swift_Blade
         public void DelayPopup(PopupType popupType, float delay, Action callback)
         {
             if (_popupList.Contains(popups[popupType])) return;
-            
+
             _popupList.Add(popups[popupType]);
 
             popups[popupType].DelayPopup(delay, callback);
@@ -117,7 +123,7 @@ namespace Swift_Blade
 
             OnPopUpOpenOrClose?.Invoke();
         }
-        
+
         public void PopDown()
         {
             if (_popupList.Count > 0)
@@ -141,7 +147,7 @@ namespace Swift_Blade
         {
             PopupUI popup = null;
             int index = 0;
-            
+
             if (_popupList.Count > 0)
             {
                 for (int i = 0; i < _popupList.Count; i++)
@@ -202,7 +208,7 @@ namespace Swift_Blade
             //if popup remain in screen
             if (GetRemainPopup(PopupType.InfoBox) != null)
             {
-                if(isLayerTextInfo == false)
+                if (isLayerTextInfo == false)
                 {
                     PopupUI remain = GetRemainPopup(PopupType.InfoBox);
                     InfoBoxPopup infoB = remain as InfoBoxPopup;
@@ -210,7 +216,7 @@ namespace Swift_Blade
                 }
 
                 InfoBoxPopup remainInfobox = Instantiate(infoBoxPopup, popupCanvasTrm);
-
+                
                 remainInfobox.SetInfoBox(message);
                 remainInfobox.DelayPopup(1.0f, () => Destroy(remainInfobox.gameObject));
                 return;
@@ -228,7 +234,7 @@ namespace Swift_Blade
             while (_popupList.Count != 0)
                 PopDown();
         }
-        
+
         public PopupUI GetPopupUI(PopupType type)
         {
             if (popups.TryGetValue(type, out var popup) == false)
@@ -236,7 +242,7 @@ namespace Swift_Blade
                 Debug.Log($"{type}의 팝업이 존재하지 않음.");
                 return null;
             }
-            
+
             return popup;
         }
 
@@ -246,6 +252,6 @@ namespace Swift_Blade
         }
 
         public void OpenSettingPopup() => PopUp(PopupType.Setting);
-        public void OpenQuitHelpPopup() => PopUp(PopupType.Option); 
+        public void OpenQuitHelpPopup() => PopUp(PopupType.Option);
     }
 }

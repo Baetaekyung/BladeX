@@ -9,7 +9,6 @@ namespace Swift_Blade
     {
         HEALTH,
         DAMAGE,
-        MINATTACK_INC, //최소 공격력 보정
         ATTACKSPEED,
         MOVESPEED,
         DASH_INVINCIBLE_TIME,
@@ -45,7 +44,7 @@ namespace Swift_Blade
 
         public Dictionary<string, Coroutine> currentBuffDictionary = new Dictionary<string, Coroutine>();
         
-        private Dictionary<object, float> modifyValueByKeys = new Dictionary<object, float>();
+        private Dictionary<object, float> modifyValueByKeys = new Dictionary<object, float>(16);
 
         public int ColorValue
         {
@@ -72,31 +71,49 @@ namespace Swift_Blade
         
         public bool IsMax => Mathf.Approximately(Value, MaxValue);
         public bool IsMin => Mathf.Approximately(Value, MinValue);
-
-        public void AddModifier(object key, float value)
+        public void SetModifier(object key, float newValue)
         {
-            if (modifyValueByKeys.TryGetValue(key, out var val))
+            Debug.Log("bef" + modifiedValue);
+            if (modifyValueByKeys.TryGetValue(key, out float previousValue))
             {
-                if(val > value)
+                modifiedValue -= previousValue;
+                modifyValueByKeys[key] = newValue;
+            }
+            else
+            {
+                modifyValueByKeys.Add(key, newValue);
+            }
+            modifiedValue += newValue;
+            Debug.Log(modifiedValue);
+            OnValueChanged?.Invoke();
+        }
+        public void AddModifier(object key, float newValue)
+        {
+            if (modifyValueByKeys.TryGetValue(key, out var prevValue))
+            {
+                if(prevValue > newValue)
                 {
                     return;
                 }
                 else
                 {
                     RemoveModifier(key);
-                    modifiedValue += value;
-                    modifyValueByKeys.Add(key, value);
 
-                    OnValueChanged?.Invoke();
+                    AddValue();
                 }
 
                 return;
             }
-            
-            modifiedValue += value;
-            modifyValueByKeys.Add(key, value);
-                        
-            OnValueChanged?.Invoke();
+
+            AddValue();
+
+            void AddValue()
+            {
+                modifiedValue += newValue;
+                modifyValueByKeys.Add(key, newValue);
+
+                OnValueChanged?.Invoke();
+            }
         }
 
         public void RemoveModifier(object key)
@@ -150,7 +167,6 @@ namespace Swift_Blade
 
         public IEnumerator DelayBuffRoutine(string buffKey, float buffTime, float buffAmount)
         {
-            //todo: Refectoring..
             if (statType == StatType.HEALTH)
             {
                 buffTimer = buffTime;

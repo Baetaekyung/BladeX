@@ -7,6 +7,7 @@ namespace Swift_Blade
     public abstract class BaseOrb : MonoBehaviour
     {
         //public abstract void SetRandom();// ColorType color);
+        public abstract IPlayerEquipable GetEquipable { get; }
     }
     public abstract class BaseOrb<T> : BaseOrb, IInteractable
         where T : class
@@ -88,7 +89,9 @@ namespace Swift_Blade
             bool isCallbackNull = onComplete == null;
             if (!isCallbackNull)
             {
-                interactTween.OnComplete(onComplete);
+                string collectMessage = $"collect item {GetEquipable.DisplayName}";
+                TweenCallback collectMessageCallback = () => { PopupManager.Instance.LogInfoBox(collectMessage, 0.8f); };
+                interactTween.OnComplete(onComplete + collectMessageCallback);
             }
         }
         void IInteractable.Interact()

@@ -1,7 +1,6 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
@@ -13,22 +12,55 @@ namespace Swift_Blade
         RING,
         SHOES
     }
+
+    public enum EquipmentTag
+    {
+        NONE = 0,
+        BARBARIAN,
+        KNIGHT,
+        ROGUE,
+        DEMON,
+        DRAGON,
+        MUTANT,
+        HOLY,
+        UNHOLY,
+        ALL = 99
+    }
+
+    public enum EquipmentRarity
+    {
+        NONE = 0,
+        COMMON = 1,
+        RARE = 2,
+        UNIQUE = 3,
+        EPIC = 4,
+        END = 99
+    }
     
     [CreateAssetMenu(fileName = "EquipmentData", menuName = "SO/Equipment/EquipmentData")]
-    public class EquipmentData : ScriptableObject
+    public class EquipmentData : ScriptableObject, IPlayerEquipable
     {
         public SerializableDictionary<StatType, float> statModifier = new();
 
-        [SerializeField] public string partsName;
+        public List<EquipmentTag> tags;
+        public EquipmentRarity    rarity;
+
+        [SerializeField] private string partsName;
+        [SerializeField] private string displayName;
 
         [HideInInspector]
-        public string itemSerialCode; //½ºÅÝ¿¡ ´õÇÒ¶§ ±¸º°ÇØÁÖ´Â ¹øÈ£
+        public string itemSerialCode; //ï¿½ï¿½ï¿½Ý¿ï¿½ ï¿½ï¿½ï¿½Ò¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½È£
         public Sprite equipmentIcon;
 
         public EquipmentSlotType slotType;
         public ColorType         colorType;
         public int               colorAdder;
 
+        ColorType IPlayerEquipable.GetColor => colorType;
+        Sprite IPlayerEquipable.GetSprite => equipmentIcon;
+        string IPlayerEquipable.DisplayName => displayName;
+
+        public string GetPartsName => partsName;
         private void OnValidate()
         {
             if (String.IsNullOrEmpty(itemSerialCode))
@@ -38,5 +70,6 @@ namespace Swift_Blade
             dataName = dataName.Substring(2, dataName.Length - 8);
             partsName = dataName;
         }
+
     }
 }
