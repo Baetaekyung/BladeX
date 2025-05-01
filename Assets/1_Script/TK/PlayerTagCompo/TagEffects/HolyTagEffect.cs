@@ -11,6 +11,7 @@ namespace Swift_Blade
         public override void Initialize(Player player)
         {
             base.Initialize(player);
+            
             _stat = _player.GetEntityComponent<PlayerStatCompo>();
         }
 
