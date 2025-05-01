@@ -9,13 +9,15 @@ namespace Swift_Blade.Skill
     [CreateAssetMenu(fileName = "SlowAreaSkill",menuName = "SO/Skill/Cyan/SlowAreaSkill")]
     public class SlowAreaSkill : SkillData
     {
-        public float disableTime = 3f;
-        public float radius;
-        public float minSlowValue;
-        public LayerMask whatIsEnemy;
+        [SerializeField] private  float disableTime = 3f;
+        [SerializeField] private  float radius;
+        [SerializeField] private  float defaultSlowValue;
+        [SerializeField] private  float minSlowValue;
+        [SerializeField] private  LayerMask whatIsEnemy;
+        
         
         private float disableTimer;
-        private bool useSkill;
+        private bool useSkill = false;
         
         private AreaTyphoonParticle areaTyphoonParticle;
         
@@ -31,37 +33,36 @@ namespace Swift_Blade.Skill
             
             MonoGenericPool<AreaTyphoonParticle>.Initialize(skillParticle);
         }
-
+        
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
-            useSkill = true;
             disableTimer = 0;
+            useSkill = true;
             
+            PlayParticle(player);
+        }
+        
+        private void PlayParticle(Player player)
+        {
             if (areaTyphoonParticle == null)
             {
                 areaTyphoonParticle = MonoGenericPool<AreaTyphoonParticle>.Pop();
                 areaTyphoonParticle.SetFollowTransform(player.GetPlayerTransform);
             }
+                        
         }
         
         public override void SkillUpdate(Player player, IEnumerable<Transform> targets = null)
         {
-            if (useSkill == false) return;
+            if (!useSkill || !CheckDisableTime()) return;
             
-            disableTimer += Time.deltaTime;
-                
-            if (disableTimer >= disableTime)
-            {
-                ResetSkill();
-                return;
-            }
-            
-            areaTyphoonParticle.SetFollowTransform(player.GetPlayerTransform);
-                
-            targets = Physics.OverlapSphere(player.GetPlayerTransform.position, radius, whatIsEnemy)
-                            .Select(c => c.transform);
+            PlayParticle(player);
             
             currentEnemies.Clear();
+            enemiesToRemove.Clear();
+            
+            targets = Physics.OverlapSphere(player.GetPlayerTransform.position, radius, whatIsEnemy)
+                            .Select(c => c.transform);
             
             foreach (var item in targets)
             {
@@ -71,21 +72,19 @@ namespace Swift_Blade.Skill
                     
                     if (allEnemies.Add(enemy))
                     {
-                        float animationSpeed = Mathf.Max(minSlowValue, 0.6f);
+                        float animationSpeed = Mathf.Max(minSlowValue, defaultSlowValue);
                         enemy.SetSlowMotionSpeed(animationSpeed);
                     }
                     
                 }
             }
             
-            enemiesToRemove.Clear();
             
             foreach (var enemy in allEnemies)
             {
                 if (!currentEnemies.Contains(enemy))
                 {
                     enemiesToRemove.Add(enemy);
-                    Debug.Log("Reset : ");
                     enemy.ResetSlowMotionSpeed();
                 }
             }
@@ -96,11 +95,23 @@ namespace Swift_Blade.Skill
             }
         }
         
+        private bool CheckDisableTime()
+        {
+            disableTimer += Time.deltaTime;
+            if (disableTimer >= disableTime)
+            {
+                ResetSkill();
+                return false;
+            }
+            
+            return true;
+        }
+
         public override void ResetSkill()
         {
             useSkill = false;
             disableTimer = 0;
-                        
+            
             foreach (var enemy in allEnemies)
             {
                 enemy.ResetSlowMotionSpeed();
@@ -112,9 +123,10 @@ namespace Swift_Blade.Skill
             
             if (areaTyphoonParticle != null)
             {
-                MonoGenericPool<AreaTyphoonParticle>.Push(areaTyphoonParticle);
+                areaTyphoonParticle.PushSelf();
                 areaTyphoonParticle = null;
             }
+            
         }
         
         public override void DrawGizmo(Player player)

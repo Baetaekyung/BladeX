@@ -19,6 +19,11 @@ namespace Swift_Blade.Enemy.Goblin
             isManualKnockback = false;
             NavMeshAgent.enabled = true;
         }
+
+        public void StopNavmesh()
+        {
+            NavMeshAgent.enabled = false;
+        }
         
         public override void StopAllAnimationEvents()
         {

@@ -12,16 +12,15 @@ namespace Swift_Blade.Combat.Feedback
         [SerializeField] private Material changeMat;
         [SerializeField] private SkinnedMeshRenderer[] _meshRenderers;
         private Material[] _originMats;
-
-        private BaseEnemy baseEnemy;
         
+        private BaseEnemy baseEnemy;
+        private bool isChanging;
         private void Start()
         {
             _meshRenderers = root.GetComponentsInChildren<SkinnedMeshRenderer>();
-            baseEnemy.GetComponentInParent<BaseEnemy>();
+            baseEnemy = root.GetComponent<BaseEnemy>();
             _originMats = Array.ConvertAll(_meshRenderers, mesh => mesh.material);
-
-            
+                        
             baseEnemy.OnSlowEvents.AddListener(ChangeMat);
         }
         
@@ -30,9 +29,12 @@ namespace Swift_Blade.Combat.Feedback
             baseEnemy.OnSlowEvents.RemoveListener(ChangeMat);
         }
         
+        public bool GetChangingMat() => isChanging;
+        
         public void ChangeMat(bool value)
         {
-            if (value)
+            isChanging = value;
+            if (isChanging)
             {
                 PlayFeedback();
             }

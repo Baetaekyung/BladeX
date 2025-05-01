@@ -5,6 +5,7 @@ using Unity.Behavior;
 using UnityEngine.AI;
 using UnityEngine;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine.Events;
 using Action = System.Action;
 
@@ -163,13 +164,16 @@ namespace Swift_Blade.Enemy
             return false;
         }
 
-        public void SetSlowMotionSpeed(float speed)
+        public void SetSlowMotionSpeed(float speed, float _duration = 0)
         {
             OnSlowEvents?.Invoke(true);
             
             baseAnimationController.SetAnimationSpeed(speed);
             baseAnimationController.MultiplyDefaultAttackMoveSpeed(0.5f);
             btAgent.SetVariableValue("MoveSpeed", moveSpeed * 0.5f);
+            
+            if(_duration > 0)
+                DOVirtual.DelayedCall(_duration, ResetSlowMotionSpeed);
         }
         
         public void ResetSlowMotionSpeed()

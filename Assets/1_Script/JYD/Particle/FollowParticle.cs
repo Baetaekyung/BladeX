@@ -11,7 +11,7 @@ namespace Swift_Blade.Pool
         {
             this.followTransform = followTransform;
         }
-
+        
         protected override void Update()
         {
             
