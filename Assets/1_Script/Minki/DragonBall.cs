@@ -15,8 +15,10 @@ namespace Swift_Blade.Pool
 
         private Sequence _sequence;
 
-        public void Initialize(float damage, float angle)
+        public void Initialize(Transform player, float damage, float angle)
         {
+            ParticleSystem.MainModule mainModule = _particle.GetComponent<ParticleSystem>().main;
+            mainModule.customSimulationSpace = player;
             _damage = damage;
             _originAngle = angle;
             transform.localEulerAngles = Vector3.up * angle;
@@ -41,7 +43,8 @@ namespace Swift_Blade.Pool
 
             _sequence.Append(DOTween.To(() => _collider.center.z, x => _collider.center = Vector3.forward * x, 1f, 1f));
             _sequence.Join(_particle.DOLocalMoveZ(1f, 1f));
-            _sequence.Append(transform.DOLocalRotate(Vector3.up * (_originAngle + 1080), 2.8f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(10, LoopType.Restart));
+            _sequence.Append(transform.DOLocalRotate(Vector3.up * (_originAngle + 1080), 2.8f, RotateMode.FastBeyond360)
+                .SetEase(Ease.Linear).SetLoops(10, LoopType.Restart));
 
             _sequence.Append(DOTween.To(() => _collider.center.z, x => _collider.center = Vector3.forward * x, 0f, 1f));
             _sequence.Join(_particle.DOLocalMoveZ(0f, 1f));
