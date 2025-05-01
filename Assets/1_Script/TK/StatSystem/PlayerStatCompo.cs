@@ -124,6 +124,12 @@ namespace Swift_Blade
             {
                 StopCoroutine(buffRoutine);
 
+                if(stat.statType == StatType.HEALTH)
+                {
+                    _playerHealth.ShieldAmount -= Mathf.RoundToInt(buffAmount);
+                    _playerHealth.HealthUpdate();
+                }
+
                 stat.RemoveModifier(buffKey);
                 stat.currentBuffDictionary.Remove(buffKey);
                 stat.buffTimer = 0;

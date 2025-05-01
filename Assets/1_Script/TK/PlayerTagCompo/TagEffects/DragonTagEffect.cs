@@ -24,7 +24,7 @@ namespace Swift_Blade
             for(int i = 0; i < 3; ++i)
             {
                 DragonBall dragonBall = MonoGenericPool<DragonBall>.Pop();
-                dragonBall.Initialize(_playerTransform, _damage, 120 * i);
+                dragonBall.Initialize(_playerTransform, _damage, 120f * i);
 
                 dragonBall.transform.SetParent(_playerTransform);
                 dragonBall.transform.localPosition = Vector3.up;
