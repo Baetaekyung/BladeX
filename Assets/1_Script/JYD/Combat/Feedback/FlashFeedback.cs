@@ -17,10 +17,14 @@ namespace Swift_Blade.Combat.Feedback
         private Material[] _originMats;
 
         private WaitForSeconds _flashDuration;
+
+        private ChangeMatFeedback changeMatFeedback;
         
         private void Start()
         {
             _meshRenderers = root.GetComponentsInChildren<SkinnedMeshRenderer>();
+            changeMatFeedback = GetComponentInChildren<ChangeMatFeedback>();
+            
             _originMats = Array.ConvertAll(_meshRenderers, mesh => mesh.material);
             
             float waitTime = flashDuration / (flashCount * 2);
@@ -31,15 +35,21 @@ namespace Swift_Blade.Combat.Feedback
         {
             StartCoroutine(FlashRoutine());
         }
-
+        
         public override void ResetFeedback()
         {
+            if (changeMatFeedback != null && changeMatFeedback.GetChangingMat())
+            {
+                changeMatFeedback.PlayFeedback();
+                return;
+            }
+            
             for (int i = 0; i < _meshRenderers.Length; i++)
             {
                 _meshRenderers[i].material = _originMats[i];
             }
         }
-
+        
         private IEnumerator FlashRoutine()
         {
             for (int i = 0; i < flashCount; i++)

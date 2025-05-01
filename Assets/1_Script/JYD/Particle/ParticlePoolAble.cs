@@ -22,7 +22,7 @@ namespace Swift_Blade.Pool
         protected virtual void Update()
         {
             pushTimer += Time.deltaTime;
-
+            
             if (pushTimer >= pushTime)
             {
                 pushTimer = 0;
@@ -34,5 +34,6 @@ namespace Swift_Blade.Pool
         {
             MonoGenericPool<T>.Push((this as T));
         }
+        
     }
 }
