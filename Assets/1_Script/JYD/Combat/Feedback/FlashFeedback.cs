@@ -50,7 +50,7 @@ namespace Swift_Blade.Combat.Feedback
                 yield return _flashDuration;
             }
         }
-
+        
         private void SetMaterials(Material mat)
         {
             foreach (var renderer in _meshRenderers)

@@ -12,14 +12,23 @@ namespace Swift_Blade.Skill
         public float disableTime = 3f;
         public float radius;
         public float minSlowValue;
+        public LayerMask whatIsEnemy;
         
         private float disableTimer;
         private bool useSkill;
         
         private AreaTyphoonParticle areaTyphoonParticle;
-            
+        
+        private readonly HashSet<BaseEnemy> allEnemies = new HashSet<BaseEnemy>();
+        private readonly HashSet<BaseEnemy> currentEnemies = new HashSet<BaseEnemy>();
+        private readonly List<BaseEnemy> enemiesToRemove = new List<BaseEnemy>();
+        
         public override void Initialize()
         {
+            allEnemies.Clear();
+            currentEnemies.Clear();
+            enemiesToRemove.Clear();
+            
             MonoGenericPool<AreaTyphoonParticle>.Initialize(skillParticle);
         }
 
@@ -33,45 +42,87 @@ namespace Swift_Blade.Skill
                 areaTyphoonParticle = MonoGenericPool<AreaTyphoonParticle>.Pop();
                 areaTyphoonParticle.SetFollowTransform(player.GetPlayerTransform);
             }
-            
-            
         }
         
         public override void SkillUpdate(Player player, IEnumerable<Transform> targets = null)
         {
-            if (useSkill)
+            if (useSkill == false) return;
+            
+            disableTimer += Time.deltaTime;
+                
+            if (disableTimer >= disableTime)
             {
-                areaTyphoonParticle.SetFollowTransform(player.GetPlayerTransform);
+                ResetSkill();
+                return;
+            }
+            
+            areaTyphoonParticle.SetFollowTransform(player.GetPlayerTransform);
                 
-                disableTimer += Time.deltaTime;
-                
-                targets = Physics.OverlapSphere(areaTyphoonParticle.transform.position, radius).Select(c => c.transform);
-                foreach (var item in targets)
+            targets = Physics.OverlapSphere(player.GetPlayerTransform.position, radius, whatIsEnemy)
+                            .Select(c => c.transform);
+            
+            currentEnemies.Clear();
+            
+            foreach (var item in targets)
+            {
+                if (item.TryGetComponent(out BaseEnemy enemy))
                 {
-                    float multipleAnimationSpeed = Mathf.Max(minSlowValue, (1 - GetColorRatio()));
+                    currentEnemies.Add(enemy);
                     
-                    item.GetComponent<BaseEnemyAnimationController>().MultipleAnimationSpeed(multipleAnimationSpeed);
-                }
-                
-                if (disableTimer >= disableTime)
-                {
-                    ResetSkill();
+                    if (allEnemies.Add(enemy))
+                    {
+                        float animationSpeed = Mathf.Max(minSlowValue, 0.6f);
+                        enemy.SetSlowMotionSpeed(animationSpeed);
+                    }
+                    
                 }
             }
             
+            enemiesToRemove.Clear();
+            
+            foreach (var enemy in allEnemies)
+            {
+                if (!currentEnemies.Contains(enemy))
+                {
+                    enemiesToRemove.Add(enemy);
+                    Debug.Log("Reset : ");
+                    enemy.ResetSlowMotionSpeed();
+                }
+            }
+            
+            foreach (var enemy in enemiesToRemove)
+            {
+                allEnemies.Remove(enemy);
+            }
         }
         
         public override void ResetSkill()
         {
             useSkill = false;
             disableTimer = 0;
-            MonoGenericPool<AreaTyphoonParticle>.Push(areaTyphoonParticle);
+                        
+            foreach (var enemy in allEnemies)
+            {
+                enemy.ResetSlowMotionSpeed();
+            }
+            
+            allEnemies.Clear();
+            currentEnemies.Clear();
+            enemiesToRemove.Clear();
+            
+            if (areaTyphoonParticle != null)
+            {
+                MonoGenericPool<AreaTyphoonParticle>.Push(areaTyphoonParticle);
+                areaTyphoonParticle = null;
+            }
         }
         
         public override void DrawGizmo(Player player)
         {
-            if(player != null)
-                Gizmos.DrawWireSphere(player.transform.position , radius);
+            if (player == null)return;
+                
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(player.transform.position, radius);
         }
         
     }

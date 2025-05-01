@@ -26,9 +26,11 @@ namespace Swift_Blade.Enemy
         public float maxAnimationSpeed = 1.3f;
         public float minAnimationSpeed = 1;
         
-        private readonly int ATTACK_SPEED = Animator.StringToHash("AttackSpeed");
-                
+        private readonly int ANIMATION_SPEED = Animator.StringToHash("AnimationSpeed");
         public Animator GetAnimator() => Animator;
+        
+        private float originMotionSpeed;
+        float originMoveSpeed;
         
         protected virtual void Awake()
         {
@@ -40,20 +42,36 @@ namespace Swift_Blade.Enemy
         
         protected virtual void Start()
         {
-            SetAttackAnimationSpeed();
+            SetRandomAttackAnimationSpeed();
         }
-
-        protected void SetAttackAnimationSpeed()
+        
+        protected void SetRandomAttackAnimationSpeed()
         {
-            float animationSpeed = Random.Range(minAnimationSpeed, maxAnimationSpeed);
-            Animator.SetFloat(ATTACK_SPEED ,animationSpeed);
+            originMotionSpeed = Random.Range(minAnimationSpeed, maxAnimationSpeed);
+            SetAnimationSpeed(originMotionSpeed);
         }
-
-        public void MultipleAnimationSpeed(float ratio)
+        
+        public void ResetAnimationSpeed()
         {
-            float animationSpeedNormalized = Animator.GetFloat(ATTACK_SPEED) * ratio;
-            Animator.SetFloat(ATTACK_SPEED ,animationSpeedNormalized);
+            SetAnimationSpeed(originMotionSpeed);
         }
+        
+        public void SetAnimationSpeed(float animationSpeed)
+        {
+            Animator.SetFloat(ANIMATION_SPEED ,animationSpeed);
+        }
+        
+        public void MultiplyDefaultAttackMoveSpeed(float ratio)
+        {
+            originMoveSpeed = defaultAttackMoveSpeed;
+            defaultAttackMoveSpeed *= ratio;
+        }
+        
+        public void ResetDefaultMoveSpeed()
+        {
+            defaultAttackMoveSpeed = originMoveSpeed;
+        }
+        
         
         private void Cast()
         {
@@ -94,8 +112,7 @@ namespace Swift_Blade.Enemy
         {
             Animator.Rebind();
         }
-        
-        
-        
+
+       
     }
 }

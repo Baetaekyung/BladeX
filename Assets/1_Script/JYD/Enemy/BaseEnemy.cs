@@ -1,9 +1,12 @@
-﻿using Swift_Blade.Combat.Health;
+﻿using System;
+using Swift_Blade.Combat.Health;
 using Swift_Blade.Level;
 using Unity.Behavior;
 using UnityEngine.AI;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Events;
+using Action = System.Action;
 
 namespace Swift_Blade.Enemy
 {
@@ -36,6 +39,8 @@ namespace Swift_Blade.Enemy
         
         private Vector3 nextPathPoint;
         private EnemySpawner owner;
+
+        [HideInInspector] public UnityEvent<bool> OnSlowEvents; 
         
         protected virtual void Start()
         {
@@ -156,6 +161,24 @@ namespace Swift_Blade.Enemy
 
             if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, whatIsWall)) return true;
             return false;
+        }
+
+        public void SetSlowMotionSpeed(float speed)
+        {
+            OnSlowEvents?.Invoke(true);
+            
+            baseAnimationController.SetAnimationSpeed(speed);
+            baseAnimationController.MultiplyDefaultAttackMoveSpeed(0.5f);
+            btAgent.SetVariableValue("MoveSpeed", moveSpeed * 0.5f);
+        }
+        
+        public void ResetSlowMotionSpeed()
+        {
+            OnSlowEvents?.Invoke(false);
+                        
+            baseAnimationController.ResetAnimationSpeed();
+            baseAnimationController.ResetDefaultMoveSpeed();
+            btAgent.SetVariableValue("MoveSpeed", moveSpeed);
         }
         
         protected virtual void OnDrawGizmos()
