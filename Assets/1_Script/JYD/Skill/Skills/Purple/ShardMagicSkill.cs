@@ -22,7 +22,7 @@ namespace Swift_Blade.Skill
                 {
                     ShardMagicParticle shardMagicParticle = MonoGenericPool<ShardMagicParticle>.Pop();
                     shardMagicParticle.SetDamage(damage + GetColorRatio());
-                    shardMagicParticle.transform.forward = -item.transform.forward;
+                    shardMagicParticle.transform.forward = player.GetPlayerTransform.forward;
                     shardMagicParticle.transform.position = item.position + new Vector3(0,0.25f,0);
                     
                 }
