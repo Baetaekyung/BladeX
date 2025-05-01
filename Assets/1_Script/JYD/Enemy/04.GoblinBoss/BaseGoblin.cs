@@ -28,13 +28,6 @@ namespace Swift_Blade.Enemy.Goblin
             }
         }
 
-        public override void DeadEvent()
-        {
-            NavmeshAgent.enabled = false;
-            
-            base.DeadEvent();
-        }
-
         private bool DetectBackwardObstacle()
         {
             var ray = new Ray(checkForward.position, -checkForward.forward);
