@@ -41,7 +41,6 @@ namespace Swift_Blade
             float angle = 360f / amount;
             for(int i = 0; i < amount; ++i)
             {
-                Debug.Log(angle * i);
                 transform.GetChild(i).localEulerAngles = Vector3.up * (angle * i);
             }
 
@@ -73,7 +72,6 @@ namespace Swift_Blade
         
         private void BreakShield(int amount)
         {
-            Debug.Log($"{_currentShieldAmount - 1} | {amount}");
             for(int i = _currentShieldAmount - 1; i >= amount; --i)
             {
                 StartCoroutine(FadeCoroutine(shieldMats[i], 0f, fadeOutTime));
