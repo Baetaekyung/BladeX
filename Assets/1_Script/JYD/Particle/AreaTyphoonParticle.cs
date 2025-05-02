@@ -1,12 +1,8 @@
 
 namespace Swift_Blade.Pool
 {
-    public class AreaTyphoonParticle : FollowParticle<AreaTyphoonParticle>
+    public class AreaTyphoonParticle : ParticlePoolAble<AreaTyphoonParticle>
     {
-        public void PushSelf()
-        {
-            base.Push();
-        }
                 
     }
 }

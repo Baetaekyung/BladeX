@@ -26,12 +26,6 @@ public partial class SetAllAnimationEndAction : Action
                 case AnimatorControllerParameterType.Trigger:
                     animator.Value.ResetTrigger(parameter.name);
                     break;
-                case AnimatorControllerParameterType.Int:
-                    animator.Value.SetInteger(parameter.name, 0);
-                    break;
-                case AnimatorControllerParameterType.Float:
-                    animator.Value.SetFloat(parameter.name, 0f);
-                    break;
             }
         }
         
