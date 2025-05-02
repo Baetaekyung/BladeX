@@ -19,7 +19,7 @@ namespace Swift_Blade
         
         private const string TINT_COLOR = "_TintColor";
         private const float MAX_ALPHA_VALUE = 0.4f;
-
+        
         private int _currentShieldAmount = 0;
         
         private void Awake()
@@ -37,7 +37,7 @@ namespace Swift_Blade
         public void SetShield(int amount)
         {
             if(amount == _currentShieldAmount) return;
-
+        
             float angle = 360f / amount;
             for(int i = 0; i < amount; ++i)
             {

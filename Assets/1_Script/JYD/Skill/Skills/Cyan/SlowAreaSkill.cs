@@ -9,6 +9,8 @@ namespace Swift_Blade.Skill
     [CreateAssetMenu(fileName = "SlowAreaSkill",menuName = "SO/Skill/Cyan/SlowAreaSkill")]
     public class SlowAreaSkill : SkillData
     {
+        [SerializeField] private PoolPrefabMonoBehaviourSO iceSmokeParticle;
+        [Space]
         [SerializeField] private  float disableTime = 3f;
         [SerializeField] private  float radius;
         [SerializeField] private  float defaultSlowValue;
@@ -32,6 +34,7 @@ namespace Swift_Blade.Skill
             enemiesToRemove.Clear();
             
             MonoGenericPool<AreaTyphoonParticle>.Initialize(skillParticle);
+            MonoGenericPool<IceSmokeParticle>.Initialize(iceSmokeParticle);
         }
         
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
@@ -46,6 +49,7 @@ namespace Swift_Blade.Skill
         {
             if (areaTyphoonParticle == null)
             {
+                Debug.Log("12313213213");
                 areaTyphoonParticle = MonoGenericPool<AreaTyphoonParticle>.Pop();
                 areaTyphoonParticle.SetFollowTransform(player.GetPlayerTransform);
             }
@@ -74,6 +78,10 @@ namespace Swift_Blade.Skill
                     {
                         float animationSpeed = Mathf.Max(minSlowValue, defaultSlowValue);
                         enemy.SetSlowMotionSpeed(animationSpeed);
+                        
+                        IceSmokeParticle iceSmokeParticle = MonoGenericPool<IceSmokeParticle>.Pop();
+                        iceSmokeParticle.transform.SetParent(enemy.transform);
+                        iceSmokeParticle.transform.position = enemy.transform.position + new Vector3(0,1.25f,0);
                     }
                     
                 }

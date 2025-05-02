@@ -12,15 +12,29 @@ public partial class SetAllAnimationEndAction : Action
     
     protected override Status OnStart()
     {
-        foreach (AnimatorControllerParameter parameter in animator.Value.parameters)
+        int count = animator.Value.parameterCount;
+
+        for (int i = 0; i < count; i++)
         {
-            if (parameter.type == AnimatorControllerParameterType.Bool ||
-                parameter.type == AnimatorControllerParameterType.Trigger)
+            AnimatorControllerParameter parameter = animator.Value.GetParameter(i);
+            
+            switch (parameter.type)
             {
-                animator.Value.SetBool(parameter.name, false);
+                case AnimatorControllerParameterType.Bool:
+                    animator.Value.SetBool(parameter.name, false);
+                    break;
+                case AnimatorControllerParameterType.Trigger:
+                    animator.Value.ResetTrigger(parameter.name);
+                    break;
+                case AnimatorControllerParameterType.Int:
+                    animator.Value.SetInteger(parameter.name, 0);
+                    break;
+                case AnimatorControllerParameterType.Float:
+                    animator.Value.SetFloat(parameter.name, 0f);
+                    break;
             }
         }
-                        
+        
         return Status.Success;
     }
 

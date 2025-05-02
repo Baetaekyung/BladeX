@@ -26,7 +26,7 @@ namespace Swift_Blade.Skill
         public override void Initialize()
         {
             MonoGenericPool<WindProjectileParticle>.Initialize(skillParticle);
-            MonoGenericPool<BlueCircle>.Initialize(blueCircle);
+            MonoGenericPool<BlueCircleParticle>.Initialize(blueCircle);
         }
         
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
@@ -49,9 +49,9 @@ namespace Swift_Blade.Skill
                 
                 if (skillCounter >= skillCount)
                 {
-                    BlueCircle blueCircle =  MonoGenericPool<BlueCircle>.Pop();
-                    blueCircle.transform.SetParent(player.GetPlayerTransform);
-                    blueCircle.transform.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.5f,0);
+                    BlueCircleParticle blueCircleParticle =  MonoGenericPool<BlueCircleParticle>.Pop();
+                    blueCircleParticle.transform.SetParent(player.GetPlayerTransform);
+                    blueCircleParticle.transform.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.5f,0);
                     
                     DOVirtual.DelayedCall(FIRE_DELAY , () =>
                     {
