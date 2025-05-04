@@ -1,32 +1,33 @@
-﻿using System.Collections.Generic;
-using Swift_Blade.Level.Door;
-using System.Collections;
+﻿using Random = UnityEngine.Random;
 using UnityEngine.SceneManagement;
-using Random = UnityEngine.Random;
+using System.Collections.Generic;
+using Swift_Blade.Level;
+using System.Collections;
 using UnityEngine;
-using System;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
-using UnityEngine.Serialization;
+using System;
 
 public enum NodeType
 {
     //default
-    Exp,
+    Stage1,
+    Stage2,
+    Stage3,
+    Stage4,
     
-    //event
-    Event,
-    
-    //level Up
+    //Special
     Point,
     Challenge,
     Store,
+    Event,
     
     //boss
     Boss,
     
     Rest,
+    
+    Trap,
     
     None,
 }
@@ -65,11 +66,13 @@ public class NodeDictionary : IEnumerable<List<Node>>
     
     private const byte APPEAR_SPECIAL_NODE_PERCENT = 16;//100 / 6 = 16.xxx
     
+    private NodeType currentStage = NodeType.Stage1;
+    
     public NodeDictionary(Node[] nodes)
     {
         nodeList = new Dictionary<NodeType, List<Node>>();
         specialNodeTypes = new List<NodeType>();
-        InitSpecialNodes();
+        InitializeNodes();
         
         foreach (var item in nodes)
         {
@@ -126,14 +129,16 @@ public class NodeDictionary : IEnumerable<List<Node>>
     
     public string this[NodeType type] => nodeList[type][Random.Range(0 , nodeList[type].Count)].nodeName;
     
-    public void InitSpecialNodes()
+    public void InitializeNodes()
     {
-        specialNodeTypes.Clear();
+        currentStage = NodeType.Stage1;
         
+        specialNodeTypes.Clear();
         specialNodeTypes.Add(NodeType.Challenge);
         specialNodeTypes.Add(NodeType.Point);
         specialNodeTypes.Add(NodeType.Event);
         specialNodeTypes.Add(NodeType.Store);
+        specialNodeTypes.Add(NodeType.Trap);
     }
     
     public Node GetRandomNode(NodeType nodeType)
@@ -142,7 +147,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
         {
             List<Node> nodes = nodeList[nodeType];
             Node selectedNode = SelectRandomNode(nodes);
-                                        
+            
             if (IsValidScene(selectedNode.nodeName))
                 return selectedNode;
             
@@ -163,6 +168,8 @@ public class NodeDictionary : IEnumerable<List<Node>>
             canFirstAppearSpecialNode = true;
             canSecondAppearSpecialNode = true;
             
+            currentStage = (NodeType)((int)currentStage + 1);
+            
             nodeTypes.Add(NodeType.Rest);
         }
         else if (currentNodeIndex % 6 == 0)
@@ -176,31 +183,29 @@ public class NodeDictionary : IEnumerable<List<Node>>
             else
                 canSecondAppearSpecialNode = false;
             
-            
             NodeType nodeType = specialNodeTypes[Random.Range(0, specialNodeTypes.Count)];
             specialNodeTypes.Remove(nodeType);
-                        
+            
             nodeTypes.Add(nodeType);
-            nodeTypes.Add(NodeType.Exp);         
+            nodeTypes.Add(currentStage);         
         }
         else
         {
-            nodeTypes.Add(NodeType.Exp);         
+            nodeTypes.Add(currentStage);         
         }
-                
+        
         return nodeTypes;
     }
-        
+    
     public IEnumerator<List<Node>> GetEnumerator()
     {
         return nodeList.Values.GetEnumerator();
     }
-
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
-
+    
     #endregion
     
 }
@@ -210,38 +215,40 @@ namespace Swift_Blade.Level
     [CreateAssetMenu(fileName = "NodeList", menuName = "SO/Scene/NodeList")]
     public class NodeList : ScriptableObject
     {
-        int stageCount = 0;
-        
         [SerializeField] private Node[] nodelist;
         private NodeDictionary nodeDictionary;
         
-        [SerializeField] private Door.Door expDoor;
-        [SerializeField] private Door.Door eventDoor;
-        [SerializeField] private Door.Door storeDoor;
-        [SerializeField] private Door.Door pointDoor;
-        [SerializeField] private Door.Door challengeDoor;
-        [SerializeField] private Door.Door bossDoor;
-        [SerializeField] private Door.Door restDoor;
+        [SerializeField] private Door expDoor;
+        [SerializeField] private Door eventDoor;
+        [SerializeField] private Door storeDoor;
+        [SerializeField] private Door pointDoor;
+        [SerializeField] private Door challengeDoor;
+        [SerializeField] private Door bossDoor;
+        [SerializeField] private Door restDoor;
+        [SerializeField] private Door trapDoor;
         
-        private int currentNodeIndex = 0;
-
         private readonly StringBuilder stageName = new StringBuilder();
         
-        public void RestNodeIndex()
-        {
-            nodeDictionary.InitSpecialNodes();
-            currentNodeIndex = 0;
-        }
+        private int stageCount = 0;
+        private int currentNodeIndex = 0;
                 
-        private void OnEnable()
+        public void Initialize()
         {
             nodeDictionary = new NodeDictionary(nodelist);
-            RestNodeIndex();
+            nodeDictionary.InitializeNodes();
             
+            currentNodeIndex = 0;
             stageCount = 0;
+            
             stageName.Clear();
             stageName.Append("Stage_");
             
+        }
+        
+        private void OnEnable()
+        {
+            Initialize();
+                        
             foreach (var node in nodeDictionary)
             {
                 foreach (var item in node)
@@ -253,15 +260,15 @@ namespace Swift_Blade.Level
         
         private void AssignDoor(Node item)
         {
-           
             switch (item.nodeType)
             {
-                case NodeType.Exp:
+                case NodeType.Stage1 or NodeType.Stage2 or NodeType.Stage3 or NodeType.Stage4:
                     ++stageCount;
                     item.nodeName = stageName.Append(stageCount).ToString();
                     item.SetPortalPrefab(expDoor);
-                    stageName.Remove(stageName.Length - stageCount.ToString().Length, stageCount.ToString().Length);
                     
+                    //stage_1 => stage_2
+                    stageName.Remove(stageName.Length - stageCount.ToString().Length, stageCount.ToString().Length);
                     break;
                 case NodeType.Event:
                     item.SetPortalPrefab(eventDoor);
@@ -286,7 +293,7 @@ namespace Swift_Blade.Level
             }
         }
         
-        public Node[] GetNode()
+        public Node[] GetNodes()
         {
             List<NodeType> nodeTypes = nodeDictionary.GetNodeTypes(++currentNodeIndex);
             Node[] nodes = new Node[nodeTypes.Count];
@@ -296,17 +303,16 @@ namespace Swift_Blade.Level
             for (int i = 0; i < nodeTypes.Count; i++)
             {
                 nodes[i] = nodeDictionary.GetRandomNode(nodeTypes[i]);
-                //Debug.Log($"Next Door is {nodes[i]}");
             }
-            
+                        
             return nodes;
         }
-
-        public string GetNodeName(NodeType nodeType)
+        
+        public string GetNodeNameByNodeType(NodeType nodeType)
         {
-           
             return nodeDictionary[nodeType];
         }
-               
+        
+        
     }
 }
