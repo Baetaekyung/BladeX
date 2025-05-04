@@ -85,6 +85,8 @@ public class NodeDictionary : IEnumerable<List<Node>>
         }
     }
     
+    public string this[NodeType type] => nodeList[type][Random.Range(0 , nodeList[type].Count)].nodeName;
+        
     #region Priavte
     private bool CanAppearSpecialNode() => canSecondAppearSpecialNode || canFirstAppearSpecialNode;
     private bool IsValidScene(string sceneName)
@@ -103,7 +105,6 @@ public class NodeDictionary : IEnumerable<List<Node>>
         Debug.LogError("Scene List에 Scene 없습니다.");
         return false;
     }
-        
     private Node SelectRandomNode(List<Node> nodes)
     {
         nodes = nodes.OrderBy(x => x.GetAppearCount()).ToList();
@@ -117,49 +118,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
         
         return nodes[Random.Range(0, nodes.Count)];
     }
-
-    #endregion
-
-    #region Public
-
-    public void Add(Node newNode)
-    {
-        nodeList[newNode.nodeType].Add(newNode);
-    }
-    
-    public string this[NodeType type] => nodeList[type][Random.Range(0 , nodeList[type].Count)].nodeName;
-    
-    public void InitializeNodes()
-    {
-        currentStage = NodeType.Stage1;
-        
-        specialNodeTypes.Clear();
-        specialNodeTypes.Add(NodeType.Challenge);
-        specialNodeTypes.Add(NodeType.Point);
-        specialNodeTypes.Add(NodeType.Event);
-        specialNodeTypes.Add(NodeType.Store);
-        specialNodeTypes.Add(NodeType.Trap);
-    }
-    
-    public Node GetRandomNode(NodeType nodeType)
-    {
-        if (nodeList.ContainsKey(nodeType) && nodeList[nodeType].Count > 0)
-        {
-            List<Node> nodes = nodeList[nodeType];
-            Node selectedNode = SelectRandomNode(nodes);
-            
-            if (IsValidScene(selectedNode.nodeName))
-                return selectedNode;
-            
-            Debug.LogError($"{selectedNode.nodeName}은(는) sceneList에 존재하지 않습니다!");
-            return null;
-        }
-        
-        Debug.LogError("유효하지 않은 NodeType이거나, 해당 타입의 Node가 존재하지 않습니다.");
-        return null;
-    }
-    
-    public List<NodeType> GetNodeTypes(int currentNodeIndex)
+    private List<NodeType> GetNodeTypes(int currentNodeIndex)
     {
         List<NodeType> nodeTypes = new List<NodeType>();
         
@@ -184,7 +143,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
                 canSecondAppearSpecialNode = false;
             
             NodeType nodeType = specialNodeTypes[Random.Range(0, specialNodeTypes.Count)];
-            specialNodeTypes.Remove(nodeType);
+            
             
             nodeTypes.Add(nodeType);
             nodeTypes.Add(currentStage);         
@@ -196,6 +155,59 @@ public class NodeDictionary : IEnumerable<List<Node>>
         
         return nodeTypes;
     }
+    private Node GetRandomNode(NodeType nodeType)
+    {
+        if (nodeList.ContainsKey(nodeType) && nodeList[nodeType].Count > 0)
+        {
+            List<Node> nodes = nodeList[nodeType];
+            Node selectedNode = SelectRandomNode(nodes);
+            
+            if (IsValidScene(selectedNode.nodeName))
+                return selectedNode;
+            
+            Debug.LogError($"{selectedNode.nodeName}은(는) sceneList에 존재하지 않습니다!");
+            return null;
+        }
+        
+        Debug.LogError("유효하지 않은 NodeType이거나, 해당 타입의 Node가 존재하지 않습니다.");
+        return null;
+    }
+    
+    #endregion
+
+    #region Public
+    public void Add(Node newNode)
+    {
+        nodeList[newNode.nodeType].Add(newNode);
+    }
+    public void InitializeNodes()
+    {
+        canFirstAppearSpecialNode = true;
+        canSecondAppearSpecialNode = true;
+        
+        currentStage = NodeType.Stage1;
+        
+        specialNodeTypes.Clear();
+        specialNodeTypes.Add(NodeType.Challenge);
+        specialNodeTypes.Add(NodeType.Point);
+        specialNodeTypes.Add(NodeType.Event);
+        specialNodeTypes.Add(NodeType.Store);
+        specialNodeTypes.Add(NodeType.Trap);
+    }
+    public Node[] GetRandomNodes(int currentNodeIndex)
+    {
+        List<NodeType> nodeTypes = GetNodeTypes(currentNodeIndex);
+        Node[] nodes = new Node[nodeTypes.Count];
+        
+        for (int i = 0; i < nodeTypes.Count; i++)
+        {
+            nodes[i] = GetRandomNode(nodeTypes[i]);
+        }
+        
+        return nodes;
+    }
+    
+    #endregion
     
     public IEnumerator<List<Node>> GetEnumerator()
     {
@@ -205,9 +217,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
     {
         return GetEnumerator();
     }
-    
-    #endregion
-    
+       
 }
 
 namespace Swift_Blade.Level
@@ -252,8 +262,7 @@ namespace Swift_Blade.Level
                     stageType = (NodeType)(int)stageType + 1;
                 }
             }
-            
-            
+                        
             nodeDictionary = new NodeDictionary(nodelist);
             nodeDictionary.InitializeNodes();
             
@@ -315,24 +324,13 @@ namespace Swift_Blade.Level
         
         public Node[] GetNodes()
         {
-            List<NodeType> nodeTypes = nodeDictionary.GetNodeTypes(++currentNodeIndex);
-            Node[] nodes = new Node[nodeTypes.Count];
-            
-            ++currentNodeIndex;
-            
-            for (int i = 0; i < nodeTypes.Count; i++)
-            {
-                nodes[i] = nodeDictionary.GetRandomNode(nodeTypes[i]);
-            }
-                        
-            return nodes;
+            return nodeDictionary.GetRandomNodes(++currentNodeIndex);
         }
-        
+                
         public string GetNodeNameByNodeType(NodeType nodeType)
         {
             return nodeDictionary[nodeType];
         }
-        
-        
+                
     }
 }
