@@ -68,7 +68,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
     
     private NodeType currentStage = NodeType.Stage1;
     
-    public NodeDictionary(Node[] nodes)
+    public NodeDictionary(List<Node> nodes)
     {
         nodeList = new Dictionary<NodeType, List<Node>>();
         specialNodeTypes = new List<NodeType>();
@@ -215,7 +215,7 @@ namespace Swift_Blade.Level
     [CreateAssetMenu(fileName = "NodeList", menuName = "SO/Scene/NodeList")]
     public class NodeList : ScriptableObject
     {
-        [SerializeField] private Node[] nodelist;
+        [SerializeField] private List<Node> nodelist;
         private NodeDictionary nodeDictionary;
         
         [SerializeField] private Door expDoor;
@@ -227,13 +227,33 @@ namespace Swift_Blade.Level
         [SerializeField] private Door restDoor;
         [SerializeField] private Door trapDoor;
         
-        private readonly StringBuilder stageName = new StringBuilder();
+        [Space]
+        [SerializeField] private bool createStageNode;
         
+        private readonly StringBuilder stageName = new StringBuilder();
         private int stageCount = 0;
         private int currentNodeIndex = 0;
-                
+        
         public void Initialize()
         {
+            if (createStageNode)
+            {
+                NodeType stageType = NodeType.Stage1;
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 7; j++)
+                    {
+                        Node newNode = new Node
+                        {
+                            nodeType = stageType
+                        };
+                        nodelist.Add(newNode);
+                    }
+                    stageType = (NodeType)(int)stageType + 1;
+                }
+            }
+            
+            
             nodeDictionary = new NodeDictionary(nodelist);
             nodeDictionary.InitializeNodes();
             
