@@ -140,7 +140,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5215861488825353144}
-  - component: {fileID: 4278783374347081669}
   - component: {fileID: 4739101351403273874}
   - component: {fileID: 5580282031455822501}
   - component: {fileID: 4834576793070561444}
@@ -168,27 +167,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7269405522243285096}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &4278783374347081669
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1617148400009958434}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 16, y: 11, z: 1}
-  m_Center: {x: 7.5, y: 5, z: 0}
 --- !u!65 &4739101351403273874
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -479,6 +457,7 @@ Transform:
   - {fileID: 42136077894263753}
   - {fileID: 7530907543175445652}
   - {fileID: 5215861488825353144}
+  - {fileID: 6853722550295738909}
   - {fileID: 581185627323793179}
   - {fileID: 4604017016546127916}
   m_Father: {fileID: 0}
@@ -689,6 +668,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 30, y: 1, z: 30}
   m_Center: {x: 0, y: -0.08, z: 0}
+--- !u!1 &8934428361764594928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6853722550295738909}
+  - component: {fileID: 6854764328751266854}
+  m_Layer: 14
+  m_Name: SecretRoomBounds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6853722550295738909
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8934428361764594928}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 17.32, y: 0, z: -0.64}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7269405522243285096}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6854764328751266854
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8934428361764594928}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 11, y: 11, z: 1}
+  m_Center: {x: 0, y: 5, z: 0}
 --- !u!1001 &31437438568146578
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4328,6 +4360,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RealLantern
       objectReference: {fileID: 0}
+    - target: {fileID: 5577920050461684177, guid: 5dfb572fb7b634946b11fe5dbc825171, type: 3}
+      propertyPath: offBoundery
+      value: 
+      objectReference: {fileID: 6853722550295738909}
     - target: {fileID: 5577920050461684177, guid: 5dfb572fb7b634946b11fe5dbc825171, type: 3}
       propertyPath: secretRoomTrm
       value: 

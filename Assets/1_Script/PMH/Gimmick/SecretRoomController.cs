@@ -9,6 +9,8 @@ namespace Swift_Blade
         [SerializeField] private Transform secretRoomTrm;
         [SerializeField] private Transform secretRoomBridgeTrm;
 
+        [SerializeField] private Transform offBoundery;
+
         private bool isActive = false;
 
         public void Interact()
@@ -20,6 +22,8 @@ namespace Swift_Blade
             /// 이동할때 카메라를 비밀의 방으로 이동
             /// 카메라 셰이크
             /// 비밀의 방, 또는 비밀의 섬이 안개 밑에서 올라옴
+
+            offBoundery.gameObject.SetActive(false);
 
             Sequence seq = DOTween.Sequence();
 
