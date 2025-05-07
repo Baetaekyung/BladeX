@@ -14,6 +14,7 @@ namespace Swift_Blade.UI
         None,
         InfoBox,
         ColorMix,
-        SkillMix
+        SkillMix,
+        TutorialOption
     }
 }
