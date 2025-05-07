@@ -4,8 +4,8 @@ namespace Swift_Blade.Pool
 {
     internal class GameObjectPool : UnityObjectPool<GameObject>
     {
-        public GameObjectPool(GameObject prefab, int initialPoolCapacity = 10, int maxCapacity = 1000, int preCreate = 10)
-            : base(prefab, initialPoolCapacity, maxCapacity, preCreate)
+        public GameObjectPool(GameObject prefab, int initialPoolCapacity = 10, int maxCapacity = 1000)
+            : base(prefab, initialPoolCapacity, maxCapacity)
         {
             UnityObjectPool.SceneChangePoolDestroyEvent += base.Clear;
         }

@@ -33,14 +33,14 @@ namespace Swift_Blade.Pool
         where T : Object
     {
         protected readonly T prefab;
-        public UnityObjectPool(T prefab, int initialPoolCapacity = 10, int maxCapacity = 1000, int preCreate = 10) : base(initialPoolCapacity, maxCapacity)
+        public UnityObjectPool(T prefab, int initialPoolCapacity = 10, int maxCapacity = 1000) : base(initialPoolCapacity, maxCapacity)
         {
             this.prefab = prefab;
 
-            for (int i = 0; i < preCreate; i++)
-            {
-                Push(Create());
-            }
+            //for (int i = 0; i < preCreate; i++)
+            //{
+            //    Push(Create());
+            //}
         }
         protected override T Create()
         {

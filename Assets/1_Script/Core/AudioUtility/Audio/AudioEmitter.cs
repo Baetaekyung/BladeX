@@ -73,6 +73,7 @@ namespace Swift_Blade.Audio
         }
         private static bool IsAudioPlayable(AudioSO audioSO, bool autoIncrement = false)
         {
+            return true;
             if (!audioSO.enableMaxCount) return true;
 
             int hash = audioSO.clip.GetHashCode();
@@ -87,6 +88,7 @@ namespace Swift_Blade.Audio
         }
         private static void DecreaseDictionaryInstance(AudioSO audioSO)
         {
+            return;
             if (!audioSO.enableMaxCount) return;
 
             int hash = audioSO.clip.GetHashCode();

@@ -274,9 +274,10 @@ namespace Swift_Blade
                 {
                     smallestDistance = sqrDistance;
                     hitObject = item.gameObject;
-                    if (item.TryGetComponent(out orb))
+                    if (item.TryGetComponent(out BaseOrb outOrb))
                     {
-                        orbHitObject = item.gameObject;
+                        orb = outOrb;
+                        orbHitObject = orb.gameObject;
                     }
                 }
             }
@@ -288,7 +289,7 @@ namespace Swift_Blade
             if (orbHitObject != null)
             {
                 Debug.DrawRay(orbHitObject.transform.position + Vector3.up, Vector3.up, Color.magenta);
-                if (isOtherOrb && orb != null)
+                if (isOtherOrb)
                 {
                     lastOrb = orb;
                     InGameUIManager.Instance.SetInfoBoxAlpha(1, false);
