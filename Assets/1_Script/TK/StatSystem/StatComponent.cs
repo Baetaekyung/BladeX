@@ -10,13 +10,11 @@ namespace Swift_Blade
         [SerializeField] protected StatSO[] _defaultStats;
         protected static StatSO[] _statDatas;
 
-        public static bool IsNewGame = false;
-
         public event Action OnStatChanged;
         
         protected virtual void Initialize()
         {
-            if (IsNewGame == false)
+            if (Menu.IsNewGame == true)
             {
                 StatSO[] tempStatSO = new StatSO[_defaultStats.Length];
                 
@@ -29,7 +27,6 @@ namespace Swift_Blade
                 }
 
                 _statDatas = tempStatSO;
-                IsNewGame = true;
 
                 return;
             }

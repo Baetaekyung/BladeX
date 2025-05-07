@@ -80,10 +80,13 @@ namespace Swift_Blade
             if (popups.ContainsKey(PopupType.Inventory) == false)
                 return;
 
-            if (GetRemainPopup(PopupType.Inventory) != null)
+            if(GetRemainPopup(PopupType.Inventory))
+            {
                 PopDown(PopupType.Inventory);
-            else
-                PopUp(PopupType.Inventory);
+                return;
+            }
+
+            PopUp(PopupType.Inventory);
         }
 
         public void PopUp(PopupType popupType)
@@ -145,25 +148,13 @@ namespace Swift_Blade
 
         public void PopDown(PopupType popupType)
         {
-            PopupUI popup = null;
-            int index = 0;
-
             if (_popupList.Count > 0)
             {
-                for (int i = 0; i < _popupList.Count; i++)
+                if (_popupList.Contains(popups[popupType]))
                 {
-                    if (_popupList[i].popupType == popupType)
-                    {
-                        index = i;
-                        popup = _popupList[i];
-                        break;
-                    }
-                }
+                    popups[popupType].PopDown();
+                    _popupList.Remove(popups[popupType]);
 
-                if (popup != null)
-                {
-                    _popupList.RemoveAt(index);
-                    popup.PopDown();
                     OnPopUpOpenOrClose?.Invoke();
                 }
             }
