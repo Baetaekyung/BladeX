@@ -66,7 +66,6 @@ namespace Swift_Blade.FSM.States
                 forceExit = true;
                 OnComboFail();
             }
-
         }
         public override void Update()
         {

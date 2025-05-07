@@ -22,7 +22,6 @@ namespace Swift_Blade
         [SerializeField] private EComboState comboState;
         [SerializeField] private AnimationParameterSO comboData;
         [SerializeField] private Vector3 comboForce;
-        //[SerializeField] private float period;
         public EComboState GetComboState => comboState;
         public AnimationParameterSO GetAnimParam => comboData;
         public Vector3 GetComboForce => comboForce;
