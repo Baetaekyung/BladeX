@@ -60,6 +60,7 @@ namespace Swift_Blade
         private Rigidbody controller;
         private PlayerRenderer playerRenderer;
         private PlayerInput playerInput;
+        private PlayerStatCompo playerStat;
 
         [Header("Cache")]
         private readonly List<ContactPoint> contactPointList = new();
@@ -84,6 +85,7 @@ namespace Swift_Blade
         {
             playerRenderer = entity.GetEntityComponent<PlayerRenderer>();
             playerInput = entity.GetEntityComponent<PlayerInput>();
+            playerStat = entity.GetEntityComponent<PlayerStatCompo>();
         }
         private void Update()
         {
@@ -94,7 +96,8 @@ namespace Swift_Blade
         private void FixedUpdate()
         {
             ApplyMovement();
-            rollValue = Mathf.MoveTowards(rollValue, 2, Time.fixedDeltaTime * 2.5f);
+            rollValue = Mathf.MoveTowards(rollValue, 2 * playerStat.GetStat(StatType.MOVESPEED).Value,
+                Time.fixedDeltaTime * 2.5f);
             curveValue = Mathf.MoveTowards(curveValue, 2, Time.fixedDeltaTime * 2.5f);
             //UI_DebugPlayer.DebugText(7, rollValue, "rollValue", DBG_UI_KEYS.Keys_PlayerAction);
             //UI_DebugPlayer.DebugText(8, currentRollStamina, "currentRoll", DBG_UI_KEYS.Keys_PlayerAction);
@@ -138,7 +141,7 @@ namespace Swift_Blade
             }
 
             float multiplier = SpeedMultiplierDefault;
-            float wishSpeed = defaultSpeed * multiplier;
+            float wishSpeed = defaultSpeed * multiplier * playerStat.GetStat(StatType.MOVESPEED).Value;
 
             Vector3 movementVector = controller.linearVelocity;
             movementVector.y = 0;
