@@ -19,7 +19,8 @@ namespace Swift_Blade.UI
 
             #endregion
             
-            sceneManagerSo.LoadScene("Menu");
+            PopupManager.Instance.PopUp(PopupType.TutorialOption);
+            //sceneManagerSo.LoadScene("Menu");
         }
     }
 }
