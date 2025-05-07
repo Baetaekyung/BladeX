@@ -40,7 +40,7 @@ namespace Swift_Blade.Feeling
 
         private void OnValidate()
         {
-            Debug.Assert(_camera != null, "Camera 인스펙터에서 넣어주기");
+            //Debug.Assert(_camera != null, "Camera 인스펙터에서 넣어주기");
         }
 
 

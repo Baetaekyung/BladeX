@@ -19,9 +19,12 @@ namespace Swift_Blade
             bool isPlayerFullHP = Mathf.Approximately(maxHp, PlayerHealth.CurrentHealth);
 
             if (isPlayerFullHP)
+            {
                 PopupManager.Instance.LogInfoBox("체력이 가득하여 포션을 사용할 수 없습니다.");
+                return false;
+            }
 
-            return !isPlayerFullHP;
+            return true;
         }
     }
 }
