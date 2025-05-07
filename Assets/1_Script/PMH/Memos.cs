@@ -1,4 +1,4 @@
-using Swift_Blade.Level.Door;
+using Swift_Blade.Level;
 using UnityEngine;
 
 namespace Swift_Blade

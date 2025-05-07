@@ -8,7 +8,7 @@ namespace Swift_Blade.Level
 
         public void RestNodeIndex()
         {
-            nodeList.RestNodeIndex();
+            nodeList.Initialize();
         }
         
     }
