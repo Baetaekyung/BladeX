@@ -35,10 +35,7 @@ namespace Swift_Blade
 
         private StringBuilder _sb = new StringBuilder();
 
-
         //-------------------------------------------------------------
-
-        public static bool IsNewGame = false;
 
         [SerializeField] private PlayerInventory playerInv;
         [SerializeField] private List<ItemSlot>  itemSlots  = new List<ItemSlot>();
@@ -46,6 +43,10 @@ namespace Swift_Blade
         private List<ItemDataSO>                 _itemTable = new(); //There is item?
 
         private int _currentItemIndex = 0;
+
+        [Header("Default Item")]
+        [SerializeField] private ItemDataSO defaultPotionItem;
+        [SerializeField] private int defaultPotionCount = 3;
 
         public ItemDataSO QuickSlotItem { get; set; }
         public static PlayerInventory  Inventory { get; set; }
@@ -55,26 +56,31 @@ namespace Swift_Blade
         {
             base.Awake();
 
-            if (IsNewGame == false)
+            if (Menu.IsNewGame == true)
             {
                 Inventory = playerInv.Clone();
 
+                for (int i = 0; i < defaultPotionCount; i++)
+                    AddItemToMatchSlot(defaultPotionItem);
+
+                UpdateAllSlots();
+
                 ChangeToInventory();
                 EquipmentDatas.Clear();
-
-                IsNewGame = true;
             }
-            
-            InitializeSlots();
-            InputManager.ChangeQuickEvent += InputEventQuick;
-            InputManager.UseQuickEvent += InputEventUseQuick;
 
+            InitializeSlots();
+
+            InputManager.ChangeQuickEvent += InputEventQuick;
+            InputManager.UseQuickEvent    += InputEventUseQuick;
         }
+
         protected override void OnDestroy()
         {
-            base.OnDestroy();
             InputManager.ChangeQuickEvent -= InputEventQuick;
             InputManager.UseQuickEvent -= InputEventUseQuick;
+
+            base.OnDestroy();
         }
         private void InputEventQuick()
         {
@@ -351,6 +357,12 @@ namespace Swift_Blade
 
         public void AddItemToEmptySlot(ItemDataSO newItem)
         {
+            if (newItem == null)
+            {
+                Debug.LogWarning($"Don't put the null to inventory slot");
+                return;
+            }
+
             var emptySlot = GetEmptySlot();
             emptySlot.SetItemData(newItem);
             newItem.ItemSlot = emptySlot;
@@ -362,7 +374,7 @@ namespace Swift_Blade
 
         private ItemSlot GetEmptySlot()
         {
-            return itemSlots.FirstOrDefault(item => item.IsEmptySlot());
+            return itemSlots.FirstOrDefault(item => item.IsEmptySlot() && item is not EquipmentSlot);
         }
 
         private ItemSlot GetMatchItemSlot(ItemDataSO item)

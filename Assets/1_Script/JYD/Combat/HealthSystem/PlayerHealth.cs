@@ -142,11 +142,8 @@ namespace Swift_Blade.Combat.Health
         public override void Dead()
         {
             base.Dead();
-            
-            StatComponent.IsNewGame = false;
-            SkillManager.IsNewGame = false;
-            InventoryManager.IsNewGame = false;
 
+            Menu.IsNewGame = true;
             CurrentHealth = defaultHealth;
             
             PopupManager.Instance.AllPopDown();
