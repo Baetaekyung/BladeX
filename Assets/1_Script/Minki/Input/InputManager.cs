@@ -150,9 +150,6 @@ namespace Swift_Blade.Inputs
 
         private void HandleInventory()
         {
-            if (PopupManager.Instance.IsRemainPopup)
-                return;
-
             InventoryEvent?.Invoke();
         }
 
