@@ -29,6 +29,7 @@ namespace Swift_Blade
             string curKey = InputM.GetCurrentKeyByType(inputType);
 
             InputManager.RebindEndEvent += UpdateKeyText;
+            InputManager.RebindEndEvent += HandleShowCompleteMessage;
             UpdateKeyText();
 
             _button.onClick.AddListener(HandleKeymap);
@@ -49,6 +50,11 @@ namespace Swift_Blade
         private void UpdateKeyText()
         {
             _keyText.text = InputM.GetCurrentKeyByType(inputType);
+        }
+
+        private void HandleShowCompleteMessage()
+        {
+            PopupManager.Instance.LogMessage("키가 변경되었습니다.");
         }
     }
 }
