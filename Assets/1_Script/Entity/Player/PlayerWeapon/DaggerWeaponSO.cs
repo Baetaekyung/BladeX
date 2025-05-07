@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Swift_Blade.Pool;
 using UnityEngine;
 
@@ -13,7 +12,6 @@ namespace Swift_Blade
 
         private Stack<TwingcleParticle> twingcles = new Stack<TwingcleParticle>();
         
-
         protected override void PlayParticle()
         {
             MonoGenericPool<MagicBlastParticle>.Initialize(blastParticle);
@@ -34,12 +32,12 @@ namespace Swift_Blade
         {
             if(twingcles.Count <= 0)return;
             
-            //Debug.Log(twingcles.Count);
-
             while (twingcles.Count != 0)
             {
                 TwingcleParticle t = twingcles.Pop();
-                MonoGenericPool<TwingcleParticle>.Push(t);
+                
+                if(t != null)
+                    MonoGenericPool<TwingcleParticle>.Push(t);
             }
             
             twingcles.Clear();
