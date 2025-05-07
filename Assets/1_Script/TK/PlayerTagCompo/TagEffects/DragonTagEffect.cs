@@ -11,12 +11,14 @@ namespace Swift_Blade
         private DragonBall[] _dragonBalls;
 
         private Transform _playerTransform;
+        private PlayerTagCompo _tag;
 
         public override void Initialize(Player player)
         {
             base.Initialize(player);
 
             _playerTransform = player.transform.GetChild(0);
+            _tag = _player.GetEntityComponent<PlayerTagCompo>();
 
             MonoGenericPool<DragonBall>.Initialize(_dragonBall);
             
@@ -35,6 +37,8 @@ namespace Swift_Blade
 
         protected override void TagEnableEffect(int tagCount)
         {
+            _tag.ActiveParticle(EquipmentTag.DRAGON, true);
+            
             for(int i = 0; i < 3; ++i)
             {
                 _dragonBalls[i].Enable();
@@ -43,6 +47,8 @@ namespace Swift_Blade
 
         protected override void TagDisableEffect()
         {
+            _tag.ActiveParticle(EquipmentTag.DRAGON, false);
+
             for(int i = 0; i < 3; ++i)
             {
                 _dragonBalls[i].Disable();
