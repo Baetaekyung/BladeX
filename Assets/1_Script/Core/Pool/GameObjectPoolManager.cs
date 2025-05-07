@@ -33,13 +33,6 @@ namespace Swift_Blade.Pool
 
             CreateDictionary(prefabSO);
         }
-        public static void Initialize(IEnumerable<PoolPrefabGameObjectSO> poolPrefabSOs)
-        {
-            foreach (PoolPrefabGameObjectSO item in poolPrefabSOs)
-            {
-                Initialize(item);
-            }
-        }
         public static GameObject Pop(PoolPrefabGameObjectSO prefabSO)
         {
             GameObject result;

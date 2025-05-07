@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Swift_Blade.UI
 {
-    public class TutorialBtn : BaseButton
+    public class GoToGameBtn : BaseButton
     {
         [SerializeField] private SceneManagerSO sceneManagerSo;
 
@@ -19,7 +19,7 @@ namespace Swift_Blade.UI
 
             #endregion
             
-            sceneManagerSo.LoadScene("TutorialRoom");
+            sceneManagerSo.LoadScene("Menu");
         }
         
     }

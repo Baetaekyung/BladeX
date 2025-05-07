@@ -6,8 +6,8 @@ namespace Swift_Blade.Pool
     internal class MonoPool<T> : UnityObjectPool<T>
         where T : MonoBehaviour, IPoolable
     {
-        public MonoPool(T prefab, int initialPoolCapacity = 100, int maxCapacity = 1000, int preCreate = 10) 
-            : base(prefab, initialPoolCapacity, maxCapacity, preCreate)
+        public MonoPool(T prefab, int initialPoolCapacity = 100, int maxCapacity = 1000) 
+            : base(prefab, initialPoolCapacity, maxCapacity)
         {
             UnityObjectPool.SceneChangePoolDestroyEvent += base.Clear;
         }
