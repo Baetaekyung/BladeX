@@ -249,7 +249,6 @@ Shader "Nokdef/Additive Uber Shader"
 			sampler2D _MainTex;
 			sampler2D _DetailNoise;
 			sampler2D _AlphaOverride;
-			// uniform float4 _CameraDepthTexture_TexelSize;
 
 
 						
