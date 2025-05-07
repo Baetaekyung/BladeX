@@ -425,6 +425,8 @@ PlayableDirector:
     value: {fileID: 825077830}
   - key: {fileID: 5792649682301332545, guid: ec3083d70fb6fe449a450c4b1ac9391f, type: 2}
     value: {fileID: 549135023}
+  - key: {fileID: -430183293912340367, guid: ec3083d70fb6fe449a450c4b1ac9391f, type: 2}
+    value: {fileID: 1339390636}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &444235296
@@ -1734,6 +1736,8 @@ GameObject:
   - component: {fileID: 1339390631}
   - component: {fileID: 1339390630}
   - component: {fileID: 1339390634}
+  - component: {fileID: 1339390635}
+  - component: {fileID: 1339390636}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1891,6 +1895,52 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &1339390635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339390629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ce69add90ecef42a80279e6fcbb794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShakeType: 0
+  txt: {fileID: 0}
+  pillars: []
+  sceneManagerSo: {fileID: 11400000, guid: a2d8f67d9c116a8499c86ab4cb0ed966, type: 2}
+--- !u!114 &1339390636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339390629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: d9afae0b298528d4294a5e1c4a712786, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1339390635}
+          m_TargetAssemblyTypeName: Swift_Blade.Timeline.TimelineManager, Assembly-CSharp
+          m_MethodName: GoToBossScene
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Stage_Golem_Boss
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1407197638
 GameObject:
   m_ObjectHideFlags: 0
