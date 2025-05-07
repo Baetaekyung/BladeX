@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using System.Collections;
@@ -24,6 +25,7 @@ namespace Swift_Blade.Combat.Feedback
     public class BloodScreenFeedback : Feedback
     {
         public VolumeProfile profile;
+        
         public VignetteInfo origin;
         public VignetteInfo bloodScreen;
         
@@ -41,6 +43,7 @@ namespace Swift_Blade.Combat.Feedback
             
             profile.TryGet(out vignette);
             ApplyVignetteInfo(ref origin , new VignetteInfo(vignette.color.value , vignette.intensity.value , vignette.smoothness.value));
+            
         }
         
         private void ApplyVignetteInfo(ref VignetteInfo info1,VignetteInfo info2)
@@ -52,12 +55,13 @@ namespace Swift_Blade.Combat.Feedback
         
         private void ApplyVignetteInfo(Vignette info1,VignetteInfo info2)
         {
+            if(info1 == null)return;
+            
             info1.color.value = info2.color;
             info1.intensity.value = info2.intensity;
             info1.smoothness.value = info2.smoothness;
         }
-
-        [ContextMenu("Test")]
+        
         public override void PlayFeedback()
         {
             if(vignette == null) return;
@@ -105,6 +109,7 @@ namespace Swift_Blade.Combat.Feedback
 
             ResetFeedback();
         }
+
         private void OnDestroy()
         {
             ResetFeedback();
@@ -114,5 +119,6 @@ namespace Swift_Blade.Combat.Feedback
         {
             ApplyVignetteInfo(vignette,origin);
         }
+        
     }
 }
