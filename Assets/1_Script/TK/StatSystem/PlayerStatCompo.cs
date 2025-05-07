@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
 using UnityEngine;
@@ -35,6 +36,7 @@ namespace Swift_Blade
         [SerializeField] private List<DebugStat> DebugStats = new();
 
         private PlayerHealth _playerHealth;
+        private Action OnDisableEvent;
 
         public void EntityComponentAwake(Entity entity)
         {
@@ -50,6 +52,8 @@ namespace Swift_Blade
 
             _playerHealth = entity.GetEntityComponent<PlayerHealth>();
         }
+
+        private void OnDisable() => OnDisableEvent?.Invoke();
 
         protected override void Initialize()
         {
@@ -82,18 +86,21 @@ namespace Swift_Blade
             StatSO stat = GetStat(statType);
 
             // Effect.., Sound.., etc..
-            startCallback?.Invoke(); 
+            startCallback?.Invoke();
 
-            if (stat.currentBuffDictionary.TryGetValue(buffKey, out var buffRoutine))
-                RemoveDuplicatedBuff(buffKey, stat, buffRoutine);
+            IEnumerator handler = stat.DelayBuffRoutine(buffKey, buffTime, buffAmount);
+
+            if (stat.currentBuffDictionary.ContainsKey(buffKey))
+                HandleBuffRemove();
 
             if (stat.statType == StatType.HEALTH)
                 _playerHealth.ShieldAmount += Mathf.RoundToInt(buffAmount);
 
-            // Start coroutine
-            Coroutine newBuffRoutine = StartCoroutine(stat.DelayBuffRoutine(buffKey, buffTime, buffAmount));
+            OnDisableEvent += HandleBuffRemove;
 
-            stat.currentBuffDictionary.Add(buffKey, newBuffRoutine);
+            StartCoroutine(handler);
+
+            stat.currentBuffDictionary.Add(buffKey, handler);
             // register buff end event
             stat.OnBuffEnd += HandleBuffEnd; 
 
@@ -120,11 +127,11 @@ namespace Swift_Blade
                 endCallback?.Invoke();
                 UpdateStat();
             }
-            void RemoveDuplicatedBuff(string buffKey, StatSO stat, Coroutine buffRoutine)
+            void HandleBuffRemove()
             {
-                StopCoroutine(buffRoutine);
+                StopCoroutine(handler);
 
-                if(stat.statType == StatType.HEALTH)
+                if (stat.statType == StatType.HEALTH)
                 {
                     _playerHealth.ShieldAmount -= Mathf.RoundToInt(buffAmount);
                     _playerHealth.HealthUpdate();

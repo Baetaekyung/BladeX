@@ -42,7 +42,7 @@ namespace Swift_Blade
 
         public float buffTimer = 0f;
 
-        public Dictionary<string, Coroutine> currentBuffDictionary = new Dictionary<string, Coroutine>();
+        public Dictionary<string, IEnumerator> currentBuffDictionary = new Dictionary<string, IEnumerator>();
         
         private Dictionary<object, float> modifyValueByKeys = new Dictionary<object, float>(16);
 
