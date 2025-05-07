@@ -19,11 +19,9 @@ namespace Swift_Blade
         BARBARIAN,
         KNIGHT,
         ROGUE,
-        DEMON,
         DRAGON,
         MUTANT,
         HOLY,
-        UNHOLY,
         ALL = 99
     }
 

@@ -7,6 +7,7 @@ namespace Swift_Blade
     public class PlayerTagCompo : MonoBehaviour, IEntityComponent, IEntityComponentStart
     {
         [SerializeField] private SerializableDictionary<EquipmentTag, TagEffectBase> tagEffects = new();
+        [SerializeField] private List<GameObject> _particles;
 
         private Dictionary<EquipmentTag, int> _tagCounts; //How many tags remain?
 
@@ -117,5 +118,10 @@ namespace Swift_Blade
         //        tagEffect.DisableTagEffect();
         //    }
         //}
+
+        public void ActiveParticle(EquipmentTag tag, bool active)
+        {
+            _particles[(int)tag - 1].SetActive(active);
+        }
     }
 }

@@ -7,20 +7,26 @@ namespace Swift_Blade
 {
     public class BabarianTagEffect : TagEffectBase
     {
+        private PlayerTagCompo _tag;
         private PlayerStatCompo statCompo;
 
         public override void Initialize(Player player)
         {
             base.Initialize(player);
+            _tag = _player.GetEntityComponent<PlayerTagCompo>();
             statCompo = player.GetEntityComponent<PlayerStatCompo>();
         }
         protected override void TagEnableEffect(int tagCount)
         {
+            _tag.ActiveParticle(EquipmentTag.BARBARIAN, true);
+
             StatSO stat = statCompo.GetStat(StatType.DAMAGE);
             stat.SetModifier(name, tagCount);
         }
         protected override void TagDisableEffect()
         {
+            _tag.ActiveParticle(EquipmentTag.BARBARIAN, false);
+
             StatSO stat = statCompo.GetStat(StatType.DAMAGE);
             stat.RemoveModifier(name);
         }
