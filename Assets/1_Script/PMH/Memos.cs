@@ -46,7 +46,7 @@ namespace Swift_Blade
 
                 DialogueManager.Instance.StartDialogue(m_dialogueData);
             }*/
-            if (doorTrm is not null)
+            if (doorTrm != null)
             {
                 doorTrm.UpDoor();
 
