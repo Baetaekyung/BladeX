@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Linq;
 using System.Text;
 using System;
+using Unity.VisualScripting;
 
 public enum NodeType
 {
@@ -38,7 +39,6 @@ public class Node
     public NodeType nodeType;
     public string nodeName;
     private Door doorPrefab;
-    private byte appearCount = 0;
     
     public void SetPortalPrefab(Door prefab)
     {
@@ -47,17 +47,16 @@ public class Node
     
     public Door GetPortalPrefab()
     {
-        ++appearCount;
         return doorPrefab;
     }
     
-    public byte GetAppearCount() {return appearCount;}
 }
 
 [Serializable]
 public class NodeDictionary : IEnumerable<List<Node>>
 {
     private Dictionary<NodeType, List<Node>> nodeList;
+    private Dictionary<NodeType, List<Node>> originNodeList;
 
     private List<NodeType> specialNodeTypes;
     
@@ -70,23 +69,25 @@ public class NodeDictionary : IEnumerable<List<Node>>
     
     public NodeDictionary(List<Node> nodes)
     {
-        nodeList = new Dictionary<NodeType, List<Node>>();
+        originNodeList = new Dictionary<NodeType, List<Node>>();
         specialNodeTypes = new List<NodeType>();
         InitializeNodes();
         
         foreach (var item in nodes)
         {
-            if (!nodeList.ContainsKey(item.nodeType))
+            if (!originNodeList.ContainsKey(item.nodeType))
             {
-                nodeList[item.nodeType] = new List<Node>();
+                originNodeList[item.nodeType] = new List<Node>();
             }
             
-            nodeList[item.nodeType].Add(item);
+            originNodeList[item.nodeType].Add(item);
         }
+
+        nodeList = new Dictionary<NodeType, List<Node>>(originNodeList);
     }
+
+    public string this[NodeType type] => GetRandomNode(type).nodeName;
     
-    public string this[NodeType type] => nodeList[type][Random.Range(0 , nodeList[type].Count)].nodeName;
-        
     #region Priavte
     private bool CanAppearSpecialNode() => canSecondAppearSpecialNode || canFirstAppearSpecialNode;
     private bool IsValidScene(string sceneName)
@@ -107,16 +108,15 @@ public class NodeDictionary : IEnumerable<List<Node>>
     }
     private Node SelectRandomNode(List<Node> nodes)
     {
-        nodes = nodes.OrderBy(x => x.GetAppearCount()).ToList();
-        int minValue = nodes[0].GetAppearCount();
-        nodes.RemoveAll(x => x.GetAppearCount() > minValue); 
-        
+        //only one
         if (nodes.Count == 1 && nodes[0].nodeName == SceneManager.GetActiveScene().name)
         {
             return nodes[0];
         }
         
-        return nodes[Random.Range(0, nodes.Count)];
+        Node newNode = nodes[Random.Range(0, nodes.Count)];
+        
+        return newNode;
     }
     private List<NodeType> GetNodeTypes(int currentNodeIndex)
     {
@@ -169,7 +169,8 @@ public class NodeDictionary : IEnumerable<List<Node>>
             return null;
         }
         
-        Debug.LogError("유효하지 않은 NodeType이거나, 해당 타입의 Node가 존재하지 않습니다.");
+        Debug.LogError($"{nodeType}은 유효하지 않은 NodeType이거나, {nodeList[nodeType].Count} 해당 타입의 Node가 존재하지 않습니다. ");
+        
         return null;
     }
     
@@ -186,7 +187,6 @@ public class NodeDictionary : IEnumerable<List<Node>>
         canSecondAppearSpecialNode = true;
         
         currentStage = NodeType.Stage1;
-        
         specialNodeTypes.Clear();
         specialNodeTypes.Add(NodeType.Challenge);
         specialNodeTypes.Add(NodeType.Point);
@@ -205,6 +205,18 @@ public class NodeDictionary : IEnumerable<List<Node>>
         }
         
         return nodes;
+    }
+        
+    public void printNodes()
+    {
+        foreach (var item in nodeList)
+        {
+            Debug.Log($"{item.Key} : ");
+            foreach (var item2 in item.Value)
+            {
+                Debug.Log($"{item2.nodeName}, ");
+            }
+        }
     }
     
     #endregion
@@ -262,7 +274,7 @@ namespace Swift_Blade.Level
                     stageType = (NodeType)(int)stageType + 1;
                 }
             }
-                        
+            
             nodeDictionary = new NodeDictionary(nodelist);
             nodeDictionary.InitializeNodes();
             
@@ -331,6 +343,27 @@ namespace Swift_Blade.Level
         {
             return nodeDictionary[nodeType];
         }
-                
+
+        public void RemoveNode(string nodeName)
+        {
+            foreach (var node in nodeDictionary)
+            {
+                for (int i = 0; i < node.Count; i++)
+                {
+                    if (node[i].nodeName == nodeName)
+                    {
+                        node.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+        }
+        
+        [ContextMenu("print")]
+        public void PrintNode()
+        {
+            nodeDictionary.printNodes();
+        }
+        
     }
 }

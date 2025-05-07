@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using Swift_Blade.Level;
 
 namespace Swift_Blade
 {
@@ -9,6 +10,8 @@ namespace Swift_Blade
         public event Action LevelClearEvent;
         public event Action<string,Action> SceneLoadEvent;
         public event Action SceneEnterEvent;
+
+        public NodeList NodeList;
         
         public void LevelClear()
         {
@@ -17,6 +20,8 @@ namespace Swift_Blade
         
         public void LoadScene(string sceneName)
         {
+            NodeList.RemoveNode(sceneName);
+            
             SceneLoadEvent?.Invoke(sceneName,SceneEnterEvent);
         }
         
