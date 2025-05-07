@@ -23,8 +23,8 @@ namespace Swift_Blade
 
             Sequence seq = DOTween.Sequence();
 
-            Vector3 pos = secretRoomTrm.position += new Vector3(0, 15, 0);
-            Vector3 bridgePos = secretRoomBridgeTrm.position += new Vector3(0, 15, 0);
+            Vector3 pos = secretRoomTrm.position + new Vector3(0, Mathf.Abs( secretRoomTrm.localPosition.y ), 0);
+            Vector3 bridgePos = secretRoomBridgeTrm.position + new Vector3(0, Mathf.Abs(secretRoomBridgeTrm.localPosition.y), 0);
 
             CameraShakeManager.Instance.DoShake(CameraShakeType.Middle);
             seq.Append(secretRoomTrm.DOMove(pos, 1f)); //비밀의 방 올라옴
