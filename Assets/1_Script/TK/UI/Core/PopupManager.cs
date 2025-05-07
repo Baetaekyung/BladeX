@@ -197,6 +197,10 @@ namespace Swift_Blade
         public void LogMessage(string message)
         {
             PopupUI popup = GetPopupUI(PopupType.Text);
+
+            if (popup == null)
+                return;
+
             TextPopup textPopup = popup as TextPopup;
 
             textPopup.SetText(message);
