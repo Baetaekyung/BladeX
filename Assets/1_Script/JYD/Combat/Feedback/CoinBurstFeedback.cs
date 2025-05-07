@@ -10,13 +10,13 @@ namespace Swift_Blade.Combat.Feedback
                 
         private void Start()
         {
-            MonoGenericPool<CoinBurst>.Initialize(coinBurst);
+            MonoGenericPool<CoinBurstParticle>.Initialize(coinBurst);
         }
 
         public override void PlayFeedback()
         {
             if(CanSpawn())
-                MonoGenericPool<CoinBurst>.Pop().transform.position = transform.position + new Vector3(0,1,0);
+                MonoGenericPool<CoinBurstParticle>.Pop().transform.position = transform.position + new Vector3(0,1,0);
         }
 
         public override void ResetFeedback()

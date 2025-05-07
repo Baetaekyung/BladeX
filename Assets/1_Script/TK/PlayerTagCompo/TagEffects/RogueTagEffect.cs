@@ -1,91 +1,54 @@
-using Swift_Blade.Combat.Caster;
-using System;
-using System.Text;
+using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using Swift_Blade.Combat.Caster;
 
 namespace Swift_Blade
 {
     public class RogueTagEffect : TagEffectBase
     {
-        private PlayerDamageCaster _playerDmgCaster;
-        private PlayerStatCompo _playerStatCompo;
+        [SerializeField] private int _percent = 15;
 
-        private int _currentPercent;
-
-        // °è¼ö´Â 1 ½ºÅÝ¾÷
-        // 3ÀÌ¸é 3 ½ºÅÝ¾÷ÀÇ È¿°ú
-        [SerializeField] private int minStealAmount = 1;
-        [SerializeField] private int middleStealAmount = 2;
-        [SerializeField] private int maxStealAmount = 3;
-
-        private int _currentAmount;
-
-        private StringBuilder _sb = new();
+        private List<StatType> _modifierStats;
+        private List<object> _keys;
+        
+        private PlayerStatCompo _stat;
+        private PlayerDamageCaster _damageCaster;
 
         public override void Initialize(Player player)
         {
             base.Initialize(player);
 
-            _playerDmgCaster = player.GetEntityComponent<PlayerDamageCaster>();
-            _playerStatCompo = player.GetEntityComponent<PlayerStatCompo>();
+            _modifierStats = new List<StatType>();
+            _keys = new List<object>();
+            
+            _stat = _player.GetEntityComponent<PlayerStatCompo>();
+            _damageCaster = _player.GetEntityComponent<PlayerDamageCaster>();
         }
 
         protected override void TagEnableEffect(int tagCount)
         {
-            throw new NotImplementedException();
+            _damageCaster.OnCastDamageEvent.AddListener(Steal);
         }
+
         protected override void TagDisableEffect()
         {
-            throw new NotImplementedException();
+            for(int i = 0; i < _keys.Count; ++i)
+            {
+                _stat.RemoveModifier(_modifierStats[i], _keys[i]);
+            }
+            _damageCaster.OnCastDamageEvent.RemoveListener(Steal);
         }
-        //public override void EnableTagEffect(int tagCount)
-        //{
-        //    if (minTagCount > tagCount)
-        //        return;
 
-        //    if (tagCount >= maxTagCount)
-        //        OnTagEffect(maxEffectPercent, maxStealAmount);
-        //    else if (tagCount >= middleTagCount)
-        //        OnTagEffect(middleEffectPercent, middleStealAmount);
-        //    else if (tagCount >= minTagCount)
-        //        OnTagEffect(minEffectPercent, minStealAmount);
-        //}
-
-        //public override void DisableTagEffect(int tagCount)
-        //{
-        //    _playerDmgCaster.OnCastDamageEvent.RemoveListener(HandleStealStat);
-        //}
-
-        private void OnTagEffect(int percent, int amount)
+        private void Steal(ActionData actionData)
         {
-            _currentPercent = percent;
-            _currentAmount = amount;
+            if(Random.Range(0, 100) >= _percent) return;
 
-            _playerDmgCaster.OnCastDamageEvent.AddListener(HandleStealStat);
+            StatType statType = (StatType)Random.Range(0, 4);
+            object key = new();
+            _stat.AddModifier(statType, key, 1f);
+
+            _modifierStats.Add(statType);
+            _keys.Add(key);
         }
-
-        //Dont need arg
-        private void HandleStealStat(ActionData actionData)
-        {
-            if (Random.Range(0, 101) > _currentPercent)
-                return;
-
-            StatType[] types = (StatType[])Enum.GetValues(typeof(StatType));
-            StatType randomType = types[Random.Range(0, types.Length)];
-            float increaseAmount = _playerStatCompo.GetStat(randomType).increaseAmount;
-
-            _sb.Clear();
-            _sb.Append(randomType.ToString()).Append("StealData");
-
-            _playerStatCompo.BuffToStat(randomType,
-                _sb.ToString(), 3f,
-                _currentAmount * increaseAmount);
-
-            PopupManager
-                .Instance
-                .LogInfoBox($"StatÀ» ÈÉÃÆ½À´Ï´Ù. ÈÉÄ£ ½ºÅÝ: {KoreanUtility.GetStatTypeToKorean(randomType)}");
-        }
-
     }
 }

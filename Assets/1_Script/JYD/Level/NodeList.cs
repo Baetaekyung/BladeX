@@ -1,32 +1,33 @@
-﻿using System.Collections.Generic;
-using Swift_Blade.Level.Door;
-using System.Collections;
+﻿using Random = UnityEngine.Random;
 using UnityEngine.SceneManagement;
-using Random = UnityEngine.Random;
+using System.Collections.Generic;
+using Swift_Blade.Level;
+using System.Collections;
 using UnityEngine;
-using System;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
-using UnityEngine.Serialization;
+using System;
 
 public enum NodeType
 {
     //default
-    Exp,
+    Stage1,
+    Stage2,
+    Stage3,
+    Stage4,
     
-    //event
-    Event,
-    
-    //level Up
+    //Special
     Point,
     Challenge,
     Store,
+    Event,
     
     //boss
     Boss,
     
     Rest,
+    
+    Trap,
     
     None,
 }
@@ -65,11 +66,13 @@ public class NodeDictionary : IEnumerable<List<Node>>
     
     private const byte APPEAR_SPECIAL_NODE_PERCENT = 16;//100 / 6 = 16.xxx
     
-    public NodeDictionary(Node[] nodes)
+    private NodeType currentStage = NodeType.Stage1;
+    
+    public NodeDictionary(List<Node> nodes)
     {
         nodeList = new Dictionary<NodeType, List<Node>>();
         specialNodeTypes = new List<NodeType>();
-        InitSpecialNodes();
+        InitializeNodes();
         
         foreach (var item in nodes)
         {
@@ -82,6 +85,8 @@ public class NodeDictionary : IEnumerable<List<Node>>
         }
     }
     
+    public string this[NodeType type] => nodeList[type][Random.Range(0 , nodeList[type].Count)].nodeName;
+        
     #region Priavte
     private bool CanAppearSpecialNode() => canSecondAppearSpecialNode || canFirstAppearSpecialNode;
     private bool IsValidScene(string sceneName)
@@ -100,7 +105,6 @@ public class NodeDictionary : IEnumerable<List<Node>>
         Debug.LogError("Scene List에 Scene 없습니다.");
         return false;
     }
-        
     private Node SelectRandomNode(List<Node> nodes)
     {
         nodes = nodes.OrderBy(x => x.GetAppearCount()).ToList();
@@ -114,47 +118,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
         
         return nodes[Random.Range(0, nodes.Count)];
     }
-
-    #endregion
-
-    #region Public
-
-    public void Add(Node newNode)
-    {
-        nodeList[newNode.nodeType].Add(newNode);
-    }
-    
-    public string this[NodeType type] => nodeList[type][Random.Range(0 , nodeList[type].Count)].nodeName;
-    
-    public void InitSpecialNodes()
-    {
-        specialNodeTypes.Clear();
-        
-        specialNodeTypes.Add(NodeType.Challenge);
-        specialNodeTypes.Add(NodeType.Point);
-        specialNodeTypes.Add(NodeType.Event);
-        specialNodeTypes.Add(NodeType.Store);
-    }
-    
-    public Node GetRandomNode(NodeType nodeType)
-    {
-        if (nodeList.ContainsKey(nodeType) && nodeList[nodeType].Count > 0)
-        {
-            List<Node> nodes = nodeList[nodeType];
-            Node selectedNode = SelectRandomNode(nodes);
-                                        
-            if (IsValidScene(selectedNode.nodeName))
-                return selectedNode;
-            
-            Debug.LogError($"{selectedNode.nodeName}은(는) sceneList에 존재하지 않습니다!");
-            return null;
-        }
-        
-        Debug.LogError("유효하지 않은 NodeType이거나, 해당 타입의 Node가 존재하지 않습니다.");
-        return null;
-    }
-    
-    public List<NodeType> GetNodeTypes(int currentNodeIndex)
+    private List<NodeType> GetNodeTypes(int currentNodeIndex)
     {
         List<NodeType> nodeTypes = new List<NodeType>();
         
@@ -162,6 +126,8 @@ public class NodeDictionary : IEnumerable<List<Node>>
         {
             canFirstAppearSpecialNode = true;
             canSecondAppearSpecialNode = true;
+            
+            currentStage = (NodeType)((int)currentStage + 1);
             
             nodeTypes.Add(NodeType.Rest);
         }
@@ -176,33 +142,82 @@ public class NodeDictionary : IEnumerable<List<Node>>
             else
                 canSecondAppearSpecialNode = false;
             
-            
             NodeType nodeType = specialNodeTypes[Random.Range(0, specialNodeTypes.Count)];
-            specialNodeTypes.Remove(nodeType);
-                        
+            
+            
             nodeTypes.Add(nodeType);
-            nodeTypes.Add(NodeType.Exp);         
+            nodeTypes.Add(currentStage);         
         }
         else
         {
-            nodeTypes.Add(NodeType.Exp);         
+            nodeTypes.Add(currentStage);         
         }
-                
+        
         return nodeTypes;
     }
+    private Node GetRandomNode(NodeType nodeType)
+    {
+        if (nodeList.ContainsKey(nodeType) && nodeList[nodeType].Count > 0)
+        {
+            List<Node> nodes = nodeList[nodeType];
+            Node selectedNode = SelectRandomNode(nodes);
+            
+            if (IsValidScene(selectedNode.nodeName))
+                return selectedNode;
+            
+            Debug.LogError($"{selectedNode.nodeName}은(는) sceneList에 존재하지 않습니다!");
+            return null;
+        }
         
+        Debug.LogError("유효하지 않은 NodeType이거나, 해당 타입의 Node가 존재하지 않습니다.");
+        return null;
+    }
+    
+    #endregion
+
+    #region Public
+    public void Add(Node newNode)
+    {
+        nodeList[newNode.nodeType].Add(newNode);
+    }
+    public void InitializeNodes()
+    {
+        canFirstAppearSpecialNode = true;
+        canSecondAppearSpecialNode = true;
+        
+        currentStage = NodeType.Stage1;
+        
+        specialNodeTypes.Clear();
+        specialNodeTypes.Add(NodeType.Challenge);
+        specialNodeTypes.Add(NodeType.Point);
+        specialNodeTypes.Add(NodeType.Event);
+        specialNodeTypes.Add(NodeType.Store);
+        specialNodeTypes.Add(NodeType.Trap);
+    }
+    public Node[] GetRandomNodes(int currentNodeIndex)
+    {
+        List<NodeType> nodeTypes = GetNodeTypes(currentNodeIndex);
+        Node[] nodes = new Node[nodeTypes.Count];
+        
+        for (int i = 0; i < nodeTypes.Count; i++)
+        {
+            nodes[i] = GetRandomNode(nodeTypes[i]);
+        }
+        
+        return nodes;
+    }
+    
+    #endregion
+    
     public IEnumerator<List<Node>> GetEnumerator()
     {
         return nodeList.Values.GetEnumerator();
     }
-
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
-
-    #endregion
-    
+       
 }
 
 namespace Swift_Blade.Level
@@ -210,38 +225,59 @@ namespace Swift_Blade.Level
     [CreateAssetMenu(fileName = "NodeList", menuName = "SO/Scene/NodeList")]
     public class NodeList : ScriptableObject
     {
-        int stageCount = 0;
-        
-        [SerializeField] private Node[] nodelist;
+        [SerializeField] private List<Node> nodelist;
         private NodeDictionary nodeDictionary;
         
-        [SerializeField] private Door.Door expDoor;
-        [SerializeField] private Door.Door eventDoor;
-        [SerializeField] private Door.Door storeDoor;
-        [SerializeField] private Door.Door pointDoor;
-        [SerializeField] private Door.Door challengeDoor;
-        [SerializeField] private Door.Door bossDoor;
-        [SerializeField] private Door.Door restDoor;
+        [SerializeField] private Door expDoor;
+        [SerializeField] private Door eventDoor;
+        [SerializeField] private Door storeDoor;
+        [SerializeField] private Door pointDoor;
+        [SerializeField] private Door challengeDoor;
+        [SerializeField] private Door bossDoor;
+        [SerializeField] private Door restDoor;
+        [SerializeField] private Door trapDoor;
         
-        private int currentNodeIndex = 0;
-
+        [Space]
+        [SerializeField] private bool createStageNode;
+        
         private readonly StringBuilder stageName = new StringBuilder();
+        private int stageCount = 0;
+        private int currentNodeIndex = 0;
         
-        public void RestNodeIndex()
+        public void Initialize()
         {
-            nodeDictionary.InitSpecialNodes();
-            currentNodeIndex = 0;
-        }
-                
-        private void OnEnable()
-        {
+            if (createStageNode)
+            {
+                NodeType stageType = NodeType.Stage1;
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 7; j++)
+                    {
+                        Node newNode = new Node
+                        {
+                            nodeType = stageType
+                        };
+                        nodelist.Add(newNode);
+                    }
+                    stageType = (NodeType)(int)stageType + 1;
+                }
+            }
+                        
             nodeDictionary = new NodeDictionary(nodelist);
-            RestNodeIndex();
+            nodeDictionary.InitializeNodes();
             
+            currentNodeIndex = 0;
             stageCount = 0;
+            
             stageName.Clear();
             stageName.Append("Stage_");
             
+        }
+        
+        private void OnEnable()
+        {
+            Initialize();
+                        
             foreach (var node in nodeDictionary)
             {
                 foreach (var item in node)
@@ -253,15 +289,15 @@ namespace Swift_Blade.Level
         
         private void AssignDoor(Node item)
         {
-           
             switch (item.nodeType)
             {
-                case NodeType.Exp:
+                case NodeType.Stage1 or NodeType.Stage2 or NodeType.Stage3 or NodeType.Stage4:
                     ++stageCount;
                     item.nodeName = stageName.Append(stageCount).ToString();
                     item.SetPortalPrefab(expDoor);
-                    stageName.Remove(stageName.Length - stageCount.ToString().Length, stageCount.ToString().Length);
                     
+                    //stage_1 => stage_2
+                    stageName.Remove(stageName.Length - stageCount.ToString().Length, stageCount.ToString().Length);
                     break;
                 case NodeType.Event:
                     item.SetPortalPrefab(eventDoor);
@@ -286,27 +322,15 @@ namespace Swift_Blade.Level
             }
         }
         
-        public Node[] GetNode()
+        public Node[] GetNodes()
         {
-            List<NodeType> nodeTypes = nodeDictionary.GetNodeTypes(++currentNodeIndex);
-            Node[] nodes = new Node[nodeTypes.Count];
-            
-            ++currentNodeIndex;
-            
-            for (int i = 0; i < nodeTypes.Count; i++)
-            {
-                nodes[i] = nodeDictionary.GetRandomNode(nodeTypes[i]);
-                //Debug.Log($"Next Door is {nodes[i]}");
-            }
-            
-            return nodes;
+            return nodeDictionary.GetRandomNodes(++currentNodeIndex);
         }
-
-        public string GetNodeName(NodeType nodeType)
+                
+        public string GetNodeNameByNodeType(NodeType nodeType)
         {
-           
             return nodeDictionary[nodeType];
         }
-               
+                
     }
 }

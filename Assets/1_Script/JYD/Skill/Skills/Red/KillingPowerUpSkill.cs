@@ -16,7 +16,7 @@ namespace Swift_Blade.Skill
         public override void Initialize()
         {
             MonoGenericPool<ArrowUpParticle>.Initialize(skillParticle);
-            MonoGenericPool<RedCircle>.Initialize(redCircle);
+            MonoGenericPool<RedCircleParticle>.Initialize(redCircle);
         }
 
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
@@ -31,9 +31,9 @@ namespace Swift_Blade.Skill
                         arrowUpParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,2.5f,0);
                         arrowUpParticle.SetFollowTransform(player.GetPlayerTransform);
                         
-                        RedCircle redCircle = MonoGenericPool<RedCircle>.Pop();
-                        redCircle.transform.SetParent(player.GetPlayerTransform);
-                        redCircle.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.5f,0);
+                        RedCircleParticle redCircleParticle = MonoGenericPool<RedCircleParticle>.Pop();
+                        redCircleParticle.transform.SetParent(player.GetPlayerTransform);
+                        redCircleParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.5f,0);
                         
                         statCompo.AddModifier(statType,skillName,increaseValue);
                     }

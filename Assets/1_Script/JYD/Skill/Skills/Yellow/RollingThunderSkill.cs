@@ -17,7 +17,7 @@ namespace Swift_Blade
 
         public override void Initialize()
         {
-            MonoGenericPool<LightingSpark>.Initialize(skillParticle);
+            MonoGenericPool<LightingSparkParticle>.Initialize(skillParticle);
         }
 
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
@@ -46,7 +46,7 @@ namespace Swift_Blade
                             health.TakeDamage(actionData);
                         }
                 
-                        LightingSpark th = MonoGenericPool<LightingSpark>.Pop();
+                        LightingSparkParticle th = MonoGenericPool<LightingSparkParticle>.Pop();
                         th.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.4f,0);
                     }
                 }

@@ -3,7 +3,7 @@ using Swift_Blade.Pool;
 using UnityEngine;
 using DG.Tweening;
 
-namespace Swift_Blade.Level.Door
+namespace Swift_Blade.Level
 {
     public class Door : MonoBehaviour, IInteractable
     {
@@ -32,7 +32,7 @@ namespace Swift_Blade.Level.Door
         {
             if (isDefaultPortal)
             {
-                SetScene(nodeList.GetNodeName(NodeType.Exp));
+                SetScene(nodeList.GetNodeNameByNodeType(NodeType.Stage1));
             }
                        
             //DOVirtual.DelayedCall(delay, (UpDoor()));

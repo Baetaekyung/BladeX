@@ -1,8 +1,7 @@
-using Swift_Blade.Combat.Health;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Windows.WebCam;
+using Swift_Blade.Pool;
 
 namespace Swift_Blade
 {
@@ -13,97 +12,70 @@ namespace Swift_Blade
         
         [SerializeField] [Range(0.1f, 5)] private float fadeInTime;
         [SerializeField] [Range(0.1f, 2)] private float fadeOutTime;
+
+        [SerializeField] private PoolPrefabMonoBehaviourSO hexagonParticle;
         
         private Material[] shieldMats;
-        private Transform[] shieldTrms;
         
         private const string TINT_COLOR = "_TintColor";
         private const float MAX_ALPHA_VALUE = 0.4f;
-
-        private bool IsfadeInCompleted = false; 
-            
-        private Transform followTrm;
-        private PlayerHealth health;
+        
+        private int _currentShieldAmount = 0;
         
         private void Awake()
         {
             shieldMats = GetComponentsInChildren<MeshRenderer>().Select(x => x.material).ToArray();
-            shieldTrms = GetComponentsInChildren<Transform>().ToArray();
-        }
-        
-        public void PlayShield(Transform followTarget)
-        {
-            followTrm = followTarget;
-            health = followTarget.GetComponentInParent<PlayerHealth>();
-            health.OnShieldBreakEvent+=BreakShield;
-            StartCoroutine(PlayShieldCoroutine());
         }
         
         private void Update()
         {
-            transform.position = followTrm.position;
+            if(_currentShieldAmount == 0) return;
+
             transform.Rotate(Vector3.up * (rotateSpeed * Time.deltaTime));
         }
+
+        public void SetShield(int amount)
+        {
+            if(amount == _currentShieldAmount) return;
         
-        private void BreakShield(int shieldAmount)
-        {
-            Material mat = shieldMats[shieldAmount];
-            //shieldTrms[shieldIndex].DOScale();
-            
-            if (mat == null)
+            float angle = 360f / amount;
+            for(int i = 0; i < amount; ++i)
             {
-                StopShield();
-                return;
+                transform.GetChild(i).localEulerAngles = Vector3.up * (angle * i);
             }
 
-            if (IsfadeInCompleted == false)
+            if(amount > _currentShieldAmount)
             {
-                IsfadeInCompleted = true;
-
-                StopAllCoroutines();
-
-                foreach (var item in shieldMats)
-                {
-                    CompleteFade(item,MAX_ALPHA_VALUE);
-                }
+                AddShield(amount);
             }
-                                    
-            StartCoroutine(FadeCoroutine(mat, 0f, fadeOutTime));
+            else
+            {
+                BreakShield(amount);
+            }
+
+            _currentShieldAmount = amount;
         }
 
-        public void StopShield()
+        private void AddShield(int amount)
         {
-            health.OnShieldBreakEvent -= BreakShield;
+            MonoGenericPool<HexagonParticle>.Initialize(this.hexagonParticle);
             
-            StartCoroutine(StopShieldCoroutine());
-        }
+            HexagonParticle hexagonParticle = MonoGenericPool<HexagonParticle>.Pop();
+            hexagonParticle.transform.SetParent(transform);
+            hexagonParticle.transform.localPosition = Vector3.zero;
 
-        private IEnumerator PlayShieldCoroutine()
-        {
-            for (float timer = 0; timer < delayTime; timer += Time.deltaTime)
+            for(int i = 0; i < amount; ++i)
             {
-                yield return null;
-            }
-            
-            foreach (var mat in shieldMats)
-            {
-                StartCoroutine(FadeCoroutine(mat, MAX_ALPHA_VALUE, fadeInTime));
+                StartCoroutine(FadeCoroutine(shieldMats[i], MAX_ALPHA_VALUE, fadeInTime));
             }
         }
-
-        private IEnumerator StopShieldCoroutine()
+        
+        private void BreakShield(int amount)
         {
-            foreach (var mat in shieldMats)
+            for(int i = _currentShieldAmount - 1; i >= amount; --i)
             {
-                yield return StartCoroutine(FadeCoroutine(mat, 0f, fadeOutTime));
+                StartCoroutine(FadeCoroutine(shieldMats[i], 0f, fadeOutTime));
             }
-
-            for (float timer = 0; timer < fadeOutTime; timer += Time.deltaTime)
-            {
-                yield return null;
-            }
-            
-            Destroy(gameObject);
         }
 
         private IEnumerator FadeCoroutine(Material material, float endValue, float time)
@@ -125,13 +97,9 @@ namespace Swift_Blade
 
         private void CompleteFade(Material material, float endValue)
         {
-            IsfadeInCompleted = true;
-            
             Color c = material.GetColor(TINT_COLOR);
             c.a = endValue;
             material.SetColor(TINT_COLOR, c);
-            
         }
-        
     }
 }

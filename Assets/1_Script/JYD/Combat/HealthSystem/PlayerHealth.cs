@@ -19,6 +19,7 @@ namespace Swift_Blade.Combat.Health
         
         [SerializeField] private StatSO         healthStat;
         [SerializeField] private float          defaultHealth = 4;
+        [SerializeField] private ShieldEffect _shieldEffect;
 
         private float _lastDamageTime;
         private int   _shieldAmount;
@@ -38,11 +39,9 @@ namespace Swift_Blade.Combat.Health
             set
             {
                 _shieldAmount = Mathf.Max(value, 0);
+                _shieldEffect.SetShield(_shieldAmount);
             }
         }
-
-       
-        
         
         public StatSO GetHealthStat => healthStat;
         public bool IsPlayerInvincible { get; set; }

@@ -12,7 +12,7 @@ namespace Swift_Blade.Skill
     {
         public override void Initialize()
         {
-            MonoGenericPool<ImpactDirt>.Initialize(skillParticle);
+            MonoGenericPool<ImpactDirtParticle>.Initialize(skillParticle);
         }
         
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
@@ -23,7 +23,7 @@ namespace Swift_Blade.Skill
             int value = Mathf.RoundToInt(GetColorRatio());
             if(TryUseSkill(value) == false)return;
             
-            MonoGenericPool<ImpactDirt>.Pop().transform.position = targets.First().transform.position + new Vector3(0,1,0);
+            MonoGenericPool<ImpactDirtParticle>.Pop().transform.position = targets.First().transform.position + new Vector3(0,1,0);
             
             foreach (var item in targets)
             {

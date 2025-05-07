@@ -100,11 +100,11 @@ namespace Swift_Blade.Level
             
             sceneManagerSO.LevelClear();
             
-            Node[] newNode = nodeList.GetNode();
+            Node[] newNode = nodeList.GetNodes();
     
             for (int i = 0; i < newNode.Length; ++i)
             {
-                Door.Door newDoor = Instantiate(newNode[i].GetPortalPrefab(), portalTrm[i].position, Quaternion.identity);
+                Door newDoor = Instantiate(newNode[i].GetPortalPrefab(), portalTrm[i].position, Quaternion.identity);
                 newDoor.SetScene(newNode[i].nodeName);
                 newDoor.UpDoor();
             }
