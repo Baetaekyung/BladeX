@@ -13,14 +13,17 @@ namespace Swift_Blade
         [SerializeField] private float flatTime = 2.0f;
 
         [SerializeField] private float onBoardTime = 3.0f; //플레이어가 이 시간동안 플랫폼 위에 없으면 자동으로 내려감.
-        [SerializeField] private bool IsMoving = false;
+        [SerializeField] private bool isMoving = false;
 
         [SerializeField] private float upFloorHeight, downFloorHeight;
         [SerializeField] private float liftDuration = 2f;
 
+        [SerializeField] private Collider coll;
+
         private void SetPlatUpdown()
         {
             IsDowned = !IsDowned;
+            //coll.isTrigger = !IsDowned;
 
             if (IsDowned)
             {
@@ -33,23 +36,24 @@ namespace Swift_Blade
                 Debug.Log("내려간다저바닥으로");
                 PlatformTrm.DOMoveY(downFloorHeight, liftDuration);
                 StartCoroutine("CheckThisMoveCoroutine");
+                
             }
 
         }
 
         private IEnumerator CheckThisMoveCoroutine()
         {
-            IsMoving = true;
+            isMoving = true;
             yield return new WaitForSeconds(liftDuration);
-            IsMoving = false;
+            isMoving = false;
 
             yield return new WaitForSeconds(onBoardTime);
             PlatformTrm.DOMoveY(downFloorHeight, liftDuration);
 
             IsDowned = false;
-            IsMoving = true;
+            isMoving = true;
             yield return new WaitForSeconds(liftDuration);
-            IsMoving = false;
+            isMoving = false;
         }
         private void OnCollisionEnter(Collision collision)
         {
@@ -72,7 +76,7 @@ namespace Swift_Blade
         public void Interact()
         {
             if (IsPlayerOnthePanel == false) return;
-            if (IsMoving) return;
+            if (isMoving) return;
             SetPlatUpdown();
         }
     }
