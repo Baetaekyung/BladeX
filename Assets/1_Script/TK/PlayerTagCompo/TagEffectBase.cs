@@ -4,15 +4,8 @@ namespace Swift_Blade
 {
     public abstract class TagEffectBase : MonoBehaviour
     {
-        [Header("Percentage")]
-        [SerializeField, Range(0, 100)] protected int minEffectPercent;
-        [SerializeField, Range(0, 100)] protected int middleEffectPercent;
-        [SerializeField, Range(0, 100)] protected int maxEffectPercent;
-
         [Header("Setting")]
         [SerializeField] protected int minTagCount = 2;
-        [SerializeField] protected int middleTagCount = 3;
-        [SerializeField] protected int maxTagCount = 4;
 
         [Space]
         [TextArea] public string tagEffectDescription;

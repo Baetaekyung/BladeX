@@ -7,10 +7,10 @@ namespace Swift_Blade
     {
         [SerializeField] private float _damage;
         [SerializeField] private PoolPrefabMonoBehaviourSO _dragonBall;
+        
+        private DragonBall[] _dragonBalls;
 
         private Transform _playerTransform;
-
-        private DragonBall[] _dragonBalls;
 
         public override void Initialize(Player player)
         {
