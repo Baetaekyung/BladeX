@@ -133,7 +133,6 @@ namespace Swift_Blade
                 }
                 else
                 {
-                    Debug.Log("It is equipment");
                     AssignItemToSlot(i, matchSlot, emptySlot);
                     Inventory.currentInventoryCapacity++;
                 }

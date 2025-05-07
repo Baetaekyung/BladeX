@@ -74,7 +74,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
             }
             
         }
-
+        
         private void ShakeCam()
         {
             CameraShakeManager.Instance.DoShake(cameraShakeType);
