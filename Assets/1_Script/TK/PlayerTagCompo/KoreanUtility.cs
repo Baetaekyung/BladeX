@@ -30,11 +30,9 @@ namespace Swift_Blade
                 EquipmentTag.BARBARIAN => "야만",
                 EquipmentTag.KNIGHT => "기사",
                 EquipmentTag.ROGUE => "도둑",
-                EquipmentTag.DEMON => "악마",
                 EquipmentTag.DRAGON => "용",
                 EquipmentTag.MUTANT => "돌연변이",
                 EquipmentTag.HOLY => "신성한",
-                EquipmentTag.UNHOLY => "불결한",
                 EquipmentTag.ALL => "전부",
                 _ => "오류"
             };

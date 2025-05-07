@@ -36979,7 +36979,7 @@ MonoBehaviour:
   parryEvents:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4023359361664028744}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp
         m_MethodName: ChangeParryState
         m_Mode: 1
@@ -48697,9 +48697,9 @@ GameObject:
   - component: {fileID: 350781294163898496}
   - component: {fileID: 3206993069913618120}
   - component: {fileID: 1242151410863998905}
-  - component: {fileID: 4023359361664028744}
   - component: {fileID: 6008569775662460472}
   - component: {fileID: 4023765927547105734}
+  - component: {fileID: 1381508688013011046}
   m_Layer: 7
   m_Name: GolemEnemy
   m_TagString: Untagged
@@ -48913,7 +48913,7 @@ MonoBehaviour:
           m_Value0: 5186071643118583712
           m_Value1: 13989562807743466127
         Name: EnemyHealth
-        m_Value: {fileID: 4023359361664028744}
+        m_Value: {fileID: 1381508688013011046}
 --- !u!114 &3206993069913618120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48984,80 +48984,6 @@ MonoBehaviour:
   rightGroundCrackTrm: {fileID: 7522491538343582646}
   leftGroundCrackTrm: {fileID: 6034889134992052376}
   forwardGroundCrackTrm: {fileID: 676404658585566341}
---- !u!114 &4023359361664028744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6168019941508835570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a970b73a23fd204d93af0d5583e55dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnHitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8794979299383005050}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.FlashFeedback, Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDeadEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1242151410863998905}
-        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Boss.Golem.GolemAnimatorController,
-          Assembly-CSharp
-        m_MethodName: StopAllAnimationEvents
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1823202610722098700}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.CoinBurstFeedback,
-          Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3206993069913618120}
-        m_TargetAssemblyTypeName: Swift_Blade.Enemy.BaseEnemy, Assembly-CSharp
-        m_MethodName: DeadEvent
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  maxHealth: 20
-  isDead: 0
-  currentHealth: 0
-  BehaviorGraphAgent: {fileID: 350781294163898496}
-  changeBossState: {fileID: 0}
-  isKnockback: 0
 --- !u!114 &6008569775662460472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49149,6 +49075,80 @@ MonoBehaviour:
   - m_Rig: {fileID: 2896373391874400633}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &1381508688013011046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6168019941508835570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5abd4885823500844a13182ba0e424fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnHitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8794979299383005050}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.FlashFeedback, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1242151410863998905}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.Boss.Golem.GolemAnimatorController,
+          Assembly-CSharp
+        m_MethodName: StopAllAnimationEvents
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1823202610722098700}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.CoinBurstFeedback,
+          Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3206993069913618120}
+        m_TargetAssemblyTypeName: Swift_Blade.Enemy.BaseEnemy, Assembly-CSharp
+        m_MethodName: DeadEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  maxHealth: 20
+  isDead: 0
+  currentHealth: 0
+  BehaviorGraphAgent: {fileID: 350781294163898496}
+  changeBossState: {fileID: 0}
+  isKnockback: 0
 --- !u!1 &6178467171205483985
 GameObject:
   m_ObjectHideFlags: 0

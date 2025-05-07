@@ -11,6 +11,7 @@ namespace Swift_Blade
         private List<StatType> _modifierStats;
         private List<object> _keys;
         
+        private PlayerTagCompo _tag;
         private PlayerStatCompo _stat;
         private PlayerDamageCaster _damageCaster;
 
@@ -21,17 +22,22 @@ namespace Swift_Blade
             _modifierStats = new List<StatType>();
             _keys = new List<object>();
             
+            _tag = _player.GetEntityComponent<PlayerTagCompo>();
             _stat = _player.GetEntityComponent<PlayerStatCompo>();
             _damageCaster = _player.GetEntityComponent<PlayerDamageCaster>();
         }
 
         protected override void TagEnableEffect(int tagCount)
         {
+            _tag.ActiveParticle(EquipmentTag.ROGUE, true);
+            
             _damageCaster.OnCastDamageEvent.AddListener(Steal);
         }
 
         protected override void TagDisableEffect()
         {
+            _tag.ActiveParticle(EquipmentTag.ROGUE, false);
+
             for(int i = 0; i < _keys.Count; ++i)
             {
                 _stat.RemoveModifier(_modifierStats[i], _keys[i]);
