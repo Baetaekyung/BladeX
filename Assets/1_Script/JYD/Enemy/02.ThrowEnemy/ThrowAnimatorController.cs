@@ -15,13 +15,13 @@ namespace Swift_Blade.Enemy.Throw
         
         private BaseThrow _throw;
         
-        private ThrowEnemy throwEnemy;
+        private IGetSpeedAble enemy;
         private ThrowEnemyHealth throwEnemyHealth;
         
         protected override void Start()
         {
             base.Start();
-            throwEnemy = GetComponent<ThrowEnemy>();
+            enemy = GetComponent<IGetSpeedAble>();
             throwEnemyHealth = GetComponent<ThrowEnemyHealth>();
         }
 
@@ -74,7 +74,7 @@ namespace Swift_Blade.Enemy.Throw
 
         public override void StopManualMove()
         {
-            DOVirtual.Float(attackMoveSpeed, throwEnemy.GetSpeed(), 0.7f, x =>
+            DOVirtual.Float(attackMoveSpeed, enemy.GetSpeed(), 0.7f, x =>
             {
                 attackMoveSpeed = x;
             }).OnComplete(() =>
@@ -82,14 +82,14 @@ namespace Swift_Blade.Enemy.Throw
                 NavMeshAgent.Warp(transform.position);
                 isManualMove = false;
                 NavMeshAgent.enabled = true;
-                
             });
         }
-
+        
         public override void StopAllAnimationEvents()
         {
             StopManualCollider();
             base.StopAllAnimationEvents();
         }
+        
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 namespace Swift_Blade.Enemy.Throw
 {
-    public class ThrowEnemy :  BaseEnemy
+    public class ThrowEnemy :  BaseEnemy,IGetSpeedAble
     {
         private ThrowAnimatorController _throwEnemyAnimationController;
         
