@@ -350,20 +350,20 @@ namespace Swift_Blade
                 //newItem.ItemSlot = matchSlot;
             }
             else
-                AddItemToEmptySlot(newItem);
+                TryAddItemToEmptySlot(newItem);
             
             UpdateAllSlots();
         }
 
-        public void AddItemToEmptySlot(ItemDataSO newItem)
+        public bool TryAddItemToEmptySlot(ItemDataSO newItem)
         {
             if (newItem == null)
-                return;
+                return false;
 
             if (AllSlotsFull())
             {
                 Debug.Log("All inventory slots are full");
-                return;
+                return false;
             }
 
             var emptySlot = GetEmptySlot();
@@ -371,7 +371,7 @@ namespace Swift_Blade
             if (emptySlot == null)
             {
                 PopupManager.Instance.LogMessage("인벤토리가 가득차서 아이템을 먹을 수 없음");
-                return;
+                return false;
             }
 
             emptySlot.SetItemData(newItem);
@@ -380,6 +380,8 @@ namespace Swift_Blade
             Inventory.itemInventory.Add(newItem);
             
             UpdateAllSlots();
+
+            return true;
         }
 
         private ItemSlot GetEmptySlot()
