@@ -82,21 +82,20 @@ namespace Swift_Blade.Combat.Caster
                 {
                     if (!damagedEntities.Add(health))
                         continue;
-
+                    
                     isHit = true;
-
+                    
                     Vector3 hitPoint = hitCollider.ClosestPoint(startPos);
                     Vector3 hitNormal = (hitPoint - hitCollider.transform.position).normalized;
-
+                    
                     float damageAmount = _statCompo.GetStat(StatType.DAMAGE).Value;
                     damageAmount += additionalDamage;
-
+                    
                     float critialPercent = _statCompo.GetStat(StatType.CRITICAL_CHANCE).Value;
                     float critialDamageMultiplier = _statCompo.GetStat(StatType.CRITICAL_DAMAGE).Value;
 
                     bool  isCritial = UnityEngine.Random.Range(0, 100f) < critialPercent;
-                    
-                    
+                                        
                     ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, stun);
                     if (isCritial)
                     {

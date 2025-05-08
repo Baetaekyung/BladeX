@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using Swift_Blade.Level;
 using System.Collections;
 using UnityEngine;
-using System.Linq;
 using System.Text;
 using System;
-using Unity.VisualScripting;
 
 public enum NodeType
 {
@@ -143,7 +141,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
                 canSecondAppearSpecialNode = false;
             
             NodeType nodeType = specialNodeTypes[Random.Range(0, specialNodeTypes.Count)];
-            
+            specialNodeTypes.Remove(nodeType);
             
             nodeTypes.Add(nodeType);
             nodeTypes.Add(currentStage);         
@@ -328,6 +326,9 @@ namespace Swift_Blade.Level
                     break;
                 case NodeType.Rest:
                     item.SetPortalPrefab(restDoor);
+                    break;
+                case NodeType.Trap:
+                    item.SetPortalPrefab(trapDoor);
                     break;
                 case NodeType.None:
                     break;
