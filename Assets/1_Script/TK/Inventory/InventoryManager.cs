@@ -358,10 +358,7 @@ namespace Swift_Blade
         public void AddItemToEmptySlot(ItemDataSO newItem)
         {
             if (newItem == null)
-            {
-                Debug.LogWarning($"Don't put the null to inventory slot");
                 return;
-            }
 
             var emptySlot = GetEmptySlot();
             emptySlot.SetItemData(newItem);
@@ -374,6 +371,9 @@ namespace Swift_Blade
 
         private ItemSlot GetEmptySlot()
         {
+            if (AllSlotsFull())
+                return null;
+
             return itemSlots.FirstOrDefault(item => item.IsEmptySlot() && item is not EquipmentSlot);
         }
 
