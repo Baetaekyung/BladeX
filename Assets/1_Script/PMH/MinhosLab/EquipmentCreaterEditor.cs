@@ -31,6 +31,16 @@ namespace Swift_Blade
         public ColorType colorType;
         public int colorAdder;
 
+        //ItemImage = sprite
+        public string description;
+        //ItemName = displayName;
+        public ItemType itemType;
+        public ItemObject itemObject;
+        //EquipmentData
+
+        //스크롤
+        private Vector2 scrollPos;
+
         [MenuItem("Tools/Create Equipment Editor")]
         public static void ShowWindow()
         {
@@ -39,6 +49,8 @@ namespace Swift_Blade
 
         void OnGUI()
         {
+            scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+
             #region SetValues
             GUILayout.Label("Stats", EditorStyles.boldLabel);
             foreach (StatType statType in System.Enum.GetValues(typeof(StatType)))
@@ -68,13 +80,21 @@ namespace Swift_Blade
             equipmentIcon = (Sprite)EditorGUILayout.ObjectField(equipmentIcon, typeof(Sprite), true);
 
             GUILayout.Label("\nSlotType", EditorStyles.boldLabel);
-            slotType = (EquipmentSlotType)EditorGUILayout.EnumPopup( slotType);
+            slotType = (EquipmentSlotType)EditorGUILayout.EnumPopup(slotType);
 
             GUILayout.Label("\nColorType", EditorStyles.boldLabel);
             colorType = (ColorType)EditorGUILayout.EnumPopup(colorType);
 
-            GUILayout.Label("\nColorAdder", EditorStyles.boldLabel);
+            GUILayout.Label("\nColorAdder\n", EditorStyles.boldLabel);
             colorAdder = EditorGUILayout.IntField(colorAdder);
+
+            // ItemDataSO를 위한
+            GUILayout.Label("\nDescription", EditorStyles.boldLabel);
+            description = EditorGUILayout.TextField("Description", description);
+
+            GUILayout.Label("\nSetItemType", EditorStyles.boldLabel);
+            itemType = (ItemType)EditorGUILayout.EnumPopup(itemType);
+
 
             if (GUILayout.Button("\nCreate EquipmentSO"))
             {
@@ -82,6 +102,8 @@ namespace Swift_Blade
                 Debug.Log("Create SO");
             }
             #endregion
+
+            EditorGUILayout.EndScrollView();
         }
 
         private void CreateItemRGB()
@@ -91,11 +113,11 @@ namespace Swift_Blade
 
             if(slotType == EquipmentSlotType.HEAD)
             {
-                folderPath += "\\Head";
+                folderPath += "\\Heads";
             }
             else if (slotType == EquipmentSlotType.ARMOR)
             {
-                folderPath += "\\Armor";
+                folderPath += "\\Bodies";
             }
             else if (slotType == EquipmentSlotType.WEAPON)
             {
@@ -103,7 +125,7 @@ namespace Swift_Blade
             }
             else if (slotType == EquipmentSlotType.RING)
             {
-                folderPath += "\\Ring";
+                folderPath += "\\Rings";
             }
             else if (slotType == EquipmentSlotType.SHOES)
             {
@@ -210,9 +232,11 @@ namespace Swift_Blade
 
                 string prefixAssetname = $"{prefix}_{assetName}";
                 string finalAssetName = $"{prefixAssetname}_{"Equip"}.asset";
+                string soName = $"{prefixAssetname}.asset";
                 // 전체 저장 경로
-                string assetPath = Path.Combine(colorFolderPath, finalAssetName);
-                string prefabFullPath = Path.Combine(colorFolderPath, $"{prefixAssetname}.prefab");
+                string prefabFullPath = Path.Combine(colorFolderPath, $"{prefixAssetname}.prefab"); //Prefab
+                string assetPath = Path.Combine(colorFolderPath, finalAssetName); //SO
+                string soFullPath = Path.Combine(colorFolderPath, soName); //SO
 
                 // 경로 통일성 보장 (슬래시 사용)
                 assetPath = assetPath.Replace("\\", "/");
@@ -223,7 +247,9 @@ namespace Swift_Blade
                 AssetDatabase.CreateAsset(assetCopy, assetPath);
 
                 //Debug.Log($"name : {prefabFullPath}");
-                CreateOtherAsset(prefixAssetname, prefabFullPath, assetCopy); //경로가 파일임 (폴더에 생성해야되는데)
+                GameObject prefab = CreateEquipmentPrefab(prefixAssetname, prefabFullPath, assetCopy); //경로가 파일임 (폴더에 생성해야되는데)
+
+                CreateItemDataSO(prefixAssetname, soFullPath, assetCopy, prefab.GetComponent<StatEquipment>());
             }
 
             // 갱신
@@ -231,7 +257,7 @@ namespace Swift_Blade
             AssetDatabase.Refresh();
         }
 
-        private void CreateOtherAsset(string assetName, string path, EquipmentData equipmentData)
+        private GameObject CreateEquipmentPrefab(string assetName, string path, EquipmentData equipmentData)
         {
             GameObject go = new GameObject(assetName);
 
@@ -256,10 +282,33 @@ namespace Swift_Blade
             //    AssetDatabase.Refresh();                
             //} gpts Fake Codes
 
-            PrefabUtility.SaveAsPrefabAsset(go, path);
+            GameObject valueObject = PrefabUtility.SaveAsPrefabAsset(go, path);
             Debug.Log($"프리팹 생성됨: {path}");
 
             Object.DestroyImmediate(go);
+
+            return valueObject;
+        }
+
+        private void CreateItemDataSO(string assetName, string path, EquipmentData so, StatEquipment prefab)
+        {
+            // ItemDataSO 인스턴스 생성
+            ItemDataSO itemData = ScriptableObject.CreateInstance<ItemDataSO>();
+
+            // 데이터 채워넣기
+            itemData.itemName = displayName;
+            itemData.itemType = itemType;
+            itemData.description = description;
+            itemData.equipmentData = so;
+            itemData.itemImage = equipmentIcon;
+            itemData.itemObject = prefab;
+
+            // 에셋 생성
+            AssetDatabase.CreateAsset(itemData, path);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            Debug.Log($"아이템 SO 생성 완료: {path}");
         }
     }
 }
