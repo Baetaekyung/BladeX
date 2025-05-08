@@ -360,6 +360,12 @@ namespace Swift_Blade
             if (newItem == null)
                 return;
 
+            if (AllSlotsFull())
+            {
+                Debug.Log("All inventory slots are full");
+                return;
+            }
+
             var emptySlot = GetEmptySlot();
             emptySlot.SetItemData(newItem);
             newItem.ItemSlot = emptySlot;
