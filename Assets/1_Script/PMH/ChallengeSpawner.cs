@@ -12,7 +12,6 @@ namespace Swift_Blade.Level
     {
         public PoolPrefabMonoBehaviourSO enemySpawnParticle;
         public SpawnInfos[] spawnEnemies;
-        public List<BaseEnemy> allEnemyList;
         
         [SerializeField] private SceneManagerSO sceneManagerSO;
         [SerializeField] private NodeList nodeList;
@@ -30,17 +29,24 @@ namespace Swift_Blade.Level
         [SerializeField] private ChallengeStageUIView challengeStageUI;
         private ChallengeStageRemainTime challengeStageRemainTime;
         
+        public float dustParticleDelay;
+        
+        private List<BaseEnemy> allEnemyList = new List<BaseEnemy>();
         private bool isGameEnd = false;
-        private WaitForSeconds waitForSeconds;
+        private WaitForSeconds countPeriod;
+        
+        private void Awake()
+        {
+            MonoGenericPool<DustUpParticle>.Initialize(enemySpawnParticle);
+            
+            challengeStageRemainTime = new ChallengeStageRemainTime();
+            countPeriod = new WaitForSeconds(1f);
+        }
         
         private void Start()
         {
-            challengeStageRemainTime = new ChallengeStageRemainTime();
-            waitForSeconds = new WaitForSeconds(1f);
-            
             challengeStageRemainTime.SetRemainTime(endTimeSecond);
-            
-            MonoGenericPool<EnemySpawnParticle>.Initialize(enemySpawnParticle);
+                                   
             StartCoroutine(EnemyWavesCoroutine());
             StartCoroutine(CountdownCoroutine());
         }
@@ -49,14 +55,14 @@ namespace Swift_Blade.Level
         {
             while (!isGameEnd)
             {
-                yield return waitForSeconds;
+                yield return countPeriod;
                 
                 challengeStageRemainTime.DecreaseRemainTime();
                 challengeStageUI.SetText(challengeStageRemainTime.GetRemainTime());
                 
                 if (endTimer >= endTimeSecond)
                 {
-                    challengeStageUI.SetText(0);
+                    
                     yield break; 
                 }
             }
@@ -79,6 +85,7 @@ namespace Swift_Blade.Level
         private void TimeOut()
         {
             StopAllCoroutines();
+            challengeStageUI.SetText();
             
             isGameEnd = true;
                         
@@ -91,20 +98,25 @@ namespace Swift_Blade.Level
                 }
             }
 
-            LevelClear();
+            StartCoroutine(LevelClear());
         }
-
-        
-        private void LevelClear()
+                
+        private IEnumerator LevelClear()
         {
-            
             sceneManagerSO.LevelClear();
-            
+
             Node[] newNode = nodeList.GetNodes();
-    
+
+            yield return new WaitForSeconds(dustParticleDelay);
+
             for (int i = 0; i < newNode.Length; ++i)
             {
-                Door newDoor = Instantiate(newNode[i].GetPortalPrefab(), portalTrm[i].position, Quaternion.identity);
+                var doorPosition = spawnPosition[i].position;
+                
+                DustUpParticle dustUpParticle = MonoGenericPool<DustUpParticle>.Pop();
+                dustUpParticle.transform.position = doorPosition;
+
+                Door newDoor = Instantiate(newNode[i].GetPortalPrefab(), doorPosition, Quaternion.identity);
                 newDoor.SetScene(newNode[i].nodeName);
                 newDoor.UpDoor();
             }
@@ -126,8 +138,8 @@ namespace Swift_Blade.Level
                     
                     var nowEnemy = Instantiate(enemyPrefab, spawnPosition[j].position, Quaternion.identity);
                     allEnemyList.Add(nowEnemy);
-                
-                    EnemySpawnParticle spawnParticle = MonoGenericPool<EnemySpawnParticle>.Pop();
+                    
+                    DustUpParticle spawnParticle = MonoGenericPool<DustUpParticle>.Pop();
                     spawnParticle.transform.position = spawnPosition[j].position;
                     
                 }

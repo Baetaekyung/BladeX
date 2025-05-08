@@ -16,8 +16,12 @@ namespace Swift_Blade.UI
         
         public void SetText(int _remainCount)
         {
-            
-            remainText.SetText(_remainCount != 0 ?_remainCount.ToString() : "");
+            remainText.SetText(_remainCount.ToString());
+        }
+        
+        public void SetText()
+        {
+            remainText.SetText("");
         }
         
     }
