@@ -334,7 +334,7 @@ namespace Swift_Blade
 
         public void AddItemToMatchSlot(ItemDataSO newItem)
         {
-            if (AllSlotsFull())
+            if (IsAllSlotsFull())
             {
                 Debug.Log("All inventory slots are full");
                 return;
@@ -350,36 +350,46 @@ namespace Swift_Blade
                 //newItem.ItemSlot = matchSlot;
             }
             else
-                AddItemToEmptySlot(newItem);
+                TryAddItemToEmptySlot(newItem);
             
             UpdateAllSlots();
         }
+        public void AddItemToEmptySlot(ItemDataSO itemDataSO)
+        {
+            if (itemDataSO == null) throw new ArgumentNullException($"{itemDataSO} is null");
+            ItemSlot emptySlot = GetEmptySlot();
+            emptySlot.SetItemData(itemDataSO);
+            itemDataSO.ItemSlot = emptySlot;
 
-        public void AddItemToEmptySlot(ItemDataSO newItem)
+            Inventory.itemInventory.Add(itemDataSO);
+
+            UpdateAllSlots();
+        }
+        public bool TryAddItemToEmptySlot(ItemDataSO newItem)
         {
             if (newItem == null)
-                return;
+                return false;
 
-            if (AllSlotsFull())
+            if (IsAllSlotsFull())
             {
-                Debug.Log("All inventory slots are full");
-                return;
+                PopupManager.Instance.LogMessage("인벤토리가 가득 찼습니다.");
+                return false;
             }
 
             var emptySlot = GetEmptySlot();
+
             emptySlot.SetItemData(newItem);
             newItem.ItemSlot = emptySlot;
 
             Inventory.itemInventory.Add(newItem);
             
             UpdateAllSlots();
+
+            return true;
         }
 
         private ItemSlot GetEmptySlot()
         {
-            if (AllSlotsFull())
-                return null;
-
             return itemSlots.FirstOrDefault(item => item.IsEmptySlot() && item is not EquipmentSlot);
         }
 
@@ -414,9 +424,9 @@ namespace Swift_Blade
             return matchSlot;
         }
         
-        public bool AllSlotsFull()
+        public bool IsAllSlotsFull()
         {
-            if (itemSlots.FirstOrDefault(item => item.IsEmptySlot()) == default)
+            if (GetEmptySlot() == null)
             {
                 return true;
             }

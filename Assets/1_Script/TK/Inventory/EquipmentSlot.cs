@@ -78,7 +78,7 @@ namespace Swift_Blade
             InventoryManager.EquipmentDatas.Remove(_itemDataSO);
             InventoryManager.Inventory.currentEquipment.Remove(_itemDataSO.equipmentData);
 
-            InvenManager.AddItemToEmptySlot(_itemDataSO);
+            InvenManager.TryAddItemToEmptySlot(_itemDataSO);
 
             _itemDataSO = null;
             InvenManager.UpdateAllSlots();
