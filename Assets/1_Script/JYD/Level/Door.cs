@@ -95,7 +95,7 @@ namespace Swift_Blade.Level
         
         public void Interact()
         {
-            cage.transform.DOLocalMoveY(-2.25f ,cageDownDuration ).SetEase(Ease.OutQuart);
+            cage.transform.DOLocalMoveY(-2.25f ,cageDownDuration ).SetEase(Ease.OutQuart).SetLink(gameObject);
             sceneManager.LoadScene(sceneName);
         }
         
