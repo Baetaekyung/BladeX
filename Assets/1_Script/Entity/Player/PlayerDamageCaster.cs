@@ -95,21 +95,17 @@ namespace Swift_Blade.Combat.Caster
                     float critialDamageMultiplier = _statCompo.GetStat(StatType.CRITICAL_DAMAGE).Value;
 
                     bool  isCritial = UnityEngine.Random.Range(0, 100f) < critialPercent;
-
+                    
+                    
+                    ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, stun);
                     if (isCritial)
                     {
                         damageAmount = (damageAmount * (critialDamageMultiplier / 100f));
-
-                        FloatingTextGenerator.Instance.GenerateText(Mathf
-                            .RoundToInt(damageAmount).ToString(), hitPoint, Color.yellow);
+                        actionData.textColor = Color.yellow;
                     }
-                    else
-                    {
-                        FloatingTextGenerator.Instance.GenerateText(Mathf
-                            .RoundToInt(damageAmount).ToString(), hitPoint);
-                    }
-
-                    ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, stun);
+                    
+                    actionData.damageAmount = damageAmount;
+                   
 
                     OnCastDamageEvent?.Invoke(actionData);
                     OnHitDamagable?.Invoke(damagedEntities);

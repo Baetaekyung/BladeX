@@ -61,10 +61,6 @@ namespace Swift_Blade.Skill
                     };
                     
                     health.TakeDamage(actionData);
-                    FloatingTextGenerator.Instance.
-                        GenerateText(damage.ToString() , 
-                            health.transform.position + new Vector3(0,0.5f,0));
-                    
                     
                 }
             }

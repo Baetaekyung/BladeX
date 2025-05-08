@@ -70,9 +70,12 @@ namespace Swift_Blade.Pool
             {
                 if(other.TryGetComponent(out IHealth health))
                 {
-                    ActionData actionData = new ActionData(transform.position, Vector3.up, _damage, false);
+                    ActionData actionData = new ActionData(transform.position, Vector3.up, _damage, false)
+                        {
+                            textColor = Color.red
+                        };
                     health.TakeDamage(actionData);
-                    FloatingTextGenerator.Instance.GenerateText(Mathf.RoundToInt(_damage).ToString(), other.transform.position);
+                    //FloatingTextGenerator.Instance.GenerateText(Mathf.RoundToInt(_damage).ToString(), other.transform.position);
                 }
             }
         }
