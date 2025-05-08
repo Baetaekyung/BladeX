@@ -29,11 +29,12 @@ namespace Swift_Blade.Pool
                 Push();
             }
         }
-
+        
         protected virtual void Push()
         {
             MonoGenericPool<T>.Push((this as T));
         }
+        
         
     }
 }
