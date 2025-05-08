@@ -334,7 +334,7 @@ namespace Swift_Blade
 
         public void AddItemToMatchSlot(ItemDataSO newItem)
         {
-            if (AllSlotsFull())
+            if (IsAllSlotsFull())
             {
                 Debug.Log("All inventory slots are full");
                 return;
@@ -354,13 +354,23 @@ namespace Swift_Blade
             
             UpdateAllSlots();
         }
+        public void AddItemToEmptySlot(ItemDataSO itemDataSO)
+        {
+            if (itemDataSO == null) throw new ArgumentNullException($"{itemDataSO} is null");
+            ItemSlot emptySlot = GetEmptySlot();
+            emptySlot.SetItemData(itemDataSO);
+            itemDataSO.ItemSlot = emptySlot;
 
+            Inventory.itemInventory.Add(itemDataSO);
+
+            UpdateAllSlots();
+        }
         public bool TryAddItemToEmptySlot(ItemDataSO newItem)
         {
             if (newItem == null)
                 return false;
 
-            if (AllSlotsFull())
+            if (IsAllSlotsFull())
             {
                 Debug.Log("All inventory slots are full");
                 return false;
@@ -386,7 +396,7 @@ namespace Swift_Blade
 
         private ItemSlot GetEmptySlot()
         {
-            if (AllSlotsFull())
+            if (IsAllSlotsFull())
                 return null;
 
             return itemSlots.FirstOrDefault(item => item.IsEmptySlot() && item is not EquipmentSlot);
@@ -423,7 +433,7 @@ namespace Swift_Blade
             return matchSlot;
         }
         
-        public bool AllSlotsFull()
+        public bool IsAllSlotsFull()
         {
             if (itemSlots.FirstOrDefault(item => item.IsEmptySlot()) == default)
             {

@@ -23,7 +23,8 @@ namespace Swift_Blade
         protected MeshRenderer itemRenderer;
 
         private bool isCollected;
-        protected virtual bool CanInteract => !isCollected;
+        protected virtual bool CanInteract => !isCollected && !InventoryManager.Instance.IsAllSlotsFull();
+
         protected abstract IReadOnlyList<T> GetReadonlyList { get; }
         protected virtual void Awake()
         {
@@ -76,6 +77,8 @@ namespace Swift_Blade
         //}
         protected virtual void Interact()
         {
+            //print(InventoryManager.Instance.IsAllSlotsFull());
+
             isCollected = true;
 
             if (interactTween != null)
