@@ -362,17 +362,11 @@ namespace Swift_Blade
 
             if (AllSlotsFull())
             {
-                Debug.Log("All inventory slots are full");
+                PopupManager.Instance.LogMessage("인벤토리가 가득 찼습니다.");
                 return false;
             }
 
             var emptySlot = GetEmptySlot();
-
-            if (emptySlot == null)
-            {
-                PopupManager.Instance.LogMessage("인벤토리가 가득차서 아이템을 먹을 수 없음");
-                return false;
-            }
 
             emptySlot.SetItemData(newItem);
             newItem.ItemSlot = emptySlot;
@@ -425,7 +419,7 @@ namespace Swift_Blade
         
         public bool AllSlotsFull()
         {
-            if (itemSlots.FirstOrDefault(item => item.IsEmptySlot()) == default)
+            if (GetEmptySlot() == null)
             {
                 return true;
             }
