@@ -18,8 +18,8 @@ namespace Swift_Blade.Pool
                     damageAmount =  damage,
                 };
                 actionData.hurtType = 1;
-                FloatingTextGenerator.Instance.GenerateText($"<color={color}>{damage}</color>",other.gameObject.transform.position + new Vector3(0,0.5f,0));
-                                
+                actionData.textColor = Color.magenta;
+                                                
                 health.TakeDamage(actionData);
             }    
         }

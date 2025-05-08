@@ -4,6 +4,7 @@ using UnityEngine.AI;
 using Unity.Behavior;
 using UnityEngine;
 using System;
+using Swift_Blade.Pool;
 using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat.Health
@@ -39,6 +40,7 @@ namespace Swift_Blade.Combat.Health
             animationController = GetComponentInChildren<BaseEnemyAnimationController>();
             
             OnHitEvent.AddListener(StartKnockback);
+            OnHitEvent.AddListener(GeneratorText);
             
             BehaviorGraphAgent.GetVariable("ChangeBossState",out BlackboardVariable<ChangeBossState> state);
             
@@ -54,6 +56,16 @@ namespace Swift_Blade.Combat.Health
         private void OnDestroy()
         {
             OnHitEvent.RemoveListener(StartKnockback);
+            OnHitEvent.RemoveListener(GeneratorText);
+        }
+        
+        private void GeneratorText(ActionData actionData)
+        {
+            Vector3 textPosition = actionData.hitPoint;
+            
+            FloatingTextGenerator.Instance.GenerateText(actionData.damageAmount.ToString(),
+                textPosition,
+                actionData.textColor == default ? Color.white : actionData.textColor);
         }
         
         public override void TakeDamage(ActionData actionData)

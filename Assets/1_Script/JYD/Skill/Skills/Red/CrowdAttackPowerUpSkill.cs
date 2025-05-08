@@ -29,7 +29,7 @@ namespace Swift_Blade.Skill
             if (isUpgrade == false && targets.Count() >= targetCount)
             {
                 isUpgrade = true;
-                PopupManager.Instance.LogInfoBox($"{skillName}이 발동 됐습니다!");
+                //PopupManager.Instance.LogInfoBox($"{skillName}?? ??? ??????!");
                 
                 RedWaveParticle redWaveParticle = MonoGenericPool<RedWaveParticle>.Pop();
                 redWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,1,0);
@@ -39,7 +39,7 @@ namespace Swift_Blade.Skill
             else if(isUpgrade && targets.Count() < targetCount)
             {
                 isUpgrade = false;
-                PopupManager.Instance.LogInfoBox($"{skillName}이 해제 됐습니다");
+                //PopupManager.Instance.LogInfoBox($"{skillName}?? ???? ??????");
             }
             
         }
@@ -57,8 +57,8 @@ namespace Swift_Blade.Skill
                         damageAmount = Mathf.RoundToInt(increaseValue * GetColorRatio())
                     };
                     
-                    FloatingTextGenerator.Instance.GenerateText(actionData.damageAmount.ToString(),
-                        item.position + new Vector3(0,0.5f,0));
+                    /*FloatingTextGenerator.Instance.GenerateText(actionData.damageAmount.ToString(),
+                        item.position + new Vector3(0,0.5f,0));*/
                     
                     health.TakeDamage(actionData);   
                     

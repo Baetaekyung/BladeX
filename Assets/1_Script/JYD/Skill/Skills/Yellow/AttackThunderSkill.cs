@@ -12,8 +12,7 @@ namespace Swift_Blade.Skill
         private float attackCounter = 0;
         
         [SerializeField] private int skillDamage = 0;
-        [SerializeField] private string color;
-        
+                
         public override void Initialize()
         {
             if (skillParticle == null || skillParticle.GetMono == null)
@@ -42,10 +41,8 @@ namespace Swift_Blade.Skill
                             actionData.stun = true;
                             actionData.damageAmount = skillDamage * GetColorRatio();
                             actionData.hurtType = 1;
-                            
-                            string generateText = $"<color=#{color}>{actionData.damageAmount}</color>";
-                            
-                            FloatingTextGenerator.Instance.GenerateText(generateText,item.transform.position + new Vector3(0,0.5f,0));
+                            actionData.textColor = Color.yellow;
+                            //FloatingTextGenerator.Instance.GenerateText(generateText,item.transform.position + new Vector3(0,0.5f,0));
                             
                             health.TakeDamage(actionData);
                             

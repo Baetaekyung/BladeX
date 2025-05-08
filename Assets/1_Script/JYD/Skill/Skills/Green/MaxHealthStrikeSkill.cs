@@ -35,8 +35,7 @@ namespace Swift_Blade
                 {
                     ActionData actionData = new ActionData();
                     float damage = attackIncreaseAmount * GetColorRatio();
-                    FloatingTextGenerator.Instance.GenerateText(damage.ToString(),
-                        health.transform.position + new Vector3(0,0.5f,0));
+                    
                         
                     actionData.damageAmount = damage;
                     health.TakeDamage(actionData);
