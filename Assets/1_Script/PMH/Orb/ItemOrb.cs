@@ -17,7 +17,7 @@ namespace Swift_Blade
             return
                 () =>
                 {
-                    InventoryManager.Instance.TryAddItemToEmptySlot(defaultItem);
+                    InventoryManager.Instance.AddItemToEmptySlot(defaultItem);
                     Destroy(gameObject);
                 };
         }
