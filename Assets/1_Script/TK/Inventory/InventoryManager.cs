@@ -390,9 +390,6 @@ namespace Swift_Blade
 
         private ItemSlot GetEmptySlot()
         {
-            if (IsAllSlotsFull())
-                return null;
-
             return itemSlots.FirstOrDefault(item => item.IsEmptySlot() && item is not EquipmentSlot);
         }
 
