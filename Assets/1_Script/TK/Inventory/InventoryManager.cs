@@ -367,6 +367,13 @@ namespace Swift_Blade
             }
 
             var emptySlot = GetEmptySlot();
+
+            if (emptySlot == null)
+            {
+                PopupManager.Instance.LogMessage("인벤토리가 가득차서 아이템을 먹을 수 없음");
+                return;
+            }
+
             emptySlot.SetItemData(newItem);
             newItem.ItemSlot = emptySlot;
 
