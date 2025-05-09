@@ -42,7 +42,6 @@ namespace Swift_Blade
                 Vector3 bridgePos = secretRoomBridgeTrm.position + new Vector3(0, Mathf.Abs(secretRoomBridgeTrm.localPosition.y), 0);
                 CameraShakeManager.Instance.DoShake(CameraShakeType.Middle);
                 seq.Append(secretRoomBridgeTrm.DOMove(bridgePos, 1f)); //연결다리 올라옴
-                Debug.Log("ㅎㅎ");
             }
         }
     }
