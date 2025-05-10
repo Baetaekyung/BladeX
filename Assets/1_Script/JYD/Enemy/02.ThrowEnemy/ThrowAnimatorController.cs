@@ -15,16 +15,19 @@ namespace Swift_Blade.Enemy.Throw
         
         private BaseThrow _throw;
         
-        private IGetSpeedAble enemy;
+        private IGetMoveSpeedAble getMoveSpeedAble;
         private ThrowEnemyHealth throwEnemyHealth;
+
+        private float originAttackDistance;
         
         protected override void Start()
         {
             base.Start();
-            enemy = GetComponent<IGetSpeedAble>();
-            throwEnemyHealth = GetComponent<ThrowEnemyHealth>();
+            enemy = enemy as ThrowEnemy;
+            getMoveSpeedAble = enemy as IGetMoveSpeedAble;
+            throwEnemyHealth = enemy.GetHealth() as ThrowEnemyHealth;
         }
-
+        
         public void SetStone(BaseThrow stone)
         {
             if (stone == null)
@@ -62,31 +65,45 @@ namespace Swift_Blade.Enemy.Throw
         
         public void StartManualCollider()
         {
+            originAttackDistance = enemy.StopDistance;
+            enemy.StopDistance = -1;
+            
             bodyCollider.enabled = true;
             originCollider.excludeLayers |= 1 << LayerMask.NameToLayer("Player");
         }
         
         public void StopManualCollider()
         {
+            enemy.StopDistance = originAttackDistance;
+            
             bodyCollider.enabled = false;
             originCollider.excludeLayers &= ~(1 << LayerMask.NameToLayer("Player"));
         }
 
         public override void StopManualMove()
         {
-            DOVirtual.Float(attackMoveSpeed, enemy.GetSpeed(), 0.7f, x =>
+            if (enemy.GetHealth().isDead)
             {
-                attackMoveSpeed = x;
-            }).OnComplete(() =>
+                base.StopManualMove();
+            }
+            else
             {
-                NavMeshAgent.Warp(transform.position);
-                isManualMove = false;
-                NavMeshAgent.enabled = true;
-            });
+                DOVirtual.Float(attackMoveSpeed, getMoveSpeedAble.GetMoveSpeed(), 0.7f, x =>
+                {
+                    attackMoveSpeed = x;
+                }).OnComplete(() =>
+                {
+                    NavMeshAgent.Warp(transform.position);
+                    isManualMove = false;
+                    NavMeshAgent.enabled = true;
+                });
+            }
+            
         }
         
         public override void StopAllAnimationEvents()
         {
+            SetStone(null);
             StopManualCollider();
             base.StopAllAnimationEvents();
         }

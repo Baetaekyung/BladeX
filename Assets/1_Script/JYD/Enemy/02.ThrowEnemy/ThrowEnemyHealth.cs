@@ -1,4 +1,3 @@
-
 using Swift_Blade.Enemy.Throw;
 
 namespace Swift_Blade.Combat.Health
@@ -22,9 +21,9 @@ namespace Swift_Blade.Combat.Health
             base.ChangeParryState();
         }
         
-        public void SetCanChangeParry(bool canChangeParry)
+        public void SetCanChangeParry(bool _canChangeParry)
         {
-            this.canChangeParry = canChangeParry;
+            canChangeParry = _canChangeParry;
         }
         
     }

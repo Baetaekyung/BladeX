@@ -11,7 +11,7 @@ namespace Swift_Blade.Combat.Health
         [Header("Health info")]
         public float maxHealth;
         public bool isDead;
-
+        
         public virtual void TakeDamage(ActionData actionData)
         {
         }
@@ -22,8 +22,8 @@ namespace Swift_Blade.Combat.Health
 
         public virtual void Dead()
         {
-            OnDeadEvent?.Invoke();
             isDead = true;
+            OnDeadEvent?.Invoke();
         }
     }
 }

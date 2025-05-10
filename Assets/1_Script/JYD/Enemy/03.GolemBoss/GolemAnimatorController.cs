@@ -41,18 +41,22 @@ namespace Swift_Blade.Enemy.Boss.Golem
 
         public void StopManualLook()
         {
-            DOVirtual.Float(rig.weight, 0f, 0.3f, value => { rig.weight = value; });
+            if (enemy.GetHealth().isDead)
+            {
+                rig.weight = 0;
+            }
+            else
+            {
+                DOVirtual.Float(rig.weight, 0f, 0.3f, value => { rig.weight = value; });
+            }
         }
         
         public override void StopAllAnimationEvents()
         {
-            SetStone(null);
             StopManualLook();
-            StopManualCollider();
-            
             base.StopAllAnimationEvents();
         }
-
+                
         public void CreateGroundCrack(int _direction)
         {
             if (_direction == 1)
@@ -79,5 +83,6 @@ namespace Swift_Blade.Enemy.Boss.Golem
         {
             CameraShakeManager.Instance.DoShake(cameraShakeType);
         }
+        
     }
 }
