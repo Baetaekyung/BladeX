@@ -144,16 +144,15 @@ namespace Swift_Blade.Enemy
         public virtual void DeadEvent()
         {
             StopImmediately();
-                                    
+            
+            owner.TryNextEnemyCanSpawn();
+            if(weapon != null)
+                weapon.AddComponent<EnemyWeapon>();
+            
             enemyCollider.enabled = false;
             NavmeshAgent.avoidancePriority = 99;
             NavmeshAgent.enabled = false;
-            
-            if(owner != null)
-                owner.TryNextEnemyCanSpawn();
-            
-            if(weapon != null)
-                weapon.AddComponent<EnemyWeapon>();
+                        
         }
         
         protected bool DetectForwardObstacle()
