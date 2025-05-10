@@ -150,7 +150,7 @@ namespace Swift_Blade.Enemy
             NavmeshAgent.enabled = false;
             
             if(owner != null)
-                owner.TryNextEnemyCanSpawn(transform.localPosition,transform.forward);
+                owner.TryNextEnemyCanSpawn();
             
             if(weapon != null)
                 weapon.AddComponent<EnemyWeapon>();
