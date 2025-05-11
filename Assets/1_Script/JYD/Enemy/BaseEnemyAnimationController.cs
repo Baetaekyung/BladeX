@@ -71,8 +71,7 @@ namespace Swift_Blade.Enemy
         {
             defaultAttackMoveSpeed = originMoveSpeed;
         }
-        
-        
+                
         private void Cast()
         {
             caster.Cast();
@@ -94,10 +93,11 @@ namespace Swift_Blade.Enemy
         public virtual void StopManualMove()
         {
             attackMoveSpeed = defaultAttackMoveSpeed;
-            
             NavMeshAgent.Warp(transform.position);
             isManualMove = false;
-            NavMeshAgent.enabled = true;
+            
+            //if dead? off navmeshAgent
+            NavMeshAgent.enabled = !enemy.GetHealth().isDead;
         }
         
         public virtual void StopAllAnimationEvents()
@@ -107,12 +107,12 @@ namespace Swift_Blade.Enemy
             StopManualRotate();
             StopApplyRootMotion();
         }
-        
+                
         public void Rebind()
         {
             Animator.Rebind();
         }
-
+        
        
     }
 }

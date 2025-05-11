@@ -1,7 +1,9 @@
+#if UNITY_EDITOR
+
+
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Security;
 using UnityEditor;
 using UnityEngine;
 
@@ -312,3 +314,4 @@ namespace Swift_Blade
         }
     }
 }
+#endif

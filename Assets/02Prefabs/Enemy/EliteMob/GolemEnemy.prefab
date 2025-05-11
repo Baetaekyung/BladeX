@@ -36863,7 +36863,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6199455986906318505}
   - component: {fileID: 1063728771533553575}
-  - component: {fileID: 2100252439773354100}
   - component: {fileID: 8502450710454222656}
   - component: {fileID: 4410124145609757281}
   m_Layer: 7
@@ -36909,33 +36908,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2, y: 2, z: 1.5}
   m_Center: {x: 0, y: 1, z: 0.25}
---- !u!54 &2100252439773354100
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4553630736962164287}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &8502450710454222656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36979,8 +36951,8 @@ MonoBehaviour:
   parryEvents:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.BaseEnemyHealth, Assembly-CSharp
+      - m_Target: {fileID: 1381508688013011046}
+        m_TargetAssemblyTypeName: Swift_Blade.Combat.Health.ThrowEnemyHealth, Assembly-CSharp
         m_MethodName: ChangeParryState
         m_Mode: 1
         m_Arguments:
@@ -37006,7 +36978,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  jumpAttackRadius: 12
+  jumpAttackRadius: 5.97
 --- !u!1 &4559024417357721856
 GameObject:
   m_ObjectHideFlags: 0
@@ -39871,7 +39843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70b342d8ce5c2fd48b8fa3147d48d1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 1
+  m_Weight: 0
   m_Effectors: []
 --- !u!1 &5102477845847243344
 GameObject:
@@ -48690,6 +48662,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4871763905541442923}
+  - component: {fileID: 4023765927547105734}
+  - component: {fileID: 6008569775662460472}
   - component: {fileID: 5147818782539232908}
   - component: {fileID: 1263739083530163727}
   - component: {fileID: 5498710490917729166}
@@ -48697,8 +48671,6 @@ GameObject:
   - component: {fileID: 350781294163898496}
   - component: {fileID: 3206993069913618120}
   - component: {fileID: 1242151410863998905}
-  - component: {fileID: 6008569775662460472}
-  - component: {fileID: 4023765927547105734}
   - component: {fileID: 1381508688013011046}
   m_Layer: 7
   m_Name: GolemEnemy
@@ -48731,6 +48703,97 @@ Transform:
   - {fileID: 676404658585566341}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4023765927547105734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6168019941508835570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RigLayers:
+  - m_Rig: {fileID: 2896373391874400633}
+    m_Active: 1
+  m_Effectors: []
+--- !u!114 &6008569775662460472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6168019941508835570}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boneShape: 1
+  drawBones: 1
+  drawTripods: 0
+  boneSize: 1
+  tripodSize: 1
+  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
+  m_Transforms:
+  - {fileID: 820535852096904416}
+  - {fileID: 424877772428047893}
+  - {fileID: 2676211318589104748}
+  - {fileID: 8173889438998548512}
+  - {fileID: 4617339980179738945}
+  - {fileID: 7252501741131161952}
+  - {fileID: 885465544626573462}
+  - {fileID: 7562896526002474959}
+  - {fileID: 1258376227602582229}
+  - {fileID: 150093057630715130}
+  - {fileID: 7244765845559043258}
+  - {fileID: 6585009200437356659}
+  - {fileID: 853474695944116149}
+  - {fileID: 4747806399341761167}
+  - {fileID: 2090494431577973162}
+  - {fileID: 3301443687064279738}
+  - {fileID: 6237552142134826242}
+  - {fileID: 4773769857279980375}
+  - {fileID: 5893047601427327402}
+  - {fileID: 8036139020711642360}
+  - {fileID: 2187088956747402178}
+  - {fileID: 9020573031888786141}
+  - {fileID: 2986620717972482592}
+  - {fileID: 1265305694803851569}
+  - {fileID: 485564012995786354}
+  - {fileID: 3338193087120828275}
+  - {fileID: 8058783511989826937}
+  - {fileID: 7769867854577810395}
+  - {fileID: 4294413333895720551}
+  - {fileID: 559940467557361288}
+  - {fileID: 2359468554121026975}
+  - {fileID: 8770223280697874263}
+  - {fileID: 6225977543782324514}
+  - {fileID: 4994057354501932375}
+  - {fileID: 6750952077730282681}
+  - {fileID: 1942112074879552247}
+  - {fileID: 5752486995205647758}
+  - {fileID: 7445691181832973269}
+  - {fileID: 4887587211513302528}
+  - {fileID: 2601355397360605822}
+  - {fileID: 7374574049637063711}
+  - {fileID: 9074861064267122443}
+  - {fileID: 8592565281150697322}
+  - {fileID: 2540015787002066372}
+  - {fileID: 2854130308171610139}
+  - {fileID: 2617145086003346791}
+  - {fileID: 5937384995535356764}
+  - {fileID: 3487273241413990842}
+  - {fileID: 6215926656129514831}
+  - {fileID: 3118266387975278496}
+  - {fileID: 951714067195449893}
+  - {fileID: 45980836404878616}
+  - {fileID: 4621787901872986039}
+  - {fileID: 5481786947972900341}
+  - {fileID: 8805356984743223365}
+  - {fileID: 4011299287850040331}
 --- !u!95 &5147818782539232908
 Animator:
   serializedVersion: 7
@@ -48984,97 +49047,6 @@ MonoBehaviour:
   rightGroundCrackTrm: {fileID: 7522491538343582646}
   leftGroundCrackTrm: {fileID: 6034889134992052376}
   forwardGroundCrackTrm: {fileID: 676404658585566341}
---- !u!114 &6008569775662460472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6168019941508835570}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boneShape: 1
-  drawBones: 1
-  drawTripods: 0
-  boneSize: 1
-  tripodSize: 1
-  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
-  m_Transforms:
-  - {fileID: 820535852096904416}
-  - {fileID: 424877772428047893}
-  - {fileID: 2676211318589104748}
-  - {fileID: 8173889438998548512}
-  - {fileID: 4617339980179738945}
-  - {fileID: 7252501741131161952}
-  - {fileID: 885465544626573462}
-  - {fileID: 7562896526002474959}
-  - {fileID: 1258376227602582229}
-  - {fileID: 150093057630715130}
-  - {fileID: 7244765845559043258}
-  - {fileID: 6585009200437356659}
-  - {fileID: 853474695944116149}
-  - {fileID: 4747806399341761167}
-  - {fileID: 2090494431577973162}
-  - {fileID: 3301443687064279738}
-  - {fileID: 6237552142134826242}
-  - {fileID: 4773769857279980375}
-  - {fileID: 5893047601427327402}
-  - {fileID: 8036139020711642360}
-  - {fileID: 2187088956747402178}
-  - {fileID: 9020573031888786141}
-  - {fileID: 2986620717972482592}
-  - {fileID: 1265305694803851569}
-  - {fileID: 485564012995786354}
-  - {fileID: 3338193087120828275}
-  - {fileID: 8058783511989826937}
-  - {fileID: 7769867854577810395}
-  - {fileID: 4294413333895720551}
-  - {fileID: 559940467557361288}
-  - {fileID: 2359468554121026975}
-  - {fileID: 8770223280697874263}
-  - {fileID: 6225977543782324514}
-  - {fileID: 4994057354501932375}
-  - {fileID: 6750952077730282681}
-  - {fileID: 1942112074879552247}
-  - {fileID: 5752486995205647758}
-  - {fileID: 7445691181832973269}
-  - {fileID: 4887587211513302528}
-  - {fileID: 2601355397360605822}
-  - {fileID: 7374574049637063711}
-  - {fileID: 9074861064267122443}
-  - {fileID: 8592565281150697322}
-  - {fileID: 2540015787002066372}
-  - {fileID: 2854130308171610139}
-  - {fileID: 2617145086003346791}
-  - {fileID: 5937384995535356764}
-  - {fileID: 3487273241413990842}
-  - {fileID: 6215926656129514831}
-  - {fileID: 3118266387975278496}
-  - {fileID: 951714067195449893}
-  - {fileID: 45980836404878616}
-  - {fileID: 4621787901872986039}
-  - {fileID: 5481786947972900341}
-  - {fileID: 8805356984743223365}
-  - {fileID: 4011299287850040331}
---- !u!114 &4023765927547105734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6168019941508835570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RigLayers:
-  - m_Rig: {fileID: 2896373391874400633}
-    m_Active: 1
-  m_Effectors: []
 --- !u!114 &1381508688013011046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49118,19 +49090,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1823202610722098700}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.CoinBurstFeedback,
-          Assembly-CSharp
-        m_MethodName: PlayFeedback
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 3206993069913618120}
         m_TargetAssemblyTypeName: Swift_Blade.Enemy.BaseEnemy, Assembly-CSharp
         m_MethodName: DeadEvent
@@ -49143,7 +49102,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  maxHealth: 45
+  maxHealth: 76
   isDead: 0
   currentHealth: 0
   BehaviorGraphAgent: {fileID: 350781294163898496}

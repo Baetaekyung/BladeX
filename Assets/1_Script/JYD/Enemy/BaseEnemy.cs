@@ -40,17 +40,22 @@ namespace Swift_Blade.Enemy
         
         private Vector3 nextPathPoint;
         private EnemySpawner owner;
-
-        [HideInInspector] public UnityEvent<bool> OnSlowEvents; 
         
-        protected virtual void Start()
+        public float StopDistance { get => stopDistance; set => stopDistance = value; }
+        
+        [HideInInspector] public UnityEvent<bool> OnSlowEvents;
+        
+        private void Awake()
         {
             btAgent = GetComponent<BehaviorGraphAgent>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
             baseHealth = GetComponent<BaseEnemyHealth>();
             enemyCollider = GetComponent<Collider>();
             baseAnimationController = GetComponentInChildren<BaseEnemyAnimationController>();
-            
+        }
+
+        protected virtual void Start()
+        {
             InitBtAgent();
         }
         
@@ -76,6 +81,11 @@ namespace Swift_Blade.Enemy
         public void SetOwner(EnemySpawner _owner)
         {
             owner = _owner;
+        }
+
+        public virtual BaseEnemyHealth GetHealth()
+        {
+            return baseHealth;
         }
         
         protected virtual void Update()
@@ -120,7 +130,7 @@ namespace Swift_Blade.Enemy
             NavmeshAgent.isStopped = true;
             NavmeshAgent.velocity = Vector3.zero;
         }
-
+        
         public Vector3 GetNextPathPoint()
         {
             var path = NavmeshAgent.path;
@@ -144,18 +154,19 @@ namespace Swift_Blade.Enemy
         public virtual void DeadEvent()
         {
             StopImmediately();
-                                    
-            enemyCollider.enabled = false;
-            NavmeshAgent.avoidancePriority = 99;
-            NavmeshAgent.enabled = false;
             
             if(owner != null)
-                owner.TryNextEnemyCanSpawn(transform.localPosition,transform.forward);
-            
+                owner.TryNextEnemyCanSpawn();
             if(weapon != null)
                 weapon.AddComponent<EnemyWeapon>();
+            
+            enemyCollider.enabled = false;
+            
+            Destroy(NavmeshAgent);
+            //NavmeshAgent.avoidancePriority = 99;
+            //NavmeshAgent.enabled = false;
         }
-        
+                
         protected bool DetectForwardObstacle()
         {
             var ray = new Ray(checkForward.position, checkForward.forward);
