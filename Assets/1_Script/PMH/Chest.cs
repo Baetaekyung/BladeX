@@ -100,7 +100,7 @@ namespace Swift_Blade.Level
         }
         private void InstansiateItemOrb()
         {
-            Vector3 spawnPos = transform.localPosition + new Vector3(0, 0.7f, 0);
+            Vector3 spawnPos = transform.position + new Vector3(0, 0.7f, 0);
             BaseOrb orbTarget = GetOrb(chestType);
             Instantiate(orbTarget, spawnPos, Quaternion.identity);
             //orbInstance.SetRandom();// (ColorType)Random.Range(0, 3));
