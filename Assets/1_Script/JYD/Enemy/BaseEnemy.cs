@@ -1,13 +1,11 @@
-﻿using System;
-using Swift_Blade.Combat.Health;
+﻿using Swift_Blade.Combat.Health;
+using UnityEngine.Events;
 using Swift_Blade.Level;
 using Unity.Behavior;
 using UnityEngine.AI;
 using UnityEngine;
 using System.Linq;
 using DG.Tweening;
-using UnityEngine.Events;
-using Action = System.Action;
 
 namespace Swift_Blade.Enemy
 {

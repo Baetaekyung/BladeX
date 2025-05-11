@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
+using Swift_Blade.Feeling;
 using Swift_Blade.Level;
+using UnityEngine.Experimental.GlobalIllumination;
 
 namespace Swift_Blade
 {
@@ -12,9 +14,13 @@ namespace Swift_Blade
         public event Action SceneEnterEvent;
 
         public NodeList NodeList;
+        public HitStopSO hitStopSO;
         
         public void LevelClear()
         {
+            HitStopManager.Instance.EndHitStop();
+            HitStopManager.Instance.StartHitStop(hitStopSO);
+            
             LevelClearEvent?.Invoke();
         }
         
