@@ -44,12 +44,8 @@ namespace Swift_Blade.Combat.Health
             
             BehaviorGraphAgent.GetVariable("ChangeBossState",out BlackboardVariable<ChangeBossState> state);
             
-            if (state != null)
-                changeBossState = state;
-            else
-            {
-                Debug.LogError("Enemy has Not State Change");
-            }
+            Debug.Assert(state != null, "Enemy has Not State Change");
+            changeBossState = state;
             
         }
 
@@ -66,6 +62,8 @@ namespace Swift_Blade.Combat.Health
             FloatingTextGenerator.Instance.GenerateText(actionData.damageAmount.ToString(),
                 textPosition,
                 actionData.textColor == default ? Color.white : actionData.textColor);
+            
+           
         }
         
         public override void TakeDamage(ActionData actionData)
@@ -81,7 +79,7 @@ namespace Swift_Blade.Combat.Health
                 ChangeParryState();
             
             OnHitEvent?.Invoke(actionData);
-            
+                            
             if (currentHealth <= 0)
             {
                 TriggerState(BossState.Dead);

@@ -1,6 +1,6 @@
-using DG.Tweening;
-using Swift_Blade.Combat.Health;
 using Swift_Blade.Combat.Projectile;
+using Swift_Blade.Combat.Health;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Swift_Blade.Enemy.Throw

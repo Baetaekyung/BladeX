@@ -37,8 +37,12 @@ namespace Swift_Blade.Skill
 
         public bool canDrawGizmo;
 
+        private WaitForSeconds skillUpdateWait;
+        
         private void Awake()
         {
+            skillUpdateWait = new WaitForSeconds(0.02f);
+            
             skillEvents = new Dictionary<SkillType, Action<Player, IEnumerable<Transform>>>()
                 {
                     { SkillType.Attack, OnAttackEventSkill },
@@ -64,7 +68,8 @@ namespace Swift_Blade.Skill
                 {
                     currentSkillList[i].SkillUpdate(_player);
                 }
-                yield return new WaitForSeconds(0.02f);
+
+                yield return skillUpdateWait;
             }
         }
 

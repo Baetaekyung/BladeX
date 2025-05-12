@@ -1,13 +1,11 @@
-﻿using System;
-using Swift_Blade.Combat.Health;
+﻿using Swift_Blade.Combat.Health;
+using UnityEngine.Events;
 using Swift_Blade.Level;
 using Unity.Behavior;
 using UnityEngine.AI;
 using UnityEngine;
 using System.Linq;
 using DG.Tweening;
-using UnityEngine.Events;
-using Action = System.Action;
 
 namespace Swift_Blade.Enemy
 {
@@ -39,8 +37,7 @@ namespace Swift_Blade.Enemy
         protected BaseEnemyHealth baseHealth;
         
         private Vector3 nextPathPoint;
-        private EnemySpawner owner;
-        
+                
         public float StopDistance { get => stopDistance; set => stopDistance = value; }
         
         [HideInInspector] public UnityEvent<bool> OnSlowEvents;
@@ -78,10 +75,7 @@ namespace Swift_Blade.Enemy
             btAgent.enabled = true;
         }
         
-        public void SetOwner(EnemySpawner _owner)
-        {
-            owner = _owner;
-        }
+        
 
         public virtual BaseEnemyHealth GetHealth()
         {
@@ -155,8 +149,6 @@ namespace Swift_Blade.Enemy
         {
             StopImmediately();
             
-            if(owner != null)
-                owner.TryNextEnemyCanSpawn();
             if(weapon != null)
                 weapon.AddComponent<EnemyWeapon>();
             
