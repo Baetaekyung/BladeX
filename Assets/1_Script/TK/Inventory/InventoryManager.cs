@@ -69,10 +69,13 @@ namespace Swift_Blade
                 EquipmentDatas.Clear();
             }
 
-            InitializeSlots();
-
             InputManager.ChangeQuickEvent += InputEventQuick;
             InputManager.UseQuickEvent    += InputEventUseQuick;
+        }
+
+        private void Start()
+        {
+            InitializeSlots();
         }
 
         protected override void OnDestroy()
