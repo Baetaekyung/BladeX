@@ -334,6 +334,8 @@ namespace Swift_Blade.Level
                     break;
             }
         }
+
+        public int GetCurrentNodeIndex() => currentNodeIndex;
         
         public Node[] GetNodes()
         {
