@@ -42,6 +42,16 @@ namespace Swift_Blade.Level
             
         protected virtual void Start()
         {
+            InitializeParticle();
+            
+            MonoGenericPool<DustUpParticle>.Initialize(doorSpawnParticle);
+            doorSpawnDelay = new WaitForSeconds(dustParticleDelay);
+            
+            StartCoroutine(Spawn());
+        }
+
+        private void InitializeParticle()
+        {
             if (enemySpawnParticle.GetMono as EnemySpawnParticle)
             {
                 MonoGenericPool<EnemySpawnParticle>.Initialize(enemySpawnParticle);
@@ -52,15 +62,12 @@ namespace Swift_Blade.Level
                 MonoGenericPool<SmallSpawnParticle>.Initialize(enemySpawnParticle);
                 isSpawnSmall = true;
             }
-            
-            MonoGenericPool<DustUpParticle>.Initialize(doorSpawnParticle);
-            doorSpawnDelay = new WaitForSeconds(dustParticleDelay);
-            
-            StartCoroutine(Spawn());
         }
 
         protected void PlaySpawnParticle(Vector3 position)
         {
+            Debug.Log(isSpawnSmall);
+            
             if (isSpawnSmall)
             {
                 SmallSpawnParticle spawnParticle = MonoGenericPool<SmallSpawnParticle>.Pop();
@@ -71,7 +78,9 @@ namespace Swift_Blade.Level
                 EnemySpawnParticle spawnParticle = MonoGenericPool<EnemySpawnParticle>.Pop();
                 spawnParticle.transform.position = position;
             }
+            
         }
+        
         protected IEnumerator LevelClear()
         {
             sceneManager.LevelClear();

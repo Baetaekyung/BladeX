@@ -10,18 +10,19 @@ namespace Swift_Blade.Level
     public class ChallengeSpawner : Spawner
     {
         private bool isClear = false;
-        
         [SerializeField] private float wavePeriod;
-        
-        [Space]
         [SerializeField] private float endTimeSecond;
         private float endTimer;
         
+        [SerializeField] private ChallengeStageUIView challengeStageUI;
+        private ChallengeStageRemainTime challengeStageRemainTime;
+        
         [Header("Spawn Position")]
         [SerializeField] private Transform[] spawnPosition;
-        [SerializeField] private ChallengeStageUIView challengeStageUI;
-        
-        private ChallengeStageRemainTime challengeStageRemainTime;
+                
+        [Header("Chest info")]
+        [SerializeField] private Chest chest;
+        [SerializeField] private Transform chestPosition;
         
         private readonly List<BaseEnemy> allEnemyList = new List<BaseEnemy>(40);
         
@@ -36,7 +37,7 @@ namespace Swift_Blade.Level
             
             wavePeriodWait = new WaitForSeconds(wavePeriod);
             countdownWait = new WaitForSeconds(1f);
-                        
+            
             challengeStageUI.SetText(Mathf.FloorToInt(endTimeSecond));
             challengeStageRemainTime.SetRemainTime(endTimeSecond);
             
@@ -90,8 +91,15 @@ namespace Swift_Blade.Level
             isClear = true;
             
             StopAllCoroutines();
+            StartCoroutine(LevelClear());
+                        
+            ClearEnemies();
+            CreateChest();
             challengeStageUI.SetText();
-                                    
+        }
+
+        private void ClearEnemies()
+        {
             foreach (var enemy in allEnemyList)
             {
                 if (enemy != null)
@@ -104,8 +112,13 @@ namespace Swift_Blade.Level
                 }
             }
             
-            StartCoroutine(LevelClear());
+            allEnemyList.Clear();
         }
-                
+
+        private void CreateChest()
+        {
+            Instantiate(chest , chestPosition.position, Quaternion.identity);
+        }
+        
     }
 }
