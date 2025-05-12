@@ -94,8 +94,8 @@ namespace Swift_Blade.Enemy
         }
         public virtual void StopManualMove()
         {
-            if(NavMeshAgent == null)return;
-                
+            if(NavMeshAgent == null || enemy == null)return;
+            
             attackMoveSpeed = defaultAttackMoveSpeed;
             NavMeshAgent.Warp(transform.position);
             isManualMove = false;
