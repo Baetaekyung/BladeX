@@ -13,7 +13,12 @@ public partial class SetUnparryableAction : Action
 
     protected override Status OnStart()
     {
-        damageCaster.Value.DisableParryForCurrentAttack();
+        if(damageCaster.Value != null)
+            damageCaster.Value.DisableParryForCurrentAttack();
+        else
+        {
+            Debug.LogError($"{damageCaster.Value} is null");
+        }
         
         return Status.Success;
     }
