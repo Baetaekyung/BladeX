@@ -31,5 +31,7 @@ namespace Swift_Blade
             SceneLoadEvent?.Invoke(sceneName,SceneEnterEvent);
         }
         
+        public NodeList GetNodeList() => NodeList;
+        
     }
 }

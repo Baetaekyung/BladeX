@@ -37,8 +37,7 @@ namespace Swift_Blade.Enemy
         protected BaseEnemyHealth baseHealth;
         
         private Vector3 nextPathPoint;
-        private EnemySpawner owner;
-        
+                
         public float StopDistance { get => stopDistance; set => stopDistance = value; }
         
         [HideInInspector] public UnityEvent<bool> OnSlowEvents;
@@ -76,10 +75,7 @@ namespace Swift_Blade.Enemy
             btAgent.enabled = true;
         }
         
-        public void SetOwner(EnemySpawner _owner)
-        {
-            owner = _owner;
-        }
+        
 
         public virtual BaseEnemyHealth GetHealth()
         {
@@ -153,8 +149,6 @@ namespace Swift_Blade.Enemy
         {
             StopImmediately();
             
-            if(owner != null)
-                owner.TryNextEnemyCanSpawn();
             if(weapon != null)
                 weapon.AddComponent<EnemyWeapon>();
             
