@@ -98,7 +98,10 @@ namespace Swift_Blade.Pool
         {
             health.TakeDamage(new ActionData()
             {
-                damageAmount = health is PlayerHealth ? 1 : 4, stun = true
+                damageAmount = health is PlayerHealth ? 1 : 4, 
+                stun = true,
+                hitPoint = transform.position + new Vector3(0,0.25f,0),
+                textColor = Color.red
             });
             
             AudioManager.PlayWithInit(bodyHitAudio.GetRandomAudio,true);
@@ -109,8 +112,7 @@ namespace Swift_Blade.Pool
         {
             MonoGenericPool<DustParticle>.Pop().transform.position = particlePosition;
         }
-        
-        
+                
         private void Reflection(Transform player)
         {
             deadFlag = false;
