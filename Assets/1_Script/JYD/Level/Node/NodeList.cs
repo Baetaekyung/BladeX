@@ -185,6 +185,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
         canSecondAppearSpecialNode = true;
         
         currentStage = NodeType.Stage1;
+        
         specialNodeTypes.Clear();
         specialNodeTypes.Add(NodeType.Challenge);
         specialNodeTypes.Add(NodeType.Point);
@@ -216,6 +217,8 @@ public class NodeDictionary : IEnumerable<List<Node>>
             }
         }
     }
+
+    public NodeType GetCurrentStageType() => currentStage;
     
     #endregion
     
@@ -336,6 +339,7 @@ namespace Swift_Blade.Level
         }
 
         public int GetCurrentNodeIndex() => currentNodeIndex;
+        public NodeType GetCurrentStageType() => nodeDictionary.GetCurrentStageType();
         
         public Node[] GetNodes()
         {
