@@ -125,8 +125,7 @@ namespace Swift_Blade
 
             if(obj == null || obj.activeSelf == active) return;
 
-            if(!ReferenceEquals(obj, null))
-                _particles[(int)tag - 1].SetActive(active);
+            obj.SetActive(active);
         }
     }
 }

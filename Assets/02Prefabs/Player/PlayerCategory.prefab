@@ -15761,7 +15761,6 @@ GameObject:
   - component: {fileID: 115878254329705840}
   - component: {fileID: 8273481991483540441}
   - component: {fileID: 668161265972729164}
-  - component: {fileID: 7426659601631722598}
   m_Layer: 6
   m_Name: DamageFeedback
   m_TagString: Untagged
@@ -15823,19 +15822,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <HitStopData>k__BackingField: {fileID: 11400000, guid: 7855f427f8aadaa4481325a8960e7bfb, type: 2}
---- !u!114 &7426659601631722598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3008636138657448179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40f92ae00561afe49903df15624599dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nodeList: {fileID: 11400000, guid: 6d1e8b4a0778a4c48b43de705c42efed, type: 2}
 --- !u!1 &3009891561084727169
 GameObject:
   m_ObjectHideFlags: 0
@@ -70323,6 +70309,7 @@ GameObject:
   - component: {fileID: 8928013613842272787}
   - component: {fileID: 2072265066507459340}
   - component: {fileID: 1788020742849744543}
+  - component: {fileID: 3455191820159986794}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -70435,7 +70422,7 @@ MonoBehaviour:
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7426659601631722598}
+      - m_Target: {fileID: 3455191820159986794}
         m_TargetAssemblyTypeName: Swift_Blade.Level.NodeReset, Assembly-CSharp
         m_MethodName: RestNodeIndex
         m_Mode: 1
@@ -70869,6 +70856,19 @@ MonoBehaviour:
   - {fileID: 7267886066360895834}
   - {fileID: 4344925691806958402}
   - {fileID: 7224800076320365159}
+--- !u!114 &3455191820159986794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7389977111463853842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f92ae00561afe49903df15624599dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeList: {fileID: 11400000, guid: 6d1e8b4a0778a4c48b43de705c42efed, type: 2}
 --- !u!1 &7396908040629326032
 GameObject:
   m_ObjectHideFlags: 0

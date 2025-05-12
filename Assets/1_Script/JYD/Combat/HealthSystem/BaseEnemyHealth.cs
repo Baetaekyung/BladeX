@@ -5,6 +5,7 @@ using Unity.Behavior;
 using UnityEngine;
 using System;
 using Swift_Blade.Pool;
+using Unity.Mathematics;
 using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat.Health
@@ -17,7 +18,7 @@ namespace Swift_Blade.Combat.Health
         [Space]
         [SerializeField] protected BehaviorGraphAgent BehaviorGraphAgent;
         [SerializeField] protected ChangeBossState changeBossState;
-                        
+        
         protected BaseEnemyAnimationController animationController;
         private Rigidbody enemyRigidbody;
         private NavMeshAgent navMeshAgent;
@@ -44,12 +45,8 @@ namespace Swift_Blade.Combat.Health
             
             BehaviorGraphAgent.GetVariable("ChangeBossState",out BlackboardVariable<ChangeBossState> state);
             
-            if (state != null)
-                changeBossState = state;
-            else
-            {
-                Debug.LogError("Enemy has Not State Change");
-            }
+            Debug.Assert(state != null, "Enemy has Not State Change");
+            changeBossState = state;
             
         }
 
@@ -67,7 +64,7 @@ namespace Swift_Blade.Combat.Health
                 textPosition,
                 actionData.textColor == default ? Color.white : actionData.textColor);
         }
-        
+                
         public override void TakeDamage(ActionData actionData)
         {
             if((isDead || !IsDamageTime()) && actionData.stun == false)return;
@@ -81,7 +78,7 @@ namespace Swift_Blade.Combat.Health
                 ChangeParryState();
             
             OnHitEvent?.Invoke(actionData);
-            
+                            
             if (currentHealth <= 0)
             {
                 TriggerState(BossState.Dead);
@@ -96,7 +93,7 @@ namespace Swift_Blade.Combat.Health
             
             base.Dead();
         }
-
+        
         protected bool IsDamageTime()
         {
             return Time.time > lastDamageTime + DAMAGE_INTERVAL;
@@ -105,7 +102,13 @@ namespace Swift_Blade.Combat.Health
         private int AddRandomCoin()
         {
             return Random.Range(1,10);
-        } 
+        }
+        
+        public void AddMaxHealth(int currentIndex)
+        {
+            maxHealth += currentIndex * 1.7f;
+            currentHealth = maxHealth;
+        }
         
         public override void TakeHeal(float amount)
         {
