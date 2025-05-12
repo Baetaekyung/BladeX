@@ -80,6 +80,7 @@ namespace Swift_Blade
         private IEnumerator DialogueRoutine(DialogueDataSO dialogueData)
         {
             _isDialogueOpen = true;
+            _isForcedMessageSkip = false;
             _dialougeWaitTime = new WaitForSeconds(dialogueData.dialogueWaitTime);
 
             var messageLength   = dialogueData.dialougueDatas.Count;
@@ -99,9 +100,14 @@ namespace Swift_Blade
                 var maxMessageProcess = dialogueData.dialougueDatas[dialogueProcess].dialogueMessage.Length;
                 var messageProcess    = 0;
 
-                while (!_isForcedMessageSkip
-                    && messageProcess < maxMessageProcess) //문자 하나씩 출력 (dialogueSpeed based)
+                while (messageProcess < maxMessageProcess) //문자 하나씩 출력 (dialogueSpeed based)
                 {
+                    if (_isForcedMessageSkip)
+                    {
+                        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Return));
+                        break;
+                    }
+
                     _sb.Append(dialogueData.dialougueDatas[dialogueProcess]
                         .dialogueMessage[messageProcess]);
 
