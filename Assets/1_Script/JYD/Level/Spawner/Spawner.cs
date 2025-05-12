@@ -66,8 +66,6 @@ namespace Swift_Blade.Level
 
         protected void PlaySpawnParticle(Vector3 position)
         {
-            Debug.Log(isSpawnSmall);
-            
             if (isSpawnSmall)
             {
                 SmallSpawnParticle spawnParticle = MonoGenericPool<SmallSpawnParticle>.Pop();
