@@ -1,6 +1,5 @@
 ﻿using Swift_Blade.Combat.Health;
 using UnityEngine.Events;
-using Swift_Blade.Level;
 using Unity.Behavior;
 using UnityEngine.AI;
 using UnityEngine;
@@ -148,18 +147,19 @@ namespace Swift_Blade.Enemy
         public virtual void DeadEvent()
         {
             StopImmediately();
-            
+            AddEnemyWeaponCollision();
+                
+            enemyCollider.enabled = false;
+            Destroy(NavmeshAgent);
+        }
+        
+        protected virtual void AddEnemyWeaponCollision()
+        {
             if(weapon != null)
                 weapon.AddComponent<EnemyWeapon>();
-            
-            enemyCollider.enabled = false;
-            
-            Destroy(NavmeshAgent);
-            //NavmeshAgent.avoidancePriority = 99;
-            //NavmeshAgent.enabled = false;
         }
-                
-        protected bool DetectForwardObstacle()
+        
+        private bool DetectForwardObstacle()
         {
             var ray = new Ray(checkForward.position, checkForward.forward);
 
@@ -179,7 +179,7 @@ namespace Swift_Blade.Enemy
                 DOVirtual.DelayedCall(_duration, ResetSlowMotionSpeed);
         }
         
-        public void ResetSlowMotionSpeed()
+        private void ResetSlowMotionSpeed()
         {
             OnSlowEvents?.Invoke(false);
                         
