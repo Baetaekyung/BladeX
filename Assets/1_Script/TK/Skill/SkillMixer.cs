@@ -50,7 +50,9 @@ namespace Swift_Blade
 
             ColorType getColorType = ColorUtils.GetColor(ingredientColorTypes);
 
-            if(getColorType == ColorType.RED || getColorType == ColorType.BLUE || getColorType == ColorType.GREEN)
+            if(getColorType == ColorType.RED
+                || getColorType == ColorType.BLUE 
+                || getColorType == ColorType.GREEN)
             {
                 resultImage.color = Color.clear;
                 return;
@@ -81,20 +83,6 @@ namespace Swift_Blade
                 resultImage.color = Color.clear;
                 return;
             }
-
-            //ingredient color is mixed color
-            //ColorType getColorType = ColorUtils.GetColor(ingredientColorTypes);
-
-            //if (getColorType == ColorType.RED || getColorType == ColorType.BLUE || getColorType == ColorType.GREEN)
-            //{
-            //    resultImage.color = Color.clear;
-            //    return;
-            //}
-            
-            //(int r, int g, int b) = ColorUtils.GetRGBColor(getColorType);
-            //Color resultColor = new Color(r, g, b, 0.9f);
-
-            //resultImage.color = resultColor;
         }
 
         public void MixSkill()
@@ -129,6 +117,16 @@ namespace Swift_Blade
                 return;
             }
 
+            SkillData randomSkill = skillTable.GetRandomSkill(mixedColorType);
+
+            if (randomSkill != null)
+            {
+                SkillManager.Instance.TryAddSkillToInventory(randomSkill);
+            }
+            else
+                return;
+
+            ingredientColorTypes.Clear();
             leftSlot.DeleteSkillData();
             rightSlot.DeleteSkillData();
 
@@ -139,8 +137,6 @@ namespace Swift_Blade
 
             skillDataOnStage1 = null;
             skillDataOnStage2 = null;
-
-            SkillManager.Instance.TryAddSkillToInventory(skillTable.GetRandomSkill(mixedColorType));
 
             SkillManager.Instance.UpdateDatas();
         }
