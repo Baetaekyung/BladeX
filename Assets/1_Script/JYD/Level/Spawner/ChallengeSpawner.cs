@@ -58,6 +58,7 @@ namespace Swift_Blade.Level
                                         
                     var enemyPrefab = waves.spawnInfos[j].enemy;
                     var newEnemy = Instantiate(enemyPrefab, spawnPosition[j].position, Quaternion.identity);
+                    newEnemy.GetHealth().AddMaxHealth(sceneManager.GetNodeList().GetCurrentNodeIndex());
                     allEnemyList.Add(newEnemy);
                     
                     PlaySpawnParticle(newEnemy.transform.position);
