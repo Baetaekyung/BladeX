@@ -63,10 +63,11 @@ namespace Swift_Blade
         {
             if (String.IsNullOrEmpty(itemSerialCode))
                 itemSerialCode = Guid.NewGuid().ToString();
-
+            
             string dataName = name.ToString();
             dataName = dataName.Substring(2, dataName.Length - 8);
             partsName = dataName;
+            //이게 맞음 수정하지 마셈 민호임마 EquipmentListSO에서 아이템이름으로 하이어라키창 밑에 그거로 변환시켜서 작동하는거임
         }
 
     }

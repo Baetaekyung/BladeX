@@ -184,9 +184,9 @@ namespace Swift_Blade
             else
                 Debug.LogError("partsName 필드 못 찾음");
 
-            field = asset.GetType().GetField("displayName", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            if (field != null)
-                field.SetValue(asset, this.displayName);
+            var field2 = asset.GetType().GetField("displayName", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            if (field2 != null)
+                field2.SetValue(asset, this.displayName);
             else
                 Debug.LogError("displayName 필드 못 찾음");
 
