@@ -19,7 +19,8 @@ namespace Swift_Blade
 
         public override void SetSlotImage(Sprite sprite)
         {
-            skillIconImage.color  = sprite ? Color.white : Color.clear;
+            Color color = skillData ? ColorUtils.GetCustomColor(skillData.colorType) : Color.white;
+            skillIconImage.color  = sprite ? color : Color.clear;
             skillIconImage.sprite = sprite;
         }
 

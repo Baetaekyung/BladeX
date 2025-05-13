@@ -158,5 +158,15 @@ namespace Swift_Blade
             bool result = (ColorType & banType) != 0 || ColorType == ColorType.YELLOW;
             return result;
         }
+
+        public static string ColorText(string text, Color textColor)
+        {
+            string replaceText = text;
+            string colorText = ColorUtility.ToHtmlStringRGB(textColor);
+
+            replaceText = $"<color=#{colorText}>{replaceText}</color>";
+
+            return replaceText;
+        }
     }
 }

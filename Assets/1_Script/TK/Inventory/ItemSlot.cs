@@ -166,7 +166,9 @@ namespace Swift_Blade
 
                 Color newColor = ColorUtils.GetColorRGBUnity(equipData.colorType);
 
-                float colorMultiplier = (int)_itemDataSO.equipmentData.rarity * 0.25f;
+                // 위는 걍 색깔 진하게 아래는 레어도에 비해 색깔 표시
+                float colorMultiplier = 1f;
+                //float colorMultiplier = (int)_itemDataSO.equipmentData.rarity * 0.25f;
 
                 itemBackground.color = newColor * colorMultiplier;
             }

@@ -185,7 +185,7 @@ namespace Swift_Blade
             }
         }
 
-        public void LogMessage(string message)
+        public void LogMessage(string message, float time = 2f)
         {
             PopupUI popup = GetPopupUI(PopupType.Text);
 
@@ -195,7 +195,7 @@ namespace Swift_Blade
             TextPopup textPopup = popup as TextPopup;
 
             textPopup.SetText(message);
-            DelayPopup(PopupType.Text, 1f, () => PopDown(PopupType.Text));
+            DelayPopup(PopupType.Text, 2f, () => PopDown(PopupType.Text));
         }
 
         public void LogInfoBox(string message, float timer = 1.5f)

@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using Swift_Blade.Skill;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
@@ -61,19 +58,10 @@ namespace Swift_Blade
             if (screenPosition == Vector2.zero || skillData == null)
             {
                 infoUI.SetSkillInfo(null);
-                infoUI.gameObject.SetActive(false);
                 return;
             }
-            
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                rootRect,
-                screenPosition,
-                null,
-                out var localPosition);
 
-            infoUI.transform.localPosition = localPosition + skillInfoOffset;
             infoUI.SetSkillInfo(skillData);
-            infoUI.gameObject.SetActive(true);
         }
 
         public void UpdateDatas()
@@ -89,7 +77,15 @@ namespace Swift_Blade
                 GetEmptyInvSlot().SetSlotData(saveDatas.inventoryData[i]);
 
             for (i = 0; i < saveDatas.inventoryData.Count; i++)
+            {
+                ColorType type = saveDatas.inventoryData[i].colorType;
+
+                if (type == ColorType.YELLOW || type == ColorType.PURPLE
+                    || type == ColorType.TURQUOISE || type == ColorType.BLACK)
+                    continue;
+
                 GetEmptyMixSlot().SetSlotData(saveDatas.inventoryData[i]);
+            }
 
             for (i = 0; i < saveDatas.skillSlotData.Count; i++)
             {
