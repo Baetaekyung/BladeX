@@ -25731,6 +25731,7 @@ GameObject:
   - component: {fileID: 3064383226392793024}
   - component: {fileID: 5998776839790312745}
   - component: {fileID: 7108015139491629562}
+  - component: {fileID: 6399851255723255523}
   m_Layer: 7
   m_Name: Feedback
   m_TagString: Untagged
@@ -25785,6 +25786,21 @@ MonoBehaviour:
   root: {fileID: 3783396098422510907}
   changeMat: {fileID: 2100000, guid: b9603da0cd2cec64f886c932a751302d, type: 2}
   _meshRenderers: []
+  effectType: 0
+--- !u!114 &6399851255723255523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5040330745413394462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61f7a4b0895bdde47b63e696d16ad49a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  changeMat: {fileID: 2100000, guid: 62ab6efa0fb3a7642831a4861c472515, type: 2}
+  effectType: 1
 --- !u!1 &5041648616044386134
 GameObject:
   m_ObjectHideFlags: 0
@@ -31969,6 +31985,7 @@ GameObject:
   - component: {fileID: 3906902956120306683}
   - component: {fileID: 6160221369945150900}
   - component: {fileID: 7719732985646483005}
+  - component: {fileID: -6338227555997241094}
   m_Layer: 7
   m_Name: GoblinBoss
   m_TagString: Untagged
@@ -32299,26 +32316,24 @@ MonoBehaviour:
   maxDistance: 1.6
   showGizmo: 1
   weapon: {fileID: 0}
-  OnSlowEvents:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7108015139491629562}
-        m_TargetAssemblyTypeName: Swift_Blade.Combat.Feedback.ChangeMatFeedback,
-          Assembly-CSharp
-        m_MethodName: ChangeMat
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   summonPrefab: {fileID: -6619329512110227562, guid: f4bedd91a9c4bdd47a5bd4271b27c777, type: 3}
   maxSummonCount: 3
   minSummonCount: 1
   summonRadius: 5
+--- !u!114 &-6338227555997241094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6279240284268919097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32a959a6c4a08f74b80c802bbf163fd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followFire: {fileID: 11400000, guid: 0fcd691a86872d84d8b7d92719adf858, type: 2}
+  iceSmoke: {fileID: 11400000, guid: 1cd7a2d5941711246ab693cdba831825, type: 2}
 --- !u!1 &6331184238646794061
 GameObject:
   m_ObjectHideFlags: 0

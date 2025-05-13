@@ -1,15 +1,19 @@
-﻿using Swift_Blade.Combat.Health;
-using UnityEngine.Events;
-using Swift_Blade.Level;
+﻿using System.Collections.Generic;
+using Swift_Blade.Combat.Health;
+using System.Collections;
 using Unity.Behavior;
 using UnityEngine.AI;
 using UnityEngine;
 using System.Linq;
 using DG.Tweening;
+using System;
+using Swift_Blade.Pool;
 
 namespace Swift_Blade.Enemy
 {
-    public class BaseEnemy : MonoBehaviour
+   
+    
+    public class BaseEnemy : MonoBehaviour,IGetMoveSpeedAble
     {
         public Transform target;
         
@@ -35,22 +39,30 @@ namespace Swift_Blade.Enemy
         
         protected BaseEnemyAnimationController baseAnimationController;
         protected BaseEnemyHealth baseHealth;
+        private EnemyEffectController effectController;
         
         private Vector3 nextPathPoint;
                 
         public float StopDistance { get => stopDistance; set => stopDistance = value; }
-        
-        [HideInInspector] public UnityEvent<bool> OnSlowEvents;
-        
+
+                
         private void Awake()
         {
             btAgent = GetComponent<BehaviorGraphAgent>();
             NavmeshAgent = GetComponent<NavMeshAgent>();
             baseHealth = GetComponent<BaseEnemyHealth>();
             enemyCollider = GetComponent<Collider>();
+            effectController = GetComponent<EnemyEffectController>();
             baseAnimationController = GetComponentInChildren<BaseEnemyAnimationController>();
         }
-
+            
+        public virtual BaseEnemyHealth GetHealth()
+        {
+            return baseHealth;
+        }
+        
+        public EnemyEffectController GetEffectController() => effectController;
+        
         protected virtual void Start()
         {
             InitBtAgent();
@@ -74,13 +86,7 @@ namespace Swift_Blade.Enemy
                             
             btAgent.enabled = true;
         }
-        
-        
-
-        public virtual BaseEnemyHealth GetHealth()
-        {
-            return baseHealth;
-        }
+                
         
         protected virtual void Update()
         {
@@ -106,6 +112,7 @@ namespace Swift_Blade.Enemy
                         baseAnimationController.AttackMoveSpeed * Time.deltaTime);
                 }
             }
+                        
         }
         
         public void FactToTarget(Vector3 target)
@@ -116,7 +123,7 @@ namespace Swift_Blade.Enemy
             var yRotation = Mathf.LerpAngle(currentEulerAngle.y, targetRot.eulerAngles.y, rotateSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(currentEulerAngle.x, yRotation, currentEulerAngle.z);
         }
-
+        
         private void StopImmediately()
         {
             if (NavmeshAgent.enabled == false) return;
@@ -148,51 +155,37 @@ namespace Swift_Blade.Enemy
         public virtual void DeadEvent()
         {
             StopImmediately();
-            
+            AddEnemyWeaponCollision();
+                
+            enemyCollider.enabled = false;
+            Destroy(NavmeshAgent);
+        }
+        
+        protected virtual void AddEnemyWeaponCollision()
+        {
             if(weapon != null)
                 weapon.AddComponent<EnemyWeapon>();
-            
-            enemyCollider.enabled = false;
-            
-            Destroy(NavmeshAgent);
-            //NavmeshAgent.avoidancePriority = 99;
-            //NavmeshAgent.enabled = false;
         }
-                
-        protected bool DetectForwardObstacle()
+        
+        private bool DetectForwardObstacle()
         {
             var ray = new Ray(checkForward.position, checkForward.forward);
 
             if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, whatIsWall)) return true;
             return false;
         }
-
-        public void SetSlowMotionSpeed(float speed, float _duration = 0)
-        {
-            OnSlowEvents?.Invoke(true);
-            
-            baseAnimationController.SetAnimationSpeed(speed);
-            baseAnimationController.MultiplyDefaultAttackMoveSpeed(0.5f);
-            btAgent.SetVariableValue("MoveSpeed", moveSpeed * 0.5f);
-            
-            if(_duration > 0)
-                DOVirtual.DelayedCall(_duration, ResetSlowMotionSpeed);
-        }
-        
-        public void ResetSlowMotionSpeed()
-        {
-            OnSlowEvents?.Invoke(false);
-                        
-            baseAnimationController.ResetAnimationSpeed();
-            baseAnimationController.ResetDefaultMoveSpeed();
-            btAgent.SetVariableValue("MoveSpeed", moveSpeed);
-        }
-        
+                
         protected virtual void OnDrawGizmos()
         {
             if (showGizmo == false) return;
             
             Gizmos.DrawRay(checkForward.position, checkForward.forward * maxDistance);
         }
+
+        public float GetMoveSpeed()
+        {
+            return moveSpeed;
+        }
+        
     }
 }

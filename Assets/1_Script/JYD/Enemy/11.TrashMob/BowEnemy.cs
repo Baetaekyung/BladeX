@@ -5,14 +5,18 @@ namespace Swift_Blade.Enemy.Bow
 {
     public class BowEnemy : BaseEnemy
     {
-        private ICasterAble caster;
-        
         protected override void Start()
         {
             base.Start();
-            
-            caster = GetComponentInChildren<ICasterAble>();
-            (caster as BowEnemyCaster).SetTarget(target);
+
+            GetComponentInChildren<BowEnemyCaster>().SetTarget(target);
         }
+        
+        protected override void AddEnemyWeaponCollision()
+        {
+            if(weapon != null)
+                weapon.AddComponent<Bow>();
+        }
+        
     }
 }

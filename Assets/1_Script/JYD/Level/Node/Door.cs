@@ -33,7 +33,7 @@ namespace Swift_Blade.Level
         {
             if (isDefaultPortal && isNotStageDoor == false)
             {
-                SetScene(nodeList.GetNodeNameByNodeType(NodeType.Stage1));
+                SetScene(nodeList.GetNodeNameByNodeType(nodeList.GetCurrentStageType()));
             }
             
             //DOVirtual.DelayedCall(delay, (UpDoor()));

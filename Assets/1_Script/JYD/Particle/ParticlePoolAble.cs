@@ -4,9 +4,9 @@ namespace Swift_Blade.Pool
 {
     public class ParticlePoolAble<T> :  MonoBehaviour,IPoolable where T : ParticlePoolAble<T>
     {
-        private ParticleSystem _particle;
+        protected ParticleSystem _particle;
 
-        [SerializeField] private float pushTime;
+        [SerializeField] protected float pushTime;
         private float pushTimer = 0;
         
         public virtual void OnPop()
