@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
-using Swift_Blade.Combat.Health;
+using Swift_Blade.Enemy;
 using Swift_Blade.Pool;
+using System.Linq;
 using UnityEngine;
 
 namespace Swift_Blade.Skill
@@ -9,13 +9,15 @@ namespace Swift_Blade.Skill
     [CreateAssetMenu(fileName = "ParryExplosionSkill", menuName = "SO/Skill/Red/ParryExplosion")]
     public class ParryExplosionSkill : SkillData
     {
-        public int skillDamage;
+        [Space]
+        
+        public float fireTime;
+        public float fireDamage;
+        
         public Vector2 explosionAdjustment;
         public float skillRadius;
         public LayerMask whatIsTarget;
-
-        public float maxDamage;
-        
+                
         public override void Initialize()
         {
             MonoGenericPool<SmallExplosionParticle>.Initialize(skillParticle);
@@ -25,7 +27,7 @@ namespace Swift_Blade.Skill
         {
             Vector3 explosionPosition = player.GetPlayerTransform.position +
                                         (player.GetPlayerTransform.forward * explosionAdjustment.x);
-            explosionPosition.y = explosionPosition.y + player.GetPlayerTransform.position.y;
+            explosionPosition.y +=  player.GetPlayerTransform.position.y + explosionAdjustment.y;
             
             if (targets == null || !targets.Any())
             {
@@ -34,20 +36,15 @@ namespace Swift_Blade.Skill
             
             foreach (var item in targets)
             {
-                if (TryUseSkill() && item.TryGetComponent(out BaseEnemyHealth health))
+                if (TryUseSkill() && item.TryGetComponent(out BaseEnemy enemy))
                 {
-                    ActionData actionData = new ActionData
-                    {
-                        damageAmount = Mathf.Min(maxDamage, skillDamage * GetColorRatio())
-                    };
-                    health.TakeDamage(actionData);
+                    enemy.GetEffectController().SetFire(fireDamage, fireTime);
                     
                     SmallExplosionParticle smallExplosionParticle = MonoGenericPool<SmallExplosionParticle>.Pop();
-                    smallExplosionParticle.transform.position =
-                        explosionPosition;
-                }                
+                    smallExplosionParticle.transform.position = explosionPosition;
+                }
             }
-            
+                        
         }
         
     }

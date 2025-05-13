@@ -9,7 +9,7 @@ using System;
 
 public enum NodeType
 {
-    //default
+    //Stage
     Stage1,
     Stage2,
     Stage3,
@@ -20,12 +20,11 @@ public enum NodeType
     Challenge,
     Store,
     Event,
-    
-    //boss
+        
     Boss,
     
     Rest,
-    
+       
     Trap,
     
     None,
@@ -61,7 +60,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
     private bool canFirstAppearSpecialNode = true;
     private bool canSecondAppearSpecialNode = true;
     
-    private const byte APPEAR_SPECIAL_NODE_PERCENT = 16;//100 / 6 = 16.xxx
+    private const byte APPEAR_SPECIAL_NODE_PERCENT = 25; //100 / 5 = 16.xxx
     
     private NodeType currentStage = NodeType.Stage1;
     
@@ -230,7 +229,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
     {
         return GetEnumerator();
     }
-       
+    
 }
 
 namespace Swift_Blade.Level
@@ -254,6 +253,7 @@ namespace Swift_Blade.Level
         [SerializeField] private bool createStageNode;
         
         private readonly StringBuilder stageName = new StringBuilder();
+        
         private int stageCount = 0;
         private int currentNodeIndex = 0;
         
