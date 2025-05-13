@@ -50,7 +50,7 @@ namespace Swift_Blade.Level
             StartCoroutine(Spawn());
         }
 
-        private void InitializeParticle()
+        protected void InitializeParticle()
         {
             if (enemySpawnParticle.GetMono as EnemySpawnParticle)
             {
@@ -62,6 +62,7 @@ namespace Swift_Blade.Level
                 MonoGenericPool<SmallSpawnParticle>.Initialize(enemySpawnParticle);
                 isSpawnSmall = true;
             }
+            
         }
 
         protected void PlaySpawnParticle(Vector3 position)
