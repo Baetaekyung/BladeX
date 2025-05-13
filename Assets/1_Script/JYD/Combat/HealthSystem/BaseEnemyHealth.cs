@@ -59,12 +59,13 @@ namespace Swift_Blade.Combat.Health
         private void GeneratorText(ActionData actionData)
         {
             Vector3 textPosition = actionData.hitPoint;
-            
-            FloatingTextGenerator.Instance.GenerateText(actionData.damageAmount.ToString(),
+                        
+            FloatingTextGenerator.Instance.GenerateText(
+                actionData.damageAmount.ToString(),
                 textPosition,
                 actionData.textColor == default ? Color.white : actionData.textColor);
         }
-                
+        
         public override void TakeDamage(ActionData actionData)
         {
             if((isDead || !IsDamageTime()) && actionData.stun == false)return;

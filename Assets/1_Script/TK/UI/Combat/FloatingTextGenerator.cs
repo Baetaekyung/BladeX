@@ -18,7 +18,7 @@ namespace Swift_Blade.Pool
             FloatingText text = GenerateText(position);
             text.SetText(message, color);
             text.Animation();
-
+            
             text.OnComplete += ()
                 => MonoGenericPool<FloatingText>.Push(text);
         }
