@@ -14,17 +14,16 @@ namespace Swift_Blade.Enemy.Throw
         public Collider originCollider;
         
         private BaseThrow _throw;
-        
-        private IGetMoveSpeedAble getMoveSpeedAble;
-        private ThrowEnemyHealth throwEnemyHealth;
 
+        private ThrowEnemy throwEnemy;
+        private ThrowEnemyHealth throwEnemyHealth;
         private float originAttackDistance;
+
         
         protected override void Start()
         {
             base.Start();
-            enemy = enemy as ThrowEnemy;
-            getMoveSpeedAble = enemy as IGetMoveSpeedAble;
+            throwEnemy = enemy as ThrowEnemy;
             throwEnemyHealth = enemy.GetHealth() as ThrowEnemyHealth;
         }
         
@@ -88,7 +87,7 @@ namespace Swift_Blade.Enemy.Throw
             }
             else
             {
-                DOVirtual.Float(attackMoveSpeed, getMoveSpeedAble.GetMoveSpeed(), 0.7f, x =>
+                DOVirtual.Float(attackMoveSpeed, throwEnemy.GetMoveSpeed(), 0.7f, x =>
                 {
                     attackMoveSpeed = x;
                 }).OnComplete(() =>
