@@ -23,8 +23,7 @@ namespace Swift_Blade
 
         [SerializeField] private PoolPrefabMonoBehaviourSO followFire;
         [SerializeField] private PoolPrefabMonoBehaviourSO iceSmoke;
-
-        
+                
         private Coroutine fireCoroutine;
         private const float FIRE_DAMAGE_INTERVAL = 0.3f;
         private readonly WaitForSeconds fireWait = new WaitForSeconds(FIRE_DAMAGE_INTERVAL);
