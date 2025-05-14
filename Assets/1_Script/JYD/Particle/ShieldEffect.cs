@@ -66,34 +66,17 @@ namespace Swift_Blade
 
             for(int i = 0; i < amount; ++i)
             {
-                StartCoroutine(FadeCoroutine(shieldMats[i], MAX_ALPHA_VALUE, fadeInTime));
+                CompleteFade(shieldMats[i] , MAX_ALPHA_VALUE);
             }
         }
         
         private void BreakShield(int amount)
         {
             int count = shieldMats.Length;
-            for (int i = 0; i < count; i++)
+            for (int i = amount; i < count; i++)
             {
                 CompleteFade(shieldMats[i] , 0f);
             }
-        }
-
-        private IEnumerator FadeCoroutine(Material material, float endValue, float time)
-        {
-            Color c = material.GetColor(TINT_COLOR);
-            float startValue = c.a;
-            float elapsedTime = 0f;
-            
-            while (elapsedTime < time)
-            {
-                c.a = Mathf.Lerp(startValue, endValue, elapsedTime / time);
-                material.SetColor(TINT_COLOR, c);
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-            
-            CompleteFade(material , endValue);
         }
 
         private void CompleteFade(Material material, float endValue)
