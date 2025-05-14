@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace Swift_Blade
 {
@@ -150,6 +149,8 @@ namespace Swift_Blade
             ColorStat colorStat = GetColorStat(colorType);
 
             colorStat.colorValue += increaseAmount;
+            //Debug.Log($"{colorType}이 {increaseAmount}만큼 상승했습니다.");
+
             ColorValueChange();
         }
 
@@ -180,6 +181,7 @@ namespace Swift_Blade
                 }
             }
 
+            Debug.Log($"Can't find match stat, colorType: {colorType}");
             return default;
         }
     }

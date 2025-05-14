@@ -55,5 +55,22 @@ namespace Swift_Blade
 
             return colorRarity;
         }
+
+        public static string GetColorTypeKorean(ColorType color)
+        {
+            string colorType = color switch
+            {
+                ColorType.RED => "빨강색",
+                ColorType.GREEN => "초록색",
+                ColorType.BLUE => "파랑색",
+                ColorType.YELLOW => "노랑색",
+                ColorType.TURQUOISE => "청록색",
+                ColorType.PURPLE => "보라색",
+                ColorType.BLACK => "검정색",
+                _ => "오류"
+            };
+
+            return colorType;
+        }
     }
 }
