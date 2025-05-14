@@ -39,7 +39,9 @@ namespace Swift_Blade.Level
         
         [Header("Wave Count")]
         public int waveCount;
-            
+        protected bool isClear = false;
+        
+        
         protected virtual void Start()
         {
             InitializeParticle();
@@ -62,9 +64,8 @@ namespace Swift_Blade.Level
                 MonoGenericPool<SmallSpawnParticle>.Initialize(enemySpawnParticle);
                 isSpawnSmall = true;
             }
-            
         }
-
+        
         protected void PlaySpawnParticle(Vector3 position)
         {
             if (isSpawnSmall)
@@ -94,7 +95,7 @@ namespace Swift_Blade.Level
                                 
                 DustUpParticle dustUpParticle = MonoGenericPool<DustUpParticle>.Pop();
                 dustUpParticle.transform.position = doorPosition;
-                                
+                
                 Door newDoor = Instantiate(newNode[i].GetPortalPrefab(), doorPosition, Quaternion.identity);
                 newDoor.SetScene(newNode[i].nodeName);
                 newDoor.UpDoor();

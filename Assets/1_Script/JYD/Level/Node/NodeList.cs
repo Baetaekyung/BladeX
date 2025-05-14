@@ -183,7 +183,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
         canFirstAppearSpecialNode = true;
         canSecondAppearSpecialNode = true;
         
-        currentStage = NodeType.Stage1;
+        currentStage = NodeType.Stage3;
         
         specialNodeTypes.Clear();
         specialNodeTypes.Add(NodeType.Challenge);

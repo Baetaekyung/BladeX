@@ -9,7 +9,6 @@ namespace Swift_Blade.Level
 {
     public class ChallengeSpawner : Spawner
     {
-        private bool isClear = false;
         [SerializeField] private float wavePeriod;
         [SerializeField] private float endTimeSecond;
         private float endTimer;
@@ -92,11 +91,12 @@ namespace Swift_Blade.Level
             isClear = true;
             
             StopAllCoroutines();
-            StartCoroutine(LevelClear());
-                        
-            ClearEnemies();
+            
             CreateChest();
+            ClearEnemies();
             challengeStageUI.SetText();
+            
+            StartCoroutine(LevelClear());
         }
 
         private void ClearEnemies()
@@ -115,7 +115,7 @@ namespace Swift_Blade.Level
             
             allEnemyList.Clear();
         }
-
+        
         private void CreateChest()
         {
             Instantiate(chest , chestPosition.position, Quaternion.identity);
