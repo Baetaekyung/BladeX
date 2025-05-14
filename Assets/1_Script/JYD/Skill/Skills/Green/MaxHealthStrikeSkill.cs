@@ -20,6 +20,8 @@ namespace Swift_Blade
         {
             if (player.GetPlayerHealth.IsFullHealth && targets != null)
             {
+                GenerateSkillText(true);
+                
                 GreenWaveParticle greenWaveParticle = MonoGenericPool<GreenWaveParticle>.Pop();
                 greenWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0, 0.5f, 0);
                 

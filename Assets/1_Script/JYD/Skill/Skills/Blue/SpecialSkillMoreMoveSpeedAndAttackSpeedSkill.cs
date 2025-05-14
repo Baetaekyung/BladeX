@@ -9,11 +9,13 @@ namespace Swift_Blade.Skill
         [SerializeField] [Range(0.1f , 10)]private float increaseValue;
         [SerializeField] [Range(0.1f , 10)]private float increaseTime;
         private float timer;
-
+        
         private bool useSkill;
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
             useSkill = true;
+            GenerateSkillText(useSkill);
+                        
             statCompo.AddModifier(statType , skillName , increaseValue);                                       
         }
 
@@ -26,6 +28,8 @@ namespace Swift_Blade.Skill
                 {
                     timer = 0;
                     useSkill = false;
+                    GenerateSkillText(useSkill);
+                    
                     statCompo.RemoveModifier(statType , skillName);        
                 }
             }

@@ -23,6 +23,8 @@ namespace Swift_Blade.Skill
         
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
+            GenerateSkillText(true);
+            
             targets = Physics.OverlapSphere(player.GetPlayerTransform.position, radius, whatIsEnemy)
                 .Select(c => c.transform);
             
@@ -42,14 +44,6 @@ namespace Swift_Blade.Skill
                 }
             }
             
-        }
-        
-        public override void DrawGizmo(Player player)
-        {
-            if (player == null)return;
-            
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(player.transform.position, radius);
         }
         
     }

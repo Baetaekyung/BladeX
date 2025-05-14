@@ -1,3 +1,4 @@
+using Random = UnityEngine.Random;
 using System.Collections.Generic;
 using Swift_Blade.Pool;
 using UnityEngine;
@@ -28,14 +29,33 @@ namespace Swift_Blade.Skill
 
         protected PlayerStatCompo statCompo;
         
+        private string activatedInfoString;
+        private string deactivatedInfoString;
+        
+        
         public void SetPlayerStatCompo(PlayerStatCompo playerStatCompo)
         {
             statCompo = playerStatCompo;
         }
-        
-        public virtual void Initialize(){}
-        
-        public virtual void ResetSkill(){}
+
+        private void OnEnable()
+        {
+            string particle = GetSubjectParticle(skillName);
+            string colorCode = GetColorCode();
+            
+            activatedInfoString = $"<color={colorCode}>{skillName}</color>{particle} 발동되었습니다";
+            deactivatedInfoString = $"<color={colorCode}>{skillName}</color>{particle} 해제되었습니다";
+        }
+
+        public virtual void Initialize()
+        {
+            
+        }
+
+        public virtual void ResetSkill()
+        {
+            
+        }
         
         public virtual void Render(){}
         
@@ -58,10 +78,39 @@ namespace Swift_Blade.Skill
             
             return statCompo.GetColorStatValue(colorType) * colorRatio;
         }
-
-        public virtual void DrawGizmo(Player player)
+        
+        private string GetSubjectParticle(string word)
         {
-            
+            char lastChar = word[word.Length - 1];
+            bool hasBatchim = (lastChar - 0xAC00) % 28 != 0;
+            return hasBatchim ? "이" : "가";
         }
+        
+        private string GetColorCode()
+        {
+            return colorType switch
+            {
+                ColorType.RED => "#FF4444",
+                ColorType.GREEN => "#44FF44",
+                ColorType.BLUE => "#4444FF",
+                ColorType.TURQUOISE => "#44FFFF",
+                ColorType.PURPLE => "#AA44FF",
+                ColorType.YELLOW => "#FFFF44",
+                _ => "#FFFFFF"
+            };
+        }
+                    
+        private string GetInfoString(bool active)
+        {
+            return active ? activatedInfoString : deactivatedInfoString;
+        }
+        
+        protected void GenerateSkillText(bool active)
+        {
+            string infoString = GetInfoString(active);
+            PopupManager.Instance.LogInfoBox(infoString);
+        }
+        
+  
     }
 }
