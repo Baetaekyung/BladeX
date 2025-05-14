@@ -74,7 +74,7 @@ namespace Swift_Blade
         {
             for(int i = _currentShieldAmount - 1; i >= amount; --i)
             {
-                StartCoroutine(FadeCoroutine(shieldMats[i], 0f, fadeOutTime));
+                CompleteFade(shieldMats[i] , 0f);
             }
         }
 

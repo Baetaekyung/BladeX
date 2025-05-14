@@ -31,7 +31,7 @@ namespace Swift_Blade
             if (DialogueManager.Instance.IsDialogueOpen) return;
 
             DialogueManager.Instance.StartDialogue(dialogueSO);
-
+            
             /*
             void SecondDialogue()
             {

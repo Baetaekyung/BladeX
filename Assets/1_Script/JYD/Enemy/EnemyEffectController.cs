@@ -120,7 +120,7 @@ namespace Swift_Blade
                 ActionData actionData = new ActionData
                 {
                     damageAmount = damage,
-                    textColor = new Color(238f, 90f, 36f),
+                    textColor = Color.yellow,
                     hitPoint = transform.position
                 };
                 

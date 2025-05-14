@@ -122,9 +122,6 @@ namespace Swift_Blade
         public void ActiveParticle(EquipmentTag tag, bool active)
         {
             GameObject obj = _particles[(int)tag - 1];
-
-            if(obj == null || obj.activeSelf == active) return;
-
             obj.SetActive(active);
         }
     }
