@@ -16,13 +16,11 @@ namespace Swift_Blade
             _playerStatCompo.ColorValueChangedAction += SetUI;
             ColorRecorder.OnColorChanged += SetUI;
 
-            Player.level.StatPoint = 10;
             SetUI();
         }
 
         private void OnDisable()
         {
-            _playerStatCompo.ColorValueChangedAction -= SetUI;
             ColorRecorder.OnColorChanged -= SetUI;
         }
 

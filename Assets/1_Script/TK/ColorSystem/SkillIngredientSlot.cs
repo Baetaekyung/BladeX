@@ -70,7 +70,8 @@ namespace Swift_Blade
 
         public override void OnPointerDown(PointerEventData eventData)
         {
-            if (eventData.button != PointerEventData.InputButton.Right)
+            if (eventData.button != PointerEventData.InputButton.Right
+                && eventData.button != PointerEventData.InputButton.Left)
                 return;
 
             if (_skillData == null)

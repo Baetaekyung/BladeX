@@ -2,6 +2,7 @@ using DG.Tweening;
 using Swift_Blade.Skill;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Swift_Blade
 {
@@ -9,6 +10,8 @@ namespace Swift_Blade
     {
         [SerializeField] private TextMeshProUGUI nameText;
         [SerializeField] private TextMeshProUGUI descriptionText;
+        [SerializeField] private Image icon;
+        [SerializeField] private Sprite defaultTexture;
 
         [SerializeField] private float originX;
         [SerializeField] private float maxPosX;
@@ -41,6 +44,7 @@ namespace Swift_Blade
                 text = ColorUtils.ColorText(text, color);
             }
 
+            icon.sprite = skillData ? skillData.skillIcon : defaultTexture;
             nameText.text = text;
             descriptionText.text = skillData ? skillData.skillDescription : string.Empty;
         }
