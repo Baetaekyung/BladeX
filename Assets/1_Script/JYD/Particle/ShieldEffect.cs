@@ -1,7 +1,7 @@
 using System.Collections;
+using Swift_Blade.Pool;
 using System.Linq;
 using UnityEngine;
-using Swift_Blade.Pool;
 
 namespace Swift_Blade
 {
@@ -72,9 +72,10 @@ namespace Swift_Blade
         
         private void BreakShield(int amount)
         {
-            for(int i = _currentShieldAmount - 1; i >= amount; --i)
+            int count = shieldMats.Length;
+            for (int i = 0; i < count; i++)
             {
-                StartCoroutine(FadeCoroutine(shieldMats[i], 0f, fadeOutTime));
+                CompleteFade(shieldMats[i] , 0f);
             }
         }
 
@@ -101,5 +102,6 @@ namespace Swift_Blade
             c.a = endValue;
             material.SetColor(TINT_COLOR, c);
         }
+        
     }
 }

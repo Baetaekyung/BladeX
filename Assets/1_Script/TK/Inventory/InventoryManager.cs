@@ -42,6 +42,8 @@ namespace Swift_Blade
         private Dictionary<ItemDataSO, int>      _itemDatas = new(); //How many item in there?
         private List<ItemDataSO>                 _itemTable = new(); //There is item?
 
+        public event Action OnUseQuickSlotEvent;
+
         private int _currentItemIndex = 0;
 
         [Header("Default Item")]
@@ -149,6 +151,7 @@ namespace Swift_Blade
 
             SetQuickSlotItem();
             UpdateAllSlots();
+            OnUseQuickSlotEvent?.Invoke();
 
             static void AssignItemToSlot(int index, ItemSlot matchSlot, ItemSlot emptySlot)
             {
@@ -205,6 +208,8 @@ namespace Swift_Blade
             {
                 QuickSlotItem.ItemSlot.SetItemData(QuickSlotItem);
             }
+
+            OnUseQuickSlotEvent?.Invoke();
         }
 
         private void ChangeQuickSlotItem()
@@ -453,9 +458,6 @@ namespace Swift_Blade
                 return -1;
 
             if (itemData == null)
-                return -1;
-
-            if (_itemDatas.ContainsKey(itemData) == false)
                 return -1;
 
             if (_itemDatas.TryGetValue(itemData, out var count))

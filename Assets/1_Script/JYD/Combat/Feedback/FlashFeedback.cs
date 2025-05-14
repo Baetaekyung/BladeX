@@ -1,6 +1,6 @@
-using System;
 using System.Collections;
 using UnityEngine;
+using System;
 
 namespace Swift_Blade.Combat.Feedback
 {
@@ -38,7 +38,7 @@ namespace Swift_Blade.Combat.Feedback
         
         public override void ResetFeedback()
         {
-            if (changeMatFeedback != null && changeMatFeedback.GetChangingMat())
+            if (changeMatFeedback != null && changeMatFeedback.IsChanging())
             {
                 changeMatFeedback.PlayFeedback();
                 return;
@@ -60,6 +60,13 @@ namespace Swift_Blade.Combat.Feedback
                 yield return _flashDuration;
             }
         }
+
+        public Material GetFlashMat() => _flashMat;
+
+        public void SetFlashMat(Material material)
+        {
+            _flashMat = material;
+        }
         
         private void SetMaterials(Material mat)
         {
@@ -68,5 +75,7 @@ namespace Swift_Blade.Combat.Feedback
                 renderer.material = mat;
             }
         }
+        
+        
     }
 }

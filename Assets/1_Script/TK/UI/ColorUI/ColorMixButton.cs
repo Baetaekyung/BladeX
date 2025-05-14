@@ -16,7 +16,7 @@ namespace Swift_Blade
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            _colorMixer.MixColor(upgradeColor);
+            //_colorMixer.MixColor(upgradeColor);
         }
     }
 }

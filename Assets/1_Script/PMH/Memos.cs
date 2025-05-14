@@ -20,7 +20,7 @@ namespace Swift_Blade
 
         private void Awake()
         {
-            if(m_dialogueData == null) m_dialogueData = new DialogueDataSO();
+            if(m_dialogueData == null) m_dialogueData = Instantiate(dialogueSO);
 
             TalkingData talkingData = new TalkingData();
             talkingData.talker = m_talker;
@@ -33,7 +33,7 @@ namespace Swift_Blade
             if (DialogueManager.Instance.IsDialogueOpen) return;
 
             DialogueManager.Instance.StartDialogue(dialogueSO);
-
+            
             /*
             void SecondDialogue()
             {

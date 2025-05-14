@@ -11,25 +11,29 @@ namespace Swift_Blade.Combat.Feedback
         
         [SerializeField] private Material changeMat;
         [SerializeField] private SkinnedMeshRenderer[] _meshRenderers;
-        private Material[] _originMats;
+        [SerializeField] private EffectType effectType;
         
+        private Material[] _originMats;
         private BaseEnemy baseEnemy;
         private bool isChanging;
+        
         private void Start()
         {
-            _meshRenderers = root.GetComponentsInChildren<SkinnedMeshRenderer>();
             baseEnemy = root.GetComponent<BaseEnemy>();
+            
+            if(effectType != EffectType.None)
+                baseEnemy.GetEffectController().OnEffectEvents.Add(effectType , ChangeMat);
+            
+            _meshRenderers = root.GetComponentsInChildren<SkinnedMeshRenderer>();
             _originMats = Array.ConvertAll(_meshRenderers, mesh => mesh.material);
-                        
-            baseEnemy.OnSlowEvents.AddListener(ChangeMat);
         }
         
         private void OnDestroy()
         {
-            baseEnemy.OnSlowEvents.RemoveListener(ChangeMat);
+            baseEnemy.GetEffectController().OnEffectEvents.Remove(effectType);
         }
         
-        public bool GetChangingMat() => isChanging;
+        public bool IsChanging() => isChanging;
         
         public void ChangeMat(bool value)
         {
