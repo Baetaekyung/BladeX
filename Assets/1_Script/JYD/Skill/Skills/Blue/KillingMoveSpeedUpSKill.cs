@@ -31,10 +31,10 @@ namespace Swift_Blade.Skill
                 {
                     useSkill = true;
                     ResetSkill();
-                    PushDirectionArrowParticle();
-
-                    PopupManager.Instance.LogInfoBox($"{skillName}¿Ã Ω««‡µ ");
                     
+                    GenerateSkillText(useSkill);
+                    PushDirectionArrowParticle();
+                                        
                     BlueWaveParticle blueWaveParticle = MonoGenericPool<BlueWaveParticle>.Pop();
                     blueWaveParticle.transform.SetParent(player.GetPlayerTransform);
                     blueWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.5f,0);
@@ -60,16 +60,18 @@ namespace Swift_Blade.Skill
                 if (timer >= increaseTime)
                 {
                     useSkill = false;
-                                        
-                    PopupManager.Instance.LogInfoBox($"{skillName}¿Ã «ÿ¿Áµ ");
-                    PushDirectionArrowParticle();
+                    GenerateSkillText(useSkill);
+                    
                     ResetSkill();
+                    PushDirectionArrowParticle();
                 }
             }
         }
 
         public override void ResetSkill()
         {
+            
+            
             timer = 0;
             statCompo.RemoveModifier(statType , skillName);
         }

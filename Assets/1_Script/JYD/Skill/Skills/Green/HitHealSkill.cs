@@ -16,9 +16,12 @@ namespace Swift_Blade.Skill
         {
             if (playerHealth == null)
                 playerHealth = player.GetPlayerHealth;
-            
-            if(TryUseSkill(Mathf.RoundToInt(GetColorRatio())))            
+
+            if (TryUseSkill(Mathf.RoundToInt(GetColorRatio())))
+            {
+                GenerateSkillText(true);
                 playerHealth.TakeHeal(healAmount);
+            } 
         }
         
     }
