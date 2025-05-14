@@ -303,7 +303,6 @@ namespace Swift_Blade
                 isItemFadeTweening = false;
                 lastOrb = null;
                 InGameUIManager.Instance.SetInfoBoxAlpha(0, false);
-                print("hide");
             }
         }
         
