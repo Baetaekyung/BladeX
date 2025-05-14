@@ -112,7 +112,7 @@ namespace Swift_Blade
             {
                 objIsHelmet = (parentVis.name == "Male_Head_No_Elements"); // || parentVis.name == "Helmet" 머리를 가리는게 이쏘 안가리는게 잇음
                 objIsTorso = (parentVis.name == "Male_03_Torso");
-                objIsHip = (parentVis.name == "Male_Head_No_Elements");
+                objIsHip = (parentVis.name == "Male_10_Hips");
                 objIsShoes = (parentVis.name == "Male_11_Leg_Right" || parentVis.name == "Male_12_Leg_Left");
 
                 go = GetFindObj(parentVis, partsName);
