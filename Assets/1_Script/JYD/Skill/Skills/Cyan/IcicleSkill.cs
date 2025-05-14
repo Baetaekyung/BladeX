@@ -24,6 +24,8 @@ namespace Swift_Blade.Skill
         
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
+            GenerateSkillText(true);
+            
             targets = Physics.OverlapSphere(player.GetPlayerTransform.position, skillRadius, whatIsEnemy).Select(x => x.transform);
             
             int i = 0;
@@ -35,6 +37,8 @@ namespace Swift_Blade.Skill
                 
                 if (item.TryGetComponent(out BaseEnemyHealth health) && item.TryGetComponent(out BaseEnemy enemy))
                 {
+                    enemy.GetEffectController().SetSlow(slowDuration);
+                    
                     ActionData actionData = new ActionData();
                     actionData.stun = true;
                     actionData.damageAmount = skillDamage;

@@ -184,14 +184,14 @@ namespace Swift_Blade
                 OnPopUpOpenOrClose?.Invoke();
             }
         }
-
+        
         public void LogMessage(string message, float time = 2f)
         {
             PopupUI popup = GetPopupUI(PopupType.Text);
-
+            
             if (popup == null)
                 return;
-
+            
             TextPopup textPopup = popup as TextPopup;
 
             textPopup.SetText(message);

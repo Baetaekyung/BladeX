@@ -27,14 +27,15 @@ namespace Swift_Blade
                 targets = Physics.OverlapSphere(player.GetPlayerTransform.position, skillRadius, whatIsTarget)
                     .Select(x => x.transform);
             }
-
+                        
             ++skillCounter;
             if (skillCounter >= skillCount)
             {
                 skillCounter = 0;
-            
                 if (TryUseSkill())
                 {
+                    GenerateSkillText(true);
+                    
                     foreach (var item in targets)
                     {
                         if (item.TryGetComponent(out BaseEnemyHealth health))

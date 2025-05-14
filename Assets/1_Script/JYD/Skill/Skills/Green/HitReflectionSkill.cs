@@ -24,6 +24,8 @@ namespace Swift_Blade.Skill
         
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
+            if(TryUseSkill() == false)return;
+            
             if (targets == null)
             {
                 targets = Physics.OverlapSphere(player.GetPlayerTransform.position, SKILL_RADIUS, whatIsTarget)
@@ -45,24 +47,22 @@ namespace Swift_Blade.Skill
                 }
             }
             
-            if (TryUseSkill())
+            GenerateSkillText(true);
+                
+            if (closeTarget != null && closeTarget.TryGetComponent(out BaseEnemyHealth health))
             {
-                if (closeTarget != null && closeTarget.TryGetComponent(out BaseEnemyHealth health))
+                float damage = damageAmount * GetColorRatio();
+                                        
+                ActionData actionData = new ActionData
                 {
-                    float damage = damageAmount * GetColorRatio();
-                    //Debug.Log($"{damage} : damageAmount : {damageAmount} , ColorRatio: {GetColorRatio()}");
+                    damageAmount = damage,
+                    knockbackForce = Mathf.Min(MAX_KNOCKBACK_FORCE,knockbackForce + GetColorRatio()),
+                    knockbackDirection = (closeTarget.position - player.GetPlayerTransform.position).normalized,
+                    stun = true
+                };
                     
-                    ActionData actionData = new ActionData
-                    {
-                        damageAmount = damage,
-                        knockbackForce = Mathf.Min(MAX_KNOCKBACK_FORCE,knockbackForce + GetColorRatio()),
-                        knockbackDirection = (closeTarget.position - player.GetPlayerTransform.position).normalized,
-                        stun = true
-                    };
+                health.TakeDamage(actionData);
                     
-                    health.TakeDamage(actionData);
-                    
-                }
             }
         }
 

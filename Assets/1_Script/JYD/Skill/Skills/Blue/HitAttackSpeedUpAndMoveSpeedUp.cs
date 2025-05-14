@@ -16,16 +16,16 @@ namespace Swift_Blade.Skill
         public override void Initialize()
         {
             MonoGenericPool<BlueWaveParticle>.Initialize(skillParticle);
-            ResetSkill();
         }
         
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
             if(isOnSkill)return;
+            GenerateSkillText(true);
             
             isOnSkill = true;
-            ResetStat(player);
-
+            ResetStat();
+            
             int healthDifference = Mathf.RoundToInt(player.GetPlayerStat.GetStat(StatType.HEALTH).Value -
                                                     player.GetPlayerHealth.GetCurrentHealth);
             float increaseSpeed = increaseAmount * healthDifference * GetColorRatio();
@@ -47,11 +47,11 @@ namespace Swift_Blade.Skill
             if (decreaseTimer >= decreaseTime)
             {
                 ResetSkill();
-                ResetStat(player);
+                ResetStat();
             }
         }
         
-        private void ResetStat(Player player)
+        private void ResetStat()
         {
             statCompo.RemoveModifier(StatType.MOVESPEED, skillName);
             statCompo.RemoveModifier(StatType.ATTACKSPEED, skillName);
@@ -59,6 +59,8 @@ namespace Swift_Blade.Skill
         
         public override void ResetSkill()
         {
+            GenerateSkillText(false);
+            
             isOnSkill = false;
             decreaseTimer = 0;
         }

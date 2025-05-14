@@ -16,6 +16,8 @@ namespace Swift_Blade.Skill
     
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
+            GenerateSkillText(true);
+            
             foreach (var item in targets)
             {
                 if (item.TryGetComponent(out BaseEnemyHealth health) && health.isDead)
