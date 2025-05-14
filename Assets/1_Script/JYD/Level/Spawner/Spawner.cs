@@ -40,7 +40,8 @@ namespace Swift_Blade.Level
         [Header("Wave Count")]
         public int waveCount;
         protected bool isClear = false;
-        
+
+        protected bool canDoorSpawner = true;
         
         protected virtual void Start()
         {
@@ -83,18 +84,26 @@ namespace Swift_Blade.Level
         
         protected IEnumerator LevelClear()
         {
+            if (canDoorSpawner)
+            {
+                Debug.LogError("레벨이 클리어 됏는데 또 됨");  
+                yield break;
+            } 
+            
             sceneManager.LevelClear();
             
             Node[] newNode = sceneManager.GetNodeList().GetNodes();
             
             yield return doorSpawnDelay;
             
+            canDoorSpawner = true;
             for (int i = 0; i < newNode.Length; ++i)
             {
                 var doorPosition = doorTrm[i].position;
                                 
                 DustUpParticle dustUpParticle = MonoGenericPool<DustUpParticle>.Pop();
                 dustUpParticle.transform.position = doorPosition;
+
                 
                 Door newDoor = Instantiate(newNode[i].GetPortalPrefab(), doorPosition, Quaternion.identity);
                 newDoor.SetScene(newNode[i].nodeName);
