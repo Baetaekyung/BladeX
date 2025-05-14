@@ -27,7 +27,7 @@ namespace Swift_Blade
             Sequence seq = DOTween.Sequence();
 
             seq.Append(blink.DOFade(1f, time));
-            seq.Append(blink.DOFade(0f, time));
+            seq.Append(blink.DOFade(0f, time / 2f));
             seq.OnComplete(() => callback?.Invoke());
         }
     }

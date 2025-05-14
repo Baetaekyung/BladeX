@@ -18,7 +18,7 @@ namespace Swift_Blade
 
         private void Awake()
         {
-            if(m_dialogueData == null) m_dialogueData = new DialogueDataSO();
+            if(m_dialogueData == null) m_dialogueData = Instantiate(dialogueSO);
 
             TalkingData talkingData = new TalkingData();
             talkingData.talker = m_talker;
