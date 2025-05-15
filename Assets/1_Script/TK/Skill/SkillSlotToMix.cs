@@ -74,13 +74,8 @@ namespace Swift_Blade
             if (IsEmptySlot() == true)
                 return;
 
-            if (eventData.button != PointerEventData.InputButton.Right)
-                return;
-
-            if (_skillData.colorType == ColorType.PURPLE ||
-                _skillData.colorType == ColorType.TURQUOISE ||
-                _skillData.colorType == ColorType.YELLOW ||
-                _skillData.colorType == ColorType.BLACK)
+            if (eventData.button != PointerEventData.InputButton.Right
+                && eventData.button != PointerEventData.InputButton.Left)
                 return;
 
             if (_skillMixer.IsReadyToMix())

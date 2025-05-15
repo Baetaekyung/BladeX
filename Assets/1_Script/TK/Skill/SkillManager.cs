@@ -82,10 +82,6 @@ namespace Swift_Blade
             {
                 ColorType type = saveDatas.inventoryData[i].colorType;
 
-                if (type == ColorType.YELLOW || type == ColorType.PURPLE
-                    || type == ColorType.TURQUOISE || type == ColorType.BLACK)
-                    continue;
-
                 GetEmptyMixSlot().SetSlotData(saveDatas.inventoryData[i]);
             }
 
@@ -190,13 +186,18 @@ namespace Swift_Blade
         {
             var inventorySlot = GetEmptyInvSlot();
 
-            if (inventorySlot == default)
+            if (inventorySlot == null)
                 return false;
             
             inventorySlot.SetSlotData(skillData);
             saveDatas.AddSkillToInventory(skillData);
 
             return true;
+        }
+
+        public bool AllSlotsFull()
+        {
+            return GetEmptyInvSlot() == null;
         }
     }
 }

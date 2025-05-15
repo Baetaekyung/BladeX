@@ -31,29 +31,28 @@ namespace Swift_Blade.Skill
         
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
-            if(TryUseSkill() == false)return;
-            
-            GenerateSkillText(true);
+            ++skillCounter;
             
             DOVirtual.DelayedCall(EXECUTE_DELAY , () =>
             {
                 if (directions == null || directions.Length != skillCount)
                 {
                     directions[0] = player.GetPlayerTransform.forward;
-                    directions[1] = player.GetPlayerTransform.right;
+                    directions[1] = -player.GetPlayerTransform.forward;
                     directions[2] = -player.GetPlayerTransform.right;
-                    directions[3] = -player.GetPlayerTransform.forward;
+                    directions[3] = player.GetPlayerTransform.right;
                 }
-            
-                ++skillCounter;
-                
+                                
                 int count = Mathf.Clamp(Mathf.FloorToInt(GetColorRatio()), MIN_SKILL_COUNT, MAX_SKILL_COUNT);
                 
                 if (skillCounter >= skillCount)
                 {
+                    
                     BlueCircleParticle blueCircleParticle =  MonoGenericPool<BlueCircleParticle>.Pop();
                     blueCircleParticle.transform.SetParent(player.GetPlayerTransform);
                     blueCircleParticle.transform.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.5f,0);
+                    
+                    GenerateSkillText(true);
                     
                     DOVirtual.DelayedCall(FIRE_DELAY , () =>
                     {

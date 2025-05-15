@@ -67,29 +67,31 @@ namespace Swift_Blade
             get => _minValue;
             set => _minValue = value;
         }
-        public float Value => Mathf.Clamp((GetCalculatedValue(ColorValue) + modifiedValue), MinValue, MaxValue);
+        public float Value => Mathf.Clamp(_baseValue + (GetCalculatedValue(ColorValue) + modifiedValue), MinValue, MaxValue);
         
         public bool IsMax => Mathf.Approximately(Value, MaxValue);
         public bool IsMin => Mathf.Approximately(Value, MinValue);
         public void SetModifier(object key, float newValue)
         {
+            float value = GetColoredValue(newValue);
             if (modifyValueByKeys.TryGetValue(key, out float previousValue))
             {
                 modifiedValue -= previousValue;
-                modifyValueByKeys[key] = newValue;
+                modifyValueByKeys[key] = value;
             }
             else
             {
-                modifyValueByKeys.Add(key, newValue);
+                modifyValueByKeys.Add(key, value);
             }
-            modifiedValue += newValue;
+            modifiedValue += value;
             OnValueChanged?.Invoke();
         }
         public void AddModifier(object key, float newValue)
         {
+            float value = GetColoredValue(newValue);
             if (modifyValueByKeys.TryGetValue(key, out var prevValue))
             {
-                if(prevValue > newValue)
+                if(prevValue > value)
                 {
                     return;
                 }
@@ -107,8 +109,8 @@ namespace Swift_Blade
 
             void AddValue()
             {
-                modifiedValue += newValue;
-                modifyValueByKeys.Add(key, newValue);
+                modifiedValue += value;
+                modifyValueByKeys.Add(key, value);
 
                 OnValueChanged?.Invoke();
             }
@@ -133,16 +135,21 @@ namespace Swift_Blade
 
         private float GetCalculatedValue(int colorVal)
         {
+            float value = GetColoredValue(colorVal);
             if (statType == StatType.HEALTH)
             {
-                float amount = colorVal * colorMultiplier;
+                float amount = value;
 
-                return Mathf.FloorToInt(amount) + _baseValue;
+                return Mathf.FloorToInt(amount);
             }
 
-            return (colorVal * colorMultiplier) + _baseValue;
+            return value;
         }
 
+        private float GetColoredValue(float value)
+        {
+            return value * colorMultiplier;
+        }
 
         public StatSO Clone()
         {

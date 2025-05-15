@@ -13,6 +13,10 @@ namespace Swift_Blade
             Player.LevelStat.OnLevelUp += HandleInfoChange;
 
             ColorRecorder.OnColorChanged += HandleInfoChange;
+        }
+
+        private void Start()
+        {
             HandleInfoChange();
         }
 

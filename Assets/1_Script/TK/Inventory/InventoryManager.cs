@@ -62,8 +62,8 @@ namespace Swift_Blade
             {
                 Inventory = playerInv.Clone();
 
-                for (int i = 0; i < defaultPotionCount; i++)
-                    AddItemToMatchSlot(defaultPotionItem);
+                //for (int i = 0; i < defaultPotionCount; i++)
+                //    AddItemToMatchSlot(defaultPotionItem);
 
                 UpdateAllSlots();
 
@@ -101,7 +101,6 @@ namespace Swift_Blade
 
             //인벤토리 초기화
             Inventory.itemSlots = new List<ItemSlot>();
-            Inventory.currentInventoryCapacity = 0;
 
             // 빈 인벤토리 슬롯 채워주기
             for (int i = 0; i < itemSlots.Count; i++)
@@ -137,16 +136,10 @@ namespace Swift_Blade
                     {
                         _itemTable.Add(currentIndexItem);
                         _itemDatas.Add(currentIndexItem, 1);
-                        Inventory.currentInventoryCapacity += 1;
                     }
+                }
 
-                    AssignItemToSlot(i, matchSlot, emptySlot);
-                }
-                else
-                {
-                    AssignItemToSlot(i, matchSlot, emptySlot);
-                    Inventory.currentInventoryCapacity++;
-                }
+                AssignItemToSlot(i, matchSlot, emptySlot);
             }
 
             SetQuickSlotItem();
@@ -403,7 +396,8 @@ namespace Swift_Blade
 
         private ItemSlot GetMatchItemSlot(ItemDataSO item)
         {
-            return itemSlots.FirstOrDefault(slot => slot.GetSlotItemData() == item);
+            return itemSlots.FirstOrDefault(slot => slot.GetSlotItemData() != null &&
+                slot.GetSlotItemData().itemName == item.itemName);
         }
 
         public EquipmentSlot GetMatchTypeEquipSlot(EquipmentSlotType type)

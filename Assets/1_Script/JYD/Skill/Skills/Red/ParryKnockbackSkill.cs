@@ -36,6 +36,8 @@ namespace Swift_Blade.Skill
             
             foreach (var item in targets)
             {
+                GenerateSkillText(true);
+                
                 if (item.TryGetComponent(out BaseEnemyHealth health))
                 {
                     ActionData actionData = new ActionData

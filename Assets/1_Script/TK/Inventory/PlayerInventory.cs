@@ -7,7 +7,6 @@ namespace Swift_Blade
     [CreateAssetMenu(fileName = "PlayerInventory", menuName = "SO/PlayerInventory")]
     public class PlayerInventory : ScriptableObject
     {
-        public int currentInventoryCapacity;
         public int maxInventoryCapacity;
         
         public List<ItemDataSO> itemInventory;
@@ -16,7 +15,9 @@ namespace Swift_Blade
         public List<ItemSlot>      itemSlots        = new();
         public List<EquipmentData> currentEquipment = new();
         
-        public int Coin { get; set; }
+        //public int Coin { get; set; }
+        //public event Action OnCoinChanged;
+        
         
         private PlayerInventory Initialize()
         {
@@ -35,10 +36,9 @@ namespace Swift_Blade
 
             #endregion
             inventory.itemInventory = tempInventory;            
-            inventory.Coin = 0;
+            //inventory.Coin = 0;
             
-            inventory.currentInventoryCapacity = 0;
-            inventory.maxInventoryCapacity = itemSlots.Count - 5; // -5´Â Àåºñ½½·Ô ¶§¹®¿¡
+            inventory.maxInventoryCapacity = itemSlots.Count - 5; // -5ï¿½ï¿½ ï¿½ï¿½ñ½½·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             inventory.currentEquipment = new List<EquipmentData>();
 
             return inventory;
@@ -46,6 +46,10 @@ namespace Swift_Blade
 
         public PlayerInventory Clone() => Initialize();
 
-        
+        public void AddCoin(int _amount)
+        {
+            //Coin += _amount;
+            //OnCoinChanged.Invoke();
+        }
     }
 }

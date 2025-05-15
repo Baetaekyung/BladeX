@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Swift_Blade.Inputs;
 using Swift_Blade.UI;
+using Unity.AppUI.UI;
 using UnityEngine;
 
 namespace Swift_Blade
@@ -132,6 +133,10 @@ namespace Swift_Blade
             if (_popupList.Count > 0)
             {
                 PopupUI popup = _popupList.Last();
+
+                if (popup.popupType == PopupType.GameOver)
+                    return;
+
                 popup.PopDown();
 
                 _popupList.RemoveAt(_popupList.Count - 1);
@@ -148,6 +153,9 @@ namespace Swift_Blade
 
         public void PopDown(PopupType popupType)
         {
+            if (popupType == PopupType.GameOver)
+                return;
+
             if (_popupList.Count > 0)
             {
                 if (_popupList.Contains(popups[popupType]))
@@ -168,6 +176,9 @@ namespace Swift_Blade
 
         public void PopDown(PopupUI popup)
         {
+            if (popup.popupType == PopupType.GameOver)
+                return;
+
             if (_popupList.Count > 0)
             {
                 if (popup != null)

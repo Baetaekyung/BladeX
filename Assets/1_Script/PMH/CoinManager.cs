@@ -38,9 +38,9 @@ namespace Swift_Blade
             coinText.text = coinValue + " Coin";
         }
 
-        public void GameFinishToAddCoin()
-        {
-            invenSO.Coin += coinValue;
-        }
+        //public void GameFinishToAddCoin()
+        //{
+        //    invenSO.Coin += coinValue;
+        //}
     }
 }

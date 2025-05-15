@@ -143,17 +143,17 @@ namespace Swift_Blade
             // SO 인스턴스 생성
             #region SOInstance
             EquipmentData asset = ScriptableObject.CreateInstance<EquipmentData>();
-            asset.statModifier = new SerializableDictionary<StatType, float>();
+            //asset.statModifier = new SerializableDictionary<StatType, float>();
 
 
             #region Stat
-            foreach (var stat in statModifier)
-            {
-                if (stat.Value != 0)
-                {
-                    asset.statModifier.Add(stat.Key, stat.Value);
-                }
-            }
+            //foreach (var stat in statModifier)
+            //{
+            //    if (stat.Value != 0)
+            //    {
+            //        asset.statModifier.Add(stat.Key, stat.Value);
+            //    }
+            //}
             #endregion
             #region Tags
             int tagCount = 0;

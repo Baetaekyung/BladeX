@@ -10,45 +10,55 @@ namespace Swift_Blade.Skill
         [Range(0.1f,10f)]  [SerializeField] private float attackIncreaseAmount;
         [Range(0.1f,10f)] [SerializeField] private float increaseTime;
         private float increaseTimer;
-        private bool canUseSkill = true;
+        
+        private bool usingSkill = true;
         private bool isSkillUp = false;
 
         public override void Initialize()
         {
             MonoGenericPool<RedWaveParticle>.Initialize(skillParticle);
+            usingSkill = false;
+            isSkillUp = false;
         }
-
+        
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
-            MonoGenericPool<RedWaveParticle>.Pop().transform.position = player.GetPlayerTransform.position + new Vector3(0,1,0);
+            if (usingSkill || isSkillUp) return;
             
-            canUseSkill = true;
+            MonoGenericPool<RedWaveParticle>.Pop().transform.position = player.GetPlayerTransform.position + new Vector3(0,1,0);
+            usingSkill = true;
         }
-
+        
         public override void SkillUpdate(Player player,  IEnumerable<Transform> targets = null)
         {
-            if (canUseSkill)
+            if (usingSkill)
             {
                 if (isSkillUp == false)
                 {
                     isSkillUp = true;
+                    
+                    GenerateSkillText(true);
                     statCompo.AddModifier(statType , skillName , attackIncreaseAmount * GetColorRatio());
                 }
-                
-                increaseTimer += Time.deltaTime;
-                                
-                if (increaseTimer >= increaseTime)
+                else
                 {
-                    ResetSkill();
-                    statCompo.RemoveModifier(statType , skillName);
+                    increaseTimer += Time.deltaTime;
                 }
-                
+            }
+            
+            if (increaseTimer >= increaseTime)
+            {
+                ResetSkill();
             }
         }
 
         public override void ResetSkill()
         {
-            canUseSkill = false;
+            GenerateSkillText(false);
+            
+            statCompo.RemoveModifier(statType , skillName);
+            
+            usingSkill = false;
             isSkillUp = false;
             increaseTimer = 0;
         }

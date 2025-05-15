@@ -19,11 +19,11 @@ namespace Swift_Blade.Skill
             if(targets == null || !targets.Any())return;
             if(player.GetPlayerHealth.IsFullHealth == false)return;
             
-            GenerateSkillText(true);
             
             int value = Mathf.RoundToInt(GetColorRatio());
             if(TryUseSkill(value) == false)return;
             
+            GenerateSkillText(true);
             MonoGenericPool<ImpactDirtParticle>.Pop().transform.position = targets.First().transform.position + new Vector3(0,1,0);
             
             foreach (var item in targets)

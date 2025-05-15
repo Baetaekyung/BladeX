@@ -68,29 +68,22 @@ namespace Swift_Blade
                 return;
             }
 
-            List<ColorType> containsColor = new List<ColorType>();
+            int rand = UnityEngine.Random.Range(0, 6);
+            ColorType randColorType = ColorUtils.GetRandomColorType(rand);
 
-            ColorType leftType = leftSlot.GetSkillData.colorType;
-            ColorType rightType = rightSlot.GetSkillData.colorType;
+            //if (mixedColorType == ColorType.RED 
+            //    || mixedColorType == ColorType.GREEN 
+            //    || mixedColorType == ColorType.BLUE)
+            //{
+            //    PopupManager.Instance.LogMessage("스킬이 섞일 수 없습니다.");
+            //    FailToMix();
 
-            containsColor.Add(leftType);
-            containsColor.Add(rightType);
+            //    return;
+            //}
 
-            ColorType mixedColorType = ColorUtils.GetColor(containsColor);
-
-            if (mixedColorType == ColorType.RED 
-                || mixedColorType == ColorType.GREEN 
-                || mixedColorType == ColorType.BLUE)
+            AnimSkillMixed(randColorType, () =>
             {
-                PopupManager.Instance.LogMessage("스킬이 섞일 수 없습니다.");
-                FailToMix();
-
-                return;
-            }
-
-            AnimSkillMixed(mixedColorType, () =>
-            {
-                SkillData randomSkill = skillTable.GetRandomSkill(mixedColorType);
+                SkillData randomSkill = skillTable.GetRandomSkill(randColorType);
 
                 if (randomSkill != null)
                 {
@@ -103,7 +96,7 @@ namespace Swift_Blade
 
                 SkillManager.Instance.UpdateDatas();
 
-                Color color = ColorUtils.GetCustomColor(mixedColorType);
+                Color color = ColorUtils.GetCustomColor(randColorType);
                 string colorText = ColorUtils.ColorText(randomSkill.skillName, color);
 
                 eff.Blink(0.5f, () => PopupManager.Instance.LogMessage(
@@ -137,19 +130,19 @@ namespace Swift_Blade
             resultImage.color = resultColor;
         }
 
-        private void FailToMix()
-        {
-            SkillManager.saveDatas.AddSkillToInventory(skillDataOnStage1);
-            SkillManager.saveDatas.AddSkillToInventory(skillDataOnStage2);
+        //private void FailToMix()
+        //{
+        //    SkillManager.saveDatas.AddSkillToInventory(skillDataOnStage1);
+        //    SkillManager.saveDatas.AddSkillToInventory(skillDataOnStage2);
 
-            skillDataOnStage1 = null;
-            skillDataOnStage2 = null;
+        //    skillDataOnStage1 = null;
+        //    skillDataOnStage2 = null;
 
-            leftSlot.SetSlotData(null);
-            rightSlot.SetSlotData(null);
+        //    leftSlot.SetSlotData(null);
+        //    rightSlot.SetSlotData(null);
 
-            SkillManager.Instance.UpdateDatas();
-        }
+        //    SkillManager.Instance.UpdateDatas();
+        //}
 
         public SkillIngredientSlot GetEmptyIngredientSlot()
         {

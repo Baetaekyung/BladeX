@@ -58,8 +58,9 @@ namespace Swift_Blade.Combat.Health
         {
             Vector3 textPosition = actionData.hitPoint;
                         
-            FloatingTextGenerator.Instance.GenerateText(
-                actionData.damageAmount.ToString(),
+            FloatingTextGenerator.Instance.GenerateText
+            (
+                Mathf.CeilToInt(actionData.damageAmount).ToString(),
                 textPosition,
                 actionData.textColor == default ? Color.white : actionData.textColor);
         }

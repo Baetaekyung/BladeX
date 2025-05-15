@@ -14,6 +14,9 @@ namespace Swift_Blade.Inputs
         public static event Action UseQuickEvent;
         public static event Action Attack1Event;
         public static event Action Attack2Event;
+        public static event Action HEvent;
+        public static event Action PEvent;
+        public static event Action EscEvent;
 
         public Vector2 Movement { get; private set; }
         public Vector2 MousePosition { get; private set; }
@@ -93,6 +96,21 @@ namespace Swift_Blade.Inputs
         public void OnAttack2(InputAction.CallbackContext context)
         {
             if(context.performed) Attack2Event?.Invoke();
+        }
+
+        public void OnH(InputAction.CallbackContext context)
+        {
+            if(context.performed) HEvent?.Invoke();
+        }
+
+        public void OnP(InputAction.CallbackContext context)
+        {
+            if(context.performed) PEvent?.Invoke();
+        }
+
+        public void OnEsc(InputAction.CallbackContext context)
+        {
+            if(context.performed) EscEvent?.Invoke();
         }
     }
 }

@@ -34,6 +34,7 @@ namespace Swift_Blade
             if(CheckIsValidToMix(_inputColors))
             {
                 ColorType colorType = ColorUtils.GetColor(_inputColors);
+                Color col = ColorUtils.GetCustomColor(colorType);
 
                 //Decrease ingredient colors ex) make yellow 1, red -1, green -1
                 DecreaseIngredientColors(_inputColors);
@@ -48,31 +49,41 @@ namespace Swift_Blade
 
                 #region Animation
                 // Animation
-                DOVirtual.Float(0, 0.3f, 1.5f, (f) => effect.SetAlpha(f))
-                    .SetEase(Ease.InBack)
-                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
-
-                DOVirtual.Float(0, 0.6f, 1.5f, (f) => effect.SetEff(ColorUtils.GetCustomColor(colorType), f))
+                DOVirtual.Float(0, 1f, 2f, (f) => effect.SetAlpha(f))
                     .OnComplete(() =>
                     {
-                        effect.Blink(1.5f,
-                        () => PopupManager.Instance.LogMessage($"{colorType} »ö È¹µæ"));
+                        effect.Blink(1.5f, () =>
+                        {
+                            HandleLog(colorType, col);
+                            resultImage.GetComponent<RotateUI>().SetRotate(false);
+                        });
 
                         effect.SetEff(Color.white, 1f);
                         effect.SetAlpha(0f);
                     })
-                    .SetEase(Ease.InBack)
+                    .SetEase(Ease.InSine)
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
+
+                DOVirtual.Float(0, 1f, 1.5f, (f) => effect.SetEff(ColorUtils.GetCustomColor(colorType), f))
+                    .SetEase(Ease.OutBack)
                     .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
 
                 #endregion
 
-                resultImage.GetComponent<RotateUI>().SetRotate(false);
                 resultImage.transform.localRotation = Quaternion.identity;
                 resultImage.DOColor(Color.white, 1f);
             }
             else
             {
                 PopupManager.Instance.LogMessage("°¡Áö°í ÀÖ´Â »öÀÌ ºÎÁ·ÇÕ´Ï´Ù.");
+            }
+
+            return;
+
+            void HandleLog(ColorType type, Color col)
+            {
+                PopupManager.Instance.LogMessage
+                    ($"{ColorUtils.ColorText(KoreanUtility.GetColorTypeKorean(type), col)} È¹µæ");
             }
         }
 

@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 
 namespace Swift_Blade
 {
+    [RequireComponent(typeof(AudioSource))]
     public class HoverUI : MonoBehaviour
         ,IPointerEnterHandler, IPointerExitHandler
     {
@@ -20,9 +21,13 @@ namespace Swift_Blade
         private bool    _isHovering;
         private Vector3 _originScale;
 
+        [SerializeField] private AudioClip toPlay;
+        private AudioSource _audioSource;
+
         protected virtual void Awake()
         {
             _rectTrm = GetComponent<RectTransform>();
+            _audioSource = GetComponent<AudioSource>();
 
             _originScale = transform.localScale;
         }
@@ -32,6 +37,13 @@ namespace Swift_Blade
             if (_isHovering == true)
                 return;
             
+            if(_audioSource != null)
+            {
+                _audioSource.Stop();
+                _audioSource.clip = toPlay;
+                _audioSource.Play();
+            }
+
             if (_currentTween != null)
                 _currentTween.Kill();
             
@@ -50,7 +62,10 @@ namespace Swift_Blade
         {
             if (_isHovering == false)
                 return;
-            
+
+            if (_audioSource != null)
+                _audioSource.Stop();
+
             if (_currentTween != null)
                 _currentTween.Kill();
             

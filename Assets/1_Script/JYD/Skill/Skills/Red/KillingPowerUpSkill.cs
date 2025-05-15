@@ -35,6 +35,7 @@ namespace Swift_Blade.Skill
                         redCircleParticle.transform.SetParent(player.GetPlayerTransform);
                         redCircleParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.5f,0);
                         
+                        GenerateSkillText(true);
                         statCompo.AddModifier(statType,skillName,increaseValue);
                     }
                 }
@@ -43,8 +44,9 @@ namespace Swift_Blade.Skill
         
         public override void ResetSkill()
         {
-            
+            GenerateSkillText(false);
             statCompo.RemoveModifier(statType, skillName);
         }
+        
     }
 }

@@ -18,8 +18,11 @@ namespace Swift_Blade
 
         private int _upgradePercent;
 
+        private static SerializableDictionary<ColorType, int> _increaseAmountDic = new();
+        private static SerializableDictionary<ColorType, int> _upgradePercentDic = new();
+
         private PlayerStatCompo _statCompo;
-        private int             recordedIncreasedAmount;
+        private int recordedIncreasedAmount;
 
         private void Start()
         {
@@ -28,12 +31,35 @@ namespace Swift_Blade
             if (_statCompo == null)
             {
                 Debug.Log("PlayerStatCompo is null, so ColorRecorder can't work", transform);
+
                 return;
             }
 
+            LoadData();
+
             _upgradePercent = baseUpgradePercent;
             colorSettingUI.SetStatInfoUI(recordedIncreasedAmount, _upgradePercent);
-            Player.level.StatPoint = 10;
+        }
+
+        private void LoadData()
+        {
+            if (!_increaseAmountDic.ContainsKey(colorType))
+            {
+                _increaseAmountDic.Add(colorType, recordedIncreasedAmount);
+            }
+            else
+            {
+                recordedIncreasedAmount = _increaseAmountDic[colorType];
+            }
+
+            if (!_upgradePercentDic.ContainsKey(colorType))
+            {
+                _upgradePercentDic.Add(colorType, baseUpgradePercent);
+            }
+            else
+            {
+                _upgradePercent = _upgradePercentDic[colorType];
+            }
         }
 
         //Button Event
@@ -45,6 +71,7 @@ namespace Swift_Blade
             if (Player.level.StatPoint <= 0)
             {
                 PopupManager.Instance.LogMessage("스텟 포인트가 부족하다");
+
                 return;
             }
 
@@ -63,6 +90,8 @@ namespace Swift_Blade
 
                 _statCompo.IncreaseColorValue(colorType, 1);
                 recordedIncreasedAmount += 1; //Record success count
+
+                _increaseAmountDic[colorType] = recordedIncreasedAmount;
 
                 // min is 5, max is 100
                 _upgradePercent = Mathf.Clamp(
@@ -98,11 +127,10 @@ namespace Swift_Blade
 
             _statCompo.DecreaseColorValue(colorType, 1);
             recordedIncreasedAmount -= 1;
+            _increaseAmountDic[colorType] = recordedIncreasedAmount;
+
             OnColorChanged?.Invoke();
-
             colorSettingUI.SetStatInfoUI(recordedIncreasedAmount, _upgradePercent);
-
-            return;
         }
 
         //Button Event
@@ -118,6 +146,9 @@ namespace Swift_Blade
 
             Player.level.StatPoint += recordedIncreasedAmount;
             recordedIncreasedAmount = 0;
+
+            _increaseAmountDic[colorType] = recordedIncreasedAmount;
+            _upgradePercentDic[colorType] = baseUpgradePercent;
 
             _upgradePercent = baseUpgradePercent;
             colorSettingUI.SetStatInfoUI(recordedIncreasedAmount, _upgradePercent);

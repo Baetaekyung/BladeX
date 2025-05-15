@@ -24,7 +24,7 @@ namespace Swift_Blade
             floatingText.text = message;
 
             //데미지를 표현하는 것이면 데미지양에 따라 크기 변동 주기            
-            if (int.TryParse(message, out int value))
+            if (float.TryParse(message, out float value))
             {
                 Vector3 localScale = transform.localScale;
 
@@ -64,10 +64,12 @@ namespace Swift_Blade
                 .SetEase(Ease.Flash) // 크기가 커짐과
                 .Join(transform.DOMoveY(
                     transform.position.y + randomFloatSpeed, floatingTime))
-                .SetEase(Ease.OutQuint); // 동시에 위로 올라감)
+                .SetEase(Ease.OutQuint) // 동시에 위로 올라감
+                .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
 
             seq.Append(floatingText.DOColor(Color.clear, fadeTime)) // 끝나면 Fade하고
-                    .OnComplete(() => OnComplete?.Invoke());
+                    .OnComplete(() => OnComplete?.Invoke())
+                    .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
 
         void IPoolable.OnPush()
