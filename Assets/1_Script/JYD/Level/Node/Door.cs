@@ -1,4 +1,3 @@
-using System;
 using Swift_Blade.Pool;
 using UnityEngine;
 using DG.Tweening;
@@ -34,8 +33,6 @@ namespace Swift_Blade.Level
             {
                 SetScene(nodeList.GetNodeNameByNodeType(nodeList.GetCurrentStageType()));
             }
-            
-            //DOVirtual.DelayedCall(delay, (UpDoor()));
         }
 
         private void Rotate()
@@ -44,33 +41,6 @@ namespace Swift_Blade.Level
             direction.y = 0; 
             door.rotation = Quaternion.LookRotation(-direction);
         }
-               
-        /*private void OnEnable()
-        {
-            cinemachineCamera.Priority = 1;
-            DOVirtual.DelayedCall(delay, UpDoor);
-        }
-
-        private void OnDisable()
-        {
-            door.transform.position -= new Vector3(0,2.6f , 0);
-        }*/
-        
-        /*public IEnumerator UpDoor(float doorMoveDelay = 0)
-        {
-            bool isFinished = false;
-            
-            cinemachineCamera.Priority = 1;
-            
-            Sequence sequence = DOTween.Sequence();
-            sequence.AppendCallback(() => CameraShakeManager.Instance.DoShake(cameraShakeType));
-            sequence.Join(door.DOMoveY(transform.position.y + 0.25f, duration));
-            sequence.AppendInterval(doorMoveDelay);
-            sequence.AppendCallback(() => cinemachineCamera.Priority = -1);
-            sequence.OnComplete(() => isFinished = true); 
-
-            yield return new WaitUntil(() => isFinished);
-        }*/
         
         public void SetScene(string _sceneName)
         {
@@ -83,10 +53,6 @@ namespace Swift_Blade.Level
             sequence.AppendInterval(enterDelay);
             sequence.AppendCallback(Rotate);
             sequence.Append(door.DOMoveY(transform.position.y + 0.25f, enterDuration));
-            sequence.OnComplete(() =>
-            {
-                var isFinished = true;
-            });
             
             DustUpParticle dustParticle = MonoGenericPool<DustUpParticle>.Pop();
             dustParticle.transform.position = transform.position;
@@ -97,6 +63,6 @@ namespace Swift_Blade.Level
             sceneManager.LoadScene(sceneName);
             cage.transform.DOLocalMoveY(-2.25f ,cageDownDuration ).SetEase(Ease.OutQuart);
         }
-                
+        
     }
 }

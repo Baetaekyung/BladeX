@@ -17,7 +17,9 @@ namespace Swift_Blade.Skill
         public Vector2 explosionAdjustment;
         public float skillRadius;
         public LayerMask whatIsTarget;
-                
+
+        private bool hasGeneratedText = false;
+        
         public override void Initialize()
         {
             MonoGenericPool<SmallExplosionParticle>.Initialize(skillParticle);
@@ -38,13 +40,20 @@ namespace Swift_Blade.Skill
             {
                 if (TryUseSkill() && item.TryGetComponent(out BaseEnemy enemy))
                 {
-                    enemy.GetEffectController().SetFire(fireDamage, fireTime);
+                    if (hasGeneratedText == false)
+                    {
+                        GenerateSkillText(true);
+                        hasGeneratedText = true;
+                    }
                     
+                    enemy.GetEffectController().SetFire(fireDamage, fireTime);
                     SmallExplosionParticle smallExplosionParticle = MonoGenericPool<SmallExplosionParticle>.Pop();
                     smallExplosionParticle.transform.position = explosionPosition;
                 }
             }
-                        
+
+            hasGeneratedText = false;
+
         }
         
     }

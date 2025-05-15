@@ -177,13 +177,13 @@ public class NodeDictionary : IEnumerable<List<Node>>
     public void Add(Node newNode)
     {
         nodeList[newNode.nodeType].Add(newNode);
-    }
+    } 
     public void InitializeNodes()
     {
         canFirstAppearSpecialNode = true;
         canSecondAppearSpecialNode = true;
         
-        currentStage = NodeType.Stage1;
+        currentStage = NodeType.Stage1;     
         
         specialNodeTypes.Clear();
         specialNodeTypes.Add(NodeType.Challenge);

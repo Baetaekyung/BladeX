@@ -22,6 +22,8 @@ namespace Swift_Blade.Combat.Health
 
         public virtual void Dead()
         {
+            if(isDead)return;
+            
             isDead = true;
             OnDeadEvent?.Invoke();
         }

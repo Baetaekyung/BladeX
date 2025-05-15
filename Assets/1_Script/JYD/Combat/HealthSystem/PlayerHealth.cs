@@ -151,7 +151,7 @@ namespace Swift_Blade.Combat.Health
         public override void Dead()
         {
             base.Dead();
-
+            
             Menu.IsNewGame = true;
             
             PopupManager.Instance.AllPopDown();
