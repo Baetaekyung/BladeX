@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using DG.Tweening;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.UI;
@@ -35,7 +36,7 @@ namespace Swift_Blade
             _currentItem = newItem;
             _itemCount   = count;
             
-            _buttonText.text         = $"{_itemCost.ToString()}코인";
+            _buttonText.text         = $"{_itemCost.ToString()} 체력";
             remainCount.text         = $"남은 갯수: {count.ToString()}";
             itemIcon.sprite          = newItem.itemImage;
             itemNameText.text        = newItem.itemName;
@@ -74,37 +75,26 @@ namespace Swift_Blade
 
             if (PlayerHealth.CurrentHealth <= _itemCost)
             {
-                LogFailedMessage("코인이 부족합니다.");
+                LogFailedMessage("체력이 부족합니다.");
 
                 return;
             }
             
-            if (playerInventory.currentInventoryCapacity == playerInventory.maxInventoryCapacity)
+            if (InventoryManager.Instance.IsAllSlotsFull())
             {
                 LogFailedMessage("인벤토리 슬롯 부족");
 
                 return;
             }
 
-            if (!InventoryManager.Instance.TryAddItemToEmptySlot(_currentItem))
-            {
-                LogFailedMessage("인벤토리가 가득 찼습니다");
+            InventoryManager.Instance.AddItemToMatchSlot(_currentItem);
 
-                return;
-            }
-
-            ActionData actionData = new ActionData();
-            actionData.textColor = Color.red;
-            actionData.damageAmount = _itemCost;
-            Player.Instance.GetEntityComponent<PlayerHealth>().TakeDamage(actionData);
+            Player.Instance.GetEntityComponent<PlayerHealth>().DescreaseHealth(_itemCost);
 
             BuyAnimation();
             
             _itemCount--;
             remainCount.text = $"남은 갯수: {_itemCount.ToString()}";
-
-            
-            playerInventory.currentInventoryCapacity++;
             
             if(_itemCount <= 0)
                 soldOutPanel.SetActive(true);
