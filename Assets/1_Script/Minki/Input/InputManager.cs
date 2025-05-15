@@ -22,6 +22,9 @@ namespace Swift_Blade.Inputs
         public static event Action UseQuickEvent;
         public static event Action Attack1Event;
         public static event Action Attack2Event;
+        public static event Action HEvent;
+        public static event Action PEvent;
+        public static event Action EscEvent;
 
         [SerializeField] private CustomInputSO _input;
 
@@ -63,6 +66,9 @@ namespace Swift_Blade.Inputs
             CustomInputSO.UseQuickEvent += HandleUseQuick;
             CustomInputSO.Attack1Event += HandleAttack1;
             CustomInputSO.Attack2Event += HandleAttack2;
+            CustomInputSO.HEvent += HandleH;
+            CustomInputSO.PEvent += HandleP;
+            CustomInputSO.EscEvent += HandleEsc;
         }
 
         protected override void OnDestroy()
@@ -183,6 +189,30 @@ namespace Swift_Blade.Inputs
                 return;
 
             Attack2Event?.Invoke();
+        }
+
+        private void HandleH()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
+                return;
+
+            HEvent?.Invoke();
+        }
+
+        private void HandleP()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
+                return;
+
+            PEvent?.Invoke();
+        }
+
+        private void HandleEsc()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
+                return;
+
+            EscEvent?.Invoke();
         }
 
         #endregion
