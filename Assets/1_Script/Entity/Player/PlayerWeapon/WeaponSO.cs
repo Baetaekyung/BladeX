@@ -17,6 +17,8 @@ namespace Swift_Blade
 
         [field: Header("Pick Up peview")]
         [field: SerializeField] public ParticleSystem PreviewMeshParticle { get; private set; }
+        [field: SerializeField] public Mesh PreviewMesh { get; private set; }
+
 
         [SerializeField] private SerializableDictionary<EAudioType, BaseAudioSO> audioDictionary;
         [SerializeField] private SerializableDictionary<EAttackType, PoolPrefabGameObjectSO> particleDictinary;
@@ -36,7 +38,7 @@ namespace Swift_Blade
         [SerializeField] private Sprite weaponSprite;
 
         [field: Header("Weapon Information")]
-        [field: SerializeField] public string WeaponName { get; private set; }
+        //[field: SerializeField] public string WeaponName { get; private set; }
         [field: SerializeField, TextArea] public string WeaponDescription { get; private set; }
 
         /// <summary>
