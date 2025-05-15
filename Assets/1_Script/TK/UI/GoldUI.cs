@@ -8,7 +8,7 @@ namespace Swift_Blade.UI
     {
         [SerializeField] private TextMeshProUGUI coinText;
         
-        private void Start()
+        /*private void Start()
         {
             InventoryManager.Inventory.OnCoinChanged += SetCoinUI;
             
@@ -28,7 +28,7 @@ namespace Swift_Blade.UI
             {
                 coinText.text = "0 ÄÚÀÎ";
             }
-        }
+        }*/
                 
         
     }
