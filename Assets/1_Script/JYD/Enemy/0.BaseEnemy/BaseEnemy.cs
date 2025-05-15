@@ -1,13 +1,8 @@
-﻿using System.Collections.Generic;
-using Swift_Blade.Combat.Health;
-using System.Collections;
+﻿using Swift_Blade.Combat.Health;
 using Unity.Behavior;
 using UnityEngine.AI;
 using UnityEngine;
 using System.Linq;
-using DG.Tweening;
-using System;
-using Swift_Blade.Pool;
 
 namespace Swift_Blade.Enemy
 {

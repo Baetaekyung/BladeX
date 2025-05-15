@@ -1,9 +1,8 @@
-﻿
-using Swift_Blade.Combat.Health;
+﻿using Swift_Blade.Combat.Health;
 
 namespace Swift_Blade.Enemy.Throw
 {
-    public class ThrowEnemy : BaseEnemy,IGetMoveSpeedAble
+    public class ThrowEnemy : BaseEnemy
     {
         private ThrowAnimatorController _throwEnemyAnimationController;
         
@@ -25,7 +24,6 @@ namespace Swift_Blade.Enemy.Throw
             _throwEnemyAnimationController.SetStone(null);
             base.DeadEvent();
         }
-        
-        public float GetMoveSpeed() => moveSpeed;
+                
     }
 }
