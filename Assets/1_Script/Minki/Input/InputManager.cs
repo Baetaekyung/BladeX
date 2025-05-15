@@ -6,7 +6,7 @@ namespace Swift_Blade.Inputs
 {
     public enum InputType
     {
-        Movement_Forward, Movement_Left, Movement_Back, Movement_Right, Roll, Parry, Inventory, ChangeQuick, UseQuick, Attack1, Attack2
+        Movement_Forward, Movement_Left, Movement_Back, Movement_Right, Roll, Parry, Inventory, ChangeQuick, UseQuick, Attack1, Attack2, H, P, Esc
     }
 
     [MonoSingletonUsage(MonoSingletonFlags.DontDestroyOnLoad)]
@@ -132,6 +132,9 @@ namespace Swift_Blade.Inputs
                 InputType.UseQuick => _input.CustomInput.Player.UseQuick,
                 InputType.Attack1 => _input.CustomInput.Player.Attack1,
                 InputType.Attack2 => _input.CustomInput.Player.Attack2,
+                InputType.H => _input.CustomInput.Player.H,
+                InputType.P => _input.CustomInput.Player.P,
+                InputType.Esc => _input.CustomInput.Player.Esc,
                 _ => default,
             };
         }
