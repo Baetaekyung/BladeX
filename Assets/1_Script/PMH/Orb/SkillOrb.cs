@@ -8,6 +8,7 @@ namespace Swift_Blade
     public class SkillOrb : BaseOrb<SkillData>
     {
         [SerializeField] private SkillTable entireSkillTable;
+        protected override bool CanInteract => base.CanInteract && SkillManager.Instance.CanAddSkillInventory;
         protected override IReadOnlyList<SkillData> GetReadonlyList => null;
         public override IPlayerEquipable GetEquipable => defaultItem;
 
@@ -31,10 +32,8 @@ namespace Swift_Blade
         }
         protected override void Initialize()
         {
-            if (itemRenderer != null)
-            {
-                itemRenderer.material = colors[(int)defaultItem.colorType];
-            }
+            Debug.Assert(itemRenderer != null, "item Renderer is null");
+            itemRenderer.material = colors[(int)defaultItem.colorType];
         }
     }
 }

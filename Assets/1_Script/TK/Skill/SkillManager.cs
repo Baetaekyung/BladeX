@@ -21,7 +21,9 @@ namespace Swift_Blade
         public int maxSkillCount     = 4;
 
         public bool CanAddSkill => currentSkillCount < maxSkillCount;
-        
+        public bool CanAddSkillInventory => GetEmptyInvSlot() != null;// < k_maxInventorySlot
+
+
         public static SkillSaveSO  saveDatas;
         private void OnEnable()
         {

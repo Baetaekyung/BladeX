@@ -9,6 +9,7 @@ namespace Swift_Blade
     {
         [SerializeField] private ItemTableSO entireItemTable;
         private static List<ItemDataSO> cache;
+        protected override bool CanInteract => base.CanInteract && !InventoryManager.Instance.IsAllSlotsFull();
         protected override IReadOnlyList<ItemDataSO> GetReadonlyList => cache ?? (cache = entireItemTable.ToItemDataSOList());
         public override IPlayerEquipable GetEquipable => defaultItem.equipmentData;
 

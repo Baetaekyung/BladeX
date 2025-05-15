@@ -24,11 +24,12 @@ namespace Swift_Blade
         protected MeshRenderer itemRenderer;
 
         private bool isCollected;
-        protected virtual bool CanInteract => !isCollected && !InventoryManager.Instance.IsAllSlotsFull();
+        protected virtual bool CanInteract => !isCollected;
 
         protected abstract IReadOnlyList<T> GetReadonlyList { get; }
         protected virtual void Awake()
         {
+
             itemRenderer = GetComponentInChildren<MeshRenderer>();
             const float START_FADE_DURATION = 0.75f;
             transform.DOScale(startFadeScale, START_FADE_DURATION)
