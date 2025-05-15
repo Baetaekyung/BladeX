@@ -60,7 +60,7 @@ namespace Swift_Blade.Combat.Health
                         
             FloatingTextGenerator.Instance.GenerateText
             (
-                Mathf.FloorToInt(actionData.damageAmount).ToString(),
+                Mathf.CeilToInt(actionData.damageAmount).ToString(),
                 textPosition,
                 actionData.textColor == default ? Color.white : actionData.textColor);
         }
