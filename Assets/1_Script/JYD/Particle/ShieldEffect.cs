@@ -1,18 +1,12 @@
-using System.Collections;
-using Swift_Blade.Pool;
 using System.Linq;
 using UnityEngine;
+using Swift_Blade.Pool;
 
 namespace Swift_Blade
 {
     public class ShieldEffect : MonoBehaviour
     {
         [SerializeField] [Range(0.1f, 300)] private float rotateSpeed;
-        [SerializeField] private float delayTime = 0.35f;
-        
-        [SerializeField] [Range(0.1f, 5)] private float fadeInTime;
-        [SerializeField] [Range(0.1f, 2)] private float fadeOutTime;
-
         [SerializeField] private PoolPrefabMonoBehaviourSO hexagonParticle;
         
         private Material[] shieldMats;

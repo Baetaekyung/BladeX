@@ -6,7 +6,7 @@ namespace Swift_Blade.Inputs
 {
     public enum InputType
     {
-        Movement_Forward, Movement_Left, Movement_Back, Movement_Right, Roll, Parry, Inventory, ChangeQuick, UseQuick, Attack1, Attack2
+        Movement_Forward, Movement_Left, Movement_Back, Movement_Right, Roll, Parry, Inventory, ChangeQuick, UseQuick, Attack1, Attack2, H, P, Esc
     }
 
     [MonoSingletonUsage(MonoSingletonFlags.DontDestroyOnLoad)]
@@ -22,6 +22,9 @@ namespace Swift_Blade.Inputs
         public static event Action UseQuickEvent;
         public static event Action Attack1Event;
         public static event Action Attack2Event;
+        public static event Action HEvent;
+        public static event Action PEvent;
+        public static event Action EscEvent;
 
         [SerializeField] private CustomInputSO _input;
 
@@ -63,6 +66,9 @@ namespace Swift_Blade.Inputs
             CustomInputSO.UseQuickEvent += HandleUseQuick;
             CustomInputSO.Attack1Event += HandleAttack1;
             CustomInputSO.Attack2Event += HandleAttack2;
+            CustomInputSO.HEvent += HandleH;
+            CustomInputSO.PEvent += HandleP;
+            CustomInputSO.EscEvent += HandleEsc;
         }
 
         protected override void OnDestroy()
@@ -126,6 +132,9 @@ namespace Swift_Blade.Inputs
                 InputType.UseQuick => _input.CustomInput.Player.UseQuick,
                 InputType.Attack1 => _input.CustomInput.Player.Attack1,
                 InputType.Attack2 => _input.CustomInput.Player.Attack2,
+                InputType.H => _input.CustomInput.Player.H,
+                InputType.P => _input.CustomInput.Player.P,
+                InputType.Esc => _input.CustomInput.Player.Esc,
                 _ => default,
             };
         }
@@ -183,6 +192,30 @@ namespace Swift_Blade.Inputs
                 return;
 
             Attack2Event?.Invoke();
+        }
+
+        private void HandleH()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
+                return;
+
+            HEvent?.Invoke();
+        }
+
+        private void HandleP()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
+                return;
+
+            PEvent?.Invoke();
+        }
+
+        private void HandleEsc()
+        {
+            if (PopupManager.Instance.IsRemainPopup)
+                return;
+
+            EscEvent?.Invoke();
         }
 
         #endregion

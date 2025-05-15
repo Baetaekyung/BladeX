@@ -40,7 +40,7 @@ namespace Swift_Blade
             //inventory.Coin = 0;
             
             inventory.currentInventoryCapacity = 0;
-            inventory.maxInventoryCapacity = itemSlots.Count - 5; // -5´Â Àåºñ½½·Ô ¶§¹®¿¡
+            inventory.maxInventoryCapacity = itemSlots.Count - 5; // -5ï¿½ï¿½ ï¿½ï¿½ñ½½·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             inventory.currentEquipment = new List<EquipmentData>();
 
             return inventory;

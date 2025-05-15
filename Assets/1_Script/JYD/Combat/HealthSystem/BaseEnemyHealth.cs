@@ -1,12 +1,10 @@
 using System.Collections;
 using Swift_Blade.Enemy;
+using Swift_Blade.Pool;
 using UnityEngine.AI;
 using Unity.Behavior;
 using UnityEngine;
 using System;
-using Swift_Blade.Pool;
-using Unity.Mathematics;
-using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat.Health
 {
@@ -28,7 +26,7 @@ namespace Swift_Blade.Combat.Health
         
         private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
         
-        protected const float DAMAGE_INTERVAL = 0.1f;
+        private const float DAMAGE_INTERVAL = 0.1f;
         protected float lastDamageTime;
         
         protected virtual void Start()
@@ -87,22 +85,10 @@ namespace Swift_Blade.Combat.Health
             }
             
         }
-        
-        public override void Dead()
-        {
-            InventoryManager.Inventory.AddCoin(AddRandomCoin());
-            
-            base.Dead();
-        }
-        
+                
         protected bool IsDamageTime()
         {
             return Time.time > lastDamageTime + DAMAGE_INTERVAL;
-        }
-        
-        private int AddRandomCoin()
-        {
-            return Random.Range(1,10);
         }
         
         public void AddMaxHealth(int currentIndex)

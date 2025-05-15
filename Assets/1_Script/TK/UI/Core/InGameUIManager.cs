@@ -21,6 +21,8 @@ namespace Swift_Blade
 
         [SerializeField] private TextMeshProUGUI itemInfoTitle;
 
+        [field: SerializeField] public SpecialCooldown SpecialCooldown { get; private set; }
+
         private float transparencyInfo;
         private Tween transparencyTween;
         public void EnableBoss(bool enable)
