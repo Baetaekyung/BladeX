@@ -15,6 +15,8 @@ namespace Swift_Blade
         [SerializeField] private float skillRadius;
         [SerializeField] private LayerMask whatIsTarget;
 
+        private bool hasGeneratedText = false;
+        
         public override void Initialize()
         {
             MonoGenericPool<LightingSparkParticle>.Initialize(skillParticle);
@@ -34,8 +36,6 @@ namespace Swift_Blade
                 skillCounter = 0;
                 if (TryUseSkill())
                 {
-                    GenerateSkillText(true);
-                    
                     foreach (var item in targets)
                     {
                         if (item.TryGetComponent(out BaseEnemyHealth health))
@@ -46,10 +46,18 @@ namespace Swift_Blade
                             
                             health.TakeDamage(actionData);
                         }
-                
+
+                        if (hasGeneratedText == false)
+                        {
+                            GenerateSkillText(true);
+                            hasGeneratedText = true;
+                        }
+                        
                         LightingSparkParticle th = MonoGenericPool<LightingSparkParticle>.Pop();
                         th.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.4f,0);
                     }
+                    
+                    hasGeneratedText = false;
                 }
                 
             }
