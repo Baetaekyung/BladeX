@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Swift_Blade.Inputs;
@@ -19,7 +20,13 @@ namespace Swift_Blade
 
         private List<PopupUI> _popupList = new List<PopupUI>();
         public event Action OnPopUpOpenOrClose;
-
+        
+        private readonly Queue<string> _infoBoxQueue = new();
+        private bool isDisplayingInfoBox = false;
+        private WaitForSeconds infoBoxWait;
+        private const float INFO_BOX_INTERVAL = 0.16f; 
+        private const float INFO_BOX_FADE_OUT_TIME = 0.43f; 
+        
         public bool IsRemainPopup
         {
             get
@@ -43,6 +50,8 @@ namespace Swift_Blade
         {
             InitPopups();
             InputManager.InventoryEvent += InputEventInventory;
+
+            infoBoxWait = new WaitForSeconds(INFO_BOX_INTERVAL);
         }
         protected override void OnDestroy()
         {
@@ -209,30 +218,51 @@ namespace Swift_Blade
             DelayPopup(PopupType.Text, 2f, () => PopDown(PopupType.Text));
         }
 
-        public void LogInfoBox(string message, float timer = 1.5f)
+        public void LogInfoBox(string message, float timer = INFO_BOX_FADE_OUT_TIME)
         {
-            //if popup remain in screen
-            if (GetRemainPopup(PopupType.InfoBox) != null)
+            _infoBoxQueue.Enqueue(message);
+            
+            if (!isDisplayingInfoBox)
+                StartCoroutine(ProcessInfoBoxQueue(timer));
+        }
+
+        private IEnumerator ProcessInfoBoxQueue(float timer)
+        {
+            isDisplayingInfoBox = true;
+
+            while (_infoBoxQueue.Count > 0)
             {
-                if (isLayerTextInfo == false)
+                string message = _infoBoxQueue.Dequeue();
+
+                //if popup remain in screen
+                if (GetRemainPopup(PopupType.InfoBox) != null)
                 {
-                    PopupUI remain = GetRemainPopup(PopupType.InfoBox);
-                    InfoBoxPopup infoB = remain as InfoBoxPopup;
-                    infoB.SetInfoBox("");
+                    if (!isLayerTextInfo)
+                    {
+                        PopupUI remain = GetRemainPopup(PopupType.InfoBox);
+                        if (remain is InfoBoxPopup infoB)
+                            infoB.SetInfoBox("");
+                    }
+
+                    InfoBoxPopup remainInfobox = Instantiate(infoBoxPopup, popupCanvasTrm);
+                    remainInfobox.transform.SetAsFirstSibling();
+                    remainInfobox.SetInfoBox(message);
+                    remainInfobox.DelayPopup(INFO_BOX_FADE_OUT_TIME, () => Destroy(remainInfobox.gameObject));
+                }
+                else
+                {
+                    PopupUI popup = GetPopupUI(PopupType.InfoBox);
+                    if (popup is InfoBoxPopup infoPopup)
+                    {
+                        infoPopup.SetInfoBox(message);
+                        DelayPopup(PopupType.InfoBox, timer, () => PopDown(PopupType.InfoBox));
+                    }
                 }
 
-                InfoBoxPopup remainInfobox = Instantiate(infoBoxPopup, popupCanvasTrm);
-                
-                remainInfobox.SetInfoBox(message);
-                remainInfobox.DelayPopup(1.0f, () => Destroy(remainInfobox.gameObject));
-                return;
+                yield return infoBoxWait;
             }
-
-            PopupUI popup = GetPopupUI(PopupType.InfoBox);
-            InfoBoxPopup infoPopup = popup as InfoBoxPopup;
-
-            infoPopup.SetInfoBox(message);
-            DelayPopup(PopupType.InfoBox, timer, () => PopDown(PopupType.InfoBox));
+            
+            isDisplayingInfoBox = false;
         }
 
         public void AllPopDown()
