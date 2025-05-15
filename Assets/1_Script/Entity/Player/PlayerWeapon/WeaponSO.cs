@@ -118,10 +118,9 @@ namespace Swift_Blade
                 case ColorType.BLUE:
                     result = () =>
                     {
-                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.ATTACKSPEED, 
-                            nameof(StatType.ATTACKSPEED), 3, 1 , PlayParticle,StopParticle);
-                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.MOVESPEED, nameof(StatType.MOVESPEED), 3, 1);
-                        
+                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.ATTACKSPEED, nameof(StatType.ATTACKSPEED), 3, 5 , PlayParticle,StopParticle);
+                        entity.GetEntityComponent<PlayerStatCompo>().BuffToStat(StatType.MOVESPEED, nameof(StatType.MOVESPEED), 3, 5);
+                                            
                         entity.GetSkillController.UseSkill(SkillType.SpeedUp);
                     };
                     break;

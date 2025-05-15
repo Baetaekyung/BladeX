@@ -49,7 +49,7 @@ namespace Swift_Blade
         {
             if (OnEffectEvents.TryGetValue(EffectType.Slow, out var action))
                 action?.Invoke(true);
-
+            
             PlayIceSmokeParticle();
             
             baseEnemyAnimationController.SetAnimationSpeed(speed);

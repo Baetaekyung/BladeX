@@ -59,7 +59,7 @@ namespace Swift_Blade.UI
 
         public virtual void DelayPopup(float delay)
         {
-            if (_delayRoutine is not null)
+            if (_delayRoutine != null)
             {
                 StopCoroutine(_delayRoutine);
             } 
@@ -68,7 +68,7 @@ namespace Swift_Blade.UI
 
         public virtual void DelayPopup(float delay, Action callback)
         {
-            if (_delayRoutine is not null)
+            if (_delayRoutine != null)
             {
                 StopCoroutine(_delayRoutine);
             }

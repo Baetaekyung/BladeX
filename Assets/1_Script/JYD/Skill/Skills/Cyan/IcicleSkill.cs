@@ -12,7 +12,7 @@ namespace Swift_Blade.Skill
     {
         [SerializeField] private float skillRadius;
         [SerializeField] private float skillDamage;
-        [SerializeField] private float slowDuration;
+        [SerializeField] private float slowSpeed;
         
         [SerializeField] private int icicleCount;
         [SerializeField] private LayerMask whatIsEnemy;
@@ -37,7 +37,7 @@ namespace Swift_Blade.Skill
                 
                 if (item.TryGetComponent(out BaseEnemyHealth health) && item.TryGetComponent(out BaseEnemy enemy))
                 {
-                    enemy.GetEffectController().SetSlow(slowDuration);
+                    enemy.GetEffectController().SetSlow(slowSpeed);
                     ActionData actionData = new ActionData();
                     actionData.stun = true;
                     actionData.damageAmount = skillDamage;
