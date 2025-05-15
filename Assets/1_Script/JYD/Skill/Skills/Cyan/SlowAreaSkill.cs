@@ -15,7 +15,9 @@ namespace Swift_Blade.Skill
         [SerializeField] private float defaultSlowValue;
         [SerializeField] private float minSlowValue;
         [SerializeField] private LayerMask whatIsEnemy;
-                        
+        
+        private bool hasGeneratedText = false;
+        
         public override void Initialize()
         {
             MonoGenericPool<AreaTyphoonParticle>.Initialize(skillParticle);
@@ -41,7 +43,14 @@ namespace Swift_Blade.Skill
                     iceSmokeParticle.transform.SetParent(enemy.transform);
                     iceSmokeParticle.transform.position = enemy.transform.position + new Vector3(0,1.25f,0);
                     
+                    if (hasGeneratedText == false)
+                    {
+                        GenerateSkillText(true);
+                        hasGeneratedText = true;
+                    }
                 }
+                
+                hasGeneratedText = true;
             }
             
         }

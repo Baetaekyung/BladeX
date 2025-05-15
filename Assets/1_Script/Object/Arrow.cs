@@ -58,27 +58,19 @@ namespace Swift_Blade.Pool
             {
                 if (other.gameObject.TryGetComponent(out IHealth health))
                 {
-                    TryParry(other, health);
-                }
-                else
-                {
-                    Vector3 hitPosition = other.ClosestPoint(transform.position);
-                    PlayDustParticle(hitPosition);
-                    
-                    Hit(health);
+                    CheckPlayerOrEnemy(other, health);
                 }
             }
             else
             {
                 Vector3 hitPosition = other.ClosestPoint(transform.position);
                 PlayDustParticle(hitPosition);
-                                
                 AudioManager.PlayWithInit(groundHitAudio.GetRandomAudio,true);
-                MonoGenericPool<Arrow>.Push(this);
+                MonoGenericPool<Arrow>.Push(this);                   
             }
         }
 
-        private void TryParry(Collider other, IHealth health)
+        private void CheckPlayerOrEnemy(Collider other, IHealth health)
         {
             if (other.TryGetComponent(out PlayerParryController playerParryController) && playerParryController.GetParry())
             {
