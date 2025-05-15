@@ -7,7 +7,6 @@ namespace Swift_Blade
     [CreateAssetMenu(fileName = "PlayerInventory", menuName = "SO/PlayerInventory")]
     public class PlayerInventory : ScriptableObject
     {
-        public int currentInventoryCapacity;
         public int maxInventoryCapacity;
         
         public List<ItemDataSO> itemInventory;
@@ -39,7 +38,6 @@ namespace Swift_Blade
             inventory.itemInventory = tempInventory;            
             //inventory.Coin = 0;
             
-            inventory.currentInventoryCapacity = 0;
             inventory.maxInventoryCapacity = itemSlots.Count - 5; // -5�� ��񽽷� ������
             inventory.currentEquipment = new List<EquipmentData>();
 

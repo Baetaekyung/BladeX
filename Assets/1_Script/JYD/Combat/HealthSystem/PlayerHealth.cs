@@ -124,6 +124,16 @@ namespace Swift_Blade.Combat.Health
                 }
             }
         }
+
+        public void DescreaseHealth(int decreaseAmount)
+        {
+            CurrentHealth -= decreaseAmount;
+
+            ActionData actionData = new ActionData();
+            actionData.damageAmount = decreaseAmount;
+
+            OnHitEvent?.Invoke(actionData);
+        }
         
         public override void TakeHeal(float healAmount) //힐 받으면 현재 체력에 HealAmount 더한 값으로 변경
         {
