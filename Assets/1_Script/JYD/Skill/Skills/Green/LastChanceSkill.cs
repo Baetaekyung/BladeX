@@ -1,9 +1,8 @@
-using System.Collections.Generic;
-using DG.Tweening;
-using Swift_Blade.Pool;
-using UnityEngine.Rendering;
-using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using System.Collections.Generic;
+using UnityEngine.Rendering;
+using DG.Tweening;
+using UnityEngine;
 
 namespace Swift_Blade.Skill
 {
@@ -39,10 +38,10 @@ namespace Swift_Blade.Skill
         {
             if (player.GetPlayerHealth.GetCurrentHealth <= 1 && canUpgrade)
             {
+                GenerateSkillText(true);
+                
                 canUpgrade = false;
                     
-                Debug.Log("¤µ¤´¤²");
-                
                 DOVirtual.Float(chromaticAberration.intensity.value , chromaticAberrationIntensity,chromaticAberrationDuration ,x =>
                 {
                     chromaticAberration.intensity.value = x;
@@ -56,6 +55,8 @@ namespace Swift_Blade.Skill
         
         public override void ResetSkill()
         {
+            GenerateSkillText(false);
+            
             DOVirtual.Float(chromaticAberration.intensity.value ,0 ,chromaticAberrationDuration ,x =>
             {
                 chromaticAberration.intensity.value = x;

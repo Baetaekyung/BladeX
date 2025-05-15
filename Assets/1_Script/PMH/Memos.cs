@@ -16,6 +16,8 @@ namespace Swift_Blade
         [SerializeField] private Door doorTrm;
         [SerializeField] private ParticleSystem[] fireworks;
 
+        [SerializeField] private bool isIntroduceRooms = false;
+
         private void Awake()
         {
             if(m_dialogueData == null) m_dialogueData = Instantiate(dialogueSO);

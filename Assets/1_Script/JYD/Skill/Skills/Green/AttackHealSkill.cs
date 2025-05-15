@@ -21,6 +21,8 @@ namespace Swift_Blade
             {
                 if (TryUseSkill())
                 {
+                    GenerateSkillText(true);
+                    
                     int healthAmount = Mathf.RoundToInt(healAmount * GetColorRatio());
                     player.GetPlayerHealth.TakeHeal(Mathf.Min(MAX_HEAL_AMOUNT, healthAmount));
                 }

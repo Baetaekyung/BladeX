@@ -32,7 +32,9 @@ namespace Swift_Blade.Skill
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
             if(TryUseSkill() == false)return;
-
+            
+            GenerateSkillText(true);
+            
             DOVirtual.DelayedCall(EXECUTE_DELAY , () =>
             {
                 if (directions == null || directions.Length != skillCount)

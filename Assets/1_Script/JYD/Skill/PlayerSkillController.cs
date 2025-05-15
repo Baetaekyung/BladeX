@@ -150,13 +150,7 @@ namespace Swift_Blade.Skill
             }
         }
 
-        private void OnDrawGizmosSelected()
-        {
-            foreach (var item in skillDatas)
-            {
-                item.DrawGizmo(_player);
-            }
-        }
+        
     }
 }
 

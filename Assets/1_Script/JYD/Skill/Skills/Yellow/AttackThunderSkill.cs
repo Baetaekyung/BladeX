@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Pool;
+using UnityEditor.TerrainTools;
 using UnityEngine;
 
 namespace Swift_Blade.Skill
@@ -15,12 +16,6 @@ namespace Swift_Blade.Skill
                 
         public override void Initialize()
         {
-            if (skillParticle == null || skillParticle.GetMono == null)
-            {
-                Debug.LogError("SkillEffectPrefab or its MonoBehaviour is null.");
-                return;
-            }
-            
             attackCounter = 0;
             MonoGenericPool<ThunderParticle>.Initialize(skillParticle);
         }
@@ -33,6 +28,8 @@ namespace Swift_Blade.Skill
             {
                 if (TryUseSkill())
                 {
+                    GenerateSkillText(true);
+                    
                     foreach (var item in targets)
                     {
                         if(item.TryGetComponent(out BaseEnemyHealth health))
