@@ -27,17 +27,17 @@ namespace Swift_Blade.Enemy
         [Header("Weapon info")]
         public GameObject weapon;
         
-        protected Vector3 attackDestination;
-        protected Collider enemyCollider;
         protected BehaviorGraphAgent btAgent;
         protected NavMeshAgent NavmeshAgent;
+        protected Collider enemyCollider;
+        protected Vector3 attackDestination;
         
         protected BaseEnemyAnimationController baseAnimationController;
         protected BaseEnemyHealth baseHealth;
         private EnemyEffectController effectController;
         
         private Vector3 nextPathPoint;
-                
+        
         public float StopDistance { get => stopDistance; set => stopDistance = value; }
 
                 
@@ -50,12 +50,8 @@ namespace Swift_Blade.Enemy
             effectController = GetComponent<EnemyEffectController>();
             baseAnimationController = GetComponentInChildren<BaseEnemyAnimationController>();
         }
-            
-        public virtual BaseEnemyHealth GetHealth()
-        {
-            return baseHealth;
-        }
         
+        public virtual BaseEnemyHealth GetHealth() => baseHealth;
         public EnemyEffectController GetEffectController() => effectController;
         
         protected virtual void Start()
@@ -82,7 +78,6 @@ namespace Swift_Blade.Enemy
             btAgent.enabled = true;
         }
                 
-        
         protected virtual void Update()
         {
             if (baseHealth.isDead)
@@ -90,7 +85,7 @@ namespace Swift_Blade.Enemy
             
             if (baseAnimationController.isManualRotate) 
                 FactToTarget(target.position);
-
+    
             if (baseAnimationController.isManualMove && !DetectForwardObstacle())
             {
                 bool isGround = Physics.Raycast(transform.position + Vector3.up * 1.2f, Vector3.down , out RaycastHit RaycastHit,  10, whatIsGround);
@@ -107,7 +102,7 @@ namespace Swift_Blade.Enemy
                         baseAnimationController.AttackMoveSpeed * Time.deltaTime);
                 }
             }
-                        
+            
         }
         
         public void FactToTarget(Vector3 target)
@@ -121,7 +116,7 @@ namespace Swift_Blade.Enemy
         
         private void StopImmediately()
         {
-            if (NavmeshAgent.enabled == false) return;
+            if (NavmeshAgent == null || NavmeshAgent.enabled == false) return;
             
             NavmeshAgent.isStopped = true;
             NavmeshAgent.velocity = Vector3.zero;
@@ -130,9 +125,9 @@ namespace Swift_Blade.Enemy
         public Vector3 GetNextPathPoint()
         {
             var path = NavmeshAgent.path;
-
+            
             if (path.corners.Length < 2) return NavmeshAgent.destination;
-
+            
             for (var i = 0; i < path.corners.Length; i++)
             {
                 var distance = Vector3.Distance(NavmeshAgent.transform.position, path.corners[i]);
@@ -149,10 +144,11 @@ namespace Swift_Blade.Enemy
 
         public virtual void DeadEvent()
         {
+            enemyCollider.enabled = false;
+            
             StopImmediately();
             AddEnemyWeaponCollision();
                 
-            enemyCollider.enabled = false;
             Destroy(NavmeshAgent);
         }
         
@@ -176,7 +172,7 @@ namespace Swift_Blade.Enemy
             
             Gizmos.DrawRay(checkForward.position, checkForward.forward * maxDistance);
         }
-
+        
         public float GetMoveSpeed()
         {
             return moveSpeed;
