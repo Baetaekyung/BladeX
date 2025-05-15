@@ -15,8 +15,8 @@ namespace Swift_Blade.Enemy.Bow
 
         public override void StopAllAnimationEvents()
         {
-            base.StopAllAnimationEvents();
             StopDrawBowstring();
+            base.StopAllAnimationEvents();
         }
         
         public void StartDrawBowstring()

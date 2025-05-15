@@ -1,8 +1,7 @@
-using UnityEngine;
-using System;
 using Swift_Blade.Feeling;
 using Swift_Blade.Level;
-using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine;
+using System;
 
 namespace Swift_Blade
 {
@@ -12,7 +11,7 @@ namespace Swift_Blade
         public event Action LevelClearEvent;
         public event Action<string,Action> SceneLoadEvent;
         public event Action SceneEnterEvent;
-
+        
         public NodeList NodeList;
         public HitStopSO hitStopSO;
         
@@ -27,13 +26,11 @@ namespace Swift_Blade
         public void LoadScene(string sceneName)
         {
             NodeList.RemoveNode(sceneName);
-            
             SceneLoadEvent?.Invoke(sceneName,SceneEnterEvent);
         }
         
         public NodeList GetNodeList() => NodeList;
         
-       
-        
+                
     }
 }

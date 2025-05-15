@@ -12,8 +12,7 @@ namespace Swift_Blade.Level
         [SerializeField] private PoolPrefabMonoBehaviourSO dustPrefab;
         
         [SerializeField] private bool isDefaultPortal;
-        [SerializeField] private bool isNotStageDoor;
-        
+                
         [Range(0.1f , 10)] [SerializeField] private float enterDelay;
         [Range(0.1f , 10)] [SerializeField] private float enterDuration;
         [Range(0.1f , 2)] [SerializeField] private float cageDownDuration;
@@ -31,7 +30,7 @@ namespace Swift_Blade.Level
 
         private void Start()
         {
-            if (isDefaultPortal && isNotStageDoor == false)
+            if (isDefaultPortal)
             {
                 SetScene(nodeList.GetNodeNameByNodeType(nodeList.GetCurrentStageType()));
             }
@@ -95,11 +94,9 @@ namespace Swift_Blade.Level
         
         public void Interact()
         {
-            cage.transform.DOLocalMoveY(-2.25f ,cageDownDuration ).SetEase(Ease.OutQuart).SetLink(gameObject);
             sceneManager.LoadScene(sceneName);
+            cage.transform.DOLocalMoveY(-2.25f ,cageDownDuration ).SetEase(Ease.OutQuart);
         }
-        
-       
-        
+                
     }
 }
