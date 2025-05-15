@@ -1,6 +1,7 @@
 using Swift_Blade.Pool;
 using UnityEngine;
 using DG.Tweening;
+using Swift_Blade.Audio;
 
 namespace Swift_Blade.Level
 {
@@ -25,11 +26,15 @@ namespace Swift_Blade.Level
 
         [SerializeField] private GameObject meshObject;
 
+        [Space] 
+        [SerializeField] private AudioSO doorEnterSound; 
+        [SerializeField] private AudioSO doorUseSound; 
+        
         GameObject IInteractable.GetMeshGameObject()
         {
             return meshObject;
         }
-
+        
         private void Awake()
         {
             MonoGenericPool<DustUpParticle>.Initialize(dustPrefab);   
@@ -57,6 +62,8 @@ namespace Swift_Blade.Level
                         
         public void UpDoor()
         {
+            AudioManager.PlayWithInit(doorEnterSound,true);
+            
             Sequence sequence = DOTween.Sequence();
             sequence.AppendInterval(enterDelay);
             sequence.AppendCallback(Rotate);
@@ -68,6 +75,8 @@ namespace Swift_Blade.Level
         
         public void Interact()
         {
+            AudioManager.PlayWithInit(doorUseSound,true);
+            
             sceneManager.LoadScene(sceneName);
             cage.transform.DOLocalMoveY(-2.25f ,cageDownDuration ).SetEase(Ease.OutQuart);
         }
