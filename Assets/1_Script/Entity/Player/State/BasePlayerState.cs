@@ -114,6 +114,7 @@ namespace Swift_Blade.FSM.States
             if (nextDelayTime_AllowSpecial > Time.time && !parryable) return;
             nextDelayTime_AllowSpecial = Time.time + GetSpecialDelay;
             parryable = false;
+            InGameUIManager.Instance.SpecialCooldown.SetCooldown();
             Action specialBehaviour = PlayerWeaponManager.CurrentWeapon.GetSpecialBehaviour(entity);
             specialBehaviour.Invoke();
             //GetOwnerFsm.ChangeState(PlayerStateEnum.Parry);
