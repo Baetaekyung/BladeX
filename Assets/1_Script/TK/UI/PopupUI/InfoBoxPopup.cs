@@ -2,6 +2,7 @@ using Swift_Blade.UI;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using System;
 
 namespace Swift_Blade
 {
@@ -26,11 +27,17 @@ namespace Swift_Blade
 
         public override void Popup()
         {
-            if(rectTrans != null)
+            Popup(null);
+        }
+
+        public void Popup(float time, Action callback)
+        {
+            if (rectTrans != null)
             {
                 rectTrans.DOKill();
-                
-                rectTrans.DOLocalMoveY(maxPosY, upDuration)
+
+                rectTrans.DOLocalMoveY(maxPosY, time)
+                    .OnComplete(() => callback?.Invoke())
                     .SetEase(Ease.OutCirc)
                     .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
             }
@@ -38,22 +45,39 @@ namespace Swift_Blade
             _raycaster.enabled = true;
         }
 
+        public void Popup(Action callback)
+        {
+            Popup(upDuration, callback);
+        }
+
         public override void PopDown()
         {
-            if(rectTrans != null)
+            PopDown(null);
+        }
+
+        public void PopDown(Action callback)
+        {
+            PopDown(fadeTime, callback);
+        }
+
+        public void PopDown(float timer, Action callback = null)
+        {
+            if (rectTrans != null)
                 rectTrans.DOKill();
 
-            if(cG != null)
+            if (cG != null)
             {
-                cG.DOFade(0f, fadeTime).SetEase(Ease.InCirc).OnComplete(() =>
+                cG.DOFade(0f, timer).SetEase(Ease.InCirc).OnComplete(() =>
                 {
                     rectTrans.localPosition = new Vector3(
                     rectTrans.localPosition.x,
                     minPosY,
                     rectTrans.localPosition.z);
+
+                    callback?.Invoke();
                 }).SetLink(gameObject, LinkBehaviour.KillOnDestroy);
             }
-            
+
             _raycaster.enabled = false;
         }
 
