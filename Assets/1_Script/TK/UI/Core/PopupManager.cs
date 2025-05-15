@@ -212,7 +212,7 @@ namespace Swift_Blade
             DelayPopup(PopupType.Text, 2f, () => PopDown(PopupType.Text));
         }
 
-        public void LogInfoBox(string message, float timer = 1.5f)
+        public void LogInfoBox(string message, float timer = 1f)
         {
             bool isRemainInfoBox = _infoboxList.Count > 0;
 
@@ -227,7 +227,7 @@ namespace Swift_Blade
 
                     //Fast update
                     info.DOKill();
-                    info.Popup(0.2f, () => info.PopDown(0.2f, 
+                    info.Popup(0.3f, () => info.PopDown(0.1f, 
                         () => Destroy(info.gameObject)));
                 }
 
