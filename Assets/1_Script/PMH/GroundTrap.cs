@@ -54,7 +54,7 @@ namespace Swift_Blade.Level.Obstacle
             const float yInactive = -2.5f;
             return isActive ? yActive : yInactive;
         }
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerStay(Collider other)
         {
             if (!isActive) return;
             if (other.TryGetComponent(out BaseEntityHealth health))
