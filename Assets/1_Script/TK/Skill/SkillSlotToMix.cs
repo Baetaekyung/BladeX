@@ -78,12 +78,6 @@ namespace Swift_Blade
                 && eventData.button != PointerEventData.InputButton.Left)
                 return;
 
-            if (_skillData.colorType == ColorType.PURPLE ||
-                _skillData.colorType == ColorType.TURQUOISE ||
-                _skillData.colorType == ColorType.YELLOW ||
-                _skillData.colorType == ColorType.BLACK)
-                return;
-
             if (_skillMixer.IsReadyToMix())
                 return;
 

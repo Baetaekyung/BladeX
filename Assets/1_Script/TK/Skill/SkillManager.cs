@@ -80,10 +80,6 @@ namespace Swift_Blade
             {
                 ColorType type = saveDatas.inventoryData[i].colorType;
 
-                if (type == ColorType.YELLOW || type == ColorType.PURPLE
-                    || type == ColorType.TURQUOISE || type == ColorType.BLACK)
-                    continue;
-
                 GetEmptyMixSlot().SetSlotData(saveDatas.inventoryData[i]);
             }
 

@@ -62,8 +62,8 @@ namespace Swift_Blade
             {
                 Inventory = playerInv.Clone();
 
-                for (int i = 0; i < defaultPotionCount; i++)
-                    AddItemToMatchSlot(defaultPotionItem);
+                //for (int i = 0; i < defaultPotionCount; i++)
+                //    AddItemToMatchSlot(defaultPotionItem);
 
                 UpdateAllSlots();
 
