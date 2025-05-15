@@ -77,6 +77,8 @@ namespace Swift_Blade
             {
                 DebugStats.Add(new DebugStat(stat.statName, stat.Value));
             }
+
+            SetSpecialStatValue();
         }
 
         public void BuffToStat(StatType statType, string buffKey, float buffTime, float buffAmount
@@ -164,9 +166,9 @@ namespace Swift_Blade
 
         private void ColorValueChange()
         {
+            UpdateStat();
             ColorValueChangedAction?.Invoke();
 
-            UpdateStat();
             Player.Instance.GetEntityComponent<PlayerHealth>().HealthUpdate();
         }
 
@@ -183,6 +185,17 @@ namespace Swift_Blade
 
             Debug.Log($"Can't find match stat, colorType: {colorType}");
             return default;
+        }
+
+        public void SetSpecialStatValue()
+        {
+            int redValue = GetColorStatValue(ColorType.RED);
+            int greenValue = GetColorStatValue(ColorType.GREEN);
+            int blueValue = GetColorStatValue(ColorType.BLUE);
+
+            GetColorStat(ColorType.YELLOW).colorValue = Mathf.Min(redValue, greenValue);
+            GetColorStat(ColorType.PURPLE).colorValue = Mathf.Min(redValue, blueValue);
+            GetColorStat(ColorType.TURQUOISE).colorValue = Mathf.Min(greenValue, blueValue);
         }
     }
 }
