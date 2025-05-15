@@ -18,6 +18,7 @@ namespace Swift_Blade
         //[SerializeField] protected bool isPrePlaced;//random select
         [SerializeField] protected T defaultItem;
         [SerializeField] protected Material[] colors;
+        [SerializeField] private GameObject meshObject;
 
         private Tween interactTween;
         protected MeshRenderer itemRenderer;
@@ -28,7 +29,7 @@ namespace Swift_Blade
         protected abstract IReadOnlyList<T> GetReadonlyList { get; }
         protected virtual void Awake()
         {
-            itemRenderer = GetComponent<MeshRenderer>();
+            itemRenderer = GetComponentInChildren<MeshRenderer>();
             const float START_FADE_DURATION = 0.75f;
             transform.DOScale(startFadeScale, START_FADE_DURATION)
                 .SetDelay(0.1f)
@@ -114,5 +115,10 @@ namespace Swift_Blade
                 .SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
         protected virtual TweenCallback CollectTweenCallback() => null;
+
+        GameObject IInteractable.GetMeshGameObject()
+        {
+            return meshObject;
+        }
     }
 }

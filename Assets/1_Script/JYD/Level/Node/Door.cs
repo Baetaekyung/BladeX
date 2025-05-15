@@ -24,6 +24,13 @@ namespace Swift_Blade.Level
         [SerializeField] private Transform cage;
         [SerializeField] private string sceneName;
 
+        [SerializeField] private GameObject meshObject;
+
+        GameObject IInteractable.GetMeshGameObject()
+        {
+            return meshObject;
+        }
+
         private void Awake()
         {
             MonoGenericPool<DustUpParticle>.Initialize(dustPrefab);   

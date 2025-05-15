@@ -38,9 +38,10 @@ namespace Swift_Blade
 
         private readonly Collider[] buffer_overlapSphereResult = new Collider[5];
 
-        private IInteractable GetClosestInteractable => interactable != null ? interactable.GetComponent<IInteractable>() : null;
-        private GameObject interactable;
-        private GameObject interactableOrb;
+        private IInteractable GetClosestInteractable => lastInteractable != null ? lastInteractable.GetComponent<IInteractable>() : null;
+
+        private GameObject lastInteractable;
+        private GameObject lastInteractableOrb;
         private Tween playerInvincibleTween;
 
         private BaseOrb lastOrb;
@@ -75,6 +76,7 @@ namespace Swift_Blade
         [SerializeField] private SceneManagerSO SceneManagerSO;
 
         private bool isItemFadeTweening;
+        private bool flagInteractable;
 
         public void AddCombo(AttackComboSO attackComboSO)
         {
@@ -218,25 +220,22 @@ namespace Swift_Blade
             if (Input.GetKeyDown(KeyCode.E))
             {
                 IInteractable currentInteractable = GetClosestInteractable;
-                if (currentInteractable != null)
+                bool flagHasInteractable = currentInteractable != null;
+                if (flagHasInteractable)
                 {
-                    //if (false && Input.GetKey(KeyCode.LeftShift))
-                    //{
-                    //    interactable.OnEndCallbackUnsubscribe(OnEndCallback);
-                    //    Debug.Log("unsub");
-                    //}
-                    //else
-                    //{
+                    bool isHurt = currentInteractable.IsHurtWhenInteracting();
+
+                    if (isHurt)
+                    {
+                        ActionData data = new ActionData();
+                        data.damageAmount = 1;
+                        data.stun = true;
+                        GetPlayerHealth.TakeDamage(data);
+                    }
+
                     currentInteractable.Interact();
-                    //interactable.OnEndCallbackSubscribe(OnEndCallback);
-                    //playerStateMachine.ChangeState(PlayerStateEnum.Interact);
-                    //}
-                    //void OnEndCallback()
-                    //{
-                    //    interactable.OnEndCallbackUnsubscribe(OnEndCallback);
-                    //    //playerStateMachine.ChangeState(PlayerStateEnum.Move);
-                    //}
-                    if (interactable.TryGetComponent(out BaseOrb orb))
+                    
+                    if (lastInteractable.TryGetComponent(out BaseOrb orb))
                     {
                         lastOrb = orb;
                         InGameUIManager.Instance.SetInfoBoxAlpha(1, true);
@@ -252,14 +251,15 @@ namespace Swift_Blade
         {
             const float radius = 1.3f;
             Vector3 playerPosition = visualTransform.position;
-            int hitCount = Physics.OverlapSphereNonAlloc(playerPosition, radius, buffer_overlapSphereResult, lm_interactable);
+            int interactableHitCount = Physics.OverlapSphereNonAlloc(playerPosition, radius, buffer_overlapSphereResult, lm_interactable);
 
             float smallestDistance = Mathf.Infinity;
-            GameObject hitObject = null;
-            GameObject orbHitObject = null;
-            BaseOrb orb = null;
 
-            for (int i = 0; i < hitCount; i++)
+            GameObject closestInteractableGameObject = null;
+            GameObject closestOrbGameObject = null;
+            BaseOrb closestOrb = null;
+
+            for (int i = 0; i < interactableHitCount; i++)
             {
                 Collider item = buffer_overlapSphereResult[i];
                 Vector3 pPos = playerPosition;
@@ -273,27 +273,58 @@ namespace Swift_Blade
                 if (smallestDistance > sqrDistance)
                 {
                     smallestDistance = sqrDistance;
-                    hitObject = item.gameObject;
+                    closestInteractableGameObject = item.gameObject;
                     if (item.TryGetComponent(out BaseOrb outOrb))
                     {
-                        orb = outOrb;
-                        orbHitObject = orb.gameObject;
+                        closestOrb = outOrb;
+                        closestOrbGameObject = closestOrb.gameObject;
                     }
                 }
             }
-            bool isOtherOrb = orbHitObject != interactableOrb;
 
-            interactable = hitObject;
-            interactableOrb = orbHitObject;
-
-            if (orbHitObject != null)
+            bool flagIsDifferentInteractable = lastInteractable != closestInteractableGameObject;//different interactable (including nul compare)
+            if (flagIsDifferentInteractable)
             {
-                Debug.DrawRay(orbHitObject.transform.position + Vector3.up, Vector3.up, Color.magenta);
+                bool isUnityObjectDestroyed = lastInteractable == null;
+                if (flagInteractable && !isUnityObjectDestroyed)
+                {
+                    IInteractable interactable = lastInteractable.GetComponent<IInteractable>();
+                    Debug.Assert(interactable != null, "interactable is null");
+            
+                    const int k_defaultLayer = 0;
+                    GameObject meshObject = interactable.GetMeshGameObject();
+                    if (meshObject != null)
+                    {
+                        meshObject.layer = k_defaultLayer;
+                    }
+            
+                    flagInteractable = false;
+                }
+                if (closestInteractableGameObject != null)
+                {
+                    IInteractable interactable = closestInteractableGameObject.GetComponent<IInteractable>();
+                    Debug.Assert(interactable != null, "interactable is null");
+            
+                    const int k_outlineLayer = 16;
+                    GameObject meshObject = interactable.GetMeshGameObject();
+                    if (meshObject != null)
+                    {
+                        meshObject.layer = k_outlineLayer;
+                    }
+                    flagInteractable = true;
+                }
+            }
+
+            bool isOtherOrb = closestOrbGameObject != lastInteractableOrb;
+
+            if (closestOrbGameObject != null)
+            {
+                Debug.DrawRay(closestOrbGameObject.transform.position + Vector3.up, Vector3.up, Color.magenta);
                 if (isOtherOrb)
                 {
-                    lastOrb = orb;
+                    lastOrb = closestOrb;
                     InGameUIManager.Instance.SetInfoBoxAlpha(1, false);
-                    IPlayerEquipable equipable = orb.GetEquipable;
+                    IPlayerEquipable equipable = closestOrb.GetEquipable;
                     InGameUIManager.Instance.SetInfoBox(equipable);
                     isItemFadeTweening = true;
                 }
@@ -304,8 +335,11 @@ namespace Swift_Blade
                 lastOrb = null;
                 InGameUIManager.Instance.SetInfoBoxAlpha(0, false);
             }
+
+            lastInteractable = closestInteractableGameObject;
+            lastInteractableOrb = closestOrbGameObject;
         }
-        
+
         public void Attack(EComboState previousState, EComboState nonImmediateState = EComboState.None)
         {
             playerAttackState.PreviousComboState = previousState;

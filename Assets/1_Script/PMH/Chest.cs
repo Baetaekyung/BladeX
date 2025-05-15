@@ -33,8 +33,14 @@ namespace Swift_Blade.Level
         private Transform chestLid;
         private new Rigidbody rigidbody;
 
+        bool IInteractable.IsHurtWhenInteracting() => !prePlaced;
         private bool isOpen = false;
-
+        GameObject IInteractable.GetMeshGameObject()
+        {
+            int index = (int)chestType;
+            Transform result = visuals[index];
+            return result.gameObject;
+        }
         private void Awake()
         {
             MonoGenericPool<ShinyParticle>.Initialize(shinyParticlePrefab);
