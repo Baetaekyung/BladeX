@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using Swift_Blade.Combat.Health;
 using Swift_Blade.UI;
 using TMPro;
 using UnityEngine;
@@ -59,38 +60,50 @@ namespace Swift_Blade
         {
             if (_itemCount <= 0)
             {
-                GetFailedMessage("아이템 매진");
+                LogFailedMessage("아이템 매진");
 
                 return;
             }
             
             if (!_currentItem)
             {
-                GetFailedMessage("아이템 없음");
+                LogFailedMessage("아이템 없음");
 
                 return;
             }
 
-            if (playerInventory.Coin < _itemCost)
+            if (PlayerHealth.CurrentHealth <= _itemCost)
             {
-                GetFailedMessage("코인이 부족합니다.");
+                LogFailedMessage("코인이 부족합니다.");
 
                 return;
             }
             
             if (playerInventory.currentInventoryCapacity == playerInventory.maxInventoryCapacity)
             {
-                GetFailedMessage("인벤토리 슬롯 부족");
+                LogFailedMessage("인벤토리 슬롯 부족");
 
                 return;
             }
+
+            if (!InventoryManager.Instance.TryAddItemToEmptySlot(_currentItem))
+            {
+                LogFailedMessage("인벤토리가 가득 찼습니다");
+
+                return;
+            }
+
+            ActionData actionData = new ActionData();
+            actionData.textColor = Color.red;
+            actionData.damageAmount = _itemCost;
+            Player.Instance.GetEntityComponent<PlayerHealth>().TakeDamage(actionData);
 
             BuyAnimation();
             
             _itemCount--;
             remainCount.text = $"남은 갯수: {_itemCount.ToString()}";
+
             
-            InventoryManager.Instance.AddItemToMatchSlot(_currentItem);
             playerInventory.currentInventoryCapacity++;
             
             if(_itemCount <= 0)
@@ -105,6 +118,6 @@ namespace Swift_Blade
             buyButton.transform.DOShakeRotation(0.3f, new Vector3(0, 0, 2.5f));
         }
 
-        private void GetFailedMessage(string message) => PopupManager.Instance.LogMessage(message);
+        private void LogFailedMessage(string message) => PopupManager.Instance.LogMessage(message);
     }
 }

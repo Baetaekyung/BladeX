@@ -30,7 +30,7 @@ namespace Swift_Blade
                 shopSlot.GetCanvasGroup.DOFade(1, 1.5f);
                 
                 shopSlot.SetSlotItem(currentItem.itemData, 
-                    currentItem.itemCount, currentItem.itemCost);
+                    currentItem.itemCount, currentItem.needHealth);
 
                 randomItemTable.itemTable.RemoveAt(index);
                 shopSlots.Add(shopSlot);

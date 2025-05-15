@@ -16,8 +16,8 @@ namespace Swift_Blade
         public List<ItemSlot>      itemSlots        = new();
         public List<EquipmentData> currentEquipment = new();
         
-        public int Coin { get; set; }
-        public event Action OnCoinChanged;
+        //public int Coin { get; set; }
+        //public event Action OnCoinChanged;
         
         
         private PlayerInventory Initialize()
@@ -37,7 +37,7 @@ namespace Swift_Blade
 
             #endregion
             inventory.itemInventory = tempInventory;            
-            inventory.Coin = 0;
+            //inventory.Coin = 0;
             
             inventory.currentInventoryCapacity = 0;
             inventory.maxInventoryCapacity = itemSlots.Count - 5; // -5는 장비슬롯 때문에
@@ -50,8 +50,8 @@ namespace Swift_Blade
 
         public void AddCoin(int _amount)
         {
-            Coin += _amount;
-            OnCoinChanged.Invoke();
+            //Coin += _amount;
+            //OnCoinChanged.Invoke();
         }
     }
 }

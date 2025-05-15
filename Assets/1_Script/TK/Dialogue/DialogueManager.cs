@@ -104,7 +104,7 @@ namespace Swift_Blade
                 {
                     if (_isForcedMessageSkip)
                     {
-                        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+                        yield return new WaitUntil(() => IsSkip());
                         break;
                     }
 
@@ -122,14 +122,21 @@ namespace Swift_Blade
                     Accept(dialogueData);
 
                     //Press enter or click button is trigger of accept
-                    yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+                    yield return new WaitUntil(
+                        () => IsSkip());
                     dialogueUI.GetAcceptButton.onClick?.Invoke();
                 }
                 
-                yield return new WaitUntil(() => _isForcedCancel || Input.GetMouseButtonDown(0));
+                yield return new WaitUntil(
+                    () => _isForcedCancel || IsSkip());
                 
                 ++dialogueProcess;
             }
+        }
+
+        private bool IsSkip()
+        {
+            return Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Return);
         }
 
         private void Accept(DialogueDataSO dialogueData)
@@ -170,7 +177,7 @@ namespace Swift_Blade
 
         private void SkipDialogueMessage()
         {   
-            if(Input.GetMouseButtonDown(0))
+            if(IsSkip())
             {
                 _isForcedMessageSkip = true; //강제 메세지 스킵
 

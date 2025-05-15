@@ -38,7 +38,7 @@ namespace Swift_Blade
     [CreateAssetMenu(fileName = "EquipmentData", menuName = "SO/Equipment/EquipmentData")]
     public class EquipmentData : ScriptableObject, IPlayerEquipable
     {
-        public SerializableDictionary<StatType, float> statModifier = new();
+        //public SerializableDictionary<StatType, float> statModifier = new();
 
         public List<EquipmentTag> tags;
         public EquipmentRarity    rarity;
@@ -59,6 +59,7 @@ namespace Swift_Blade
         string IPlayerEquipable.DisplayName => displayName;
 
         public string GetPartsName => partsName;
+
         private void OnValidate()
         {
             if (String.IsNullOrEmpty(itemSerialCode))

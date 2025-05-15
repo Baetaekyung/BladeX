@@ -12,13 +12,13 @@ namespace Swift_Blade
         public ItemDataSO itemData;
 
         public int itemCount;
-        public int itemCost;
+        public int needHealth;
 
         public ItemGoods(ItemDataSO itemData, int itemCount, int itemCost)
         {
             this.itemData = itemData;
             this.itemCount = itemCount; 
-            this.itemCost = itemCost;
+            this.needHealth = itemCost;
         }
     }
     

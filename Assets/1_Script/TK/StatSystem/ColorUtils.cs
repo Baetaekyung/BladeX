@@ -151,6 +151,39 @@ namespace Swift_Blade
 
             return rgb;
         }
+
+        public static Color GetRandomColor(int index)
+        {
+            Color rgb = index switch
+            {
+                0 => GetCustomColor(ColorType.RED),
+                1 => GetCustomColor(ColorType.GREEN),
+                2 => GetCustomColor(ColorType.BLUE),
+                3 => GetCustomColor(ColorType.YELLOW),
+                4 => GetCustomColor(ColorType.PURPLE),
+                5 => GetCustomColor(ColorType.TURQUOISE),
+                _ => Color.clear
+            };
+
+            return rgb;
+        }
+
+        public static ColorType GetRandomColorType(int index)
+        {
+            ColorType type = index switch
+            {
+                0 => ColorType.RED,
+                1 => ColorType.GREEN,
+                2 => ColorType.BLUE,
+                3 => ColorType.YELLOW,
+                4 => ColorType.PURPLE,
+                5 => ColorType.TURQUOISE,
+                _ => ColorType.BLACK
+            };
+
+            return type;
+        }
+
         public static bool ContainsNonRGBColor(this ColorType ColorType)
         {
             ColorType banType = ~(ColorType.RED | ColorType.BLUE | ColorType.GREEN);

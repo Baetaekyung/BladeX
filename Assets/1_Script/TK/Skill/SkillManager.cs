@@ -188,13 +188,18 @@ namespace Swift_Blade
         {
             var inventorySlot = GetEmptyInvSlot();
 
-            if (inventorySlot == default)
+            if (inventorySlot == null)
                 return false;
             
             inventorySlot.SetSlotData(skillData);
             saveDatas.AddSkillToInventory(skillData);
 
             return true;
+        }
+
+        public bool AllSlotsFull()
+        {
+            return GetEmptyInvSlot() == null;
         }
     }
 }
