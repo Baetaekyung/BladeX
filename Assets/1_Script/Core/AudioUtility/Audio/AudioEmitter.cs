@@ -74,26 +74,26 @@ namespace Swift_Blade.Audio
         private static bool IsAudioPlayable(AudioSO audioSO, bool autoIncrement = false)
         {
             return true;
-            if (!audioSO.enableMaxCount) return true;
-
-            int hash = audioSO.clip.GetHashCode();
-            audioDictionary.TryGetValue(hash, out int count);
-
-            bool result = count < audioSO.maxCount;
-            if (result && autoIncrement)
-            {
-                audioDictionary[hash] = ++count;
-            }
-            return result;
+            //if (!audioSO.enableMaxCount) return true;
+            //
+            //int hash = audioSO.clip.GetHashCode();
+            //audioDictionary.TryGetValue(hash, out int count);
+            //
+            //bool result = count < audioSO.maxCount;
+            //if (result && autoIncrement)
+            //{
+            //    audioDictionary[hash] = ++count;
+            //}
+            //return result;
         }
         private static void DecreaseDictionaryInstance(AudioSO audioSO)
         {
             return;
-            if (!audioSO.enableMaxCount) return;
-
-            int hash = audioSO.clip.GetHashCode();
-            int result = --audioDictionary[hash];
-            Debug.Assert(result >= 0, "yell at me ojy");
+            //if (!audioSO.enableMaxCount) return;
+            //
+            //int hash = audioSO.clip.GetHashCode();
+            //int result = --audioDictionary[hash];
+            //Debug.Assert(result >= 0, "yell at me ojy");
         }
         public void Play(bool destroyOnEnd = false)
         {
