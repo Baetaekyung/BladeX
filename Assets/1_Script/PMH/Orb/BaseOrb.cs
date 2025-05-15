@@ -95,7 +95,7 @@ namespace Swift_Blade
             if (!isCallbackNull)
             {
                 string collectMessage = $"collect item {GetEquipable.DisplayName}";
-                TweenCallback collectMessageCallback = () => { PopupManager.Instance.LogInfoBox(collectMessage, 0.8f); };
+                TweenCallback collectMessageCallback = () => { PopupManager.Instance.LogInfoBox(collectMessage); };
                 interactTween.OnComplete(onComplete + collectMessageCallback);
             }
         }
