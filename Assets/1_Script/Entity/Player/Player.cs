@@ -120,7 +120,7 @@ namespace Swift_Blade
                 return Mathf.Floor(5f * Mathf.Pow(1.2f, level - 1));
             }
             
-            private void AddExp(float _exp)
+            public void AddExp(float _exp)
             {
                 Experience += _exp;
 
