@@ -31,8 +31,6 @@ namespace Swift_Blade.Combat.Health
         
         protected virtual void Start()
         {
-            currentHealth = maxHealth;
-            
             navMeshAgent = GetComponent<NavMeshAgent>();
             enemyRigidbody = GetComponent<Rigidbody>();
             BehaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
@@ -92,7 +90,7 @@ namespace Swift_Blade.Combat.Health
             return Time.time > lastDamageTime + DAMAGE_INTERVAL;
         }
         
-        public void AddMaxHealth(int currentIndex)
+        public void AddMaxHealth(float currentIndex)
         {
             maxHealth += currentIndex * 1.7f;
             currentHealth = maxHealth;
