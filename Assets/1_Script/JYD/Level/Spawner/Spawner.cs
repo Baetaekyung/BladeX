@@ -110,6 +110,28 @@ namespace Swift_Blade.Level
         }
         
         protected abstract IEnumerator Spawn();
+
+        protected float CalculateHealthAdditional()
+        {
+            int stage = (int)sceneManager.GetNodeList().GetCurrentStageType(); 
+            int nodeIndex = sceneManager.GetNodeList().GetCurrentNodeIndex(); 
+            
+            float baseMin = 1f;
+            float baseMax = 2f;
+    
+            float stageIncrementMin = 3f + stage * 2f; 
+            float stageIncrementMax = 5f + stage * 3f; 
+    
+            float perRoomIncrease = baseMin + ((baseMax - baseMin) / 5f) * nodeIndex; 
+    
+            float randomStageIncrement = UnityEngine.Random.Range(stageIncrementMin, stageIncrementMax);
+            
+            float healthAdditional = perRoomIncrease + randomStageIncrement;
+            
+            Debug.Log(healthAdditional);
+            
+            return healthAdditional;
+        }
         
     }
 }

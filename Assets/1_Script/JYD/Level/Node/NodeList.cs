@@ -340,7 +340,7 @@ namespace Swift_Blade.Level
 
         public int GetCurrentNodeIndex() => currentNodeIndex;
         public NodeType GetCurrentStageType() => nodeDictionary.GetCurrentStageType();
-        
+                
         public Node[] GetNodes()
         {
             return nodeDictionary.GetRandomNodes(++currentNodeIndex);

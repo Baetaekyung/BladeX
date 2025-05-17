@@ -42,10 +42,16 @@ namespace Swift_Blade.Level
 
         private void Start()
         {
-            if (isDefaultPortal || !isTutorialDoor)
+            if (isTutorialDoor)
+            {
+                return;
+            }
+            
+            if (isDefaultPortal)
             {
                 SetScene(nodeList.GetNodeNameByNodeType(nodeList.GetCurrentStageType()));
             }
+            
         }
 
         private void Rotate()
