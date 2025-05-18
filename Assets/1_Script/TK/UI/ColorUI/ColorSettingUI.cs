@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Text;
 using TMPro;
@@ -14,7 +15,7 @@ namespace Swift_Blade
         [SerializeField] private ColorType       colorType;
 
         private readonly StringBuilder _sb = new();
-        
+
         public void SetStatInfoUI(int colorValue, int upgradePercent)
         {
             _sb.Clear();

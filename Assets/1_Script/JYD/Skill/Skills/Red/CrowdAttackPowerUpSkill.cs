@@ -28,25 +28,30 @@ namespace Swift_Blade.Skill
             
             if (isUpgrade == false && targets.Count() >= targetCount)
             {
-                GenerateSkillText(true);
-                
                 isUpgrade = true;
+                GenerateSkillText(true);
+                statCompo.AddModifier(statType , skillName , increaseValue * GetColorRatio());
+                
                 RedWaveParticle redWaveParticle = MonoGenericPool<RedWaveParticle>.Pop();
                 redWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,1,0);
             }
             else if(isUpgrade && targets.Count() < targetCount)
             {
-                GenerateSkillText(false);
-                isUpgrade = false;
+                ResetSkill();
             }
             
         }
         
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
-            if(isUpgrade == false)return;
-            statCompo.AddModifier(statType , skillName , increaseValue * GetColorRatio());
-                                    
+            
+        }
+
+        public override void ResetSkill()
+        {
+            GenerateSkillText(false);
+            isUpgrade = false;
+            statCompo.RemoveModifier(statType , skillName);
         }
     }
 }

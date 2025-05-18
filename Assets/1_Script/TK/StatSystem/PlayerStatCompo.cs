@@ -10,9 +10,9 @@ namespace Swift_Blade
     public class ColorStat
     {
         public ColorType colorType;
-        public int       colorValue;
+        public int       colorValue = 1;
     }
-
+    
     [Serializable]
     public struct DebugStat
     {
