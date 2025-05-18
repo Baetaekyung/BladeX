@@ -24,7 +24,7 @@ public partial class MoveToTargetAndCheckPlayerAction : Action
     private LayerMask whatIsObstacle;// = LayerMask.GetMask("Wall" , "Obstacle","Ground");
     protected override Status OnStart()
     {
-        if (Target.Value == null || Player.Value == null)
+        if (Target.Value == null || Player.Value == null || Agent.Value == null)
             return Status.Failure;
                 
         whatIsObstacle = LayerMask.GetMask("Wall" , "Obstacle","Ground","Throwable");
@@ -46,10 +46,9 @@ public partial class MoveToTargetAndCheckPlayerAction : Action
     protected override Status OnUpdate()
     {
         UpdateDistances();
-
-        if (IsPlayerTooClose())
+        if (IsPlayerTooClose() || Target.Value == null || Player.Value == null || Agent.Value == null)
             return Status.Failure;
-        
+                    
         BaseEnemy.Value.FactToTarget(BaseEnemy.Value.GetNextPathPoint());
         Agent.Value.SetDestination(Target.Value.position);
         

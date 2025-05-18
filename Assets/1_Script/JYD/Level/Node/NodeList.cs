@@ -29,6 +29,7 @@ public enum NodeType
     Rest,
        
     Trap,
+    Ending,
     
     None,
 }
@@ -55,14 +56,11 @@ public class Node
 [Serializable]
 public class NodeDictionary : IEnumerable<List<Node>>
 {
-    public event Action OnGameClearEvent;
-    
     private Dictionary<NodeType, List<Node>> nodeList;
     private Dictionary<NodeType, List<Node>> originNodeList;
 
     private List<NodeType> specialNodeTypes;
-
-    
+            
     private bool canFirstAppearSpecialNode = true;
     private bool canSecondAppearSpecialNode = true;
     
@@ -126,29 +124,26 @@ public class NodeDictionary : IEnumerable<List<Node>>
     {
         List<NodeType> nodeTypes = new List<NodeType>();
         
-        if (currentNodeIndex == 3)
+        if (currentNodeIndex == 7)
         {
-            if (currentStage == NodeType.Stage4)//last stage
+            if (currentStage == NodeType.Stage4)//ending
             {
-                Debug.Log("엔딩");
-                OnGameClearEvent?.Invoke();
+                nodeTypes.Add(NodeType.Ending);
             }
             else
             {
-                currentNodeIndex = 0;
-                canFirstAppearSpecialNode = true;
-                canSecondAppearSpecialNode = true;
+                InitSpecialNode();
                 
                 currentStage = (NodeType)((int)currentStage + 1);
+                currentBoss = (NodeType)((int)currentBoss + 1);
+                currentNodeIndex = 0;
                 
                 nodeTypes.Add(NodeType.Rest);   
             }
-            
         }
-        else if (currentNodeIndex == 2)
+        else if (currentNodeIndex == 6)
         {
             nodeTypes.Add(currentBoss);
-            currentBoss = (currentBoss + 1);
         }
         else if (CanAppearSpecialNode() && Random.Range(0,100) < currentNodeIndex * APPEAR_SPECIAL_NODE_PERCENT)
         {
@@ -188,6 +183,19 @@ public class NodeDictionary : IEnumerable<List<Node>>
         
         return null;
     }
+
+    private void InitSpecialNode()
+    {
+        canFirstAppearSpecialNode = true;
+        canSecondAppearSpecialNode = true;
+        
+        specialNodeTypes.Clear();
+        specialNodeTypes.Add(NodeType.Challenge);
+        specialNodeTypes.Add(NodeType.Point);
+        specialNodeTypes.Add(NodeType.Event);
+        specialNodeTypes.Add(NodeType.Store);
+        specialNodeTypes.Add(NodeType.Trap);
+    }
     
     #endregion
 
@@ -198,18 +206,10 @@ public class NodeDictionary : IEnumerable<List<Node>>
     } 
     public void InitializeNodes()
     {
-        canFirstAppearSpecialNode = true;
-        canSecondAppearSpecialNode = true;
-        
         currentStage = NodeType.Stage1;     
         currentBoss = NodeType.Boss1;
         
-        specialNodeTypes.Clear();
-        specialNodeTypes.Add(NodeType.Challenge);
-        specialNodeTypes.Add(NodeType.Point);
-        specialNodeTypes.Add(NodeType.Event);
-        specialNodeTypes.Add(NodeType.Store);
-        specialNodeTypes.Add(NodeType.Trap);
+        InitSpecialNode();
     }
     public Node[] GetRandomNodes(ref int currentNodeIndex)
     {
@@ -267,6 +267,7 @@ namespace Swift_Blade.Level
         [SerializeField] private Door bossDoor;
         [SerializeField] private Door restDoor;
         [SerializeField] private Door trapDoor;
+        [SerializeField] private Door endingDoor;
         
         [Space]
         [SerializeField] private bool createStageNode;
@@ -275,6 +276,9 @@ namespace Swift_Blade.Level
         
         private int stageCount = 0;
         private int currentNodeIndex = 0;
+        
+        private const string STAGE_ = "Stage_";
+        private const string STAGE = "Stage";
         
         public void Initialize()
         {
@@ -302,7 +306,7 @@ namespace Swift_Blade.Level
             stageCount = 0;
             
             stageName.Clear();
-            stageName.Append("Stage_");
+            stageName.Append(STAGE_);
         }
         
         private void OnEnable()
@@ -351,6 +355,9 @@ namespace Swift_Blade.Level
                 case NodeType.Trap:
                     item.SetPortalPrefab(trapDoor);
                     break;
+                case NodeType.Ending:
+                    item.SetPortalPrefab(endingDoor);
+                    break;
                 case NodeType.None:
                     break;
             }
@@ -360,10 +367,10 @@ namespace Swift_Blade.Level
         {
             string activeScene = SceneManager.GetActiveScene().name;
             
-            if (activeScene.StartsWith("Stage", StringComparison.OrdinalIgnoreCase))
+            //only Stage Scene Increase 
+            if (activeScene.StartsWith(STAGE, StringComparison.OrdinalIgnoreCase))
                 ++currentNodeIndex;
             
-            Debug.Log(activeScene);
         }
         
         public int GetCurrentNodeIndex() => currentNodeIndex;
@@ -372,11 +379,6 @@ namespace Swift_Blade.Level
         public Node[] GetNodes()
         {
             return nodeDictionary.GetRandomNodes(ref currentNodeIndex);
-        }
-        
-        public void AddGameClearEvent(Action callback)
-        {
-            nodeDictionary.OnGameClearEvent += callback;
         }
         
         public string GetNodeNameByNodeType(NodeType nodeType)
@@ -390,11 +392,13 @@ namespace Swift_Blade.Level
             {
                 for (int i = 0; i < node.Count; i++)
                 {
-                    if (node[i].nodeName == nodeName)
+                    if (node[i].nodeType != NodeType.Rest &&
+                        node[i].nodeName == nodeName)
                     {
                         node.RemoveAt(i);
                         break;
                     }
+                    
                 }
             }
         }
