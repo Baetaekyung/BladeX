@@ -35,9 +35,9 @@ namespace Swift_Blade
                 return;
             }
 
-            LoadData();
-
             _upgradePercent = baseUpgradePercent;
+
+            LoadData();
             colorSettingUI.SetStatInfoUI(recordedIncreasedAmount, _upgradePercent);
         }
 
@@ -155,5 +155,4 @@ namespace Swift_Blade
             OnColorChanged?.Invoke();
         }
     }
-
 }

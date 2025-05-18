@@ -153,7 +153,8 @@ namespace Swift_Blade.Combat.Health
             base.Dead();
             
             Menu.IsNewGame = true;
-            
+
+            Player.level.StatPoint = 0;
             PopupManager.Instance.AllPopDown();
             PopupManager.Instance.PopUp(PopupType.GameOver);
         }
