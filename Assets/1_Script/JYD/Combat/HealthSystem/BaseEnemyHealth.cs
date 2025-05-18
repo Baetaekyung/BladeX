@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using Unity.Behavior;
 using UnityEngine;
 using System;
+using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat.Health
 {
@@ -23,6 +24,11 @@ namespace Swift_Blade.Combat.Health
         
         [Header("Knockback info")]
         public bool isKnockback = false;
+
+        [Header("EXP")] 
+        [SerializeField] private int minExp;
+        [SerializeField] private int maxExp;
+        
         
         private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
         
@@ -38,6 +44,8 @@ namespace Swift_Blade.Combat.Health
             
             OnHitEvent.AddListener(StartKnockback);
             OnHitEvent.AddListener(GeneratorText);
+            OnDeadEvent.AddListener(AddExp);
+            
             
             BehaviorGraphAgent.GetVariable("ChangeBossState",out BlackboardVariable<ChangeBossState> state);
             
@@ -45,11 +53,17 @@ namespace Swift_Blade.Combat.Health
             changeBossState = state;
             
         }
-
+    
         private void OnDestroy()
         {
             OnHitEvent.RemoveListener(StartKnockback);
             OnHitEvent.RemoveListener(GeneratorText);
+            OnDeadEvent.RemoveListener(AddExp);
+        }
+
+        private void AddExp()
+        {
+            Player.level.AddExp(Random.Range(minExp , maxExp));
         }
         
         private void GeneratorText(ActionData actionData)

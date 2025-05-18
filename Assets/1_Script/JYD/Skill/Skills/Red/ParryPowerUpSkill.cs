@@ -48,14 +48,13 @@ namespace Swift_Blade.Skill
             
             if (increaseTimer >= increaseTime)
             {
+                GenerateSkillText(false);
                 ResetSkill();
             }
         }
 
         public override void ResetSkill()
         {
-            GenerateSkillText(false);
-            
             statCompo.RemoveModifier(statType , skillName);
             
             usingSkill = false;

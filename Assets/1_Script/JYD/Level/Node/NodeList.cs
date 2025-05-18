@@ -21,7 +21,10 @@ public enum NodeType
     Store,
     Event,
         
-    Boss,
+    Boss1,
+    Boss2,
+    Boss3,
+    Boss4,
     
     Rest,
        
@@ -52,10 +55,13 @@ public class Node
 [Serializable]
 public class NodeDictionary : IEnumerable<List<Node>>
 {
+    public event Action OnGameClearEvent;
+    
     private Dictionary<NodeType, List<Node>> nodeList;
     private Dictionary<NodeType, List<Node>> originNodeList;
 
     private List<NodeType> specialNodeTypes;
+
     
     private bool canFirstAppearSpecialNode = true;
     private bool canSecondAppearSpecialNode = true;
@@ -63,6 +69,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
     private const byte APPEAR_SPECIAL_NODE_PERCENT = 25; //100 / 5 = 16.xxx
     
     private NodeType currentStage = NodeType.Stage1;
+    private NodeType currentBoss = NodeType.Boss1;
     
     public NodeDictionary(List<Node> nodes)
     {
@@ -115,22 +122,33 @@ public class NodeDictionary : IEnumerable<List<Node>>
         
         return newNode;
     }
-    private List<NodeType> GetNodeTypes(int currentNodeIndex)
+    private List<NodeType> GetNodeTypes(ref int currentNodeIndex)
     {
         List<NodeType> nodeTypes = new List<NodeType>();
         
-        if (currentNodeIndex % 7 == 0)
+        if (currentNodeIndex == 3)
         {
-            canFirstAppearSpecialNode = true;
-            canSecondAppearSpecialNode = true;
+            if (currentStage == NodeType.Stage4)//last stage
+            {
+                Debug.Log("엔딩");
+                OnGameClearEvent?.Invoke();
+            }
+            else
+            {
+                currentNodeIndex = 0;
+                canFirstAppearSpecialNode = true;
+                canSecondAppearSpecialNode = true;
+                
+                currentStage = (NodeType)((int)currentStage + 1);
+                
+                nodeTypes.Add(NodeType.Rest);   
+            }
             
-            currentStage = (NodeType)((int)currentStage + 1);
-            
-            nodeTypes.Add(NodeType.Rest);
         }
-        else if (currentNodeIndex % 6 == 0)
+        else if (currentNodeIndex == 2)
         {
-            nodeTypes.Add(NodeType.Boss);
+            nodeTypes.Add(currentBoss);
+            currentBoss = (currentBoss + 1);
         }
         else if (CanAppearSpecialNode() && Random.Range(0,100) < currentNodeIndex * APPEAR_SPECIAL_NODE_PERCENT)
         {
@@ -184,6 +202,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
         canSecondAppearSpecialNode = true;
         
         currentStage = NodeType.Stage1;     
+        currentBoss = NodeType.Boss1;
         
         specialNodeTypes.Clear();
         specialNodeTypes.Add(NodeType.Challenge);
@@ -192,9 +211,9 @@ public class NodeDictionary : IEnumerable<List<Node>>
         specialNodeTypes.Add(NodeType.Store);
         specialNodeTypes.Add(NodeType.Trap);
     }
-    public Node[] GetRandomNodes(int currentNodeIndex)
+    public Node[] GetRandomNodes(ref int currentNodeIndex)
     {
-        List<NodeType> nodeTypes = GetNodeTypes(currentNodeIndex);
+        List<NodeType> nodeTypes = GetNodeTypes(ref currentNodeIndex);
         Node[] nodes = new Node[nodeTypes.Count];
         
         for (int i = 0; i < nodeTypes.Count; i++)
@@ -284,13 +303,12 @@ namespace Swift_Blade.Level
             
             stageName.Clear();
             stageName.Append("Stage_");
-            
         }
         
         private void OnEnable()
         {
             Initialize();
-                        
+            
             foreach (var node in nodeDictionary)
             {
                 foreach (var item in node)
@@ -324,7 +342,7 @@ namespace Swift_Blade.Level
                 case NodeType.Store:
                     item.SetPortalPrefab(storeDoor);
                     break;
-                case NodeType.Boss:
+                case NodeType.Boss1 or NodeType.Boss2 or NodeType.Boss3 or NodeType.Boss4:
                     item.SetPortalPrefab(bossDoor);
                     break;
                 case NodeType.Rest:
@@ -337,15 +355,30 @@ namespace Swift_Blade.Level
                     break;
             }
         }
-
+        
+        public void IncreaseNodeIndex()
+        {
+            string activeScene = SceneManager.GetActiveScene().name;
+            
+            if (activeScene.StartsWith("Stage", StringComparison.OrdinalIgnoreCase))
+                ++currentNodeIndex;
+            
+            Debug.Log(activeScene);
+        }
+        
         public int GetCurrentNodeIndex() => currentNodeIndex;
         public NodeType GetCurrentStageType() => nodeDictionary.GetCurrentStageType();
                 
         public Node[] GetNodes()
         {
-            return nodeDictionary.GetRandomNodes(++currentNodeIndex);
+            return nodeDictionary.GetRandomNodes(ref currentNodeIndex);
         }
-                
+        
+        public void AddGameClearEvent(Action callback)
+        {
+            nodeDictionary.OnGameClearEvent += callback;
+        }
+        
         public string GetNodeNameByNodeType(NodeType nodeType)
         {
             return nodeDictionary[nodeType];

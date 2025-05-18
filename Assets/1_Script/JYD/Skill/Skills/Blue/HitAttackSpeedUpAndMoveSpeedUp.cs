@@ -46,6 +46,8 @@ namespace Swift_Blade.Skill
             
             if (decreaseTimer >= decreaseTime)
             {
+                GenerateSkillText(false);
+                
                 ResetSkill();
                 ResetStat();
             }
@@ -59,7 +61,7 @@ namespace Swift_Blade.Skill
         
         public override void ResetSkill()
         {
-            GenerateSkillText(false);
+            
             
             isOnSkill = false;
             decreaseTimer = 0;

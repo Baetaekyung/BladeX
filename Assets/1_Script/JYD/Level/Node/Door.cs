@@ -28,7 +28,9 @@ namespace Swift_Blade.Level
 
         [Space] 
         [SerializeField] private AudioSO doorEnterSound; 
-        [SerializeField] private AudioSO doorUseSound; 
+        [SerializeField] private AudioSO doorUseSound;
+
+        private bool canUse = true;
         
         GameObject IInteractable.GetMeshGameObject()
         {
@@ -81,6 +83,9 @@ namespace Swift_Blade.Level
         
         public void Interact()
         {
+            if(!canUse)return;
+            canUse = false;
+            
             AudioManager.PlayWithInit(doorUseSound,true);
             
             sceneManager.LoadScene(sceneName);

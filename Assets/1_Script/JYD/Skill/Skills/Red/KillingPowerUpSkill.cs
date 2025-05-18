@@ -12,11 +12,14 @@ namespace Swift_Blade.Skill
         [SerializeField] private PoolPrefabMonoBehaviourSO redCircle;
         
         [Range(0.1f, 10f)] [SerializeField] private float increaseValue;
+        private float increaseAmount;
         
         public override void Initialize()
         {
             MonoGenericPool<ArrowUpParticle>.Initialize(skillParticle);
             MonoGenericPool<RedCircleParticle>.Initialize(redCircle);
+
+            //increaseAmount = 0;
         }
 
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
@@ -34,9 +37,12 @@ namespace Swift_Blade.Skill
                         RedCircleParticle redCircleParticle = MonoGenericPool<RedCircleParticle>.Pop();
                         redCircleParticle.transform.SetParent(player.GetPlayerTransform);
                         redCircleParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.5f,0);
+
+                        increaseAmount += increaseValue;
                         
                         GenerateSkillText(true);
-                        statCompo.AddModifier(statType,skillName,increaseValue);
+                        statCompo.RemoveModifier(statType,skillName);
+                        statCompo.AddModifier(statType,skillName,increaseAmount);
                     }
                 }
             }
@@ -44,6 +50,7 @@ namespace Swift_Blade.Skill
         
         public override void ResetSkill()
         {
+            increaseAmount = 0;
             GenerateSkillText(false);
             statCompo.RemoveModifier(statType, skillName);
         }

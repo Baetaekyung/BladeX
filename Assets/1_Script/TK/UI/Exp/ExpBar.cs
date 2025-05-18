@@ -14,13 +14,13 @@ namespace Swift_Blade
 
         private void OnEnable()
         {
-            _currentGauge = Player.level.Experience % 2f;
-            gauge.fillAmount = Player.level.Experience / 2f;
+            _currentGauge = Player.level.Experience / Player.level.NextExperience;
+            gauge.fillAmount = _currentGauge;
         }
         
         private void Update()
         {
-            _currentGauge = Mathf.Lerp(_currentGauge, Player.level.Experience / 2f, Time.deltaTime * 4f);
+            _currentGauge = Mathf.Lerp(_currentGauge, Player.level.Experience / Player.level.NextExperience, Time.deltaTime * 4f);
             gauge.fillAmount = _currentGauge;
         }
     }
