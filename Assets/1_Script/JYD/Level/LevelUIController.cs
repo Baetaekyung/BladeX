@@ -52,13 +52,11 @@ namespace Swift_Blade.Level
         }
         private void FadeOut(Action onComplete)
         {
-            onComplete?.Invoke();
             fadeImage.DOFade(0, fadeOutTime).OnComplete(() =>
             {
+                onComplete?.Invoke();
                 isFading = false;
             }).SetLink(gameObject, LinkBehaviour.KillOnDestroy);
         }
-        
-        
     }
 }

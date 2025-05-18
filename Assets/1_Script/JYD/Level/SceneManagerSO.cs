@@ -14,6 +14,21 @@ namespace Swift_Blade
         
         public NodeList NodeList;
         public HitStopSO hitStopSO;
+
+        private void OnEnable()
+        {
+            SceneEnterEvent += NodeList.IncreaseNodeIndex;
+            
+            NodeList.AddGameClearEvent(() =>
+            {
+                LoadScene("Ending");
+            });
+        }
+        
+        private void OnDisable()
+        {
+            SceneEnterEvent -= NodeList.IncreaseNodeIndex;
+        }
         
         public void LevelClear()
         {
