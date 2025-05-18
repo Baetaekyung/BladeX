@@ -11,6 +11,7 @@ using System;
 using Swift_Blade.Combat.Health;
 using UnityEngine.Serialization;
 using Swift_Blade.Inputs;
+using UnityEditor.SceneManagement;
 
 namespace Swift_Blade
 {
@@ -103,34 +104,37 @@ namespace Swift_Blade
         public class LevelStat
         {
             public static event Action<LevelStat> OnLevelUp;
-            public int Experience { get; private set; }
+            public float Experience { get; private set; }
+            public float NextExperience { get; private set; }
             public int Level { get; private set; }
             public int StatPoint { get; set; }
-
-            private SceneManagerSO sceneManager;
-
-            public void Init(SceneManagerSO sceneManagerSo)
+            
+            
+            public void Init()
             {
-                sceneManager = sceneManagerSo;
-                sceneManager.LevelClearEvent += OnLevelClear;
+                NextExperience = CalculateNextExp(Level);
             }
-            //~LevelStat()
-            //{
-            //    sceneManager.LevelClearEvent -= OnLevelClear;
-            //}
-            private void OnLevelClear()
+            
+            private float CalculateNextExp(int level)
             {
-                const int maxRequiredExperience = 2;
-                Experience++;
+                return Mathf.Floor(5f * Mathf.Pow(1.2f, level - 1));
+            }
+            
+            public void AddExp(float _exp)
+            {
+                Experience += _exp;
 
-                if (Experience >= maxRequiredExperience)
+                while (Experience >= NextExperience)
                 {
-                    int m = Experience / maxRequiredExperience;
-                    Experience = Experience - m * maxRequiredExperience;
+                    Experience -= NextExperience;
                     Level++;
-                    StatPoint += 1;
+                    StatPoint++;
+
                     OnLevelUp?.Invoke(this);
+
+                    NextExperience = CalculateNextExp(Level);
                 }
+                
             }
 
         }
@@ -141,9 +145,10 @@ namespace Swift_Blade
 
             if (Instance == null)
                 Instance = this;
-            level.Init(SceneManagerSO);
+            level.Init();
+            
             Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator.GetAnimator;
-
+            
             playerStateMachine.AddState(PlayerStateEnum.Move, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
             playerAttackState = new PlayerAttackState(playerStateMachine, playerAnimator, this, animEndTrigger, null);
             playerStateMachine.AddState(PlayerStateEnum.Attack, playerAttackState);

@@ -27,7 +27,6 @@ namespace Swift_Blade.Skill
         public event Action<Player, IEnumerable<Transform>> OnHitEventSkill;
         public event Action<Player, IEnumerable<Transform>> OnDeadEventSkill;
 
-        [SerializeField] private SkillData[] skillDatas;
 
         [SerializeField] private List<SkillData> currentSkillList;
 
@@ -85,7 +84,7 @@ namespace Swift_Blade.Skill
         {
             if (canDrawGizmo == false) return;
 
-            foreach (var item in skillDatas)
+            foreach (var item in currentSkillList)
             {
                 item.Render();
             }
@@ -99,7 +98,6 @@ namespace Swift_Blade.Skill
         public void EntityComponentStart(Entity entity)
         {
             SkillManager.Instance.LoadSkillData();
-            
             InitializeSkill();
         }
         
@@ -112,6 +110,14 @@ namespace Swift_Blade.Skill
             }
         }
 
+        public void ResetSkill()
+        {
+            foreach (var item in currentSkillList)
+            {
+                item.ResetSkill();
+            }
+        }
+        
         public void AddSkill(SkillData skillData)
         {
             if (slotCount >= maxSlotCount) return;
@@ -134,11 +140,11 @@ namespace Swift_Blade.Skill
         {
             if (skillEvents.ContainsKey(skillData.skillType) && skillEvents[skillData.skillType] != null)
             {
-                Debug.Log($"Skill Remove name {skillData.skillName}");
-
                 skillEvents[skillData.skillType] -= skillData.UseSkill;
                 currentSkillList.Remove(skillData);
                 --slotCount;
+                
+                skillData.ResetSkill();
             }
         }
 

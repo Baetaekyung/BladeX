@@ -1,3 +1,4 @@
+using Swift_Blade.Audio;
 using Swift_Blade.Combat.Health;
 using Swift_Blade.Feeling;
 using Swift_Blade.Pool;
@@ -20,6 +21,9 @@ namespace Swift_Blade.Combat.Projectile
         private readonly Collider[] targets = new Collider[10];
         
         private LayerMask whatIsEnemy;
+
+        [Space]
+        [SerializeField] private AudioCollectionSO explosionSound;
         
         protected override void Start()
         {
@@ -46,6 +50,8 @@ namespace Swift_Blade.Combat.Projectile
         {
             if (canExplosion == false || hasExploded) 
                 return;
+
+            AudioManager.PlayWithInit(explosionSound.GetRandomAudio, true);
             
             canExplosion = false;
             hasExploded = true;
