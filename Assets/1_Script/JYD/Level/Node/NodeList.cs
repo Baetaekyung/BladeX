@@ -124,9 +124,9 @@ public class NodeDictionary : IEnumerable<List<Node>>
     {
         List<NodeType> nodeTypes = new List<NodeType>();
         
-        if (currentNodeIndex == 2)
+        if (currentNodeIndex == 7)
         {
-            if (currentStage == NodeType.Stage4)//last stage
+            if (currentStage == NodeType.Stage4)//ending
             {
                 nodeTypes.Add(NodeType.Ending);
             }
@@ -141,7 +141,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
                 nodeTypes.Add(NodeType.Rest);   
             }
         }
-        else if (currentNodeIndex == 1)
+        else if (currentNodeIndex == 6)
         {
             nodeTypes.Add(currentBoss);
         }
@@ -206,8 +206,8 @@ public class NodeDictionary : IEnumerable<List<Node>>
     } 
     public void InitializeNodes()
     {
-        currentStage = NodeType.Stage4;     
-        currentBoss = NodeType.Boss4;
+        currentStage = NodeType.Stage1;     
+        currentBoss = NodeType.Boss1;
         
         InitSpecialNode();
     }
@@ -308,12 +308,7 @@ namespace Swift_Blade.Level
             stageName.Clear();
             stageName.Append(STAGE_);
         }
-
-        private void CreateEndingDoor()
-        {
-            Instantiate(endingDoor);
-        }
-
+        
         private void OnEnable()
         {
             Initialize();
