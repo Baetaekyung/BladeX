@@ -2,6 +2,7 @@ using System;
 using Swift_Blade.Skill;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Swift_Blade.Combat
@@ -17,6 +18,13 @@ namespace Swift_Blade.Combat
 
         public UnityEvent ParryEvents;
 
+        [Space] [Header("Shield info")] 
+        public int maxShieldAmount;
+        public int shieldBuffTime;
+        
+        private const string PARRY_KEY = "PARRY_KEY";
+        private int shieldIncreaseAmount = 0;
+                
         public void EntityComponentAwake(Entity entity)
         {
             player = entity as Player;
@@ -24,15 +32,34 @@ namespace Swift_Blade.Combat
 
         public void EntityComponentStart(Entity entity)
         {
-            playerStatCompo = player.GetEntityComponent<PlayerStatCompo>();
+            playerStatCompo = player.GetPlayerStat;
+            
             ParryEvents.AddListener(() => player.GetSkillController.UseSkill(SkillType.Parry));
+            ParryEvents.AddListener(AddShield);
+        }
+        
+        private void AddShield()
+        {
+            shieldIncreaseAmount = Mathf.Min(shieldIncreaseAmount + 1, maxShieldAmount);
+            
+            playerStatCompo.BuffToStat(
+                StatType.HEALTH,
+                PARRY_KEY,
+                shieldBuffTime,
+                shieldIncreaseAmount,
+                () => { },
+                () =>
+                {
+                    shieldIncreaseAmount = 0;
+                }
+            );
         }
         
         private void OnDestroy()
         {
             ParryEvents.RemoveAllListeners();
         }
-
+        
         public bool GetParry()
         {
             return canParry;

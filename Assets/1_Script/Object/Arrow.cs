@@ -90,10 +90,10 @@ namespace Swift_Blade.Pool
         {
             health.TakeDamage(new ActionData()
             {
-                damageAmount = health is PlayerHealth ? 1 : 4, 
+                damageAmount = health is PlayerHealth ? 1 : 15, 
                 stun = true,
                 hitPoint = transform.position + new Vector3(0,0.25f,0),
-                textColor = Color.red
+                textColor = Color.white,
             });
             
             AudioManager.PlayWithInit(bodyHitAudio.GetRandomAudio,true);

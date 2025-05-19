@@ -43,6 +43,7 @@ namespace Swift_Blade
                             ActionData actionData = new ActionData();
                             actionData.stun = true;
                             actionData.hurtType = 1;
+                            actionData.damageAmount = Mathf.Max(1,GetColorRatio());
                             
                             health.TakeDamage(actionData);
                         }
