@@ -96,7 +96,11 @@ namespace Swift_Blade.Combat.Caster
 
                     bool  isCritial = UnityEngine.Random.Range(0, 100f) < critialPercent;
                                         
-                    ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, stun);
+                    ActionData actionData = new ActionData(hitPoint, hitNormal, damageAmount, stun)
+                    {
+                        hurtType = 1
+                    };
+                    
                     if (isCritial)
                     {
                         damageAmount = (damageAmount * (critialDamageMultiplier / 100f));

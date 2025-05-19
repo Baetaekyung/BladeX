@@ -59,7 +59,7 @@ namespace Swift_Blade
             GetStat(statType).RemoveModifier(key);
             OnStatChanged?.Invoke();
         }
-
+        
         public void ClearAllModifiers()
         {
             foreach (StatSO stat in _statDatas)
