@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Swift_Blade.Audio;
 using Swift_Blade.Combat.Health;
 using UnityEngine;
 
@@ -36,6 +37,7 @@ namespace Swift_Blade
 
         private PlayerHealth _playerHealth;
         private Action OnDisableEvent;
+        [SerializeField] private AudioSO shieldSound;
 
         public void EntityComponentAwake(Entity entity)
         {
@@ -95,7 +97,11 @@ namespace Swift_Blade
                 HandleBuffRemove();
 
             if (stat.statType == StatType.HEALTH)
+            {
                 _playerHealth.ShieldAmount += Mathf.RoundToInt(buffAmount);
+                AudioManager.PlayWithInit(shieldSound, true);
+            }
+
 
             OnDisableEvent += HandleBuffRemove;
 

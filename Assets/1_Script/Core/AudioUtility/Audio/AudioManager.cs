@@ -21,14 +21,16 @@ namespace Swift_Blade.Audio
             AudioEmitter audioEmitter = MonoGenericPool<AudioEmitter>.Pop();
             return audioEmitter;
         }
-        public static AudioEmitter GetEmitter(AudioSO audioSO)
+        public static AudioEmitter GetEmitter(BaseAudioSO baseAudio)
         {
+            AudioSO audioSO = baseAudio.GetAudio();
             AudioEmitter audioEmitter = MonoGenericPool<AudioEmitter>.Pop();
             audioEmitter.Initialize(audioSO);
             return audioEmitter;
         }
-        public static AudioEmitter PlayWithInit(AudioSO audioSO, bool destroyOnEnd = false)
+        public static AudioEmitter PlayWithInit(BaseAudioSO baseAudio, bool destroyOnEnd = false)
         {
+            AudioSO audioSO = baseAudio.GetAudio();
             Debug.Assert(audioSO != null, "audioSO is null");
 
             AudioEmitter audioEmitter = GetEmitter();
