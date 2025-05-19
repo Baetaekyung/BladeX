@@ -1,3 +1,4 @@
+using Swift_Blade.Audio;
 using UnityEngine;
 using Swift_Blade.Combat.Caster;
 using Swift_Blade.Pool;
@@ -31,12 +32,14 @@ namespace Swift_Blade.Enemy.Boss
         [SerializeField] private Transform _explosionSpawnTrm;
         [SerializeField] private BaseEnemyCaster _explosionCaster;
 
+        //[SerializeField] private AudioCollectionSO audioCollectionSo;
+        
         protected override void Awake()
         {
             Animator = GetComponent<Animator>();
             NavMeshAgent = GetComponentInParent<NavMeshAgent>();
         }
-
+        
         protected override void Start()
         {
             base.Start();
@@ -79,7 +82,7 @@ namespace Swift_Blade.Enemy.Boss
             ExplosionParticle particle = MonoGenericPool<ExplosionParticle>.Pop();
             particle.transform.position = _explosionSpawnTrm.position;
             particle.transform.localScale = Vector3.one * 2.3f;
-
+            
             _explosionCaster.Cast();
         }
     }
