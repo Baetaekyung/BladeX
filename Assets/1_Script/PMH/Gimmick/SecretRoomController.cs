@@ -12,7 +12,11 @@ namespace Swift_Blade
         [SerializeField] private Transform offBoundery;
 
         private bool isActive = false;
-
+        [SerializeField] private GameObject meshOutlineObject;
+        GameObject IInteractable.GetMeshGameObject()
+        {
+            return meshOutlineObject;
+        }
         public void Interact()
         {
             if (isActive) return;

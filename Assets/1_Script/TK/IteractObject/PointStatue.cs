@@ -7,6 +7,11 @@ namespace Swift_Blade
     {
         [SerializeField] private DialogueDataSO dialogueData;
 
+        [SerializeField] private GameObject outlineObject;
+        GameObject IInteractable.GetMeshGameObject()
+        {
+            return outlineObject;
+        }
         public void Interact()
         {
             DialogueManager.Instance.StartDialogue(dialogueData).Subscribe(OpenStatus);

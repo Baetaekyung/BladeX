@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Swift_Blade.Pool;
@@ -9,7 +10,7 @@ namespace Swift_Blade
         [SerializeField] [Range(0.1f, 300)] private float rotateSpeed;
         [SerializeField] private PoolPrefabMonoBehaviourSO hexagonParticle;
         
-        private Material[] shieldMats;
+        private List<Material> shieldMats;
         
         private const string TINT_COLOR = "_TintColor";
         private const float MAX_ALPHA_VALUE = 0.4f;
@@ -18,20 +19,20 @@ namespace Swift_Blade
         
         private void Awake()
         {
-            shieldMats = GetComponentsInChildren<MeshRenderer>().Select(x => x.material).ToArray();
+            shieldMats = GetComponentsInChildren<MeshRenderer>().Select(x => x.material).ToList();
         }
         
         private void Update()
         {
             if(_currentShieldAmount == 0) return;
-
+            
             transform.Rotate(Vector3.up * (rotateSpeed * Time.deltaTime));
         }
 
         public void SetShield(int amount)
         {
             if(amount == _currentShieldAmount) return;
-        
+            
             float angle = 360f / amount;
             for(int i = 0; i < amount; ++i)
             {
@@ -54,19 +55,19 @@ namespace Swift_Blade
         {
             MonoGenericPool<HexagonParticle>.Initialize(this.hexagonParticle);
             
-            HexagonParticle hexagonParticle = MonoGenericPool<HexagonParticle>.Pop();
-            hexagonParticle.transform.SetParent(transform);
-            hexagonParticle.transform.localPosition = Vector3.zero;
-
+            HexagonParticle hexagon = MonoGenericPool<HexagonParticle>.Pop();
+            hexagon.SetFollowTransform(transform);
+            
             for(int i = 0; i < amount; ++i)
             {
                 CompleteFade(shieldMats[i] , MAX_ALPHA_VALUE);
             }
+            
         }
         
         private void BreakShield(int amount)
         {
-            int count = shieldMats.Length;
+            int count = shieldMats.Count;
             for (int i = amount; i < count; i++)
             {
                 CompleteFade(shieldMats[i] , 0f);
