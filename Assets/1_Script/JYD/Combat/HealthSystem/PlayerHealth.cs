@@ -3,6 +3,7 @@ using Swift_Blade.UI;
 using UnityEngine;
 using System;
 using System.Collections;
+using Swift_Blade.Audio;
 
 namespace Swift_Blade.Combat.Health
 {
@@ -19,6 +20,7 @@ namespace Swift_Blade.Combat.Health
         
         [SerializeField] private StatSO         healthStat;
         [SerializeField] private ShieldEffect _shieldEffect;
+        [SerializeField] private BaseAudioSO armorBreakAudio;
 
         private float _lastDamageTime;
         private int   _shieldAmount;
@@ -100,6 +102,8 @@ namespace Swift_Blade.Combat.Health
                 }
 
                 HitEvent();
+
+                AudioManager.PlayWithInit(armorBreakAudio, true);
 
                 return;
             }
