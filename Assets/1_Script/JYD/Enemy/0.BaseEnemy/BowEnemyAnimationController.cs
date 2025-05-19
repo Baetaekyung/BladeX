@@ -29,12 +29,5 @@ namespace Swift_Blade.Enemy.Bow
             bowstring.canDraw = false;
         }
 
-        private void OnAudioPlay(AudioSO audio)
-        {
-            AudioManager.PlayWithInit(audio, true);
-        }
-        
-        private void OnAudioPlayCollection(AudioCollectionSO audioCollectionSo) => OnAudioPlay(audioCollectionSo.GetRandomAudio);
-        
     }
 }
