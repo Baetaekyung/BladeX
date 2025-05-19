@@ -12,6 +12,12 @@ namespace Swift_Blade
 
         private bool _isRewarded = false;
 
+        [SerializeField] private GameObject outlieObject;
+        GameObject IInteractable.GetMeshGameObject()
+        {
+            return outlieObject;
+        }
+
         private void OnEnable()
         {
             _isRewarded = false;
