@@ -94,7 +94,14 @@ namespace Swift_Blade
             bool isCallbackNull = onComplete == null;
             if (!isCallbackNull)
             {
-                string collectMessage = $"collect item {GetEquipable.DisplayName}";
+                static bool IsSubjectParticle(char lastChar)//jyd code
+                {
+                    bool result = (lastChar - 0xAC00) % 28 != 0;
+                    return result;
+                }
+                string itemName = GetEquipable.DisplayName;
+                string jungYungDo = IsSubjectParticle(itemName[itemName.Length - 1]) ? "À»" : "¸¦";
+                string collectMessage = $"\"{itemName}\"{jungYungDo} È¹µæÇß½À´Ï´Ù.";
                 TweenCallback collectMessageCallback = () => { PopupManager.Instance.LogInfoBox(collectMessage); };
                 interactTween.OnComplete(onComplete + collectMessageCallback);
             }

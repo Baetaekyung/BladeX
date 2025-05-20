@@ -78,8 +78,7 @@ namespace Swift_Blade.Skill
             
             return statCompo.GetColorStatValue(colorType) * colorRatio;
         }
-        
-        private string GetSubjectParticle(string word)
+        private static string GetSubjectParticle(string word)
         {
             char lastChar = word[word.Length - 1];
             bool hasBatchim = (lastChar - 0xAC00) % 28 != 0;

@@ -75,6 +75,9 @@ namespace Swift_Blade
         [Header("SceneManager")]
         [SerializeField] private SceneManagerSO SceneManagerSO;
 
+        [Header("Audio")]
+        [SerializeField] private BaseAudioSO levelUpAudio;
+
         private bool isItemFadeTweening;
         private bool flagInteractable;
 
@@ -136,6 +139,10 @@ namespace Swift_Blade
                 }
                 
             }
+        }
+        private void OnLevelUp(LevelStat levelStat)
+        {
+            AudioManager.PlayWithInit(levelUpAudio, true);
 
         }
         //private Quaternion d;
@@ -146,7 +153,9 @@ namespace Swift_Blade
             if (Instance == null)
                 Instance = this;
             level.Init();
-            
+
+            LevelStat.OnLevelUp += OnLevelUp;
+
             Animator playerAnimator = GetPlayerRenderer.GetPlayerAnimator.GetAnimator;
             
             playerStateMachine.AddState(PlayerStateEnum.Move, new PlayerMoveState(playerStateMachine, playerAnimator, this, animEndTrigger, anim_move));
@@ -358,6 +367,7 @@ namespace Swift_Blade
         private void OnDestroy()
         {
             playerStateMachine.Exit();
+            LevelStat.OnLevelUp -= OnLevelUp;
         }
     }
 }

@@ -33,7 +33,9 @@ namespace Swift_Blade.Combat.Health
         private Rigidbody _rigidbody;
         private bool isKnockback;
         private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
-        
+
+        [SerializeField] private BaseAudioSO playerHeal;
+
         public int ShieldAmount
         {
             get => _shieldAmount;
@@ -143,6 +145,8 @@ namespace Swift_Blade.Combat.Health
         {
             if(Mathf.Approximately(CurrentHealth, healthStat.Value))
                 return;
+
+            AudioManager.PlayWithInit(playerHeal, true);
             
             CurrentHealth += healAmount;
             CurrentHealth = Mathf.Min(CurrentHealth, maxHealth);
