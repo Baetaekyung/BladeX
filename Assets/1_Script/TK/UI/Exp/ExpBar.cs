@@ -12,6 +12,15 @@ namespace Swift_Blade
 
         private float _currentGauge;
 
+        private void Awake()
+        {
+            if (Menu.IsNewGame)
+            {
+                _currentGauge = 0;
+                gauge.fillAmount = 0;
+            }
+        }
+
         private void OnEnable()
         {
             _currentGauge = Player.level.Experience / Player.level.NextExperience;
