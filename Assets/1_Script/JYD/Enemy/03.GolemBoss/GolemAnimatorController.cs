@@ -5,6 +5,7 @@ using Swift_Blade.Feeling;
 using Swift_Blade.Pool;
 using UnityEngine;
 using DG.Tweening;
+using Swift_Blade.Audio;
 
 namespace Swift_Blade.Enemy.Boss.Golem
 {
@@ -18,6 +19,8 @@ namespace Swift_Blade.Enemy.Boss.Golem
         [SerializeField] private Transform rightGroundCrackTrm;
         [SerializeField] private Transform leftGroundCrackTrm;
         [SerializeField] private Transform forwardGroundCrackTrm;
+
+        [SerializeField] private AudioSO enemyCrush;
         
         private GolemEnemyCaster damageCaster;
 
@@ -31,6 +34,7 @@ namespace Swift_Blade.Enemy.Boss.Golem
         
         public void JumpAttackCast()
         {
+            AudioManager.PlayWithInit(enemyCrush, true);
             damageCaster.JumpAttackCast();
         }
         
@@ -56,9 +60,11 @@ namespace Swift_Blade.Enemy.Boss.Golem
             StopManualLook();
             base.StopAllAnimationEvents();
         }
-                
+        
         public void CreateGroundCrack(int _direction)
         {
+            AudioManager.PlayWithInit(enemyCrush, true);
+            
             if (_direction == 1)
             {
                 var g = MonoGenericPool<GroundCrackParticle>.Pop();
