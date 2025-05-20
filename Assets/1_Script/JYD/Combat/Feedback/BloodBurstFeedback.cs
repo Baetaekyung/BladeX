@@ -11,7 +11,7 @@ namespace Swift_Blade.Combat.Feedback
         {
             MonoGenericPool<BloodBurstParticle>.Initialize(BloodParticle);
         }
-
+        
         public override void PlayFeedback()
         {
             MonoGenericPool<BloodBurstParticle>.Pop().transform.position = transform.position + new Vector3(0,1,0);
