@@ -25,6 +25,8 @@ namespace Swift_Blade.Audio
         private bool isInPool;                          //flag for checking if this is inside the pool
         private bool shouldDecraseCountOnDestroy;       //flag for OnDisable/OnDestroy
 
+        public AudioSource GetAudioSource => audioSource;
+
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
