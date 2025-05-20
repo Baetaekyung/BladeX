@@ -5,9 +5,7 @@ namespace Swift_Blade
 {
     public class Memos : MonoBehaviour, IInteractable
     {
-        [SerializeField] private string m_talker;
-        [SerializeField] private string m_scripts;
-        [SerializeField] private string m_secondScripts;
+        [SerializeField] private Transform lightTrm;
 
         [SerializeField] private DialogueDataSO dialogueSO;
 
@@ -21,19 +19,21 @@ namespace Swift_Blade
         private void Awake()
         {
             if(m_dialogueData == null) m_dialogueData = Instantiate(dialogueSO);
-
-            TalkingData talkingData = new TalkingData();
-            talkingData.talker = m_talker;
-            talkingData.dialogueMessage = m_scripts;
-            m_dialogueData.dialougueDatas.Clear();
-            m_dialogueData.dialougueDatas.Add(talkingData);
+            if(lightTrm != null) lightTrm.gameObject.SetActive(false);
+            //
+            //TalkingData talkingData = new TalkingData();
+            //talkingData.talker = m_talker;
+            //talkingData.dialogueMessage = m_scripts;
+            //m_dialogueData.dialougueDatas.Clear();
+            //m_dialogueData.dialougueDatas.Add(talkingData);
         }
         public void Interact()
         {
             if (DialogueManager.Instance.IsDialogueOpen) return;
 
             DialogueManager.Instance.StartDialogue(dialogueSO);
-            
+            if (lightTrm != null) lightTrm.gameObject.SetActive(true);
+
             /*
             void SecondDialogue()
             {

@@ -30,11 +30,10 @@ namespace Swift_Blade.Skill
                 if (item.TryGetComponent(out BaseEnemyHealth health) && health.isDead)
                 {
                     useSkill = true;
-                    ResetSkill();
-                    
+                                        
                     GenerateSkillText(useSkill);
                     PushDirectionArrowParticle();
-                                        
+                    
                     BlueWaveParticle blueWaveParticle = MonoGenericPool<BlueWaveParticle>.Pop();
                     blueWaveParticle.transform.SetParent(player.GetPlayerTransform);
                     blueWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0,0.5f,0);
@@ -45,7 +44,7 @@ namespace Swift_Blade.Skill
                                                                 new Vector3(0,1.7f,0);
                     
                     statCompo.AddModifier(statType, skillName, increaseValue * GetColorRatio());
-                    
+                                        
                     break;
                 }
             }
@@ -61,7 +60,6 @@ namespace Swift_Blade.Skill
                 {
                     useSkill = false;
                     GenerateSkillText(useSkill);
-                    
                     ResetSkill();
                     PushDirectionArrowParticle();
                 }
@@ -70,8 +68,6 @@ namespace Swift_Blade.Skill
 
         public override void ResetSkill()
         {
-            
-            
             timer = 0;
             statCompo.RemoveModifier(statType , skillName);
         }
@@ -84,6 +80,6 @@ namespace Swift_Blade.Skill
                 directionArrowParticle = null;
             }
         }
-                
+        
     }
 }

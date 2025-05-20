@@ -34,7 +34,7 @@ namespace Swift_Blade
         
         private float NormalizedValueToDb(float vol)
         {
-            return Mathf.Lerp(-80f, 0f, vol / 100f);
+            return Mathf.Lerp(-80f, 20f, vol / 100f);
         }
 
         private void OnDisable()

@@ -11,45 +11,44 @@ namespace Swift_Blade.Skill
         [Range(0.1f,10f)][SerializeField] private float decreaseTime;
                 
         private float decreaseTimer = 0;
-        private bool isOnSkill;
+        private bool useSkill;
         
         public override void Initialize()
         {
             MonoGenericPool<BlueWaveParticle>.Initialize(skillParticle);
+            ResetSkill();
         }
         
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
-            if(isOnSkill)return;
-            GenerateSkillText(true);
+            ResetSkill();
             
-            isOnSkill = true;
-            ResetStat();
+            GenerateSkillText(true);
+            useSkill = true;
             
             int healthDifference = Mathf.RoundToInt(player.GetPlayerStat.GetStat(StatType.HEALTH).Value -
                                                     player.GetPlayerHealth.GetCurrentHealth);
+            
             float increaseSpeed = increaseAmount * healthDifference * GetColorRatio();
             
             statCompo.AddModifier(StatType.MOVESPEED, skillName ,increaseSpeed );            
             statCompo.AddModifier(StatType.ATTACKSPEED, skillName , increaseSpeed);      
             
             MonoGenericPool<BlueWaveParticle>.Pop().transform.position =  player.GetPlayerTransform.position + new Vector3(0,1,0);
-            
         }
-        
+                
         public override void SkillUpdate(Player player, IEnumerable<Transform> targets = null)
         {
-            if (isOnSkill)
+            if (useSkill)
             {
                 decreaseTimer += Time.deltaTime;
-            }
-            
-            if (decreaseTimer >= decreaseTime)
-            {
-                GenerateSkillText(false);
+                if (decreaseTimer >= decreaseTime)
+                {
+                    GenerateSkillText(false);
                 
-                ResetSkill();
-                ResetStat();
+                    ResetSkill();
+                    ResetStat();
+                }
             }
         }
         
@@ -61,9 +60,7 @@ namespace Swift_Blade.Skill
         
         public override void ResetSkill()
         {
-            
-            
-            isOnSkill = false;
+            useSkill = false;
             decreaseTimer = 0;
         }
         
