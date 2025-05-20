@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,6 @@ namespace Swift_Blade
         public event Action OnPopUpOpenOrClose;
 
         private List<InfoBoxPopup> _infoboxList = new List<InfoBoxPopup>();
-        private bool _mainInfoOpen = false;
 
         public bool IsRemainPopup
         {
