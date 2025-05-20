@@ -191,7 +191,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
         
         specialNodeTypes.Clear();
         specialNodeTypes.Add(NodeType.Challenge);
-        specialNodeTypes.Add(NodeType.Point);
+        //specialNodeTypes.Add(NodeType.Point);
         specialNodeTypes.Add(NodeType.Event);
         specialNodeTypes.Add(NodeType.Store);
         specialNodeTypes.Add(NodeType.Trap);

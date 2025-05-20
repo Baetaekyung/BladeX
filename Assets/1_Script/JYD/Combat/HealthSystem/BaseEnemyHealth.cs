@@ -145,6 +145,8 @@ namespace Swift_Blade.Combat.Health
         
         private IEnumerator Knockback(Vector3 knockbackDirection, float knockbackForce)
         {
+            if(navMeshAgent == null)yield break;
+            
             isKnockback = true;
             
             navMeshAgent.enabled = false;
@@ -155,7 +157,9 @@ namespace Swift_Blade.Combat.Health
             enemyRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
             
             yield return waitForFixedUpdate;
-    
+            
+            if(navMeshAgent == null)yield break;
+            
             float timeout = 0.5f; 
             float timer = 0f;
     
@@ -165,19 +169,24 @@ namespace Swift_Blade.Combat.Health
                 yield return null;
             }
             
+            if(navMeshAgent == null)yield break;
+            
             enemyRigidbody.linearVelocity = Vector3.zero;
             enemyRigidbody.angularVelocity = Vector3.zero;
             
             yield return new WaitForFixedUpdate();
-    
+            
+            if(navMeshAgent == null)yield break;
+            
             transform.position = new Vector3(transform.position.x, navMeshAgent.nextPosition.y, transform.position.z);
+            
             navMeshAgent.Warp(transform.position);
             
             enemyRigidbody.freezeRotation = false;
             navMeshAgent.enabled = true;
             enemyRigidbody.useGravity = false;
             enemyRigidbody.isKinematic = true;
-    
+            
             if (navMeshAgent.hasPath)
             {
                 navMeshAgent.ResetPath();
