@@ -206,8 +206,8 @@ public class NodeDictionary : IEnumerable<List<Node>>
     } 
     public void InitializeNodes()
     {
-        currentStage = NodeType.Stage1;     
-        currentBoss = NodeType.Boss1;
+        currentStage = NodeType.Stage2;
+        currentBoss = NodeType.Boss2;
         
         InitSpecialNode();
     }
