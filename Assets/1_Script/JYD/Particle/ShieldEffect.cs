@@ -56,8 +56,8 @@ namespace Swift_Blade
             MonoGenericPool<HexagonParticle>.Initialize(this.hexagonParticle);
             
             HexagonParticle hexagon = MonoGenericPool<HexagonParticle>.Pop();
-            hexagon.SetFollowTransform(transform);
-            
+            hexagon.SetFollowTransform(transform,false);
+                        
             for(int i = 0; i < amount; ++i)
             {
                 CompleteFade(shieldMats[i] , MAX_ALPHA_VALUE);
