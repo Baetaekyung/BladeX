@@ -7,12 +7,17 @@ namespace Swift_Blade.Pool
         private Transform followTransform;
         private float yOffset;
 
-        public void SetFollowTransform(Transform followTransform)
+        public void SetFollowTransform(Transform followTransform,bool useYOffset = true)
         {
             this.followTransform = followTransform;
-            if (followTransform != null)
+            if (followTransform != null && useYOffset)
             {
+                yOffset = 0;
                 yOffset = transform.position.y - followTransform.position.y;
+            }
+            else if (useYOffset == false)
+            {
+                yOffset = 0;
             }
         }
 
@@ -22,7 +27,8 @@ namespace Swift_Blade.Pool
 
             if (followTransform != null)
             {
-                Vector3 pos = new Vector3(
+                Vector3 pos = new Vector3
+                (
                     followTransform.position.x,
                     followTransform.position.y + yOffset,
                     followTransform.position.z
