@@ -41,7 +41,7 @@ namespace Swift_Blade
 
         public void EntityComponentAwake(Entity entity)
         {
-            if (Menu.IsNewGame == true)
+            if (Menu.IsNewGame)
                 colorStats = defaultColorStat;
 
             Initialize();
@@ -58,7 +58,8 @@ namespace Swift_Blade
 
         protected override void Initialize()
         {
-            base.Initialize();
+            if (Menu.IsNewGame)
+                base.Initialize();
 
             UpdateStat();
         }

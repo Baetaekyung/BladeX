@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DG.Tweening;
+using Swift_Blade.Audio;
 using Swift_Blade.Inputs;
 using Swift_Blade.UI;
 using Unity.AppUI.UI;
@@ -16,6 +17,7 @@ namespace Swift_Blade
 
         [SerializeField] private InfoBoxPopup infoBoxPopup;
         [SerializeField] private Transform popupCanvasTrm;
+        [SerializeField] private BaseAudioSO inventoryAudio;
 
         private List<PopupUI> _popupList = new List<PopupUI>();
         public event Action OnPopUpOpenOrClose;
@@ -89,6 +91,8 @@ namespace Swift_Blade
                 PopDown(PopupType.Inventory);
                 return;
             }
+
+            AudioManager.PlayWithInit(inventoryAudio, true);
 
             PopUp(PopupType.Inventory);
         }

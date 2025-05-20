@@ -14,22 +14,17 @@ namespace Swift_Blade
         
         protected virtual void Initialize()
         {
-            if (Menu.IsNewGame == true)
+            StatSO[] tempStatSO = new StatSO[_defaultStats.Length];
+
+            for (int i = 0; i < _defaultStats.Length; i++)
             {
-                StatSO[] tempStatSO = new StatSO[_defaultStats.Length];
-                
-                for (int i = 0; i < _defaultStats.Length; i++)
-                {
-                    tempStatSO[i] = _defaultStats[i].Clone();
-                    
-                    if (tempStatSO[i].statType == StatType.HEALTH)
-                        PlayerHealth.CurrentHealth = tempStatSO[i].Value;
-                }
+                tempStatSO[i] = _defaultStats[i].Clone();
 
-                _statDatas = tempStatSO;
-
-                return;
+                if (tempStatSO[i].statType == StatType.HEALTH)
+                    PlayerHealth.CurrentHealth = tempStatSO[i].Value;
             }
+
+            _statDatas = tempStatSO;
         }
 
         public StatSO GetStat(StatSO stat)
