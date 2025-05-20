@@ -66,8 +66,8 @@ public class NodeDictionary : IEnumerable<List<Node>>
     
     private const byte APPEAR_SPECIAL_NODE_PERCENT = 25; //100 / 5 = 16.xxx
     
-    private NodeType currentStage = NodeType.Stage1;
-    private NodeType currentBoss = NodeType.Boss1;
+    private NodeType currentStage = NodeType.Stage4; 
+    private NodeType currentBoss = NodeType.Boss4;
     
     public NodeDictionary(List<Node> nodes)
     {
