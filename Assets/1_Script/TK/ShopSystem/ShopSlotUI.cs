@@ -1,11 +1,7 @@
-using System;
-using System.Linq;
 using DG.Tweening;
 using Swift_Blade.Combat.Health;
-using Swift_Blade.UI;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Swift_Blade
@@ -73,10 +69,13 @@ namespace Swift_Blade
                 return;
             }
 
-            if (PlayerHealth.CurrentHealth <= _itemCost)
+            PlayerHealth health = Player.Instance.GetPlayerHealth;
+            
+            if (health.GetCurrentHealth <= _itemCost)
             {
+                health.DescreaseHealth(0);
                 LogFailedMessage("체력이 부족합니다.");
-
+                
                 return;
             }
             
@@ -88,9 +87,8 @@ namespace Swift_Blade
             }
 
             InventoryManager.Instance.AddItemToMatchSlot(_currentItem);
-
-            Player.Instance.GetEntityComponent<PlayerHealth>().DescreaseHealth(_itemCost);
-
+            health.DescreaseHealth(_itemCost);
+            
             BuyAnimation();
             
             _itemCount--;

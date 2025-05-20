@@ -1,4 +1,6 @@
-﻿using UnityEngine.Events;
+﻿using System;
+using Swift_Blade.Audio;
+using UnityEngine.Events;
 using UnityEngine;
 
 namespace Swift_Blade.Combat.Caster
@@ -11,6 +13,23 @@ namespace Swift_Blade.Combat.Caster
         
         protected const float parryInterval = 0.5f;
         protected float lastParryTime;
+
+        [SerializeField] private AudioCollectionSO attackSound;
+
+        private void Start()
+        {
+            OnCastEvent.AddListener(PlayAttackSound);
+        }
+
+        private void OnDestroy()
+        {
+            OnCastEvent.RemoveListener(PlayAttackSound);
+        }
+        
+        private void PlayAttackSound()
+        {
+            AudioManager.PlayWithInit(attackSound, true);
+        }
         
         public override bool Cast()
         {

@@ -128,7 +128,7 @@ namespace Swift_Blade.Level
             
             float healthAdditional = perRoomIncrease + randomStageIncrement;
             
-            Debug.Log(healthAdditional);
+            //Debug.Log(healthAdditional);
             
             return healthAdditional;
         }

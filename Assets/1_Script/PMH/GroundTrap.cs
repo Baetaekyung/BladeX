@@ -59,9 +59,13 @@ namespace Swift_Blade.Level.Obstacle
             if (!isActive) return;
             if (other.TryGetComponent(out BaseEntityHealth health))
             {
-                health.TakeDamage(new ActionData { damageAmount = 1, stun = health is PlayerHealth });
+                health.TakeDamage(new ActionData
+                {
+                    hitPoint = other.transform.position + new Vector3(0,0.25f,0) ,damageAmount = 1, stun = health is PlayerHealth
+                });
             }
         }
+        
         //IEnumerator ActiveCoroutine()
         //{
         //    while (true)

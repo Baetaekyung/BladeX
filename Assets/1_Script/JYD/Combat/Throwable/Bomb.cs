@@ -13,7 +13,6 @@ namespace Swift_Blade.Combat.Projectile
         public PoolPrefabMonoBehaviourSO explosionSO;
 
         public float explosionRadius;
-        public int defaultDamage = 1;
         public int enemyDamage = 5;
         
         private bool canExplosion;
@@ -63,17 +62,14 @@ namespace Swift_Blade.Combat.Projectile
                 var target = targets[i].GetComponentInChildren<IHealth>();
                 if (target != null)
                 {
-                    var defaultAction = new ActionData
-                    {
-                        damageAmount = defaultDamage,
-                        stun = true
-                    };
+                    var actionData = new ActionData();
+                    actionData.damageAmount = target is BaseEnemyHealth ? enemyDamage : 1;
+                    actionData.hitPoint = targets[i].transform.position + new Vector3(0, 0.25f, 0);
+                    actionData.textColor = Color.yellow;
+                    actionData.stun = true;
+                    actionData.hurtType = 1;
                     
-                    var action = (target is BaseEnemyHealth)
-                        ? new ActionData(Vector3.zero, Vector3.zero, enemyDamage, true)
-                        : defaultAction;
-
-                    target.TakeDamage(action);
+                    target.TakeDamage(actionData);
                 }
                 else if (targets[i].TryGetComponent(out Bomb otherBomb))
                 {

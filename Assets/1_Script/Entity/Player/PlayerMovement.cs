@@ -1,3 +1,4 @@
+using Swift_Blade.Audio;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,9 @@ namespace Swift_Blade
         [SerializeField] private float gravitiyMultiplier = 1;
         [SerializeField] private AnimationCurve curveSlope;
         private float yVal;
+
+        private float nextFootstepPlayTime;
+        private Vector3 lastPos;
 
         [Header("Collisin Settings")]
         private const float bottomYOffset = 0.3f; //lower than 0.4
@@ -61,6 +65,9 @@ namespace Swift_Blade
         private PlayerRenderer playerRenderer;
         private PlayerInput playerInput;
         private PlayerStatCompo playerStat;
+
+        [Header("Sound")]
+        [SerializeField] private AudioCollectionSO footStepAudioCollection;
 
         [Header("Cache")]
         private readonly List<ContactPoint> contactPointList = new();
@@ -158,6 +165,19 @@ namespace Swift_Blade
             Vector3 result = speed * input + addition;
             result.y += yVal;
             controller.linearVelocity = result;
+
+            bool isMoving = result.sqrMagnitude > 0.2f;
+            bool isFootStepAudioDelayOver = Time.time > nextFootstepPlayTime;
+            bool isInRange = lastPos.IsInRangeSquared(transform.position, 1.2f * 1.2f);
+            if (isMoving && isFootStepAudioDelayOver && !isInRange)
+            {
+                const float k_delay = 0.38f;
+                nextFootstepPlayTime = Time.time + k_delay;
+                AudioManager.PlayWithInit(footStepAudioCollection, true);
+
+                Debug.DrawRay(lastPos, Vector3.up, Color.red, 5);
+                lastPos = transform.position;
+            }
 
             //Debug.DrawRay(transform.position + Vector3.up * 0.5f, input, Color.cyan, 1);
         }

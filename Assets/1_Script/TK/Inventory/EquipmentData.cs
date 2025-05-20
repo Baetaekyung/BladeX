@@ -52,8 +52,8 @@ namespace Swift_Blade
 
         public EquipmentSlotType slotType;
         public ColorType         colorType;
-        public int               colorAdder;
-
+        [HideInInspector] public int               colorAdder;
+        
         ColorType IPlayerEquipable.GetColor => colorType;
         Sprite IPlayerEquipable.GetSprite => equipmentIcon;
         string IPlayerEquipable.DisplayName => displayName;
@@ -69,7 +69,8 @@ namespace Swift_Blade
             dataName = dataName.Substring(2, dataName.Length - 8);
             partsName = dataName;
             //이게 맞음 수정하지 마셈 민호임마 EquipmentListSO에서 아이템이름으로 하이어라키창 밑에 그거로 변환시켜서 작동하는거임
+                        
         }
-
+        
     }
 }

@@ -41,7 +41,7 @@ namespace Swift_Blade.Skill
                     
                     IceSmokeParticle iceSmokeParticle = MonoGenericPool<IceSmokeParticle>.Pop();
                     iceSmokeParticle.transform.SetParent(enemy.transform);
-                    iceSmokeParticle.transform.position = enemy.transform.position + new Vector3(0,1.25f,0);
+                    iceSmokeParticle.transform.position = enemy.transform.position + new Vector3(0,0.25f,0);
                     
                     if (hasGeneratedText == false)
                     {

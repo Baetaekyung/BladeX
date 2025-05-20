@@ -1,3 +1,4 @@
+using Swift_Blade.Audio;
 using Swift_Blade.Combat.Caster;
 using UnityEngine.AI;
 using UnityEngine;
@@ -116,6 +117,13 @@ namespace Swift_Blade.Enemy
         {
             Animator.Rebind();
         }
+        
+        private void OnAudioPlay(AudioSO audio)
+        {
+            AudioManager.PlayWithInit(audio, true);
+        }
+        
+        private void OnAudioPlayCollection(AudioCollectionSO audioCollectionSo) => OnAudioPlay(audioCollectionSo.GetRandomAudio);
         
        
     }

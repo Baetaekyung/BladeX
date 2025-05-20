@@ -33,7 +33,8 @@ namespace Swift_Blade.Level
         private Transform chestLid;
         private new Rigidbody rigidbody;
 
-        bool IInteractable.IsHurtWhenInteracting() => !prePlaced;
+        bool IInteractable.IsHurtWhenInteracting() => !prePlaced && 
+            Player.Instance.GetPlayerHealth.GetCurrentHealth >= 2;
         private bool isOpen = false;
         GameObject IInteractable.GetMeshGameObject()
         {
