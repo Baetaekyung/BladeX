@@ -6,9 +6,9 @@ namespace Swift_Blade
 {
     public class HealingStatue : MonoBehaviour, IInteractable
     {
-        [SerializeField] private int            healAmount;
         [SerializeField] private DialogueDataSO dialogueData;
         [SerializeField] private DialogueDataSO afterRewardDialogueData;
+        [SerializeField] private ItemDataSO potion;
 
         private bool _isRewarded = false;
 
@@ -33,11 +33,11 @@ namespace Swift_Blade
 
         private void Heal()
         {
-            var health = Player.Instance.GetEntityComponent<PlayerHealth>();
+            if (!InventoryManager.Instance.TryAddItemToEmptySlot(potion))
+            {
+                return;
+            }
 
-            Debug.Assert(health != null, "PlayerHealth Component is missing");
-            
-            health.TakeHeal(healAmount); 
             _isRewarded = true;
         }
     }

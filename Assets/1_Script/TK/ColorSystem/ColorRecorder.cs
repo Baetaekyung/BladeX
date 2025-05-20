@@ -22,11 +22,11 @@ namespace Swift_Blade
         private static SerializableDictionary<ColorType, int> _upgradePercentDic = new();
 
         private PlayerStatCompo _statCompo;
-        private int recordedIncreasedAmount = 1;
-        
+        private int recordedIncreasedAmount;
+
         private void Start()
         {
-            _statCompo = Player.Instance.GetPlayerStat;
+            _statCompo = Player.Instance.GetEntityComponent<PlayerStatCompo>();
 
             if (_statCompo == null)
             {
@@ -35,12 +35,12 @@ namespace Swift_Blade
                 return;
             }
 
-            LoadData();
-            
             _upgradePercent = baseUpgradePercent;
+
+            LoadData();
             colorSettingUI.SetStatInfoUI(recordedIncreasedAmount, _upgradePercent);
         }
-        
+
         private void LoadData()
         {
             if (!_increaseAmountDic.ContainsKey(colorType))
@@ -155,5 +155,4 @@ namespace Swift_Blade
             OnColorChanged?.Invoke();
         }
     }
-
 }

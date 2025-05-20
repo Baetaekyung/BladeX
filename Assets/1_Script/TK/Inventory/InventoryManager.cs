@@ -126,18 +126,7 @@ namespace Swift_Blade
                 ItemDataSO currentIndexItem = Inventory.itemInventory[i];
 
                 //퀵슬롯 등록을 위한 item만 모아놓기
-                if (currentIndexItem.itemType == ItemType.ITEM)
-                {
-                    if (_itemTable.Contains(currentIndexItem))
-                    {
-                        _itemDatas[currentIndexItem]++;
-                    }
-                    else
-                    {
-                        _itemTable.Add(currentIndexItem);
-                        _itemDatas.Add(currentIndexItem, 1);
-                    }
-                }
+                AddItemIfNotEquipment(currentIndexItem);
 
                 AssignItemToSlot(i, matchSlot, emptySlot);
             }
@@ -247,6 +236,8 @@ namespace Swift_Blade
                     itemSlots[i].SetItemUI(itemIcon);
                 }
             }
+
+            OnUseQuickSlotEvent?.Invoke();
         }
 
         //아이템을 클릭했을 때 커서에 표시되는 UI
@@ -379,14 +370,32 @@ namespace Swift_Blade
 
             var emptySlot = GetEmptySlot();
 
+            AddItemIfNotEquipment(newItem);
+            Inventory.itemInventory.Add(newItem);
+
             emptySlot.SetItemData(newItem);
             newItem.ItemSlot = emptySlot;
 
-            Inventory.itemInventory.Add(newItem);
-            
+            SetQuickSlotItem();
             UpdateAllSlots();
 
             return true;
+        }
+
+        private void AddItemIfNotEquipment(ItemDataSO newItem)
+        {
+            if (newItem.itemType == ItemType.ITEM)
+            {
+                if (_itemTable.Contains(newItem))
+                {
+                    _itemDatas[newItem]++;
+                }
+                else
+                {
+                    _itemTable.Add(newItem);
+                    _itemDatas.Add(newItem, 1);
+                }
+            }
         }
 
         private ItemSlot GetEmptySlot()
