@@ -94,11 +94,11 @@ namespace Swift_Blade.Level
             
             Node[] newNode = sceneManager.GetNodeList().GetNodes();
             yield return doorSpawnDelay;
-            
+                        
             for (int i = 0; i < newNode.Length; ++i)
             {
                 var doorPosition = doorTrm[i].position;
-                                
+                
                 DustUpParticle dustUpParticle = MonoGenericPool<DustUpParticle>.Pop();
                 dustUpParticle.transform.position = doorPosition;
                 

@@ -94,6 +94,7 @@ namespace Swift_Blade.Pool
                 stun = true,
                 hitPoint = transform.position + new Vector3(0,0.25f,0),
                 textColor = Color.white,
+                hurtType = 1,
             });
             
             AudioManager.PlayWithInit(bodyHitAudio.GetRandomAudio,true);
