@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Swift_Blade.Skill
 {
-    [CreateAssetMenu(fileName = "SpecialSkillMoreMoveSpeedAndAttackSpeedSkill", menuName = "SO/Skill/Blue/SpecialSkillMoreMoveSpeedAndAttackSpeedSkill")]
-    public class SpecialSkillMoreMoveSpeedAndAttackSpeedSkill : SkillData
+    [CreateAssetMenu(fileName = "SpecialSkillCriticalDamageUpSkill", menuName = "SO/Skill/Blue/SpecialSkillCriticalDamageUpSkill")]
+    public class SpecialSkillCriticalDamageUpSkill : SkillData
     {
         [SerializeField] [Range(0.1f , 10)]private float increaseValue;
         [SerializeField] [Range(0.1f , 10)]private float increaseTime;
