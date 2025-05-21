@@ -111,7 +111,7 @@ namespace Swift_Blade
                 var slot = GetMatchTypeEquipSlot(EquipmentDatas[i].equipmentData.slotType);
                 slot.SetItemData(EquipmentDatas[i]);
 
-                (EquipmentDatas[i].itemObject as Equipment).OnEquipment();
+                (EquipmentDatas[i].itemObject as Equipment).OnEquipment(true);
             }
 
             //인벤토리의 아이템 데이터를 슬롯에 넣어주기 (장비창 제외)
