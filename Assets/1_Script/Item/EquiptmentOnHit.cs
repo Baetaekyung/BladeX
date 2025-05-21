@@ -8,9 +8,9 @@ namespace Swift_Blade
         [SerializeField] private int cnt = 3;
         [SerializeField] private int healAmount;
 
-        public override void OnEquipment()
+        public override void OnEquipment(bool withoutStat = false)
         {
-            base.OnEquipment();
+            base.OnEquipment(withoutStat = false);
             cnt = 0;
         }
 

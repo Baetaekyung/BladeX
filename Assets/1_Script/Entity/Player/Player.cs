@@ -10,8 +10,6 @@ using DG.Tweening;
 using System;
 using Swift_Blade.Combat.Health;
 using UnityEngine.Serialization;
-using Swift_Blade.Inputs;
-using UnityEditor.SceneManagement;
 
 namespace Swift_Blade
 {
