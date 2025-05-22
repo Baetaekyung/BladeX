@@ -17,8 +17,7 @@ namespace Swift_Blade.Skill
         [Range(0.1f, 10)] [SerializeField] private float moveSpeedIncreaseValue;
         
         [Range(0.1f, 1)] [SerializeField] private float chromaticAberrationIntensity;
-        [Range(0.1f, 2)] [SerializeField] private float chromaticAberrationDuration;
-        private bool canUpgrade = false;
+        
         private bool hasSkill = false;
         
         private ChromaticAberration chromaticAberration;
@@ -29,30 +28,10 @@ namespace Swift_Blade.Skill
         {
             profile.TryGet(out chromaticAberration);
         }
-
+        
         public override void SkillUpdate(Player player, IEnumerable<Transform> targets = null)
         {
-            if (health == null)
-                health = player.GetPlayerHealth;
-            
-            if (health.GetCurrentHealth == 1 && canUpgrade)
-            {
-                hasSkill = true;
-                canUpgrade = false;
-                                
-                DOVirtual.Float(chromaticAberration.intensity.value , chromaticAberrationIntensity,chromaticAberrationDuration ,x =>
-                {
-                    chromaticAberration.intensity.value = x;
-                });
-                
-                GenerateSkillText(true);
-                
-                statCompo.AddModifier(StatType.DAMAGE,skillName,attackIncreaseValue);
-                statCompo.AddModifier(StatType.ATTACKSPEED,skillName,attackSpeedIncreaseValue);
-                statCompo.AddModifier(StatType.MOVESPEED,skillName,moveSpeedIncreaseValue);
-            }
-            
-            if (hasSkill && canUpgrade == false && health.GetCurrentHealth > 1)
+            if (health.GetCurrentHealth > 1 && hasSkill)
             {
                 GenerateSkillText(false);
                 ResetSkill();
@@ -61,30 +40,32 @@ namespace Swift_Blade.Skill
 
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
+            if (health == null)
+                health = player.GetPlayerHealth;
+            
+            if (health.GetCurrentHealth == 1 && hasSkill == false)
+            {
+                hasSkill = true;
+                
+                chromaticAberration.intensity.value = chromaticAberrationIntensity;
+                                
+                GenerateSkillText(true);
+                
+                statCompo.AddModifier(StatType.DAMAGE,skillName,attackIncreaseValue);
+                statCompo.AddModifier(StatType.ATTACKSPEED,skillName,attackSpeedIncreaseValue);
+                statCompo.AddModifier(StatType.MOVESPEED,skillName,moveSpeedIncreaseValue);
+            }
             
         }
         
         public override void ResetSkill()
         {
-            if (health.isDead)
-            {
-                chromaticAberration.intensity.value = 0;
-            }
-            else
-            {
-                DOVirtual.Float(chromaticAberration.intensity.value, 0, chromaticAberrationDuration, x =>
-                {
-                    chromaticAberration.intensity.value = x;
-                });
-            }
-
+            chromaticAberration.intensity.value = 0;
             hasSkill = false;
-            canUpgrade = true;
-            
+                        
             statCompo.RemoveModifier(StatType.DAMAGE,skillName);
             statCompo.RemoveModifier(StatType.ATTACKSPEED,skillName);
             statCompo.RemoveModifier(StatType.MOVESPEED,skillName);
         }
-        
     }
 }

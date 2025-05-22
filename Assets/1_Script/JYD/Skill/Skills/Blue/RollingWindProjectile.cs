@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using DG.Tweening;
 using Swift_Blade.Pool;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Swift_Blade.Skill
@@ -70,10 +70,10 @@ namespace Swift_Blade.Skill
             for (int i = 0; i < count; i++)
             {
                 WindProjectileParticle windProjectileParticle = MonoGenericPool<WindProjectileParticle>.Pop();
-                        
+                
                 Vector3 direction = directions[i].normalized;
                 Vector3 spawnOffset = direction * 2 + new Vector3(0, 0.5f, 0); 
-                        
+                
                 windProjectileParticle.transform.position = player.GetPlayerTransform.position + spawnOffset;
                 windProjectileParticle.SetDirection(direction);
             }

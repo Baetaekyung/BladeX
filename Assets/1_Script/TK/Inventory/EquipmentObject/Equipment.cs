@@ -14,9 +14,9 @@ namespace Swift_Blade
         private static int rarityModifierStack;
         private static int stackData;
 
-        public virtual void OnEquipment()
+        public virtual void OnEquipment(bool withoutStat = false)
         {
-            HandleStatAdder();
+            HandleStatAdder(withoutStat);
             OnEquipParts();
         }
 
@@ -26,7 +26,7 @@ namespace Swift_Blade
             HandleStatRemover();
         }
 
-        public void HandleStatAdder()
+        public void HandleStatAdder(bool withoutStat = false)
         {
             _playerStat = Player.Instance.GetEntityComponent<PlayerStatCompo>();
 
@@ -55,6 +55,9 @@ namespace Swift_Blade
                 else
                     Debug.Log("Please add component to player, CompoName: PlayerTagCompo");
             }
+
+            if (withoutStat)
+                return;
 
             _playerStat.IncreaseColorValue(equipData.colorType,
                 equipData.colorAdder);

@@ -73,7 +73,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
     {
         originNodeList = new Dictionary<NodeType, List<Node>>();
         specialNodeTypes = new List<NodeType>();
-        InitializeNodes();
+        Initialize();
         
         foreach (var item in nodes)
         {
@@ -111,7 +111,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
     private Node SelectRandomNode(List<Node> nodes)
     {
         //only one
-        if (nodes.Count == 1 && nodes[0].nodeName == SceneManager.GetActiveScene().name)
+        if (nodes.Count == 1)
         {
             return nodes[0];
         }
@@ -134,9 +134,9 @@ public class NodeDictionary : IEnumerable<List<Node>>
             {
                 InitSpecialNode();
                 
+                currentNodeIndex = 0;
                 currentStage = (NodeType)((int)currentStage + 1);
                 currentBoss = (NodeType)((int)currentBoss + 1);
-                currentNodeIndex = 0;
                 
                 nodeTypes.Add(NodeType.Rest);   
             }
@@ -191,10 +191,11 @@ public class NodeDictionary : IEnumerable<List<Node>>
         
         specialNodeTypes.Clear();
         specialNodeTypes.Add(NodeType.Challenge);
-        //specialNodeTypes.Add(NodeType.Point);
         specialNodeTypes.Add(NodeType.Event);
         specialNodeTypes.Add(NodeType.Store);
         specialNodeTypes.Add(NodeType.Trap);
+        
+        //specialNodeTypes.Add(NodeType.Point);
     }
     
     #endregion
@@ -204,7 +205,7 @@ public class NodeDictionary : IEnumerable<List<Node>>
     {
         nodeList[newNode.nodeType].Add(newNode);
     } 
-    public void InitializeNodes()
+    public void Initialize()
     {
         currentStage = NodeType.Stage1;     
         currentBoss = NodeType.Boss1;
@@ -223,7 +224,8 @@ public class NodeDictionary : IEnumerable<List<Node>>
         
         return nodes;
     }
-        
+    public NodeType GetCurrentStageType() => currentStage;
+    
     public void printNodes()
     {
         foreach (var item in nodeList)
@@ -235,9 +237,6 @@ public class NodeDictionary : IEnumerable<List<Node>>
             }
         }
     }
-
-    public NodeType GetCurrentStageType() => currentStage;
-    
     #endregion
     
     public IEnumerator<List<Node>> GetEnumerator()
@@ -300,7 +299,7 @@ namespace Swift_Blade.Level
             }
             
             nodeDictionary = new NodeDictionary(nodelist);
-            nodeDictionary.InitializeNodes();
+            nodeDictionary.Initialize();
             
             currentNodeIndex = 0;
             stageCount = 0;

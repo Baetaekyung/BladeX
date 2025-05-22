@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Swift_Blade.Skill
 {
-    [CreateAssetMenu(fileName = "KillingMoveSpeedUpSKill",menuName = "SO/Skill/Blue/KillingMoveSpeedUpSKill")]
-    public class KillingMoveSpeedUpSKill : SkillData
+    [CreateAssetMenu(fileName = "KillingCriticalUpSKill",menuName = "SO/Skill/Blue/KillingCriticalUpSKill")]
+    public class KillingCriticalUpSKill : SkillData
     {
         [SerializeField] private PoolPrefabMonoBehaviourSO directionArrow; 
         

@@ -40,7 +40,7 @@ namespace Swift_Blade.Skill
         
         private void Awake()
         {
-            skillUpdateWait = new WaitForSeconds(0.02f);
+            skillUpdateWait = new WaitForSeconds(0.001f);
             
             skillEvents = new Dictionary<SkillType, Action<Player, IEnumerable<Transform>>>()
                 {
