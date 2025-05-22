@@ -10,12 +10,14 @@ namespace Swift_Blade
         [SerializeField] private int skillCount;
         [SerializeField] private int healAmount;
 
-        private const int MAX_HEAL_AMOUNT = 2;
+        private const int HEAL_AMOUNT = 1;
         
         private int skillCounter;
         
         public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
+            if (player.GetPlayerHealth.IsFullHealth) return;
+            
             ++skillCounter;
             if (skillCounter >= skillCount)
             {
@@ -23,12 +25,12 @@ namespace Swift_Blade
                 {
                     GenerateSkillText(true);
                     
-                    int healthAmount = Mathf.RoundToInt(healAmount * GetColorRatio());
-                    player.GetPlayerHealth.TakeHeal(Mathf.Min(MAX_HEAL_AMOUNT, healthAmount));
+                    player.GetPlayerHealth.TakeHeal(HEAL_AMOUNT);
                 }
                 
                 skillCounter = 0;
             }
+            
         }
     }
 }

@@ -9,40 +9,43 @@ namespace Swift_Blade
     [CreateAssetMenu(fileName = "MaxHealthStrikeSkill", menuName = "SO/Skill/Green/MaxHealthStrikeSkill")]
     public class MaxHealthStrikeSkill : SkillData
     { 
-        [Range(0.1f, 5f)] [SerializeField]  private float attackIncreaseAmount;
+        [Range(0.1f, 8f)] [SerializeField]  private float attackIncreaseAmount;
+        private bool useSkill = false;
                 
         public override void Initialize()
         {
-            MonoGenericPool<GreenWaveParticle>.Initialize(skillParticle);    
+            MonoGenericPool<GreenWaveParticle>.Initialize(skillParticle);
+            useSkill = false;
         }
-        
-        public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
+
+        public override void SkillUpdate(Player player, IEnumerable<Transform> targets = null)
         {
-            if (player.GetPlayerHealth.IsFullHealth && targets != null)
+            if (player.GetPlayerHealth.IsFullHealth && useSkill != false)
             {
+                useSkill = true;
+                
                 GenerateSkillText(true);
-                
-                GreenWaveParticle greenWaveParticle = MonoGenericPool<GreenWaveParticle>.Pop();
-                greenWaveParticle.transform.position = player.GetPlayerTransform.position + new Vector3(0, 0.5f, 0);
-                
-                ApplyDamage(targets);
+                AddStat();
+            }
+            else if(!player.GetPlayerHealth.IsFullHealth && useSkill)
+            {
+                ResetSkill();
             }
         }
 
-        private void ApplyDamage(IEnumerable<Transform> targets)
+        public override void UseSkill(Player player,  IEnumerable<Transform> targets = null)
         {
-            foreach (var item in targets)
-            {
-                if (item.TryGetComponent(out BaseEnemyHealth health))
-                {
-                    ActionData actionData = new ActionData();
-                    float damage = attackIncreaseAmount * GetColorRatio();
-                    
-                        
-                    actionData.damageAmount = damage;
-                    health.TakeDamage(actionData);
-                }
-            }
+            
+        }
+        
+        private void AddStat()
+        {
+            statCompo.AddModifier(statType , skillName,attackIncreaseAmount + GetColorRatio());
+        }
+        
+        public override void ResetSkill()
+        {
+            statCompo.RemoveModifier(statType , skillName);
         }
     }
 }
