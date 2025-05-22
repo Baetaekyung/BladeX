@@ -31,9 +31,15 @@ namespace Swift_Blade
 
         public void OnParts(string equipment)
         {
+            Debug.Log(equipment);
             GameObject go = null;
+            foreach(string name in equipListSO.equipmentList.Keys)
+            {
+                Debug.Log($"name : {name}");
+            }
             if (equipListSO.equipmentList.TryGetValue(equipment, out var partsName))
             {
+                Debug.Log(partsName);
                 go = GetVisualObj(partsName);
                 if (go is null)
                 {

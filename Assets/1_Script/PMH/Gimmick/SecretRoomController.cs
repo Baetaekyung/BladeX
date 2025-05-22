@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using Swift_Blade.Feeling;
+using Swift_Blade.Level;
 
 namespace Swift_Blade
 {
@@ -11,15 +12,49 @@ namespace Swift_Blade
 
         [SerializeField] private Transform offBoundery;
 
+        [Header("SecretFloor")]
+        [SerializeField] private bool IsFloor = false;
+        [SerializeField] private Transform floorTrm;
+        [SerializeField] private ParticleSystem dustPar;
+        [SerializeField] private Transform dustParTrm;
+        [SerializeField] private Chest ChestPrefab;
+
         private bool isActive = false;
         [SerializeField] private GameObject meshOutlineObject;
         GameObject IInteractable.GetMeshGameObject()
         {
             return meshOutlineObject;
         }
+
+        private void DestroyFloor()
+        {
+            isActive = true;
+
+            if(floorTrm != null )
+            {
+                floorTrm.DOScale(new Vector3(0, 0, 0), 0.5f);
+            }
+            if(dustPar != null)
+            {
+                Instantiate(dustPar, dustParTrm.position, Quaternion.identity).gameObject.SetActive(true);
+            }
+            if (ChestPrefab != null)
+            {   
+                Instantiate(ChestPrefab, dustParTrm.position, Quaternion.identity);
+            }
+        }
         public void Interact()
         {
             if (isActive) return;
+
+            if(IsFloor)
+            {
+                DestroyFloor();
+            }
+            else
+            {
+                return;
+            }
 
             isActive = true;
             /// 비밀의 방으로 이동
