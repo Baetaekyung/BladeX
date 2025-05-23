@@ -45,11 +45,11 @@ public class Node
     {
         doorPrefab = prefab;
     }
-    
     public Door GetPortalPrefab()
     {
         return doorPrefab;
     }
+    
     
 }
 

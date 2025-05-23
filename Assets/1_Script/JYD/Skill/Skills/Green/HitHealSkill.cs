@@ -10,8 +10,6 @@ namespace Swift_Blade.Skill
         [Range(1, 10)] public int healAmount;
         private PlayerHealth playerHealth;
 
-        private const int MAX_RANDOM = 50;
-        
         public override void UseSkill(Player player, IEnumerable<Transform> targets = null)
         {
             if (playerHealth == null)
